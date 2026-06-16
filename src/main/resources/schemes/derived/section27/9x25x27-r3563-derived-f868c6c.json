@@ -1,0 +1,69 @@
+{
+  "lineage_str": "ConcatCols(SumInner(naive-9x1x6, KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->BCA\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))), SumInner(naive-9x1x21, KronProduct(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))))",
+  "lineage_compact": "naive-9x1x6 +m R[2x3x4^ABC->BCA; 1,1,1 | 1,1,1,1 | 1,1] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +p naive-9x1x21 +m R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "naive-9x1x6"},
+      "right": {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Recombination",
+          "base": {
+            "op": "Transpose",
+            "perm": "ABC->BCA",
+            "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+          },
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      }
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "naive-9x1x21"},
+      "right": {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      }
+    }
+  },
+  "n": [9, 25, 27],
+  "m": 3563,
+  "hash": "f868c6c8b19ebf2ed3af85a1a1cf2fa3bd661c18147825c1d1861b3dcb2f95c0",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

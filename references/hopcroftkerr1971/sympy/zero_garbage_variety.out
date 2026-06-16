@@ -1,0 +1,288 @@
+#garbage equations = 34
+#variables = 12 (l1..l6, m1..m6)
+
+#monomial l_i*m_j = 0 equations : 24
+   l1 * m3 = 0
+   l1 * m4 = 0
+   l1 * m5 = 0
+   l1 * m6 = 0
+   l2 * m3 = 0
+   l2 * m4 = 0
+   l2 * m5 = 0
+   l2 * m6 = 0
+   l3 * m1 = 0
+   l3 * m2 = 0
+   l3 * m5 = 0
+   l3 * m6 = 0
+   l4 * m1 = 0
+   l4 * m2 = 0
+   l4 * m5 = 0
+   l4 * m6 = 0
+   l5 * m1 = 0
+   l5 * m2 = 0
+   l5 * m3 = 0
+   l5 * m4 = 0
+   l6 * m1 = 0
+   l6 * m2 = 0
+   l6 * m3 = 0
+   l6 * m4 = 0
+
+#non-monomial equations : 10
+
+l_i appearing in monomial eqs: [l1, l2, l3, l4, l5, l6]
+m_j appearing in monomial eqs: [m1, m2, m3, m4, m5, m6]
+
+Bipartite-cover structure (l_i must = 0 OR all its partners m_j must = 0):
+   l1  --  {m3, m4, m5, m6}
+   l2  --  {m3, m4, m5, m6}
+   l3  --  {m1, m2, m5, m6}
+   l4  --  {m1, m2, m5, m6}
+   l5  --  {m1, m2, m3, m4}
+   l6  --  {m1, m2, m3, m4}
+
+#minimal vertex covers of monomial-equation graph: 8
+   size 6: [l1, l2, l3, l4, l5, l6]
+   size 6: [m1, m2, m3, m4, m5, m6]
+   size 8: [l1, l2, l3, l4, m1, m2, m3, m4]
+   size 8: [l1, l2, l5, l6, m1, m2, m5, m6]
+   size 8: [l1, l2, m1, m2, m3, m4, m5, m6]
+   size 8: [l3, l4, l5, l6, m3, m4, m5, m6]
+   size 8: [l3, l4, m1, m2, m3, m4, m5, m6]
+   size 8: [l5, l6, m1, m2, m3, m4, m5, m6]
+
+======================================================================
+Per-cover analysis:
+======================================================================
+
+--- Branch 0: zero = [l1, l2, l3, l4, l5, l6] ---
+   free vars (6): [m1, m2, m3, m4, m5, m6]
+   #residual eqs after dedupe: 0
+   α | branch = 0
+   β | branch = 0
+   no residual equations — V on this branch is R^6
+   (α, β) maps freely on this 6-dim component
+
+--- Branch 1: zero = [m1, m2, m3, m4, m5, m6] ---
+   free vars (6): [l1, l2, l3, l4, l5, l6]
+   #residual eqs after dedupe: 0
+   α | branch = 0
+   β | branch = 0
+   no residual equations — V on this branch is R^6
+   (α, β) maps freely on this 6-dim component
+
+--- Branch 2: zero = [l1, l2, l3, l4, m1, m2, m3, m4] ---
+   free vars (4): [l5, l6, m5, m6]
+   #residual eqs after dedupe: 7
+     -l5*m5/15 + l5*m6/15 + l6*m6/15 = 0
+     l5*m5/5 - l5*m6/5 - l6*m6/5 = 0
+     -4*l5*m5/15 + 4*l5*m6/15 + 4*l6*m6/15 = 0
+     4*l5*m5/15 - 4*l5*m6/15 - 4*l6*m6/15 = 0
+     -l6*m5/3 = 0
+     l5*m5/15 - l5*m6/15 - l6*m6/15 = 0
+     2*l6*m5/3 = 0
+   α | branch = l6*m5/3
+   β | branch = -l5*m5/5 + l5*m6/5 + l6*m6/5
+   solve() returned 4 branches
+     sub-branch 0: solved [l5, l6], free remaining = [m5, m6]
+       α = 0
+       β = 0
+     sub-branch 1: solved [l5, m5], free remaining = [l6, m6]
+       α = 0
+       β = 0
+     sub-branch 2: solved [l6, m5], free remaining = [l5, m6]
+       α = 0
+       β = 0
+     sub-branch 3: solved [m5, m6], free remaining = [l5, l6]
+       α = 0
+       β = 0
+
+--- Branch 3: zero = [l1, l2, l5, l6, m1, m2, m5, m6] ---
+   free vars (4): [l3, l4, m3, m4]
+   #residual eqs after dedupe: 5
+     -l4*m3/3 = 0
+     l3*m4/5 = 0
+     -l3*m4/5 = 0
+     2*l4*m3/3 = 0
+     2*l3*m4/5 = 0
+   α | branch = l4*m3/3
+   β | branch = 3*l3*m4/5
+   solve() returned 4 branches
+     sub-branch 0: solved [l3, l4], free remaining = [m3, m4]
+       α = 0
+       β = 0
+     sub-branch 1: solved [l3, m3], free remaining = [l4, m4]
+       α = 0
+       β = 0
+     sub-branch 2: solved [l4, m4], free remaining = [l3, m3]
+       α = 0
+       β = 0
+     sub-branch 3: solved [m3, m4], free remaining = [l3, l4]
+       α = 0
+       β = 0
+
+--- Branch 4: zero = [l1, l2, m1, m2, m3, m4, m5, m6] ---
+   free vars (4): [l3, l4, l5, l6]
+   #residual eqs after dedupe: 0
+   α | branch = 0
+   β | branch = 0
+   no residual equations — V on this branch is R^4
+   (α, β) maps freely on this 4-dim component
+
+--- Branch 5: zero = [l3, l4, l5, l6, m3, m4, m5, m6] ---
+   free vars (4): [l1, l2, m1, m2]
+   #residual eqs after dedupe: 7
+     4*l1*m1/15 - 4*l1*m2/15 - 4*l2*m2/15 = 0
+     2*l2*m1/3 = 0
+     l1*m1/5 - l1*m2/5 - l2*m2/5 = 0
+     -l1*m1/15 + l1*m2/15 + l2*m2/15 = 0
+     l1*m1/15 - l1*m2/15 - l2*m2/15 = 0
+     -l2*m1/3 = 0
+     -4*l1*m1/15 + 4*l1*m2/15 + 4*l2*m2/15 = 0
+   α | branch = l2*m1/3
+   β | branch = -l1*m1/5 + l1*m2/5 + l2*m2/5
+   solve() returned 4 branches
+     sub-branch 0: solved [l1, l2], free remaining = [m1, m2]
+       α = 0
+       β = 0
+     sub-branch 1: solved [l1, m1], free remaining = [l2, m2]
+       α = 0
+       β = 0
+     sub-branch 2: solved [l2, m1], free remaining = [l1, m2]
+       α = 0
+       β = 0
+     sub-branch 3: solved [m1, m2], free remaining = [l1, l2]
+       α = 0
+       β = 0
+
+--- Branch 6: zero = [l3, l4, m1, m2, m3, m4, m5, m6] ---
+   free vars (4): [l1, l2, l5, l6]
+   #residual eqs after dedupe: 0
+   α | branch = 0
+   β | branch = 0
+   no residual equations — V on this branch is R^4
+   (α, β) maps freely on this 4-dim component
+
+--- Branch 7: zero = [l5, l6, m1, m2, m3, m4, m5, m6] ---
+   free vars (4): [l1, l2, l3, l4]
+   #residual eqs after dedupe: 0
+   α | branch = 0
+   β | branch = 0
+   no residual equations — V on this branch is R^4
+   (α, β) maps freely on this 4-dim component
+
+======================================================================
+Component summary & (α,β) reachability
+======================================================================
+
+Branch 0: zero=[l1, l2, l3, l4, l5, l6]
+  α uses free vars: []  ;  α expr: 0
+  β uses free vars: []  ;  β expr: 0
+  verdict: α=β=0 (trivial)
+
+Branch 1: zero=[m1, m2, m3, m4, m5, m6]
+  α uses free vars: []  ;  α expr: 0
+  β uses free vars: []  ;  β expr: 0
+  verdict: α=β=0 (trivial)
+
+Branch 2: zero=[l1, l2, l3, l4, m1, m2, m3, m4]
+  α uses free vars: [l6, m5]  ;  α expr: l6*m5/3
+  β uses free vars: [l5, l6, m5, m6]  ;  β expr: -l5*m5/5 + l5*m6/5 + l6*m6/5
+  verdict: both α, β potentially non-zero
+
+Branch 3: zero=[l1, l2, l5, l6, m1, m2, m5, m6]
+  α uses free vars: [l4, m3]  ;  α expr: l4*m3/3
+  β uses free vars: [l3, m4]  ;  β expr: 3*l3*m4/5
+  verdict: both α, β potentially non-zero
+
+Branch 4: zero=[l1, l2, m1, m2, m3, m4, m5, m6]
+  α uses free vars: []  ;  α expr: 0
+  β uses free vars: []  ;  β expr: 0
+  verdict: α=β=0 (trivial)
+
+Branch 5: zero=[l3, l4, l5, l6, m3, m4, m5, m6]
+  α uses free vars: [l2, m1]  ;  α expr: l2*m1/3
+  β uses free vars: [l1, l2, m1, m2]  ;  β expr: -l1*m1/5 + l1*m2/5 + l2*m2/5
+  verdict: both α, β potentially non-zero
+
+Branch 6: zero=[l3, l4, m1, m2, m3, m4, m5, m6]
+  α uses free vars: []  ;  α expr: 0
+  β uses free vars: []  ;  β expr: 0
+  verdict: α=β=0 (trivial)
+
+Branch 7: zero=[l5, l6, m1, m2, m3, m4, m5, m6]
+  α uses free vars: []  ;  α expr: 0
+  β uses free vars: []  ;  β expr: 0
+  verdict: α=β=0 (trivial)
+
+======================================================================
+Looking for a 3-atom (λ, μ)-triple in V with (α, β)-rank 2
+======================================================================
+
+#branches reaching only α (β≡0): 0 → []
+#branches reaching only β (α≡0): 0 → []
+#branches reaching both α & β   : 3 → [2, 3, 5]
+
+======================================================================
+Rigorously verifying (α, β) ≡ (0, 0) on V — per branch
+======================================================================
+
+Branch 0: cover=[l1, l2, l3, l4, l5, l6]
+  free: [m1, m2, m3, m4, m5, m6]
+  α reduced: 0  (was 0)
+  β reduced: 0  (was 0)
+  no residuals; α, β as functions of free vars
+
+Branch 1: cover=[m1, m2, m3, m4, m5, m6]
+  free: [l1, l2, l3, l4, l5, l6]
+  α reduced: 0  (was 0)
+  β reduced: 0  (was 0)
+  no residuals; α, β as functions of free vars
+
+Branch 2: cover=[l1, l2, l3, l4, m1, m2, m3, m4]
+  free: [l5, l6, m5, m6]
+  α reduced: Poly(0, l5, l6, m5, m6, domain='QQ')  (was l6*m5/3)
+  β reduced: Poly(0, l5, l6, m5, m6, domain='QQ')  (was -l5*m5/5 + l5*m6/5 + l6*m6/5)
+  reduced modulo Groebner of 3 polys
+
+Branch 3: cover=[l1, l2, l5, l6, m1, m2, m5, m6]
+  free: [l3, l4, m3, m4]
+  α reduced: Poly(0, l3, l4, m3, m4, domain='QQ')  (was l4*m3/3)
+  β reduced: Poly(0, l3, l4, m3, m4, domain='QQ')  (was 3*l3*m4/5)
+  reduced modulo Groebner of 2 polys
+
+Branch 4: cover=[l1, l2, m1, m2, m3, m4, m5, m6]
+  free: [l3, l4, l5, l6]
+  α reduced: 0  (was 0)
+  β reduced: 0  (was 0)
+  no residuals; α, β as functions of free vars
+
+Branch 5: cover=[l3, l4, l5, l6, m3, m4, m5, m6]
+  free: [l1, l2, m1, m2]
+  α reduced: Poly(0, l1, l2, m1, m2, domain='QQ')  (was l2*m1/3)
+  β reduced: Poly(0, l1, l2, m1, m2, domain='QQ')  (was -l1*m1/5 + l1*m2/5 + l2*m2/5)
+  reduced modulo Groebner of 3 polys
+
+Branch 6: cover=[l3, l4, m1, m2, m3, m4, m5, m6]
+  free: [l1, l2, l5, l6]
+  α reduced: 0  (was 0)
+  β reduced: 0  (was 0)
+  no residuals; α, β as functions of free vars
+
+Branch 7: cover=[l5, l6, m1, m2, m3, m4, m5, m6]
+  free: [l1, l2, l3, l4]
+  α reduced: 0  (was 0)
+  β reduced: 0  (was 0)
+  no residuals; α, β as functions of free vars
+
+======================================================================
+CONCLUSION: V is non-empty and positive-dimensional, but on EVERY
+irreducible component (α, β) ≡ (0, 0). Therefore no atom from V
+can contribute non-zero (α, β); the V-only strategy CANNOT produce
+a 3-atom triple with (α, β)-rank 2.
+
+Impossibility for the 'zero garbage' strategy: PROVEN.
+
+The (2, 2, bridge-3) construction in any rank-1 atom family thus
+requires garbage CANCELLATION across atoms (rank(U) ≤ 1 with U ≠ 0),
+not zero garbage per atom.
+======================================================================

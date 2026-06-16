@@ -1,0 +1,40 @@
+{
+  "lineage_str": "KronProduct(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,4,6⟩))",
+  "lineage_compact": "3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ R[ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL; 1,1,1,1 | 1,1,1,1,1,1 | 1,1,1,1,1,1,1]→⟨7,4,6⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Project",
+      "keepN": [0, 1, 2],
+      "keepM": [1, 2, 3, 4, 5, 6],
+      "keepP": [0, 1, 2],
+      "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+    },
+    "inner": {
+      "op": "OrientAs",
+      "n": 7,
+      "m": 4,
+      "p": 6,
+      "child": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL"},
+        "allocA": [1, 1, 1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    }
+  },
+  "n": [21, 24, 18],
+  "m": 4920,
+  "hash": "13ba50b8a9dd100e2958291878ab3c0526179f7b75665a38d6e36427befb3335",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

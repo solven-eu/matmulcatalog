@@ -1,0 +1,43 @@
+{
+  "lineage_str": "Recombination(base=3x4x4, allocA=[3, 3, 3], allocB=[5, 4, 4, 4], allocC=[7, 7, 7, 7], leaves=[Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_compact": "R[3x4x4; 3,3,3 | 5,4,4,4 | 7,7,7,7]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "3x4x4@644bd5e392bf1f36813d1789373cc4a6c05b27122dbfbe9149e7345f3fa86c05"},
+    "allocA": [3, 3, 3],
+    "allocB": [5, 4, 4, 4],
+    "allocC": [7, 7, 7, 7],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    ]
+  },
+  "n": [9, 17, 28],
+  "m": 2586,
+  "hash": "e2b19bf05dd72a00bdc157b14e0ac4acbabb43381b852e40a70060e6871a65cc",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

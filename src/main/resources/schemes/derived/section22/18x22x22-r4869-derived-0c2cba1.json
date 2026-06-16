@@ -1,0 +1,54 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[10, 12], allocC=[10, 12], leaves=[KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->BAC\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), 9x10x10-r597-perminov_ZT-59288a1, Project(9x10x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])])",
+  "lineage_compact": "R[2x2x2; 9,9 | 10,12 | 10,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [9, 9],
+    "allocB": [10, 12],
+    "allocC": [10, 12],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Recombination",
+          "base": {
+            "op": "Transpose",
+            "perm": "ABC->BAC",
+            "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+          },
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1],
+          "allocC": [1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      },
+      {"op": "Atom", "ref": "9x10x10-r597-perminov_ZT-59288a1"},
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "child": {"op": "Atom", "ref": "9x10x13@16f3df1"}
+      }
+    ]
+  },
+  "n": [18, 22, 22],
+  "m": 4869,
+  "hash": "0c2cba11bedc638ea98ebb6b212b42cc7f0059b6419e126a7ff4c8f52d66c90d",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

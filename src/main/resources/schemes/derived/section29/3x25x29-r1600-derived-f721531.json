@@ -1,0 +1,64 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), SumInner(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), SumInner(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩)))), 3x25x25)",
+  "lineage_compact": "3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩ +m 3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩ +m 3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩ +m R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1]→⟨3,7,4⟩ +p 3x25x25",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 6,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 6,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        },
+        "right": {
+          "op": "SumInner",
+          "left": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 6,
+            "p": 4,
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 4,
+            "child": {
+              "op": "Recombination",
+              "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1, 1, 1],
+              "allocC": [1, 1, 1, 1, 1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          }
+        }
+      }
+    },
+    "right": {"op": "Atom", "ref": "3x25x25@2096b536b5dd93396451c24b8fabee224533ae56a7e9d8a91f86e835fd8149a5"}
+  },
+  "n": [3, 25, 29],
+  "m": 1600,
+  "hash": "f72153162f17d53b23b8428b0559999750fefa8400b206740408d18a4973e231",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

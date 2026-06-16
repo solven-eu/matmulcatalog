@@ -1,0 +1,33 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 6], allocB=[9, 8], allocC=[16, 16], leaves=[Serendipitous(2x3x8 ⊗ ⟨3,3,2⟩), 6x8x16-r510-perminov_ZT-d67ed06])",
+  "lineage_compact": "R[2x2x2; 6,6 | 9,8 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 6],
+    "allocB": [9, 8],
+    "allocC": [16, 16],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x3x8@68085a4"}
+      },
+      {"op": "Atom", "ref": "6x8x16-r510-perminov_ZT-d67ed06"}
+    ]
+  },
+  "n": [12, 17, 32],
+  "m": 3738,
+  "hash": "9868a05579965d2877ccd0b7a081125b0faaa9afb2a07301296785759ed2dba3",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

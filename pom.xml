@@ -1,34 +1,209 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.cormoran</groupId>
-    <artifactId>strassen</artifactId>
-    <version>1.0-SNAPSHOT</version>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.1.0-RC1</version>
+		<relativePath/>
+	</parent>
 
-    <packaging>jar</packaging>
+	<groupId>eu.solven.matmul</groupId>
+	<artifactId>matmul-catalog</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+	<properties>
+		<java.version>25</java.version>
+		<maven.compiler.release>25</maven.compiler.release>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>21.0</version>
-        </dependency>
+		<pepper.version>5.6</pepper.version>
+		<guava.version>33.4.0-jre</guava.version>
+		<commons-math3.version>3.6.1</commons-math3.version>
+		<sat4j.version>2.3.6</sat4j.version>
+		<!-- Override SB-managed Lombok to a version with Java 25 support. -->
+		<lombok.version>1.18.42</lombok.version>
 
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cormoran-io.pepper</groupId>
-            <artifactId>pepper</artifactId>
-            <version>1.14</version>
-        </dependency>
-    </dependencies>
+		<!-- Default JUnit tags excluded from the standard `mvn test` run. Exposed
+		     as a property so it can be overridden from the CLI without editing this
+		     pom, e.g. to run a catalog-iterating test on demand:
+		       mvn test -Dtest=TestPublishedCatalogVerifies -Dsurefire.excludedGroups=benchmark,slow
+		     (an explicit <excludedGroups> literal in the plugin config would shadow
+		     the CLI -D; routing it through this property is what makes the override
+		     take effect). -->
+		<surefire.excludedGroups>catalog-iterating,benchmark,slow</surefire.excludedGroups>
+	</properties>
 
+	<dependencies>
+		<!-- Batch/CLI runner only — no web layer. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.solven-eu.pepper</groupId>
+			<artifactId>pepper</artifactId>
+			<version>${pepper.version}</version>
+		</dependency>
+
+		<!-- For SVD-based pseudoinverse in v3/Z3Als (replaces Gauss-Jordan inversion). -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>${commons-math3.version}</version>
+		</dependency>
+
+		<!-- SAT4J: pure-Java SAT/PB solver for v3/sat (A2 pipeline). -->
+		<dependency>
+			<groupId>org.ow2.sat4j</groupId>
+			<artifactId>org.ow2.sat4j.core</artifactId>
+			<version>${sat4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.sat4j</groupId>
+			<artifactId>org.ow2.sat4j.pb</artifactId>
+			<version>${sat4j.version}</version>
+		</dependency>
+
+		<!-- Jackson 3.x for all JSON read/write (SchemeIO, MatrixJsonFormatter,
+		     generators). Groupid changed from com.fasterxml.jackson.* to
+		     tools.jackson.* in v3. -->
+		<dependency>
+			<groupId>tools.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<!-- Lombok: compile-time annotation processor + provided runtime stub.
+		     Used for @Getter / @Builder / @RequiredArgsConstructor / @Slf4j; replaces
+		     hand-rolled boilerplate in record / data-style classes. -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Tests: JUnit 5 (Jupiter) primary, vintage engine to keep JUnit 4 tests in v1/v2 running unmodified. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- Exclude Lombok from the fat jar (it's compile-time only). -->
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<!-- Java 25 requires the annotation processor path to be declared
+					     explicitly when Lombok is in `provided` scope. -->
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- Default test job: exclude catalog-iterating tests (slow; they
+					     scale with the catalog size) and `slow` tests (>30s each:
+					     large-scheme verification, search sweeps). Run them in a
+					     dedicated CI job via `mvn test -Dgroups=catalog-iterating`
+					     or `mvn test -Pslow-tests`. -->
+					<excludedGroups>${surefire.excludedGroups}</excludedGroups>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>2.46.1</version>
+				<configuration>
+					<!-- Java: hygiene-only (preserve the existing tab-based style;
+					     no opinionated reformatter). -->
+					<java>
+						<includes>
+							<include>src/**/*.java</include>
+						</includes>
+						<excludes>
+							<!-- Generated/IDE-touchy areas — none for now, but keep the
+							     section as the natural place to add exclusions. -->
+						</excludes>
+						<removeUnusedImports/>
+						<trimTrailingWhitespace/>
+						<endWithNewline/>
+						<importOrder>
+							<order>java,javax,,io.cormoran</order>
+						</importOrder>
+					</java>
+					<!-- JSON is NOT handled by Spotless. None of Spotless's
+					     options (simple / jackson / gson) produce the matrix-friendly
+					     "primitives inline, compound vertical" format we want for U/V/W
+					     factor matrices. Use the {@code ReformatSchemes} main instead. -->
+					<!-- json deliberately omitted; see io.cormoran.strassen.v3.catalog.MatrixJsonFormatter -->
+					<!-- Markdown: trailing whitespace + final newline cleanup. Don't
+					     run prettier (would re-layout tables) — just hygiene. -->
+					<markdown>
+						<includes>
+							<include>**/*.md</include>
+						</includes>
+						<excludes>
+							<exclude>target/**</exclude>
+						</excludes>
+						<endWithNewline/>
+						<trimTrailingWhitespace/>
+					</markdown>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- Opt-in profile to run the @Tag("slow") tests (large-scheme
+		     verification, search sweeps) that the default build excludes.
+		     Usage: mvn test -Pslow-tests   (optionally with -Dtest=...). -->
+		<profile>
+			<id>slow-tests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludedGroups>catalog-iterating,benchmark</excludedGroups>
+							<groups>slow</groups>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

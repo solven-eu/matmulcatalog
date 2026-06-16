@@ -1,0 +1,25 @@
+{
+  "lineage_str": "ConcatCols(naive-16x24x1, Serendipitous(4x4x10 ⊗ ⟨4,6,3⟩))",
+  "lineage_compact": "naive-16x24x1 +p 4x4x10 ⊗ˢ⟨4,6,3⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-16x24x1"},
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 4,
+      "m2": 6,
+      "p2": 3,
+      "base": {"op": "Atom", "ref": "4x4x10@022a32b"}
+    }
+  },
+  "n": [16, 24, 31],
+  "m": 6549,
+  "hash": "bfe8b16ae210c0682430802fa2c4702e15bf8e9de70ce0349e16e3474c8f95f0",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

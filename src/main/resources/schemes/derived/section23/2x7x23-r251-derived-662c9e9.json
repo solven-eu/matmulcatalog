@@ -1,0 +1,43 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Recombination(base=ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x7x9-r99-hk71-07c7ab4))",
+  "lineage_compact": "R[ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL; 1,1 | 1,1,1,1,1,1,1 | 1,1,1,1,1,1,1] +p R[ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL; 1,1 | 1,1,1,1,1,1,1 | 1,1,1,1,1,1,1] +p 2x7x9-r99-hk71-07c7ab4",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL"},
+      "allocA": [1, 1],
+      "allocB": [1, 1, 1, 1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {"op": "Atom", "ref": "2x7x9-r99-hk71-07c7ab4"}
+    }
+  },
+  "n": [2, 7, 23],
+  "m": 251,
+  "hash": "662c9e9800c27d5b015790874ea542429db7f8fd665cf864000f525d23a5d43a",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

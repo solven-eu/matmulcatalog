@@ -1,0 +1,128 @@
+{
+  "lineage_str": "ConcatCols(ConcatRows(SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,4,3⟩))))), SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), SumInner(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,4,3⟩)))))), KronProduct(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x4x4))",
+  "lineage_compact": "7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 3x4x6-r54-alphaevolve-c197868→⟨6,4,3⟩ +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 3x4x6-r54-alphaevolve-c197868→⟨6,4,3⟩ +p R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 4x4x4",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "SumInner",
+        "left": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        },
+        "right": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          },
+          "right": {
+            "op": "SumInner",
+            "left": {
+              "op": "Project",
+              "keepN": [1, 2, 3, 4, 5, 6],
+              "keepM": [0, 1, 2],
+              "keepP": [0, 1, 2],
+              "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            },
+            "right": {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+              },
+              "right": {
+                "op": "OrientAs",
+                "n": 6,
+                "m": 4,
+                "p": 3,
+                "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              }
+            }
+          }
+        }
+      },
+      "bottom": {
+        "op": "SumInner",
+        "left": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        },
+        "right": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          },
+          "right": {
+            "op": "SumInner",
+            "left": {
+              "op": "Project",
+              "keepN": [1, 2, 3, 4, 5, 6],
+              "keepM": [0, 1, 2],
+              "keepP": [0, 1, 2],
+              "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            },
+            "right": {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+              },
+              "right": {
+                "op": "OrientAs",
+                "n": 6,
+                "m": 4,
+                "p": 3,
+                "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+    }
+  },
+  "n": [12, 16, 31],
+  "m": 3452,
+  "hash": "3d62c9d4967096bfd3f0f2db57851136d683ca9d0dedcebccf66430d87d525f7",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

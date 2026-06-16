@@ -1,4 +1,4 @@
-<configuration scan="true" debug="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="logback.xsd">
+<configuration scan="true" debug="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="logback.xsd">
     <!-- scan=true will reload this configuration file regularly -->
 
     <!-- http://logback.qos.ch/manual/configuration.html -->
@@ -9,7 +9,7 @@
         <encoder>
             <!-- http://stackoverflow.com/questions/2005929/howto-prevent-eclipse-from-line-wrapping-in-xml-and-html-files -->
             <!-- '%highlight' works under unix even if withJansi==false -->
-            <pattern><![CDATA[%date [%thread] (%-5level) %logger{36}.%method\(%line\) - %msg%n]]></pattern>
+            <pattern><![CDATA[%date [%thread] \(%level\) %logger{36}.%method\(%line\) - %msg%n]]></pattern>
         </encoder>
     </appender>
 

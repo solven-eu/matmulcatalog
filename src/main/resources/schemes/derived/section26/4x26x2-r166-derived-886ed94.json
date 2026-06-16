@@ -1,0 +1,50 @@
+{
+  "lineage_str": "SumInner(Recombination(base=Transpose(2x4x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), SumInner(OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨4,11,2⟩), OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨4,11,2⟩)))",
+  "lineage_compact": "R[2x4x4^ABC->CBA; 1,1,1,1 | 1,1,1,1 | 1,1] +m 2x4x11-r70-perminov_ZT-0ae9c5e→⟨4,11,2⟩ +m 2x4x11-r70-perminov_ZT-0ae9c5e→⟨4,11,2⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->CBA",
+        "child": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"}
+      },
+      "allocA": [1, 1, 1, 1],
+      "allocB": [1, 1, 1, 1],
+      "allocC": [1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 11,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 11,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+      }
+    }
+  },
+  "n": [4, 26, 2],
+  "m": 166,
+  "hash": "886ed94aa0db4579a00d4e4390937e0c45f0fbbf23358f3fcc2cb8e108259a19",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

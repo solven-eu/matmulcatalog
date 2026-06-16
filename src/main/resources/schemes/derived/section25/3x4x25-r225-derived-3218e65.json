@@ -1,0 +1,36 @@
+{
+  "lineage_str": "ConcatCols(3x4x6-r54-alphaevolve-c197868, ConcatCols(3x4x6-r54-alphaevolve-c197868, ConcatCols(3x4x6-r54-alphaevolve-c197868, Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]))))",
+  "lineage_compact": "3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +p R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+        "right": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    }
+  },
+  "n": [3, 4, 25],
+  "m": 225,
+  "hash": "3218e657f7dc9129da0151dcb51f3297ffab5ae642a4fba3e7b874d2b3600df9",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

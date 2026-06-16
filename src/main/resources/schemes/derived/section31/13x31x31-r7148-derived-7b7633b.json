@@ -1,0 +1,67 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[15, 16], allocC=[15, 16], leaves=[Recombination(base=2x4x4, allocA=[4, 3], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4], leaves=[Recombination(base=3x4x4, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=4x4x4, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x15x15-r859-perminov_Q-06c1f02, Serendipitous(OrientAs(2x3x8, ⟨2,8,3⟩) ⊗ ⟨3,2,5⟩), 7x15x16-r1083-perminov_Q-494e198, 6x16x16-r972-perminov_ZT-5fc1469])",
+  "lineage_compact": "R[2x2x2; 6,7 | 15,16 | 15,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [6, 7],
+    "allocB": [15, 16],
+    "allocC": [15, 16],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"},
+        "allocA": [4, 3],
+        "allocB": [4, 4, 4, 4],
+        "allocC": [4, 4, 4, 4],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x4x4@644bd5e392bf1f36813d1789373cc4a6c05b27122dbfbe9149e7345f3fa86c05"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "4x4x4@929db4e407faf85e6ff69a5ab89dbd7c6917d95bdf82e156d5692acc9703527b"},
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {"op": "Atom", "ref": "6x15x15-r859-perminov_Q-06c1f02"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 2,
+        "p2": 5,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 8,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "2x3x8@68085a4"}
+        }
+      },
+      {"op": "Atom", "ref": "7x15x16-r1083-perminov_Q-494e198"},
+      {"op": "Atom", "ref": "6x16x16-r972-perminov_ZT-5fc1469"}
+    ]
+  },
+  "n": [13, 31, 31],
+  "m": 7148,
+  "hash": "7b7633bacfd1cb8d42afa83d1f6acbf48304c77864d08e38d48e17cb2cbd694c",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,28 @@
+{
+  "lineage_str": "Recombination(base=Transpose(3x4x4, perm=\"ABC->CBA\"), allocA=[4, 4, 4, 4], allocB=[4, 4, 4, 4], allocC=[9, 10, 10], leaves=[4x4x9-r104-smirnov22-9759674, 4x4x10-r115-perminov_ZT-022a32b])",
+  "lineage_compact": "R[3x4x4^ABC->CBA; 4,4,4,4 | 4,4,4,4 | 9,10,10]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->CBA",
+      "child": {"op": "Atom", "ref": "3x4x4@644bd5e392bf1f36813d1789373cc4a6c05b27122dbfbe9149e7345f3fa86c05"}
+    },
+    "allocA": [4, 4, 4, 4],
+    "allocB": [4, 4, 4, 4],
+    "allocC": [9, 10, 10],
+    "leaves": [
+      {"op": "Atom", "ref": "4x4x9-r104-smirnov22-9759674"},
+      {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+    ]
+  },
+  "n": [16, 16, 29],
+  "m": 4260,
+  "hash": "8a80677da0915efe224f5af6867c8b6e56bf3857ff7e8c317978342f3e1c3e9b",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

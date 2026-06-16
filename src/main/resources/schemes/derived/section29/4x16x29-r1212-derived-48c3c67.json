@@ -1,0 +1,39 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(4x4x6-r73-perminov_ZT-5bb1a46, ⟨4,6,4⟩), OrientAs(4x4x10-r115-perminov_ZT-022a32b, ⟨4,10,4⟩)), KronProduct(2x4x5-r32-alphaevolve-6216e15, 2x4x5-r32-alphaevolve-6216e15))",
+  "lineage_compact": "4x4x6-r73-perminov_ZT-5bb1a46→⟨4,6,4⟩ +m 4x4x10-r115-perminov_ZT-022a32b→⟨4,10,4⟩ +p 2x4x5-r32-alphaevolve-6216e15 ⊗ 2x4x5-r32-alphaevolve-6216e15",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "4x4x6-r73-perminov_ZT-5bb1a46"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 10,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+      "inner": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+    }
+  },
+  "n": [4, 16, 29],
+  "m": 1212,
+  "hash": "48c3c67a0c2f117d2bcf4a50d2e63f41fe70a304e2c94c08daf6a11cf9bad981",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,35 @@
+{
+  "lineage_str": "ConcatCols(naive-16x18x1, KronProduct(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩)))",
+  "lineage_compact": "naive-16x18x1 +p 3x4x6-r54-alphaevolve-c197868→⟨4,3,6⟩ ⊗ 3x4x6-r54-alphaevolve-c197868→⟨4,6,3⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-16x18x1"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 3,
+        "p": 6,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 3,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    }
+  },
+  "n": [16, 18, 19],
+  "m": 3204,
+  "hash": "23e00539ca2d517937043f28f4bb80c072e9b06455a707b222d103c383c90558",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

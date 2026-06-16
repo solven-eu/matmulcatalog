@@ -1,0 +1,33 @@
+{
+  "lineage_str": "ConcatCols(naive-4x27x1, Serendipitous(OrientAs(2x6x9, ⟨2,9,6⟩) ⊗ ⟨2,3,5⟩))",
+  "lineage_compact": "naive-4x27x1 +p 2x6x9→⟨2,9,6⟩ ⊗ˢ⟨2,3,5⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-4x27x1"},
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 3,
+      "p2": 5,
+      "base": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 9,
+        "p": 6,
+        "child": {"op": "Atom", "ref": "2x6x9@006b998"}
+      }
+    }
+  },
+  "n": [4, 27, 31],
+  "m": 2144,
+  "hash": "b74c078959e4a8cae308bb259c2ab72d324822ccf5c8bce0634b9f63d249ee1a",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

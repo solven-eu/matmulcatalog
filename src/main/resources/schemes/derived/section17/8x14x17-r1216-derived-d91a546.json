@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-8x14x1, 8x14x16-r1104-perminov_Q-a062784)",
+  "lineage_compact": "naive-8x14x1 +p 8x14x16-r1104-perminov_Q-a062784",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-8x14x1"},
+    "right": {"op": "Atom", "ref": "8x14x16-r1104-perminov_Q-a062784"}
+  },
+  "n": [8, 14, 17],
+  "m": 1216,
+  "hash": "d91a54619e35bae0ef41dc75968f899ca5c5b48e13835f6ec2c899455feeaeda",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

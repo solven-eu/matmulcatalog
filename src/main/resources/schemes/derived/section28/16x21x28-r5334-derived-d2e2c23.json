@@ -1,0 +1,36 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 8], allocB=[9, 12], allocC=[14, 14], leaves=[8x12x14-r843-perminov_Q-6498e80, Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,3,2⟩)])",
+  "lineage_compact": "R[2x2x2; 8,8 | 9,12 | 14,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [8, 8],
+    "allocB": [9, 12],
+    "allocC": [14, 14],
+    "leaves": [
+      {"op": "Atom", "ref": "8x12x14-r843-perminov_Q-6498e80"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 3,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 3,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      }
+    ]
+  },
+  "n": [16, 21, 28],
+  "m": 5334,
+  "hash": "d2e2c23e023045668b033ef9aea1416eb98a47fc95d8a871604a1ad76f36ac94",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

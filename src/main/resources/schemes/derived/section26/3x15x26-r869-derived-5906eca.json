@@ -1,0 +1,27 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(3x10x15, ⟨3,15,10⟩), 3x15x16-r534-perminov_ZT-fca3388)",
+  "lineage_compact": "3x10x15→⟨3,15,10⟩ +p 3x15x16-r534-perminov_ZT-fca3388",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 3,
+      "m": 15,
+      "p": 10,
+      "child": {"op": "Atom", "ref": "3x10x15@777f1b0"}
+    },
+    "right": {"op": "Atom", "ref": "3x15x16-r534-perminov_ZT-fca3388"}
+  },
+  "n": [3, 15, 26],
+  "m": 869,
+  "hash": "5906eca11e2c2a8f40c539fc9ad4d3b6c40c401366f123984647e519e2c04a19",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

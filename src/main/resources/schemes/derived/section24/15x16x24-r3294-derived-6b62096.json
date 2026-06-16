@@ -1,0 +1,32 @@
+{
+  "lineage_str": "KronProduct(3x4x6-r54-alphaevolve-c197868, Recombination(base=Transpose(4x4x5, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]))",
+  "lineage_compact": "3x4x6-r54-alphaevolve-c197868 ⊗ R[4x4x5^ABC->CBA; 1,1,1,1,1 | 1,1,1,1 | 1,1,1,1]",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+    "inner": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->CBA",
+        "child": {"op": "Atom", "ref": "4x4x5@c3a71f13fb4f10ca367957eeb8da7c8ca2906f0990040078fb3d6577fdc2ed84"}
+      },
+      "allocA": [1, 1, 1, 1, 1],
+      "allocB": [1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    }
+  },
+  "n": [15, 16, 24],
+  "m": 3294,
+  "hash": "6b620963d32c267f442ad0fe6eefa19f5b3342ac25cdfdeeccd3a0f402f21d3b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

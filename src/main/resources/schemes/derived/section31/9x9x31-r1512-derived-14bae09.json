@@ -1,0 +1,52 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1])), Serendipitous(3x3x9 ⊗ ⟨3,3,3⟩))",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] ⊗ R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] +p 3x3x9 ⊗ˢ⟨3,3,3⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "id": "L0",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+        },
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1],
+        "allocC": [1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1],
+        "allocC": [1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 3,
+      "p2": 3,
+      "base": {"op": "Atom", "ref": "3x3x9@e225518"}
+    }
+  },
+  "n": [9, 9, 31],
+  "m": 1512,
+  "hash": "14bae090d1d329ab6a5a774e2391900e59b0ed1a8f034e4914b3c33f85f1cc5b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

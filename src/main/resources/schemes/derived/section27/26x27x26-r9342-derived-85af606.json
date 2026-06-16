@@ -1,0 +1,18 @@
+{
+  "lineage_str": "SumInner(naive-26x1x26, 26x26x26-r8666-schwartz_zwecher_2025-ae931db)",
+  "lineage_compact": "naive-26x1x26 +m 26x26x26-r8666-schwartz_zwecher_2025-ae931db",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "naive-26x1x26"},
+    "right": {"op": "Atom", "ref": "26x26x26-r8666-schwartz_zwecher_2025-ae931db"}
+  },
+  "n": [26, 27, 26],
+  "m": 9342,
+  "hash": "85af606ad711e92264471d58b014bb4e65469937b0bf7c2060deeb23d157eda7",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

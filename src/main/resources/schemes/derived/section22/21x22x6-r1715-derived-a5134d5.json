@@ -1,0 +1,45 @@
+{
+  "lineage_str": "ConcatRows(Serendipitous(OrientAs(2x3x11, ⟨3,11,2⟩) ⊗ ⟨3,2,3⟩), Serendipitous(OrientAs(2x4x11, ⟨4,11,2⟩) ⊗ ⟨3,2,3⟩))",
+  "lineage_compact": "2x3x11→⟨3,11,2⟩ ⊗ˢ⟨3,2,3⟩ +n 2x4x11→⟨4,11,2⟩ ⊗ˢ⟨3,2,3⟩",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 2,
+      "p2": 3,
+      "base": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 11,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x3x11@af163c4"}
+      }
+    },
+    "bottom": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 2,
+      "p2": 3,
+      "base": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 11,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x11@0ae9c5e"}
+      }
+    }
+  },
+  "n": [21, 22, 6],
+  "m": 1715,
+  "hash": "a5134d5adb1eac578679ff029c5da1a65d4fab025c6aa8fb05828ddd6b34c20a",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,32 @@
+{
+  "lineage_str": "KronProduct(2x4x5, Recombination(base=Transpose(2x4x5, perm=\"ABC->BAC\"), allocA=[1, 1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]))",
+  "lineage_compact": "2x4x5 ⊗ R[2x4x5^ABC->BAC; 1,1,1,1 | 1,1 | 1,1,1,1,1]",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {"op": "Atom", "ref": "2x4x5@6216e15"},
+    "inner": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->BAC",
+        "child": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"}
+      },
+      "allocA": [1, 1, 1, 1],
+      "allocB": [1, 1],
+      "allocC": [1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    }
+  },
+  "n": [8, 8, 25],
+  "m": 1024,
+  "hash": "2b99d429af34c31a8bfecfd4e6427d63d454460c66f4892a9e4117dc0a4a3680",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

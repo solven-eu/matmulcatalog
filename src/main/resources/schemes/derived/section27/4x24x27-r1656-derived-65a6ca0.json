@@ -1,0 +1,57 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨4,5,2⟩), SumInner(OrientAs(2x4x8-r51-alphaevolve-0426307, ⟨4,8,2⟩), OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨4,11,2⟩))), Serendipitous(OrientAs(2x5x6, ⟨2,6,5⟩) ⊗ ⟨2,4,5⟩))",
+  "lineage_compact": "2x4x5-r32-alphaevolve-6216e15→⟨4,5,2⟩ +m 2x4x8-r51-alphaevolve-0426307→⟨4,8,2⟩ +m 2x4x11-r70-perminov_ZT-0ae9c5e→⟨4,11,2⟩ +p 2x5x6→⟨2,6,5⟩ ⊗ˢ⟨2,4,5⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 5,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 8,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 11,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+        }
+      }
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 4,
+      "p2": 5,
+      "base": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 6,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x5x6@7387644"}
+      }
+    }
+  },
+  "n": [4, 24, 27],
+  "m": 1656,
+  "hash": "65a6ca0d1174316cc5382a1eb79c382440e21000d92ac6bd3c03e2c74aaf796b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

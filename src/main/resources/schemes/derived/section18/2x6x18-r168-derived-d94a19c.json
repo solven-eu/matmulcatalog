@@ -1,0 +1,52 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])))",
+  "lineage_compact": "R[ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL; 1,1 | 1,1,1,1,1,1 | 1,1,1,1,1,1] +p R[ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL; 1,1 | 1,1,1,1,1,1 | 1,1,1,1,1,1] +p R[ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL; 1,1 | 1,1,1,1,1,1 | 1,1,1,1,1,1]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+      "allocA": [1, 1],
+      "allocB": [1, 1, 1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    }
+  },
+  "n": [2, 6, 18],
+  "m": 168,
+  "hash": "d94a19c600788b32e8429709b5b27d2fae3371cc559720148da974f1c019a803",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

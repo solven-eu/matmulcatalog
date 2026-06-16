@@ -1,0 +1,173 @@
+% Recombination multisets of a base, and their exact enumeration over the
+% isotropy orbit. This characterises the *inputs* to the frontier search of
+% Section~\ref{sec:search}: which sub-shape multisets a fixed base can ever
+% produce. The contribution is a math-driven (not search-driven) exact
+% enumeration, made tractable by a per-axis decoupling.
+
+Recombining a base \nmpshape{n}{m}{p} at a block decomposition
+\((n_1{+}\dots{+}n_n,\ m_1{+}\dots{+}m_m,\ p_1{+}\dots{+}p_p)\) sends each of
+the base's \(r\) products to a smaller matrix multiplication; the per-axis
+sub-dimension of a product is the size of the \emph{largest} block it touches
+(capped by the \(\min\) of the two relevant factor views). The resulting
+\emph{multiset} of \(r\) sub-shapes is, for plain additive recombination, a
+\emph{complete rank invariant}: any two routes that land on the same multiset
+have identical recombined rank \(\sum_k r_{\text{sub-}k}\) (Section~\ref{sec:search}).
+Two facts make the multiset the right object to enumerate. First, it depends
+\emph{only on the support pattern} (the zero/non-zero structure) of \((U,V,W)\),
+not on the coefficient values. Second, with each axis's blocks ordered
+descending (\(n_1\ge n_2\ge\cdots\)), each sub-dimension is one of the block
+sizes, so the multiset is \emph{symbolic} in \((n_i,m_j,p_k)\) --- a product is
+tagged, per axis, by the block index it lands on. The concrete split
+\((9,8)^3\to\nmpshape{17}{17}{17}\) used below is just one instantiation.
+
+\subsection{The orbit and a decoupling lemma}
+
+By de Groote~\cite{degroote1978} the rank-7 decompositions of \nmpshape{2}{2}{2}
+form a \emph{single} \(\mathrm{GL}_2(\Rationals)^3\) orbit (its discrete
+isotropy is analysed in~\cite{burichenko2014}). Every scheme is therefore a
+change of basis of Strassen's, acting on the factors by
+\(U'_k = X^{\!\top}U_kY^{\!\top}\),
+\(V'_k = Y^{-\top}V_kZ^{\!\top}\),
+\(W'_k = X^{-1}W_kZ^{-1}\)
+for \((X,Y,Z)\in\mathrm{GL}_2\times\mathrm{GL}_2\times\mathrm{GL}_2\). A direct
+brute-force sweep of ternary schemes is hopeless (\(\approx 39\text{k}\)
+candidate rank-one terms per product, \(39\text{k}^7\) paths). The structure that
+rescues it:
+
+\begin{lemma}[Per-axis decoupling]\label{lem:decouple}
+The recombination sub-dimension on a given axis depends on \emph{only one} of
+\(X,Y,Z\), and only through that matrix's column/row directions. Concretely, on
+the first axis,
+\[
+  \mathrm{sub}A_k = \mathrm{big} \iff
+  d_0^{\!\top}U_k\neq 0 \ \wedge\ \mathrm{perp}(d_1)^{\!\top}W_k\neq 0,
+  \qquad X=[\,d_0\mid d_1\,],
+\]
+and analogously for the second and third axes via \(Y\) and \(Z\) --- with the
+caveat that, by the transpose placement of the action, \(Y\) and \(Z\) act
+through their \emph{row} directions (and the dual tests use adjugate
+\emph{columns}), so the displayed column formula must not be transplanted
+verbatim.
+\end{lemma}
+
+The lemma holds because an invertible factor on the \emph{other} two axes kills
+no rows or columns of a factor matrix, so the per-axis support is unaffected by
+it. Consequently the three axes are independent and the set of realisable
+multisets is the product of three per-axis pattern sets, zipped by product index.
+
+\subsection{Exact enumeration}
+
+Each per-axis pattern is piecewise-constant in the direction(s) and changes only
+when a direction meets a null-space of one of the fixed (integer) base factors.
+The critical directions are therefore finite and rational, so a finite
+integer-direction sweep enumerates \emph{every} realisable pattern --- exactly,
+with integer arithmetic (adjugates in place of inverses, so zero/non-zero tests
+are exact). For a two-part axis this is provably complete: the factor
+null-spaces are the only critical directions, and one generic direction covers
+the open stratum. For \(\ge 3\)-part axes completeness is certified only
+\emph{empirically}, by direction-bound stability --- a bound, not a proof. We
+emphasise that this is a \emph{derivation}, not a search over schemes.
+
+\paragraph{Result for \nmpshape{2}{2}{2}.} Over the full
+\(\mathrm{GL}_2(\Rationals)^3\) orbit there are exactly
+\textbf{40} distinct canonical recombination multisets. The same set covers
+\emph{every} rank-7 \nmpshape{2}{2}{2} scheme over any characteristic-0 field
+--- not because the \(\Rationals\)-orbit contains them (a scheme with
+irrational coefficients lies in the \(\mathrm{GL}_2(\Reals)^3\) orbit only),
+but because the per-axis strata are cut by \emph{rational} hyperplanes (the
+null-spaces of the integer Strassen factors), so every stratum that is
+nonempty over \(\Reals\) or \(\Complex\) already contains a rational point
+(canonical = quotiented
+by the base's \(S_3\) axis-symmetry; stable across direction bounds, and
+identical whether seeded from Strassen or Winograd, an independent check of
+de~Groote's single-orbit theorem). Of these, \textbf{6} are realised by ternary
+\(\{-1,0,1\}\) schemes \emph{within the ternary change-of-basis scope}: the
+count is stable under widening the change-of-basis alphabet and under the choice
+of seed, but is not certified exhaustive over all ternary schemes (one reachable
+only through a non-ternary rational change of basis could exist), so per our
+optimality discipline it is a lower bound, ``at least 6''. The six are those of
+Strassen, Winograd, AlphaTensor-\(\Integers\),
+and Perminov, plus two we register as bases so the search can use them --- one
+matching AlphaTensor-\(\Ftwo\)'s support, and a novel base whose multiset is
+\(3\cdot\nmpshape{n_1}{m_1}{p_1}+\nmpshape{n_1}{m_2}{p_2}+\nmpshape{n_2}{m_1}{p_2}+\nmpshape{n_2}{m_2}{p_1}+\nmpshape{n_2}{m_2}{p_2}\).
+The novel base is of independent interest: its triple cubic group
+\(3\cdot\nmpshape{n_1}{m_1}{p_1}\) admits 3-way trilinear
+aggregation~\cite{pan1978}, a cost lever Strassen's own multiset
+(seven distinct sub-shapes) does not expose.
+
+\subsection{Dominance pruning: the frontier}\label{ssec:frontier}
+
+Most canonical multisets can never be rank-optimal and need never be considered.
+The recombined rank is \(\sum_k r_{\text{sub-}k}\), and matrix-multiplication rank
+is \emph{monotone} --- \(\operatorname{rank}\nmpshape{a}{b}{c}\le\operatorname{rank}\nmpshape{a'}{b'}{c'}\)
+whenever \((a,b,c)\le(a',b',c')\) componentwise (pad the smaller product into the
+larger). The cost is thus a sum over products of a monotone term, so sub-shape
+dominance is cost-monotone: if every product of multiset \(A\) can be matched to a
+distinct product of \(B\) with \(A\)'s sub-shape componentwise \(\le\) its partner,
+then \(\mathrm{cost}(A)\le\mathrm{cost}(B)\) for \emph{every} base recursion and at
+\emph{every} allocation (block index \(0\) = largest block under any split). Only the
+\emph{dominance frontier} --- the non-dominated antichain --- can be optimal; pruning
+to it is lossless for the minimum and allocation/base-independent. This is the exact
+formalisation of the folklore ``\(1\cdot\mathrm{BBB}+2\cdot\mathrm{SSS}\) beats
+\(2\cdot\mathrm{BBB}+1\cdot\mathrm{SSS}\)'': the second is dominated.
+
+Two quotient levels matter, and they differ. The \emph{canonical} frontier
+quotients by the base's shape automorphisms (dominance is then
+axis-permutation aware, since rank is); it is exact when the allocation is symmetric
+or the search also permutes axis assignments. The finer \emph{axis-tagged} frontier
+applies no quotient and is lossless even for asymmetric allocations, where axis
+identity is real. Both are computed from the canonical \emph{keys}, not from any
+seeded representative, so both are seed-independent: \nmpshape{2}{2}{2} yields the same
+frontier whether the sweep is seeded from Strassen or Winograd --- a second
+independent check of de~Groote's single-orbit theorem. (Computing dominance from
+the canonical keys, rather than from a stored block-index representative, is
+essential: a representative-based test is silently seed-dependent, since the same
+canonical key is reached through different product orderings from different seeds.)
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+ & \multicolumn{2}{c}{canonical (mod axis sym.)} & \multicolumn{2}{c}{axis-tagged} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+base & multisets & frontier & multisets & frontier \\
+\midrule
+\nmpshape{2}{2}{2} & 40     & \textbf{6}   & 144     & \textbf{12} \\
+\nmpshape{2}{2}{3} & 12\,217 & \textbf{21}  & 23\,719 & \textbf{33} \\
+\nmpshape{2}{3}{3} & 62\,487 & \textbf{170} & 124\,250 & \textbf{310} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Three observations. First, the \nmpshape{2}{2}{2} canonical frontier has exactly
+\textbf{six} members --- the same count as the six ternary-realisable bases of
+Section~\ref{ssec:frontier}'s preceding paragraph, a suggestive (not yet proven
+set-identical) coincidence. Second, the frontier is far more robust than the raw
+enumeration: for \nmpshape{2}{2}{3} the canonical count still grows with the
+direction bound (\(8\,425\to 12\,217\)) while the frontier holds at \(21\) across
+bounds --- so the pruned object is stable even where completeness of the full set is
+only an empirical bound. Third, the frontier cannot collapse to a single point: a
+product is one corner-type across all three axes at once, so the axes are coupled and
+several incomparable trade-offs survive (this is exactly why
+\nmpshape{17}{17}{17} admits the spread of ranks \(2930,\dots,2958\) from one base).
+
+Operationally this makes selection cheap. For a fixed allocation the cost is
+\emph{linear in the corner-type count-vector},
+\(\mathrm{cost}=\sum_{\text{type}}\mathrm{count}[\text{type}]\cdot
+\operatorname{rank}(\text{type})\); the frontier is allocation-independent, so it is built once and
+each allocation is scored by a single count-vector\,\(\times\)\,rank matrix--vector
+product over the \(\le\) few-hundred frontier members --- not a re-derivation per
+multiset. The frontier therefore collapses the multiset axis of the
+allocation\,\(\times\)\,multiset search to a small fixed table, leaving the allocation
+sweep as the only combinatorially large dimension.
+
+\subsection{Generality}
+
+The construction is base-agnostic: \code{RecombinationMultisetOrbit} enumerates
+the multisets of any base \nmpshape{n}{m}{p} over
+\(\mathrm{GL}_n\times\mathrm{GL}_m\times\mathrm{GL}_p\), with the canonicalising
+group taken to be the base's shape automorphisms (the full \(S_3\) for a cube,
+the single \(m\!\leftrightarrow\!p\) swap for \nmpshape{2}{3}{3}, the trivial
+group for an all-distinct shape). It thus answers, for any candidate outer base,
+\emph{which} sub-shape multisets --- and hence which trilinear-aggregation and
+padding-avoidance opportunities --- that base can ever expose to the
+frontier search.

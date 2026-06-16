@@ -1,0 +1,59 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 9], allocB=[9, 8], allocC=[10, 10], leaves=[Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[3, 3, 3], allocC=[4, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x3x4, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), 8x9x10-r482-perminov_Z-cba9048, KronProduct(2x2x2, 4x4x5)])",
+  "lineage_compact": "R[2x2x2; 8,9 | 9,8 | 10,10]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [8, 9],
+    "allocB": [9, 8],
+    "allocC": [10, 10],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+        },
+        "allocA": [3, 3, 3],
+        "allocB": [3, 3, 3],
+        "allocC": [4, 6],
+        "leaves": [
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {"op": "Atom", "ref": "8x9x10-r482-perminov_Z-cba9048"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "4x4x5@c3a71f1"}
+      }
+    ]
+  },
+  "n": [17, 17, 20],
+  "m": 3420,
+  "hash": "0623a1b2c1e067d5ffd328fea44593cf850cf97d39ace5c669c8208dbec4187a",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,45 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[15, 15], allocC=[16, 16], leaves=[Serendipitous(2x3x8 ⊗ ⟨3,5,2⟩), Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 5, 5], allocC=[6, 5, 5], leaves=[2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3, 3x5x5-r58-alphatensor_Z-263818a, 2x5x5-r40-alphatensor_Z-67f5fb7])])",
+  "lineage_compact": "R[2x2x2; 6,5 | 15,15 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 5],
+    "allocB": [15, 15],
+    "allocC": [16, 16],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 5,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x3x8@68085a4"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+        "allocA": [3, 2],
+        "allocB": [5, 5, 5],
+        "allocC": [6, 5, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+          {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+          {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"},
+          {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"}
+        ]
+      }
+    ]
+  },
+  "n": [11, 30, 32],
+  "m": 6119,
+  "hash": "727d35eaeb573f664a72fe91211b230447515c57ffe814d0b3a9b28695b088c2",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

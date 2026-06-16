@@ -1,0 +1,35 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(6x14x24, ⟨6,24,14⟩), KronProduct(2x4x5-r32-alphaevolve-6216e15, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))",
+  "lineage_compact": "6x14x24→⟨6,24,14⟩ +p 2x4x5-r32-alphaevolve-6216e15 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 6,
+      "m": 24,
+      "p": 14,
+      "child": {"op": "Atom", "ref": "6x14x24@776e54d5357172358e1251f6716ba3a4c522f5f2e673cb0ed68f9d5017630fed"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      }
+    }
+  },
+  "n": [6, 24, 29],
+  "m": 2520,
+  "hash": "797492ba1f3631a58cb25acba915c4680e20954b59b0e0cd48255606479d543b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

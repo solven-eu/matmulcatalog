@@ -1,0 +1,154 @@
+{
+  "lineage_str": "ConcatCols(SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x5x6-r68-alphaevolve-14be9c3)), SumInner(ConcatCols(ConcatCols(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))), SumInner(ConcatCols(ConcatCols(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))), ConcatCols(Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]))))))",
+  "lineage_compact": "3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x5x6-r68-alphaevolve-14be9c3 +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m R[ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL; 1,1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1,1] +p R[ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL; 1,1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1,1] +p R[ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL; 1,1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1,1]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        },
+        "right": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+      }
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "ConcatCols",
+            "left": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            },
+            "right": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          },
+          "right": {
+            "op": "ConcatCols",
+            "left": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            },
+            "right": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          }
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          "right": {
+            "op": "ConcatCols",
+            "left": {
+              "op": "Recombination",
+              "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1, 1, 1, 1],
+              "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            },
+            "right": {
+              "op": "Recombination",
+              "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1, 1, 1, 1],
+              "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "n": [3, 11, 30],
+  "m": 738,
+  "hash": "e72a520c2534f3ea5015f7c2f405542a5e928ee1423cad0bfdb3f38579440978",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,43 @@
+{
+  "lineage_str": "Recombination(base=ext[3x4x4-r38-derived-644bd5e.json] / <3,4,4>=38 :: CANONICAL, allocA=[4, 4, 4], allocB=[4, 4, 4, 4], allocC=[5, 4, 4, 4], leaves=[Recombination(base=ext[4x4x5-r61-derived-c3a71f1.json] / <4,4,5>=61 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[4x4x4-r48-derived-929db4e.json] :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_compact": "R[ext[3x4x4-r38-derived-644bd5e.json] / <3,4,4>=38 :: CANONICAL; 4,4,4 | 4,4,4,4 | 5,4,4,4]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "ext[3x4x4-r38-derived-644bd5e.json] / <3,4,4>=38 :: CANONICAL"},
+    "allocA": [4, 4, 4],
+    "allocB": [4, 4, 4, 4],
+    "allocC": [5, 4, 4, 4],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[4x4x5-r61-derived-c3a71f1.json] / <4,4,5>=61 :: CANONICAL"},
+        "allocA": [1, 1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[4x4x4-r48-derived-929db4e.json] :: CANONICAL"},
+        "allocA": [1, 1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    ]
+  },
+  "n": [12, 16, 17],
+  "m": 1980,
+  "hash": "f0cf8122ad370c9375c22d0c90f1151940829f0375bdba364c8cc7c2b9de62f0",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

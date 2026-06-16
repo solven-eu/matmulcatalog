@@ -1,0 +1,54 @@
+{
+  "lineage_str": "SumInner(Serendipitous(OrientAs(2x4x4, ⟨4,4,2⟩) ⊗ ⟨3,3,2⟩), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨4,5,2⟩)))",
+  "lineage_compact": "2x4x4→⟨4,4,2⟩ ⊗ˢ⟨3,3,2⟩ +m R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] ⊗ 2x4x5-r32-alphaevolve-6216e15→⟨4,5,2⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 3,
+      "p2": 2,
+      "base": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 4,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x4@a4ed740"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+        },
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1],
+        "allocC": [1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 5,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      }
+    }
+  },
+  "n": [12, 27, 4],
+  "m": 869,
+  "hash": "1264ba7ed11a1685909f345d7714439db46686e82609d224019f71a01f314fdd",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

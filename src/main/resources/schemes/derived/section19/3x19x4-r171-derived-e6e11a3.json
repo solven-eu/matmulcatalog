@@ -1,0 +1,50 @@
+{
+  "lineage_str": "SumInner(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), SumInner(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩)))",
+  "lineage_compact": "3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩ +m 3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩ +m R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1]→⟨3,7,4⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 3,
+      "m": 6,
+      "p": 4,
+      "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 6,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 7,
+        "p": 4,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    }
+  },
+  "n": [3, 19, 4],
+  "m": 171,
+  "hash": "e6e11a36fae3129a730d5992d5342ef344047c897c52b6741c25254a4c792d85",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

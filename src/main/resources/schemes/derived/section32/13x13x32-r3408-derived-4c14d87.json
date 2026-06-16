@@ -1,0 +1,23 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,1,2>=2 :: CANONICAL, allocA=[13], allocB=[13], allocC=[16, 16], leaves=[13x13x16-r1704-perminov_Q-18fad5e])",
+  "lineage_compact": "R[AxisSplit<1,1,2>=2 :: CANONICAL; 13 | 13 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,1,2>=2 :: CANONICAL"},
+    "allocA": [13],
+    "allocB": [13],
+    "allocC": [16, 16],
+    "leaves": [
+      {"op": "Atom", "ref": "13x13x16-r1704-perminov_Q-18fad5e"}
+    ]
+  },
+  "n": [13, 13, 32],
+  "m": 3408,
+  "hash": "4c14d871f10c9b07d462404e9bf7689c78beffbf7b24378a1502e452c5a20007",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

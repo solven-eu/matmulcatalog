@@ -1,0 +1,28 @@
+{
+  "lineage_str": "KronChain(2x2x2, 2x2x2, 2x2x2, 2x2x2, 2x2x2)",
+  "lineage_compact": "2x2x2 ⊗ 2x2x2 ⊗ 2x2x2 ⊗ 2x2x2 ⊗ 2x2x2",
+  "lineage": {
+    "op": "KronChain",
+    "factors": [
+      {"op": "Atom", "ref": "2x2x2@511df05"},
+      {"op": "Atom", "ref": "2x2x2@511df05"},
+      {"op": "Atom", "ref": "2x2x2@511df05"},
+      {"op": "Atom", "ref": "2x2x2@511df05"},
+      {"op": "Atom", "ref": "2x2x2@511df05"}
+    ]
+  },
+  "n": [32, 32, 32],
+  "m": 16807,
+  "hash": "4670e79ee3e72dcf024d74720b4b7e44641b869c784b5ddbfb74f6b622c4a454",
+  "scheme_type": "stub",
+  "projection_margins": [63, 63, 63],
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "source": "kron_tower"
+}

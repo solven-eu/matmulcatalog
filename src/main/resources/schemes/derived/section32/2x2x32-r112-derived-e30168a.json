@@ -1,0 +1,77 @@
+{
+  "lineage_str": "ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, 2x2x2)))))))))))))))",
+  "lineage_compact": "2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "right": {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "right": {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+            "right": {
+              "op": "ConcatCols",
+              "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+              "right": {
+                "op": "ConcatCols",
+                "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                "right": {
+                  "op": "ConcatCols",
+                  "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                  "right": {
+                    "op": "ConcatCols",
+                    "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                    "right": {
+                      "op": "ConcatCols",
+                      "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                      "right": {
+                        "op": "ConcatCols",
+                        "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                        "right": {
+                          "op": "ConcatCols",
+                          "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                          "right": {
+                            "op": "ConcatCols",
+                            "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                            "right": {
+                              "op": "ConcatCols",
+                              "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                              "right": {
+                                "op": "ConcatCols",
+                                "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                                "right": {"op": "Atom", "ref": "2x2x2@18678ba"}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "n": [2, 2, 32],
+  "m": 112,
+  "hash": "e30168a1150b9666fc0d595c3dd38dcf955c5bcf30c2f96f3a6c3fbd9298dd58",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

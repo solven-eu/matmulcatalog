@@ -1,0 +1,41 @@
+{
+  "lineage_str": "ConcatRows(Serendipitous(2x6x6 ⊗ ⟨2,3,4⟩), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩)))",
+  "lineage_compact": "2x6x6 ⊗ˢ⟨2,3,4⟩ +n 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 3,
+      "p2": 4,
+      "base": {"op": "Atom", "ref": "2x6x6@5791b42"}
+    },
+    "bottom": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 6,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    }
+  },
+  "n": [13, 18, 24],
+  "m": 3279,
+  "hash": "f54004ad0073a4e565973a98f9623765523b18be2a616aa497a9c39f6b3c2b1d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

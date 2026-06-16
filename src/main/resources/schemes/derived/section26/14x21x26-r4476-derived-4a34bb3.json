@@ -1,0 +1,124 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[9, 12], allocC=[12, 14], leaves=[Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,4,2⟩), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 2], allocB=[3, 3, 3], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x3x3, 2x3x3)]), Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨3,3,2⟩), KronProduct(2x3x3, 4x4x4), Serendipitous(2x4x7 ⊗ ⟨3,3,2⟩), Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,3,2⟩), ConcatCols(KronProduct(2x2x2, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), KronProduct(2x2x2, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))])",
+  "lineage_compact": "R[2x2x2; 6,8 | 9,12 | 12,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 8],
+    "allocB": [9, 12],
+    "allocC": [12, 14],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 4,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 3,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+        },
+        "allocA": [3, 3, 2],
+        "allocB": [3, 3, 3],
+        "allocC": [6, 6],
+        "leaves": [
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+            "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+          }
+        ]
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 3,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x4x7@bd4f4b32aeac118787713525801ac95e5a87f1c24c472c0b52dd26e659057a61"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 3,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 3,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        },
+        "right": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        }
+      }
+    ]
+  },
+  "n": [14, 21, 26],
+  "m": 4476,
+  "hash": "4a34bb396ab18044be5e515cda346a090469cb7a5b516026329999d1e54c8f15",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,62 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,1,2>=2 :: CANONICAL, allocA=[7], allocB=[7], allocC=[16, 16], leaves=[Recombination(base=2x2x2, allocA=[4, 3], allocB=[4, 3], allocC=[8, 8], leaves=[ConcatCols(4x4x4, 4x4x4), 3x4x8-r73-perminov_Z-89c37df, ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))])])",
+  "lineage_compact": "R[AxisSplit<1,1,2>=2 :: CANONICAL; 7 | 7 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,1,2>=2 :: CANONICAL"},
+    "allocA": [7],
+    "allocB": [7],
+    "allocC": [16, 16],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [4, 3],
+        "allocB": [4, 3],
+        "allocC": [8, 8],
+        "leaves": [
+          {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "4x4x4@929db4e"},
+            "right": {"op": "Atom", "ref": "4x4x4@929db4e"}
+          },
+          {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"},
+          {
+            "op": "ConcatCols",
+            "left": {
+              "op": "Recombination",
+              "base": {
+                "op": "Transpose",
+                "perm": "ABC->CBA",
+                "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+              },
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1, 1],
+              "allocC": [1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            },
+            "right": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "n": [7, 7, 32],
+  "m": 1078,
+  "hash": "5a30cf0649688f2ef5dacdbaffd1432bd23efc1f178d27e525e06fced9049abc",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

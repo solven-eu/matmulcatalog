@@ -1,0 +1,55 @@
+{
+  "lineage_str": "ConcatCols(6x7x8-r238-perminov_ZT-186f4c6, ConcatCols(Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 3], allocC=[6, 6], leaves=[3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 3], allocC=[6, 6], leaves=[3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])])))",
+  "lineage_compact": "6x7x8-r238-perminov_ZT-186f4c6 +p R[2x2x2; 3,3 | 4,3 | 6,6] +p R[2x2x2; 3,3 | 4,3 | 6,6]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "6x7x8-r238-perminov_ZT-186f4c6"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+        "allocA": [3, 3],
+        "allocB": [4, 3],
+        "allocC": [6, 6],
+        "leaves": [
+          {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        ]
+      },
+      "right": {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [3, 3],
+        "allocB": [4, 3],
+        "allocC": [6, 6],
+        "leaves": [
+          {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        ]
+      }
+    }
+  },
+  "n": [6, 7, 32],
+  "m": 910,
+  "hash": "7317ec3e268e519ad50b2b28198d59aeead995c4d1e9e0b6ff761063853dcf83",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

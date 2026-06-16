@@ -1,0 +1,44 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(9x10x30, ⟨9,30,10⟩), KronProduct(Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))",
+  "lineage_compact": "9x10x30→⟨9,30,10⟩ +p R[ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL; 1,1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 9,
+      "m": 30,
+      "p": 10,
+      "child": {"op": "Atom", "ref": "9x10x30@df2dc7332331fd9e226227255c273b50e89d792cb4fe4f15bed132c9b8b6eeb0"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      }
+    }
+  },
+  "n": [9, 30, 31],
+  "m": 4826,
+  "hash": "38537296bedaf3562168b0504f88ef1a03e4b295a63bebf4a48cee33546f26ea",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

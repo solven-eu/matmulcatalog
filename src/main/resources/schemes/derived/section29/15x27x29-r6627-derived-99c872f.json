@@ -1,0 +1,93 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x3x4, perm=\"ABC->BCA\"), allocA=[5, 5, 5], allocB=[7, 7, 7, 6], allocC=[3, 2], leaves=[OrientAs(Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,7,2⟩), OrientAs(Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,7,3⟩), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨5,6,3⟩)]), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(4x5x9-r132-perminov_ZT-ec019d6, ⟨5,9,4⟩)))",
+  "lineage_compact": "R[2x3x4^ABC->BCA; 5,5,5 | 7,7,7,6 | 3,2] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 4x5x9-r132-perminov_ZT-ec019d6→⟨5,9,4⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->BCA",
+        "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+      },
+      "allocA": [5, 5, 5],
+      "allocB": [7, 7, 7, 6],
+      "allocC": [3, 2],
+      "leaves": [
+        {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 7,
+          "p": 2,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        },
+        {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 7,
+          "p": 3,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        },
+        {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 6,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        },
+        {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 6,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+        }
+      ]
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 9,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"}
+      }
+    }
+  },
+  "n": [15, 27, 29],
+  "m": 6627,
+  "hash": "99c872f10e9cda81851be1b8fdf044520632465ba57c4ebda21be533b39953b9",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

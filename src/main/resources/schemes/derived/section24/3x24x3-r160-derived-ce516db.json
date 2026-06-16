@@ -1,0 +1,51 @@
+{
+  "lineage_str": "SumInner(SumInner(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), SumInner(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))",
+  "lineage_compact": "3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      },
+      "right": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      }
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      },
+      "right": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      }
+    }
+  },
+  "n": [3, 24, 3],
+  "m": 160,
+  "hash": "ce516dbcd798728aaf4ac0b9ed910c30aee63fa40459f7075ab5281c307864fa",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

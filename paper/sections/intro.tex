@@ -1,0 +1,138 @@
+% Introduction — motivate (a) why now, (b) what the catalog is, (c) what
+% the search adds, and (d) why the non-overlap-property observation is
+% worth a section.
+
+The complexity of multiplying two \(n \times n\) matrices has been
+studied since Strassen's 1969 algorithm~\cite{strassen1969} broke the cubic barrier, and
+remains open: the exact value of the matrix multiplication exponent
+\(\omega\) is unknown, though sub-cubic upper bounds have been driven
+down to \(\omega < 2.371\ldots\) via the laser method and its
+successors. The asymptotic regime has been productive for theoretical
+upper bounds but has produced no concrete algorithms one could implement
+for finite \(n\); the constants are astronomical.
+
+Meanwhile, the \emph{small-format} regime -- exact rank bounds for
+fixed \(\nmpshape{n}{m}{p}\) tensors with \(n, m, p \le 32\) or so --
+has lived a quieter life dominated by hand-constructed schemes:
+Strassen (1969)~\cite{strassen1969}, Hopcroft--Kerr
+(1971)~\cite{hopcroftkerr1971}, Laderman (1976)~\cite{laderman1976},
+Pan (1978, 1980)~\cite{pan1978,pan1980}, and Smirnov (1986,
+2013)~\cite{smirnov1986,smirnov2013}. These results are concrete
+algorithms; they multiply small matrices using a count of bilinear
+products that beats the naïve \(nmp\). When applied recursively, each
+small-format rank improvement compounds into an \(\omega\)
+improvement. The strongest \emph{practical} small-format exponent comes
+from Smirnov's \(\nmpshape{3}{3}{6}\) scheme of rank
+40~\cite{smirnov2013}: at \(\omega = 3\log 40 / \log 54 \approx
+2.7743\) it sits below the exponent of every explicit cubic scheme in
+the catalog, making it the best base case a recursive implementation
+can realistically use.
+
+The 2022--2026 period has shaken this landscape. AlphaTensor
+\cite{alphatensor2022} found 47 bilinear products for
+\(\nmpfield{\Ftwo}{4}{4}{4}\) -- previously believed to require 49.
+AlphaEvolve \cite{alphaevolve2025} found 48 for
+\(\nmpfield{\Complex}{4}{4}{4}\) (independently, an explicit complex 48
+had already been given a year earlier by Kaporin~\cite{kaporin2024brent}
+via a semi-analytical solution of the Brent equations), which
+Dumas--Pernet--Sedoglavic
+\cite{dps2025} promptly rationalised --- 48 with coefficients in
+\(\{\pm1,\pm\tfrac12,\pm\tfrac14,\pm\tfrac18\}\), valid over
+\(\Rationals\) and hence \(\Reals\). Schwartz--Zwecher 2025
+\cite{schwartzzwecher2025} produced a systematic disjoint-sum
+construction giving record ranks at several large shapes. The FMM
+catalog at Lille \cite{fmmlille} and Perminov's
+\code{FastMatrixMultiplication} repository \cite{perminov} both
+aggregate schemes from across the literature \emph{and} contribute
+their own results, but via different approaches: FMM layers recursive
+derivations (Kronecker, recursive concatenation, projection) on top of
+known bases, while Perminov runs flip-graph and meta-flip-graph search
+to discover fresh low-rank schemes (including ternary-integer ones).
+
+\paragraph{The problem.} These results live in incompatible formats
+(Maple scripts, NumPy archives, ad-hoc JSON), use inconsistent shape
+conventions (sorted vs unsorted \nmpshape{n}{m}{p}, with or without
+explicit field tags), and carry inconsistent attribution. A
+\(\nmpshape{4}{4}{4}\) entry sourced from AlphaTensor is sometimes
+cited as ``the AlphaTensor scheme'' even when the rank was already
+established by Strassen recursion or Smirnov -- only some of
+AlphaTensor's per-format ranks were genuine improvements over prior
+SOTA. The same trap exists in every bulk-import flow we have
+audited.
+
+We argue that a research-grade catalog -- machine-checkable, fully
+attributed, and uniformly serialised -- is now both possible and
+necessary. This paper describes the construction of such a catalog,
+together with a frontier-closure search that automatically discovers
+recombinations of catalog entries.
+
+\paragraph{Field discipline as load-bearing.} A bare \nmpshape{n}{m}{p}
+is ambiguous: different fields admit different ranks. The canonical
+example is \(\nmpshape{4}{4}{4}\): 47 over \Ftwo\ (AlphaTensor), 48
+over \Complex\ and --- since the Dumas--Pernet--Sedoglavic
+rationalisation \cite{dps2025} --- over \(\Rationals\) and \Reals\ too,
+while the best \emph{integer}-coefficient scheme remains 49
+(Strassen squared). Between AlphaEvolve and \cite{dps2025} the
+landscape was sharper still, with \(\Reals\) standing at 49: a
+field-tag-free ``\(\nmpshape{4}{4}{4}=48\)'' would have been wrong over
+\(\Reals\) for those weeks, and is still wrong over \(\Integers\) and
+\(\Ftwo\) today (where 47 beats it). We refuse to merge across fields
+and require every rank claim in the catalog (and in this paper) to
+carry a field tag. Commutative algorithms (Waksman 1970~\cite{waksman1970}, Makarov
+1986~\cite{makarov1986}, Rosowski 2019~\cite{rosowski2019}) form a
+separate axis: they are valid for scalar matrix
+multiplication but do \emph{not} lift to recursive multiplication over
+non-commutative rings.
+
+\paragraph{What the catalog catalogs.} Each entry encodes either
+\begin{enumerate}[label=(\alph*)]
+  \item explicit factor matrices \((U, V, W)\) with field tag,
+    addition count, and lineage record; or
+  \item a \emph{cited bound} -- a rank claim attributed to a source
+    whose explicit factor matrices we do not (yet) hold; or
+  \item a \emph{derived bound} -- a rank computed by a formula that
+    our code can re-derive on demand (Waksman, Rosowski, Pan
+    trilinear aggregation).
+\end{enumerate}
+This three-way split lets us include results we cannot yet
+materialise as schemes without misrepresenting their status, and lets
+us regenerate the derived layer as our formulas improve.
+
+\paragraph{Derivation over the catalog.} Recursive multiplication
+over the same catalog is performed by a search that recombines
+existing entries via well-defined operators (Section
+\ref{sec:strategies}): axis-flip, Kronecker product, axis
+concatenation, recombination with allocation (with optional output
+peeling and pair fusion), the serendipitous (bud) product, and
+downward projection. The search is iterated until no further rank
+improvements appear at any catalog shape -- a \emph{frontier closure}
+-- and the resulting wins are materialised lazily after the search has
+converged. We stress that none of these operators is a disjoint-sum /
+Sch\"onhage $\tau$-theorem construction: we do not leverage the
+$\tau$-theorem anywhere. The handful of disjoint-sum schemes the
+catalog holds (e.g.\ Schwartz--Zwecher) are imported as raw factor
+matrices, not reconstructed from a $\tau$ decomposition, and no catalog
+entry carries a $\tau$ lineage (Section \ref{ssec:disjoint-sum}).
+
+\paragraph{The non-overlap property.} An observation that we believe is
+underdiscussed: our composition operators cannot produce sharing
+across bilinear products that did not already exist in the source
+schemes. A scheme assembled by recombination has rank
+\(\sum_k r_{\text{sub-}k}\) on the nose; there is no
+mechanism inside our materialisation step to discover a new shared
+core. Hand-crafted schemes work differently -- their entire raison
+d'être is to find non-obvious sharing. We argue that this makes
+``composed scheme matches hand-crafted scheme's rank'' a meaningful
+co-existence claim, not a re-discovery claim. Section
+\ref{sec:nonoverlap} develops this.
+
+\paragraph{Outline.} Section \ref{sec:notation} fixes notation and
+the field-discipline conventions. Section \ref{sec:architecture}
+describes the catalog's serialisation, lineage records, and the
+explicit/cited/derived split. Section \ref{sec:strategies} catalogs
+the composition operators. Section \ref{sec:nonoverlap} develops the
+non-overlap property. Section \ref{sec:search} describes the
+frontier-closure search algorithm. Section \ref{sec:tables} presents
+refreshed DIS09-style comparison tables, per field and with a
+commutative column. Section \ref{sec:openquestions} closes with open
+questions, including ones the catalog cannot yet answer.

@@ -1,0 +1,41 @@
+{
+  "lineage_str": "ConcatCols(2x3x3, ConcatCols(2x3x3, ConcatCols(2x3x3, ConcatCols(2x3x3, ConcatCols(2x3x3, ConcatCols(2x3x3, 2x3x3))))))",
+  "lineage_compact": "2x3x3 +p 2x3x3 +p 2x3x3 +p 2x3x3 +p 2x3x3 +p 2x3x3 +p 2x3x3",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "right": {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+          "right": {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+            "right": {
+              "op": "ConcatCols",
+              "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+              "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "n": [2, 3, 21],
+  "m": 105,
+  "hash": "cdcbf8f4d7c0bdaba341323bd8f0d9171ef756d42220dd511957f4796892d6c0",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

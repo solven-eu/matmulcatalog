@@ -1,0 +1,43 @@
+{
+  "lineage_str": "Recombination(base=4x4x5, allocA=[4, 4, 4, 4], allocB=[4, 4, 4, 4], allocC=[5, 4, 4, 4, 4], leaves=[Recombination(base=4x4x4, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=4x4x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_compact": "R[4x4x5; 4,4,4,4 | 4,4,4,4 | 5,4,4,4,4]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "4x4x5@c3a71f13fb4f10ca367957eeb8da7c8ca2906f0990040078fb3d6577fdc2ed84", "id": "L0"},
+    "allocA": [4, 4, 4, 4],
+    "allocB": [4, 4, 4, 4],
+    "allocC": [5, 4, 4, 4, 4],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "4x4x4@929db4e407faf85e6ff69a5ab89dbd7c6917d95bdf82e156d5692acc9703527b"},
+        "allocA": [1, 1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [1, 1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    ]
+  },
+  "n": [16, 16, 21],
+  "m": 3136,
+  "hash": "93580f77debfedf450d808c0b2a6ca66c5fe93e1ea5e8391197de4b4b5f63d23",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

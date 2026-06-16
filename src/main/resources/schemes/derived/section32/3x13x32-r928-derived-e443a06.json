@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(3x13x16-r464-perminov_Q-b26a7aa, 3x13x16-r464-perminov_Q-b26a7aa)",
+  "lineage_compact": "3x13x16-r464-perminov_Q-b26a7aa +p 3x13x16-r464-perminov_Q-b26a7aa",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "3x13x16-r464-perminov_Q-b26a7aa"},
+    "right": {"op": "Atom", "ref": "3x13x16-r464-perminov_Q-b26a7aa"}
+  },
+  "n": [3, 13, 32],
+  "m": 928,
+  "hash": "e443a06d02324f2b51862529a1149b773a131d3b4bad0584045407ad27593c02",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

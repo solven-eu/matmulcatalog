@@ -1,0 +1,56 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 4], allocB=[9, 10], allocC=[12, 11], leaves=[KronProduct(2x2x2, 2x5x6-r47-alphaevolve-7387644), KronProduct(2x3x3, 2x3x4), 4x9x11-r275-perminov_ZT-58d6c5a, Recombination(base=2x2x2, allocA=[2, 2], allocB=[5, 5], allocC=[6, 5], leaves=[2x5x6-r47-alphaevolve-7387644, Recombination(base=2x5x5, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_compact": "R[2x2x2; 4,4 | 9,10 | 12,11]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [4, 4],
+    "allocB": [9, 10],
+    "allocC": [12, 11],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+      },
+      {"op": "Atom", "ref": "4x9x11-r275-perminov_ZT-58d6c5a"},
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [2, 2],
+        "allocB": [5, 5],
+        "allocC": [6, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "2x5x5@5e3b69e8989d3ac4c5bd80eb8f6c01e25797d0be4096286bc5fa0f762c281e2f"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "n": [8, 19, 23],
+  "m": 2145,
+  "hash": "d3655bcf6a155786f54cd42b09ea5358aa2947e5e98511973002914996b980df",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

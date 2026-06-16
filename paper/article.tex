@@ -1,0 +1,91 @@
+% A research-grade catalog of fast matrix multiplication algorithms
+%                       with frontier-closure search
+%
+% Build:
+%   cd paper && latexmk -pdf article.tex
+% or:
+%   cd paper && pdflatex article && bibtex article && pdflatex article && pdflatex article
+%
+% The skeleton is intentionally light on commands so it stays readable
+% when edited inline. \input each section so they remain individually
+% browsable.
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\input{macros.tex}
+
+\title{A research-grade catalog of fast matrix multiplication algorithms\\
+with frontier-closure search\thanks{Source repository:
+\href{https://github.com/solven-eu/matmulcatalog}{github.com/solven-eu/matmulcatalog}.
+This article is generated from \texttt{paper/article.tex} alongside the
+catalog; numerical tables track the catalog by construction.}}
+
+\author{Benoit Lacelle\\
+\texttt{benoit@solven.eu}}
+
+\date{Draft, \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract.tex}
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+\input{sections/intro.tex}
+
+\section{Wording}\label{sec:wording}
+\input{sections/wording.tex}
+
+\section{Notation and field discipline}\label{sec:notation}
+\input{sections/notation.tex}
+
+\section{Catalog architecture}\label{sec:architecture}
+\input{sections/architecture.tex}
+
+\section{Derivation strategies}\label{sec:strategies}
+\input{sections/strategies.tex}
+
+\section{The non-overlap property and a methodological boundary}\label{sec:nonoverlap}
+\input{sections/nonoverlap.tex}
+
+\section{Balance versus imbalance: the records are unbalanced}\label{sec:balance}
+\input{sections/balance.tex}
+
+\section{Recombination multisets of a base}\label{sec:multisets}
+\input{sections/multisets.tex}
+
+\section{A constructive realisation of the Hopcroft--Kerr bound}\label{sec:hk71}
+\input{sections/hk71.tex}
+
+\section{Frontier-closure search}\label{sec:search}
+\input{sections/search.tex}
+
+\section{Comparison: structure and conventions}\label{sec:tables}
+\input{sections/tables.tex}
+
+\section{Open questions and future work}\label{sec:openquestions}
+\input{sections/openquestions.tex}
+
+\section{On the role of the AI coding agent}\label{sec:aiagent}
+\input{sections/aiagent.tex}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

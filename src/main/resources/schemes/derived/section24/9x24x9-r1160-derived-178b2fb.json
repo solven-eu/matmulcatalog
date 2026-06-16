@@ -1,0 +1,38 @@
+{
+  "lineage_str": "KronProduct(Recombination(base=Transpose(3x3x4, perm=\"ABC->BCA\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))",
+  "lineage_compact": "R[3x3x4^ABC->BCA; 1,1,1 | 1,1,1,1 | 1,1,1] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->BCA",
+        "child": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"}
+      },
+      "allocA": [1, 1, 1],
+      "allocB": [1, 1, 1, 1],
+      "allocC": [1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "inner": {
+      "op": "Project",
+      "keepN": [0, 1, 2],
+      "keepM": [1, 2, 3, 4, 5, 6],
+      "keepP": [0, 1, 2],
+      "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+    }
+  },
+  "n": [9, 24, 9],
+  "m": 1160,
+  "hash": "178b2fb5daf5f03c3d50d90b43779cf2c7858dd8c9269043c2b1e07266b80820",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

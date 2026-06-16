@@ -1,0 +1,25 @@
+{
+  "lineage_str": "ConcatCols(naive-8x15x1, OrientAs(15x8x30, ⟨8,15,30⟩))",
+  "lineage_compact": "naive-8x15x1 +p 15x8x30→⟨8,15,30⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-8x15x1"},
+    "right": {
+      "op": "OrientAs",
+      "n": 8,
+      "m": 15,
+      "p": 30,
+      "child": {"op": "Atom", "ref": "15x8x30@161a73fa7f71ca52de14a3c41c252eae26b3c57032032111b74e67d7ee29977d"}
+    }
+  },
+  "n": [8, 15, 31],
+  "m": 2262,
+  "hash": "627e95e27d0de4f9e4fc38ba6be40427e824f9af37acd04a61beb3a71c207ba1",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

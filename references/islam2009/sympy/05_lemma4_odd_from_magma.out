@@ -1,0 +1,17 @@
+Islam 2009 / DIS09 Appendix Lemma 4 ODD CASE — port from Magma
+======================================================================
+
+── nn = 3  (odd, n = (nn+1)/2 = 2,  m = 5) ──
+   running ProductOdd ...
+   computing direct A·B ...
+   mult count:  got 66, expected (Islam Prop 1 odd) = (3³ + 15·3² + 14·3 − 6) / 3 = 66   → OK
+   correctness: OK — C_TA == A·B
+
+── nn = 5  (odd, n = (nn+1)/2 = 3,  m = 7) ──
+   running ProductOdd ...
+   computing direct A·B ...
+   mult count:  got 188, expected (Islam Prop 1 odd) = (5³ + 15·5² + 14·5 − 6) / 3 = 188   → OK
+   correctness: OK — C_TA == A·B
+
+======================================================================
+[Phase A step 5] PASS — odd-case Lemma 4 construction is correct.

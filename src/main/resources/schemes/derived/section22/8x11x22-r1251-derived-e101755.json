@@ -1,0 +1,52 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[4, 4], allocB=[4, 4, 3], allocC=[8, 7, 7], leaves=[OrientAs(3x4x8-r73-perminov_Z-89c37df, ⟨4,3,8⟩), ConcatCols(4x4x4, 4x4x4), 4x4x7-r85-alphaevolve-d4e8670, OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨4,3,7⟩)])",
+  "lineage_compact": "R[2x3x3; 4,4 | 4,4,3 | 8,7,7]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+    "allocA": [4, 4],
+    "allocB": [4, 4, 3],
+    "allocC": [8, 7, 7],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 3,
+        "p": 8,
+        "child": {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "4x4x4@929db4e"},
+        "right": {"op": "Atom", "ref": "4x4x4@929db4e"}
+      },
+      {"op": "Atom", "ref": "4x4x7-r85-alphaevolve-d4e8670"},
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 3,
+        "p": 7,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    ]
+  },
+  "n": [8, 11, 22],
+  "m": 1251,
+  "hash": "e10175575f11d6c2e8a0599cc61e309c532a90c1f0b55a80bbc1290734adb27a",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

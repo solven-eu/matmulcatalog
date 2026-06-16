@@ -1,0 +1,96 @@
+% Notation and field-discipline section. Should be short and
+% self-contained — it's both a reading aid for the rest of the paper
+% and a normative statement of the catalog's conventions.
+
+A bilinear algorithm computing the product of an \(n \times m\)
+matrix \(A\) by an \(m \times p\) matrix \(B\) consists of three
+factor matrices \(U \in K^{nm \times r}\), \(V \in K^{mp \times
+r}\), \(W \in K^{np \times r}\) over a field (or ring) \(K\), such
+that for every \(A, B\):
+\[
+  (AB)_{i,j} \;=\; \sum_{k=1}^{r}
+  W_{(i,j),k}\;\Big(\sum_{a,b} U_{(a,b),k}\, A_{a,b}\Big)
+  \Big(\sum_{a',b'} V_{(a',b'),k}\, B_{a',b'}\Big).
+\]
+The integer \(r\) is the \emph{rank} (a.k.a.\ \emph{multiplication
+count}) of the algorithm. The \emph{addition count} is the number of
+nonzero coefficients in \((U, V, W)\) beyond the bare product
+multiplications, with conventions following Probert--Fischer 1976.
+
+\paragraph{Shape notation.} A bare \(\nmpshape{n}{m}{p}\) is not
+sufficient -- the rank depends on the algebra. We adopt:
+\begin{itemize}[itemsep=2pt]
+  \item \(\nmpfield{K}{n}{m}{p}\): non-commutative matmul over the
+    field \(K\). E.g.\ \(\nmpfield{\Reals}{7}{7}{7} = 250\).
+  \item \(\nmpfieldc{K}{n}{m}{p}\) (superscript-\(c\)): commutative
+    matmul over \(K\). E.g.\ \(\nmpfieldc{\Reals}{3}{3}{3} = 21\)
+    (Rosowski).
+\end{itemize}
+The value after \(=\) is always the \emph{rank} --- the number of
+scalar multiplications, which is the quantity that compounds into an
+\(\omega\) bound under recursion. Addition counts are tracked
+separately (Section~\ref{sec:architecture}); on disk the rank appears
+as the \code{r\{rank\}} filename token (a cosmetic label --- the
+authoritative rank is the JSON content; additions are recomputed from
+the factor matrices, not encoded in the name).
+
+\paragraph{The fields we track.}
+\begin{description}[itemsep=2pt]
+  \item[\Integers, \Rationals, \Reals] Characteristic-zero and
+    non-commutative-friendly (they lift to recursive matmul). We keep
+    them \emph{distinct}, first-class fields --- not a single cluster ---
+    and use the inclusion \(\Integers\subset\Rationals\subset\Reals\)
+    only to compute which fields a scheme satisfies. Ternary-integer
+    schemes (\(\Integers\)T, coefficients in \(\{-1,0,1\}\)) are a
+    first-class sub-class of \(\Integers\).
+  \item[\Complex] A complex extension. Real-valid schemes work
+    immediately; in addition, AlphaEvolve's complex-coefficient
+    schemes live here. Its \(\nmpfield{\Complex}{4}{4}{4} = 48\) was
+    subsequently rationalised by Dumas--Pernet--Sedoglavic
+    \cite{dps2025}, so that particular rank no longer separates
+    \Complex\ from \(\Rationals/\Reals\) --- a reminder that
+    field-separation examples are date-stamped claims.
+  \item[\Ftwo] Characteristic-2. AlphaTensor's
+    \(\nmpfield{\Ftwo}{4}{4}{4} = 47\) lives here. Integer-valid
+    schemes \emph{do} reduce mod 2 to give \Ftwo\ schemes, but our
+    current widening sweep does not yet surface that exhaustively
+    -- see Section \ref{sec:openquestions}.
+  \item[\Fthree] Characteristic-3 (GF(3)) --- ``ternary modular'',
+    not to be confused with the ternary-\emph{integer} ZT sub-class of
+    \Integers. We track it so the discipline is genuinely
+    field-agnostic, though coverage is currently thin: a dedicated
+    \Fthree\ search is open (Section \ref{sec:openquestions}).
+\end{description}
+
+\paragraph{Commutative axis.} Independent of the field choice, an
+algorithm may or may not assume that the entries of \(A\) and \(B\)
+commute. Commutative-only schemes (Waksman, Rosowski, Makarov 1986)
+do \emph{not} lift to recursive matmul over non-commutative rings:
+they save bilinear products by exploiting the freedom \(ab = ba\)
+that disappears as soon as \(A\) and \(B\) are themselves matrix
+blocks. They remain valid for scalar matmul. Rosowski 2019 makes the
+recursive side of this explicit: a commutative scheme \emph{can} be
+applied recursively, but only while the base ring stays commutative
+(the linear combinations of products are themselves bilinear, which is
+what permits the recursion). His cubic bound is
+\(\nmpfieldc{K}{n}{n}{n} \le n(n+1)(n+2)/2 \approx n^3/2\)
+(Theorem~5, \(n\) odd) --- about half the \(n^3\) scalar products, and
+below the best non-commutative rank at small sizes
+(\(\nmpfieldc{\Reals}{3}{3}{3}=21\) versus Laderman's
+\(\nmpfield{\Reals}{3}{3}{3}=23\)). The win is only this constant
+factor: because the recursion never leaves the commutative ring it
+does \emph{not} lift to matrix-block recursion, so unlike Strassen's
+\(\nmpfield{K}{2}{2}{2}=7\) it does not lower \(\omega\) over
+non-commutative rings. The catalog flags every
+commutative scheme with \code{"commutative": true} in the JSON; the
+comparison tables of Section \ref{sec:tables} carry a separate
+commutative column for each field. Cross-contamination silently
+produces wrong ``wins'' against historical non-commutative tables;
+the canonical example is comparing
+\(\nmpfieldc{\Reals}{3}{3}{3} = 21\) (Rosowski, commutative) to
+\(\nmpfield{\Reals}{3}{3}{3} = 23\) (Laderman, non-commutative)
+as if they were the same metric.
+
+We require every rank claim in the paper to carry both a field tag
+and a commutativity tag. The reader can recover the metric from the
+shape.

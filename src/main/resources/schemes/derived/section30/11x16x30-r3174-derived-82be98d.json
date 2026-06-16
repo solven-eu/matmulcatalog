@@ -1,0 +1,52 @@
+{
+  "lineage_str": "Recombination(base=Transpose(3x3x4, perm=\"ABC->BCA\"), allocA=[4, 4, 3], allocB=[4, 4, 4, 4], allocC=[10, 10, 10], leaves=[ConcatCols(Recombination(base=Transpose(3x3x4, perm=\"ABC->BCA\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])), 4x4x10-r115-perminov_ZT-022a32b])",
+  "lineage_compact": "R[3x3x4^ABC->BCA; 4,4,3 | 4,4,4,4 | 10,10,10]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "id": "L0",
+      "perm": "ABC->BCA",
+      "child": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"}
+    },
+    "allocA": [4, 4, 3],
+    "allocB": [4, 4, 4, 4],
+    "allocC": [10, 10, 10],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Recombination",
+          "base": {"op": "@ref", "id": "L0"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "right": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      },
+      {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+    ]
+  },
+  "n": [11, 16, 30],
+  "m": 3174,
+  "hash": "82be98db087b27c3f20be19e6996fc192c8ea3e607346c72719d17a262176177",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

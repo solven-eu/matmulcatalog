@@ -1,0 +1,16 @@
+# LaTeX build artifacts — regenerate with:  tectonic article.tex
+# (the paper PDF tracks the catalog only "illustratively" until the
+#  GeneratePaperTables regen pipeline lands — see README.md)
+article.pdf
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# arXiv source bundle produced by `make arxiv` / the paper CI job (artifact only).
+article-arxiv.tar.gz

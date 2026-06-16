@@ -1,0 +1,56 @@
+{
+  "lineage_str": "ConcatCols(SumInner(Recombination(base=Transpose(2x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨4,11,2⟩)), Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨2,2,8⟩))",
+  "lineage_compact": "R[2x3x4^ABC->CBA; 1,1,1,1 | 1,1,1 | 1,1] +m 2x4x11-r70-perminov_ZT-0ae9c5e→⟨4,11,2⟩ +p 7x2x3→⟨2,7,3⟩ ⊗ˢ⟨2,2,8⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+        },
+        "allocA": [1, 1, 1, 1],
+        "allocB": [1, 1, 1],
+        "allocC": [1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 11,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+      }
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 2,
+      "p2": 8,
+      "base": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 7,
+        "p": 3,
+        "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+      }
+    }
+  },
+  "n": [4, 14, 26],
+  "m": 979,
+  "hash": "619d3712c299d707e945571f7cc576e090716821e9f1135e50950e3ce9434bb3",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

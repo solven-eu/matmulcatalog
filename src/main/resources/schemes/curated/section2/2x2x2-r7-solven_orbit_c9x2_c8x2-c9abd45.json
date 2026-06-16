@@ -1,0 +1,47 @@
+{
+  "n": [2, 2, 2],
+  "m": 7,
+  "u": [
+    [0, 1, 1, 1],
+    [0, 1, 0, 0],
+    [1, 1, 1, 1],
+    [-1, 0, 0, 0],
+    [0, 1, 0, 1],
+    [0, 0, -1, -1],
+    [0, 0, -1, 0]
+  ],
+  "v": [
+    [0, -1, 1, 1],
+    [0, 0, 1, 0],
+    [0, 1, 0, 0],
+    [-1, 0, 0, 0],
+    [0, -1, 0, 1],
+    [0, 0, 1, 1],
+    [-1, -1, 1, 1]
+  ],
+  "w": [
+    [0, 1, 1, -1],
+    [1, -1, -1, 1],
+    [0, 0, 1, 0],
+    [1, 0, 0, 0],
+    [0, -1, 0, 1],
+    [0, 0, 1, -1],
+    [0, 1, 0, 0]
+  ],
+  "source": "solven-orbit-enumeration-2026",
+  "lineage_str": "GL₂(ℤ)³ change-of-basis of Strassen: X=[[-1,-1],[-1,0]], Y=[[-1,1],[-1,0]], Z=[[-1,0],[0,-1]]",
+  "lineage_compact": "strassen-1969-7mult^GL",
+  "discovery_note": "Ternary ⟨2,2,2⟩=7 base realising a recombination multiset not otherwise in the catalog. At a 2-part split (n₁≥n₂ per axis) the sub-shape multiset is 2·⟨n₁,m₁,p₁⟩ + 1·⟨n₁,m₁,p₂⟩ + 1·⟨n₁,m₂,p₁⟩ + 1·⟨n₂,m₁,p₁⟩ + 2·⟨n₂,m₂,p₂⟩. Concretely at (9,8)³ → ⟨17,17,17⟩: 2·⟨8,8,8⟩ + 1·⟨8,9,9⟩ + 1·⟨9,8,9⟩ + 1·⟨9,9,8⟩ + 2·⟨9,9,9⟩. Found by exact GL₂(ℚ)³-orbit enumeration (Ternary2x2x2Orbit / RecombinationMultisetOrbit); de Groote-equivalent to Strassen.",
+  "commutative": false,
+  "zt": true,
+  "verified": true,
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "fields_not": []
+}

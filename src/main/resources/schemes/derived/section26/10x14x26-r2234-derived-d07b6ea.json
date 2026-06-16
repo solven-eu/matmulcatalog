@@ -1,0 +1,59 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[5, 5], allocB=[5, 5, 4], allocC=[9, 9, 8], leaves=[OrientAs(4x5x9-r132-perminov_ZT-ec019d6, ⟨5,4,9⟩), 5x5x9-r161-perminov_ZT-0972b0d, Recombination(base=ext[5x5x8-r144-perminov_ZT-2554eb2.json] / <5,5,8>=144 :: CANONICAL, allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(Recombination(base=ext[4x5x8-r118-perminov_ZT-ed19319.json] / <4,5,8>=118 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,4,8⟩)])",
+  "lineage_compact": "R[2x3x3; 5,5 | 5,5,4 | 9,9,8]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+    "allocA": [5, 5],
+    "allocB": [5, 5, 4],
+    "allocC": [9, 9, 8],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 4,
+        "p": 9,
+        "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"}
+      },
+      {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[5x5x8-r144-perminov_ZT-2554eb2.json] / <5,5,8>=144 :: CANONICAL"},
+        "allocA": [1, 1, 1, 1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 4,
+        "p": 8,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[4x5x8-r118-perminov_ZT-ed19319.json] / <4,5,8>=118 :: CANONICAL"},
+          "allocA": [1, 1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    ]
+  },
+  "n": [10, 14, 26],
+  "m": 2234,
+  "hash": "d07b6ea8890addf21d5687aa04cac0d1f971bab12b4205ee5b2011b0c8dfa6c2",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

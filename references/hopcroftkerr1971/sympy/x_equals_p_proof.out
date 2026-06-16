@@ -1,0 +1,139 @@
+[   0.1s] Projector P_garbage built
+[   2.7s] garbage_A and garbage_A' built
+[   2.9s] #non-trivial Φ coords = 34
+[   2.9s] ======================================================================
+[   2.9s] STEP A: fibre dim at several generic A points
+[   2.9s] ======================================================================
+[   3.3s]   [v2-anchor] fiber: 34 non-trivial equations in 13 unknowns
+[   4.3s]   [v2-anchor] tangent rank at (α=2, β=3) = 11; fibre dim = 2
+[   4.7s]   [rand-0] fiber: 34 non-trivial equations in 13 unknowns
+[   5.3s]   [rand-0] tangent rank at (α=2, β=3) = 11; fibre dim = 2
+[   5.8s]   [rand-1] fiber: 34 non-trivial equations in 13 unknowns
+[   6.4s]   [rand-1] tangent rank at (α=2, β=3) = 11; fibre dim = 2
+[   6.7s]   [rand-2] fiber: 34 non-trivial equations in 13 unknowns
+[   7.2s]   [rand-2] tangent rank at (α=2, β=3) = 11; fibre dim = 2
+[   7.8s]   [rand-3] fiber: 34 non-trivial equations in 13 unknowns
+[   8.4s]   [rand-3] tangent rank at (α=2, β=3) = 11; fibre dim = 2
+[   8.4s] All fibre dims: [('v2-anchor', 2), ('rand-0', 2), ('rand-1', 2), ('rand-2', 2), ('rand-3', 2)]
+[   8.4s] All fibres are 2-dim?  True
+[   8.4s] ======================================================================
+[   8.4s] STEP B: closed-form fibre at the anchor.  Direct solve.
+[   8.4s] ======================================================================
+[   8.7s]   Residuals after proportional ansatz: 0 non-zero / 34
+[   8.7s]   ✓ Proportional ansatz satisfies ALL anchor fibre equations identically.
+[   8.7s]   Computing Gröbner basis (lex order, may take ~60 s) ...
+[   9.1s]   Gröbner basis has 48 elements.
+[   9.1s]     g[ 0] = L1*L2*M2 + L2**2*M2 - 75*L6*c/13
+[   9.1s]     g[ 1] = L1*M1 - L1*M2 - L2*M2 - L5*M5 + L5*M6 + L6*M6 - 246*c
+[   9.1s]     g[ 2] = L1*M3 - 14*c
+[   9.1s]     g[ 3] = L1*M4 - 22*c
+[   9.1s]     g[ 4] = L1*M5 - 26*c
+[   9.1s]     g[ 5] = L1*M6 - 34*c
+[   9.1s]     g[ 6] = L1*c - 2*L6*c/13
+[   9.1s]     g[ 7] = L2*M1 - L6*M5 + 160*c
+[   9.1s]     g[ 8] = L2*M3 - 21*c
+[   9.1s]     g[ 9] = L2*M4 - 33*c
+[   9.1s]     g[10] = L2*M5 - 39*c
+[   9.1s]     g[11] = L2*M6 - 51*c
+[   9.1s]     g[12] = L2*c - 3*L6*c/13
+[   9.1s]     g[13] = L3*M1 - 15*c
+[   9.1s]     g[14] = L3*M2 - 25*c
+[   9.1s]     g[15] = L3*M4 + L5*M5 - L5*M6 - L6*M6 + 210*c
+[   9.1s]     g[16] = L3*M5 - 65*c
+[   9.1s]     g[17] = L3*M6 - 85*c
+[   9.1s]     g[18] = L3*c - 5*L6*c/13
+[   9.1s]     g[19] = L4*M1 - 21*c
+[   9.1s]     g[20] = L4*M2 - 35*c
+[   9.1s]     g[21] = L4*M3 - L6*M5 + 120*c
+[   9.1s]     g[22] = L4*M5 - 91*c
+[   9.1s]     g[23] = L4*M6 - 119*c
+[   9.1s]     g[24] = L4*c - 7*L6*c/13
+[   9.1s]     g[25] = L5**2*M5 - L5**2*M6 + L6**2*M6 - 2389*L6*c/13
+[   9.1s]     g[26] = L5*L6*M5 - 143*L6*c
+[   9.1s]     g[27] = L5*L6*M6 + L6**2*M6 - 408*L6*c
+[   9.1s]     g[28] = L5*M1 - 33*c
+[   9.1s]     g[29] = L5*M2 - 55*c
+[   9.1s]     g[30] = L5*M3 - 77*c
+[   9.1s]     g[31] = L5*M4 - 121*c
+[   9.1s]     g[32] = L5*M5**2 - L5*M6**2 - L6*M6**2 + 5077*M6*c/17
+[   9.1s]     g[33] = L5*M5*M6 - L5*M6**2 - L6*M6**2 + 265*M6*c
+[   9.1s]     g[34] = L5*c - 11*L6*c/13
+[   9.1s]     g[35] = L6**2*M5 - 169*L6*c
+[   9.1s]     g[36] = L6*M1 - 39*c
+[   9.1s]     g[37] = L6*M2 - 65*c
+[   9.1s]     g[38] = L6*M3 - 91*c
+[   9.1s]     g[39] = L6*M4 - 143*c
+[   9.1s]     g[40] = L6*M5**2 - 2197*M6*c/17
+[   9.1s]     g[41] = L6*M5*M6 - 169*M6*c
+[   9.1s]     g[42] = L6*M6*c - 221*c**2
+[   9.1s]     g[43] = M1*c - 3*M6*c/17
+[   9.1s]     g[44] = M2*c - 5*M6*c/17
+[   9.1s]     g[45] = M3*c - 7*M6*c/17
+[   9.1s]     g[46] = M4*c - 11*M6*c/17
+[   9.1s]     g[47] = M5*c - 13*M6*c/17
+[   9.1s] ======================================================================
+[   9.1s] STEP C: check Gröbner basis ↔ proportional ideal
+[   9.1s] ======================================================================
+[   9.1s]   Proportional ideal generators: 11 (expect 11)
+[   9.2s]   Proportional Gröbner basis has 11 elements.
+[   9.6s]   G  ⊆ <prop_gens>?  True
+[   9.6s]   <prop_gens> ⊆ G?  False
+[   9.6s]     failing poly: 13*L1 - 2*L6
+[   9.6s]     remainder   : 13*L1 - 2*L6
+[   9.6s] ======================================================================
+[   9.6s] STEP D: saturate the anchor fibre ideal by c  (kill {c = 0} component)
+[   9.6s] ======================================================================
+[   9.6s]   Computing saturation Gröbner basis (lex, eliminating t) ...
+[  10.0s]   Saturated ideal has 11 generators (free of t).
+[  10.0s]     g_sat[ 0] = L1 - 2*L6/13
+[  10.0s]     g_sat[ 1] = L2 - 3*L6/13
+[  10.0s]     g_sat[ 2] = L3 - 5*L6/13
+[  10.0s]     g_sat[ 3] = L4 - 7*L6/13
+[  10.0s]     g_sat[ 4] = L5 - 11*L6/13
+[  10.0s]     g_sat[ 5] = L6*M6 - 221*c
+[  10.0s]     g_sat[ 6] = M1 - 3*M6/17
+[  10.0s]     g_sat[ 7] = M2 - 5*M6/17
+[  10.0s]     g_sat[ 8] = M3 - 7*M6/17
+[  10.0s]     g_sat[ 9] = M4 - 11*M6/17
+[  10.0s]     g_sat[10] = M5 - 13*M6/17
+[  10.1s]   (I : c^∞) ⊆ <prop_gens>?  True
+[  10.2s]   <prop_gens> ⊆ (I : c^∞)?  True
+[  10.2s] ======================================================================
+[  10.2s] STEP E: c = 0 sub-component is the zero-garbage locus V
+[  10.2s] ======================================================================
+[  10.2s]   After c=0 substitution: 34 non-trivial equations.
+[  10.3s]     pure-monomial equations: 24
+[  10.3s]     non-monomial residual:   10
+[  10.3s]   These ARE the 34 garbage-vanishing equations from
+[  10.3s]   zero_garbage_variety.py.  That script proved (α, β) ≡ (0, 0)
+[  10.3s]   on every irreducible component of  V = {A' : g(A') = 0}.
+[  10.3s]   ⇒ the c = 0 component of X contributes only atoms invisible in Q.
+[  10.3s] 
+[  10.3s] ======================================================================
+[  10.3s] CONCLUSION
+[  10.3s] ======================================================================
+[  10.3s]   ✅ Saturation result:   I(X-fibre) : c^∞   =   I(P-fibre).
+[  10.3s]      Combined with fibre dim = 2 at all 5 sampled generic A points,
+[  10.3s]      and the c=0 component collapsing to V (where (α,β) ≡ (0,0)),
+[  10.3s]      we have the full decomposition:
+[  10.3s] 
+[  10.3s]         X  =  P  ∪  X_{c=0}      (set-theoretic, over a generic A)
+[  10.3s]         X_{c=0}  ⊆  R^12 × V × {0}      ⇒ image in Q is {0}.
+[  10.3s] 
+[  10.3s]      ⇒  Every (A, A', c) ∈ X with c ≠ 0 has A' = (α·λ, β·μ).
+[  10.3s]         Every (A, A', c) ∈ X with c = 0 has (α(A'), β(A')) = (0, 0).
+[  10.3s] 
+[  10.3s]      IMPOSSIBILITY THEOREM (unconditional, char-0 fields):
+[  10.3s]      Suppose three rank-1 atoms (L_k·M_k)_{k=1..3} have pairwise-
+[  10.3s]      proportional garbages.  For each pair (k, k') either
+[  10.3s]        (a) c_{k,k'} ≠ 0  and  L_{k'} = α·L_k, M_{k'} = β·M_k, OR
+[  10.3s]        (b) c_{k,k'} = 0  and one of the two atoms has (α, β) = (0, 0).
+[  10.3s]      In case (a) the (α_k, β_k) projections of the pair lie on one
+[  10.3s]      line in Q; in case (b) one atom contributes 0 to Q.  Either way,
+[  10.3s]      the three (α_k, β_k) span at most a 1-dim subspace of Q ≅ R^2,
+[  10.3s]      so they cannot simultaneously realise T1 and T2 mod S.
+[  10.3s] 
+[  10.3s]      ⇒ No 3-atom (2,2,bridge-3) construction exists in the rank-1
+[  10.3s]        atom family over any field of characteristic 0.
+[  10.3s] ======================================================================
+[  10.3s] DONE

@@ -1,0 +1,64 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 3], allocB=[4, 4], allocC=[13, 12], leaves=[ConcatCols(4x4x4, 4x4x9-r104-smirnov22-9759674), ConcatCols(3x4x6-r54-alphaevolve-c197868, Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])), ConcatCols(Recombination(base=Transpose(2x4x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), 4x4x10-r115-perminov_ZT-022a32b), ConcatCols(3x4x6-r54-alphaevolve-c197868, 3x4x6-r54-alphaevolve-c197868)])",
+  "lineage_compact": "R[2x2x2; 4,3 | 4,4 | 13,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [4, 3],
+    "allocB": [4, 4],
+    "allocC": [13, 12],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "4x4x4@929db4e"},
+        "right": {"op": "Atom", "ref": "4x4x9-r104-smirnov22-9759674"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+        "right": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Recombination",
+          "base": {
+            "op": "Transpose",
+            "perm": "ABC->CBA",
+            "child": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"}
+          },
+          "allocA": [1, 1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "right": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+        "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    ]
+  },
+  "n": [7, 8, 25],
+  "m": 928,
+  "hash": "503b7d0b4c080be3111c41a4f6e20015d48e6b513dce5eddfa96dd9f502345ef",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

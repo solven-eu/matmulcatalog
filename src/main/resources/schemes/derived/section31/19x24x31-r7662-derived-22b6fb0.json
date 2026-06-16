@@ -1,0 +1,53 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 9], allocB=[12, 12], allocC=[16, 15], leaves=[Serendipitous(OrientAs(3x4x5, ⟨5,3,4⟩) ⊗ ⟨2,4,4⟩), Project(9x13x16, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 10x12x15-r1122-perminov_Z-83aca77, Serendipitous(3x4x5 ⊗ ⟨3,3,3⟩)])",
+  "lineage_compact": "R[2x2x2; 10,9 | 12,12 | 16,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [10, 9],
+    "allocB": [12, 12],
+    "allocC": [16, 15],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 2,
+        "m2": 4,
+        "p2": 4,
+        "base": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 3,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+        }
+      },
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "child": {"op": "Atom", "ref": "9x13x16@4b0ebf7"}
+      },
+      {"op": "Atom", "ref": "10x12x15-r1122-perminov_Z-83aca77"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 3,
+        "base": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+      }
+    ]
+  },
+  "n": [19, 24, 31],
+  "m": 7662,
+  "hash": "22b6fb0f4ca0ee561e76556dbe5eec495c911de89227b921e022009bae838590",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

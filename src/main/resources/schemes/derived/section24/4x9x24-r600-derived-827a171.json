@@ -1,0 +1,29 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(2x3x3, 2x3x3), KronProduct(2x3x3, 2x3x5))",
+  "lineage_compact": "2x3x3 ⊗ 2x3x3 +p 2x3x3 ⊗ 2x3x5",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "inner": {"op": "Atom", "ref": "2x3x3@497eea7"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "inner": {"op": "Atom", "ref": "2x3x5@31f79a7"}
+    }
+  },
+  "n": [4, 9, 24],
+  "m": 600,
+  "hash": "827a171788abd4d162b82cb9b3046b3c0b55ee3dc3b5a68ca901a5d9466f59e1",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

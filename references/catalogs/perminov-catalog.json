@@ -1,0 +1,4805 @@
+{
+  "source" : "https://github.com/dronperminov/FastMatrixMultiplication",
+  "note" : "best NC rank per format, per field-class: an integer entry (field Z/ZT, valid over F2/F3/Z/Q/R/C) and — only when strictly better — a Q entry (valid over Q/R/C only). ZT ⇒ Z ⇒ Q ⇒ R ⇒ C. From status.json (maxdim ≤ 16); the 17–32 band is a SEPARATE catalog (perminov-serendipitous-catalog.json).",
+  "entries" : [ {
+    "format" : [ 2, 2, 2 ],
+    "rank" : 7,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 3 ],
+    "rank" : 11,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 3 ],
+    "rank" : 15,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 3 ],
+    "rank" : 23,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 4 ],
+    "rank" : 14,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 4 ],
+    "rank" : 20,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 4 ],
+    "rank" : 26,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 4 ],
+    "rank" : 29,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 4 ],
+    "rank" : 38,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 4 ],
+    "rank" : 49,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 4 ],
+    "rank" : 48,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 5 ],
+    "rank" : 18,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 5 ],
+    "rank" : 25,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 5 ],
+    "rank" : 33,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 5 ],
+    "rank" : 32,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 5 ],
+    "rank" : 40,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 5 ],
+    "rank" : 36,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 5 ],
+    "rank" : 47,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 5 ],
+    "rank" : 58,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 5 ],
+    "rank" : 61,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 5 ],
+    "rank" : 76,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 5 ],
+    "rank" : 93,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 6 ],
+    "rank" : 21,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 6 ],
+    "rank" : 30,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 6 ],
+    "rank" : 39,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 6 ],
+    "rank" : 47,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 6 ],
+    "rank" : 56,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 6 ],
+    "rank" : 42,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 6 ],
+    "rank" : 40,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 6 ],
+    "rank" : 54,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 6 ],
+    "rank" : 68,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 6 ],
+    "rank" : 83,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 6 ],
+    "rank" : 80,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 6 ],
+    "rank" : 73,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 6 ],
+    "rank" : 90,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 6 ],
+    "rank" : 105,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 6 ],
+    "rank" : 110,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 6 ],
+    "rank" : 130,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 6 ],
+    "rank" : 153,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 7 ],
+    "rank" : 25,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 7 ],
+    "rank" : 35,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 7 ],
+    "rank" : 45,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 7 ],
+    "rank" : 55,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 7 ],
+    "rank" : 66,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 7 ],
+    "rank" : 76,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 7 ],
+    "rank" : 49,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 7 ],
+    "rank" : 64,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 7 ],
+    "rank" : 63,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 7 ],
+    "rank" : 79,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 7 ],
+    "rank" : 96,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 7 ],
+    "rank" : 94,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 7 ],
+    "rank" : 111,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 7 ],
+    "rank" : 85,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 7 ],
+    "rank" : 104,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 7 ],
+    "rank" : 123,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 7 ],
+    "rank" : 144,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 7 ],
+    "rank" : 127,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 7 ],
+    "rank" : 150,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 7 ],
+    "rank" : 176,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 7 ],
+    "rank" : 183,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 7 ],
+    "rank" : 212,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 7 ],
+    "rank" : 250,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 7 ],
+    "rank" : 249,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 8 ],
+    "rank" : 28,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 8 ],
+    "rank" : 40,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 8 ],
+    "rank" : 51,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 8 ],
+    "rank" : 63,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 8 ],
+    "rank" : 75,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 8 ],
+    "rank" : 88,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 8 ],
+    "rank" : 100,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 8 ],
+    "rank" : 56,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 8 ],
+    "rank" : 55,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 8 ],
+    "rank" : 73,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 8 ],
+    "rank" : 90,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 8 ],
+    "rank" : 108,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 8 ],
+    "rank" : 128,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 8 ],
+    "rank" : 126,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 8 ],
+    "rank" : 146,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 8 ],
+    "rank" : 145,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 8 ],
+    "rank" : 96,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 8 ],
+    "rank" : 118,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 8 ],
+    "rank" : 140,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 8 ],
+    "rank" : 161,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 8 ],
+    "rank" : 180,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 8 ],
+    "rank" : 144,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 8 ],
+    "rank" : 170,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 8 ],
+    "rank" : 204,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 8 ],
+    "rank" : 230,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 8 ],
+    "rank" : 203,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 8 ],
+    "rank" : 238,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 8 ],
+    "rank" : 266,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 8 ],
+    "rank" : 278,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 8 ],
+    "rank" : 277,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 8 ],
+    "rank" : 310,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 8 ],
+    "rank" : 306,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 8 ],
+    "rank" : 343,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 8 ],
+    "rank" : 336,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 9 ],
+    "rank" : 32,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 9 ],
+    "rank" : 45,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 9 ],
+    "rank" : 58,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 9 ],
+    "rank" : 72,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 9 ],
+    "rank" : 86,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 9 ],
+    "rank" : 99,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 9 ],
+    "rank" : 113,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 9 ],
+    "rank" : 126,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 9 ],
+    "rank" : 63,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 9 ],
+    "rank" : 83,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 9 ],
+    "rank" : 102,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 9 ],
+    "rank" : 122,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 9 ],
+    "rank" : 120,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 9 ],
+    "rank" : 141,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 9 ],
+    "rank" : 163,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 9 ],
+    "rank" : 185,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 9 ],
+    "rank" : 183,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 9 ],
+    "rank" : 107,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 9 ],
+    "rank" : 104,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 9 ],
+    "rank" : 132,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 9 ],
+    "rank" : 159,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 9 ],
+    "rank" : 187,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 9 ],
+    "rank" : 186,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 9 ],
+    "rank" : 209,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 9 ],
+    "rank" : 206,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 9 ],
+    "rank" : 225,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 9 ],
+    "rank" : 161,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 9 ],
+    "rank" : 193,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 9 ],
+    "rank" : 229,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 9 ],
+    "rank" : 260,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 9 ],
+    "rank" : 293,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 9 ],
+    "rank" : 225,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 9 ],
+    "rank" : 264,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 9 ],
+    "rank" : 296,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 9 ],
+    "rank" : 341,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 9 ],
+    "rank" : 332,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 9 ],
+    "rank" : 316,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 9 ],
+    "rank" : 315,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 9 ],
+    "rank" : 347,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 9 ],
+    "rank" : 396,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 9 ],
+    "rank" : 391,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 9 ],
+    "rank" : 388,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 9 ],
+    "rank" : 432,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 9 ],
+    "rank" : 430,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 9 ],
+    "rank" : 486,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 10 ],
+    "rank" : 35,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 10 ],
+    "rank" : 50,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 10 ],
+    "rank" : 64,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 10 ],
+    "rank" : 79,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 10 ],
+    "rank" : 94,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 10 ],
+    "rank" : 110,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 10 ],
+    "rank" : 125,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 10 ],
+    "rank" : 140,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 10, 10 ],
+    "rank" : 155,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 10 ],
+    "rank" : 69,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 10 ],
+    "rank" : 92,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 10 ],
+    "rank" : 114,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 10 ],
+    "rank" : 136,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 10 ],
+    "rank" : 134,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 10 ],
+    "rank" : 158,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 10 ],
+    "rank" : 157,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 10 ],
+    "rank" : 180,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 10 ],
+    "rank" : 204,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 10 ],
+    "rank" : 203,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 10 ],
+    "rank" : 227,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 10 ],
+    "rank" : 226,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 10 ],
+    "rank" : 115,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 10 ],
+    "rank" : 146,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 10 ],
+    "rank" : 175,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 10 ],
+    "rank" : 206,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 10 ],
+    "rank" : 203,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 10 ],
+    "rank" : 230,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 10 ],
+    "rank" : 224,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 10 ],
+    "rank" : 250,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 10 ],
+    "rank" : 280,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 10 ],
+    "rank" : 178,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 10 ],
+    "rank" : 216,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 10 ],
+    "rank" : 254,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 10 ],
+    "rank" : 286,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 10 ],
+    "rank" : 284,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 10 ],
+    "rank" : 322,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 10, 10 ],
+    "rank" : 352,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 10 ],
+    "rank" : 252,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 10 ],
+    "rank" : 247,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 10 ],
+    "rank" : 296,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 10 ],
+    "rank" : 293,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 10 ],
+    "rank" : 327,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 10 ],
+    "rank" : 371,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 10 ],
+    "rank" : 367,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 10, 10 ],
+    "rank" : 406,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 10 ],
+    "rank" : 346,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 10 ],
+    "rank" : 345,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 10 ],
+    "rank" : 385,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 10 ],
+    "rank" : 433,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 10 ],
+    "rank" : 478,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 10 ],
+    "rank" : 427,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 10 ],
+    "rank" : 482,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 10 ],
+    "rank" : 528,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 10 ],
+    "rank" : 537,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 10 ],
+    "rank" : 534,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 10 ],
+    "rank" : 597,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 10, 10 ],
+    "rank" : 651,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 11 ],
+    "rank" : 39,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 11 ],
+    "rank" : 55,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 11 ],
+    "rank" : 70,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 11 ],
+    "rank" : 87,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 11 ],
+    "rank" : 103,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 11 ],
+    "rank" : 121,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 11 ],
+    "rank" : 138,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 11 ],
+    "rank" : 154,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 10, 11 ],
+    "rank" : 171,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 11, 11 ],
+    "rank" : 187,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 11 ],
+    "rank" : 76,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 11 ],
+    "rank" : 101,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 11 ],
+    "rank" : 126,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 11 ],
+    "rank" : 150,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 11 ],
+    "rank" : 148,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 11 ],
+    "rank" : 175,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 11 ],
+    "rank" : 173,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 11 ],
+    "rank" : 198,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 11 ],
+    "rank" : 224,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 11 ],
+    "rank" : 222,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 11 ],
+    "rank" : 249,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 11 ],
+    "rank" : 248,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 11 ],
+    "rank" : 274,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 11 ],
+    "rank" : 129,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 11 ],
+    "rank" : 160,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 11 ],
+    "rank" : 194,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 11 ],
+    "rank" : 225,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 11 ],
+    "rank" : 224,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 11 ],
+    "rank" : 253,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 11 ],
+    "rank" : 252,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 11 ],
+    "rank" : 275,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 11 ],
+    "rank" : 308,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 11 ],
+    "rank" : 340,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 11 ],
+    "rank" : 195,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 11 ],
+    "rank" : 238,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 11 ],
+    "rank" : 236,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 11 ],
+    "rank" : 277,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 11 ],
+    "rank" : 313,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 11 ],
+    "rank" : 312,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 11 ],
+    "rank" : 353,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 10, 11 ],
+    "rank" : 386,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 11 ],
+    "rank" : 427,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 11 ],
+    "rank" : 424,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 11 ],
+    "rank" : 276,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 11 ],
+    "rank" : 268,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 11 ],
+    "rank" : 322,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 11 ],
+    "rank" : 318,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 11 ],
+    "rank" : 357,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 11 ],
+    "rank" : 407,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 11 ],
+    "rank" : 404,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 10, 11 ],
+    "rank" : 446,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 11 ],
+    "rank" : 496,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 11 ],
+    "rank" : 490,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 11 ],
+    "rank" : 378,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 11 ],
+    "rank" : 376,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 11 ],
+    "rank" : 423,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 11 ],
+    "rank" : 478,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 11 ],
+    "rank" : 526,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 11 ],
+    "rank" : 580,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 11 ],
+    "rank" : 577,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 11 ],
+    "rank" : 475,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 11 ],
+    "rank" : 521,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 11 ],
+    "rank" : 588,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 11 ],
+    "rank" : 646,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 11 ],
+    "rank" : 641,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 11 ],
+    "rank" : 594,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 11 ],
+    "rank" : 576,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 11 ],
+    "rank" : 661,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 11 ],
+    "rank" : 651,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 11 ],
+    "rank" : 721,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 11 ],
+    "rank" : 715,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 10, 11 ],
+    "rank" : 719,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 11, 11 ],
+    "rank" : 793,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 11, 11 ],
+    "rank" : 873,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 12 ],
+    "rank" : 42,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 12 ],
+    "rank" : 60,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 12 ],
+    "rank" : 77,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 12 ],
+    "rank" : 94,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 12 ],
+    "rank" : 112,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 12 ],
+    "rank" : 131,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 12 ],
+    "rank" : 150,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 12 ],
+    "rank" : 168,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 10, 12 ],
+    "rank" : 186,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 11, 12 ],
+    "rank" : 204,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 12, 12 ],
+    "rank" : 222,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 12 ],
+    "rank" : 84,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 12 ],
+    "rank" : 80,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 12 ],
+    "rank" : 108,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 12 ],
+    "rank" : 136,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 12 ],
+    "rank" : 162,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 12 ],
+    "rank" : 160,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 12 ],
+    "rank" : 190,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 12 ],
+    "rank" : 188,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 12 ],
+    "rank" : 216,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 12 ],
+    "rank" : 243,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 12 ],
+    "rank" : 240,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 12 ],
+    "rank" : 270,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 12 ],
+    "rank" : 268,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 12 ],
+    "rank" : 298,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 12 ],
+    "rank" : 296,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 12 ],
+    "rank" : 324,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 12 ],
+    "rank" : 320,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 12 ],
+    "rank" : 141,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 12 ],
+    "rank" : 174,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 12 ],
+    "rank" : 210,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 12 ],
+    "rank" : 242,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 12 ],
+    "rank" : 272,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 12 ],
+    "rank" : 300,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 12 ],
+    "rank" : 329,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 12 ],
+    "rank" : 362,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 12 ],
+    "rank" : 389,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 12 ],
+    "rank" : 204,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 12 ],
+    "rank" : 258,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 12 ],
+    "rank" : 250,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 12 ],
+    "rank" : 298,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 12 ],
+    "rank" : 296,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 12 ],
+    "rank" : 333,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 12 ],
+    "rank" : 377,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 10, 12 ],
+    "rank" : 408,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 12 ],
+    "rank" : 461,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 12 ],
+    "rank" : 454,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 12 ],
+    "rank" : 498,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 12 ],
+    "rank" : 488,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 12 ],
+    "rank" : 294,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 12 ],
+    "rank" : 280,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 12 ],
+    "rank" : 342,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 12 ],
+    "rank" : 336,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 12 ],
+    "rank" : 378,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 12 ],
+    "rank" : 433,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 12 ],
+    "rank" : 429,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 10, 12 ],
+    "rank" : 476,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 12 ],
+    "rank" : 521,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 12 ],
+    "rank" : 564,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 12 ],
+    "rank" : 560,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 12 ],
+    "rank" : 404,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 12 ],
+    "rank" : 402,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 12 ],
+    "rank" : 452,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 12 ],
+    "rank" : 513,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 12 ],
+    "rank" : 508,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 12 ],
+    "rank" : 564,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 12 ],
+    "rank" : 557,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 12 ],
+    "rank" : 624,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 12 ],
+    "rank" : 618,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 12 ],
+    "rank" : 669,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 12 ],
+    "rank" : 660,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 12 ],
+    "rank" : 508,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 12 ],
+    "rank" : 504,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 12 ],
+    "rank" : 564,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 12 ],
+    "rank" : 560,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 12 ],
+    "rank" : 630,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 12 ],
+    "rank" : 624,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 12 ],
+    "rank" : 690,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 12 ],
+    "rank" : 676,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 12 ],
+    "rank" : 735,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 12 ],
+    "rank" : 720,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 12 ],
+    "rank" : 626,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 12 ],
+    "rank" : 600,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 12 ],
+    "rank" : 702,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 12 ],
+    "rank" : 668,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 12 ],
+    "rank" : 762,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 12 ],
+    "rank" : 738,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 12 ],
+    "rank" : 810,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 12 ],
+    "rank" : 800,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 10, 12 ],
+    "rank" : 766,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 11, 12 ],
+    "rank" : 850,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 11, 12 ],
+    "rank" : 849,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 12, 12 ],
+    "rank" : 902,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 11, 12 ],
+    "rank" : 936,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 11, 12 ],
+    "rank" : 922,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 12 ],
+    "rank" : 1002,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 12 ],
+    "rank" : 968,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 12 ],
+    "rank" : 1068,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 12 ],
+    "rank" : 1040,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 13 ],
+    "rank" : 46,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 13 ],
+    "rank" : 65,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 13 ],
+    "rank" : 83,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 13 ],
+    "rank" : 102,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 13 ],
+    "rank" : 122,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 13 ],
+    "rank" : 142,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 13 ],
+    "rank" : 163,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 13 ],
+    "rank" : 182,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 10, 13 ],
+    "rank" : 202,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 11, 13 ],
+    "rank" : 221,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 12, 13 ],
+    "rank" : 241,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 13, 13 ],
+    "rank" : 260,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 13 ],
+    "rank" : 91,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 13 ],
+    "rank" : 89,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 13 ],
+    "rank" : 118,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 13 ],
+    "rank" : 117,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 13 ],
+    "rank" : 147,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 13 ],
+    "rank" : 176,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 13 ],
+    "rank" : 174,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 13 ],
+    "rank" : 204,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 13 ],
+    "rank" : 236,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 13 ],
+    "rank" : 234,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 13 ],
+    "rank" : 263,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 13 ],
+    "rank" : 261,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 13 ],
+    "rank" : 294,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 13 ],
+    "rank" : 291,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 13 ],
+    "rank" : 322,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 13 ],
+    "rank" : 321,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 13 ],
+    "rank" : 351,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 13 ],
+    "rank" : 348,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 13 ],
+    "rank" : 380,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 13 ],
+    "rank" : 378,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 13 ],
+    "rank" : 153,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 13 ],
+    "rank" : 152,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 13 ],
+    "rank" : 191,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 13 ],
+    "rank" : 227,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 13 ],
+    "rank" : 265,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 13 ],
+    "rank" : 297,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 13 ],
+    "rank" : 325,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 13 ],
+    "rank" : 361,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 13 ],
+    "rank" : 401,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 13 ],
+    "rank" : 400,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 13 ],
+    "rank" : 430,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 13 ],
+    "rank" : 422,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 13, 13 ],
+    "rank" : 472,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 13, 13 ],
+    "rank" : 466,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 13 ],
+    "rank" : 227,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 13 ],
+    "rank" : 280,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 13 ],
+    "rank" : 278,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 13 ],
+    "rank" : 325,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 13 ],
+    "rank" : 365,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 13 ],
+    "rank" : 363,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 13 ],
+    "rank" : 412,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 13 ],
+    "rank" : 411,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 10, 13 ],
+    "rank" : 451,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 13 ],
+    "rank" : 503,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 13 ],
+    "rank" : 498,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 13 ],
+    "rank" : 537,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 13 ],
+    "rank" : 536,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 13 ],
+    "rank" : 592,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 13 ],
+    "rank" : 587,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 13 ],
+    "rank" : 322,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 13 ],
+    "rank" : 315,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 13 ],
+    "rank" : 376,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 13 ],
+    "rank" : 372,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 13 ],
+    "rank" : 418,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 13 ],
+    "rank" : 414,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 13 ],
+    "rank" : 472,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 13 ],
+    "rank" : 468,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 10, 13 ],
+    "rank" : 520,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 13 ],
+    "rank" : 584,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 13 ],
+    "rank" : 574,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 13 ],
+    "rank" : 615,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 13, 13 ],
+    "rank" : 682,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 13, 13 ],
+    "rank" : 678,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 13 ],
+    "rank" : 443,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 13 ],
+    "rank" : 441,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 13 ],
+    "rank" : 498,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 13 ],
+    "rank" : 496,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 13 ],
+    "rank" : 563,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 13 ],
+    "rank" : 562,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 13 ],
+    "rank" : 614,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 13 ],
+    "rank" : 680,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 13 ],
+    "rank" : 675,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 13 ],
+    "rank" : 731,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 13 ],
+    "rank" : 724,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 13, 13 ],
+    "rank" : 798,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 13, 13 ],
+    "rank" : 794,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 13 ],
+    "rank" : 559,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 13 ],
+    "rank" : 615,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 13 ],
+    "rank" : 686,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 13 ],
+    "rank" : 754,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 13 ],
+    "rank" : 750,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 13 ],
+    "rank" : 807,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 13 ],
+    "rank" : 781,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 13, 13 ],
+    "rank" : 885,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 13, 13 ],
+    "rank" : 880,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 13 ],
+    "rank" : 683,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 13 ],
+    "rank" : 681,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 13 ],
+    "rank" : 763,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 13 ],
+    "rank" : 758,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 13 ],
+    "rank" : 843,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 13 ],
+    "rank" : 835,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 13 ],
+    "rank" : 878,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 13, 13 ],
+    "rank" : 986,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 13, 13 ],
+    "rank" : 981,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 10, 13 ],
+    "rank" : 838,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 11, 13 ],
+    "rank" : 924,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 12, 13 ],
+    "rank" : 990,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 13, 13 ],
+    "rank" : 1082,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 11, 13 ],
+    "rank" : 1023,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 13 ],
+    "rank" : 1102,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 13 ],
+    "rank" : 1082,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 13, 13 ],
+    "rank" : 1205,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 13 ],
+    "rank" : 1168,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 13 ],
+    "rank" : 1144,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 13 ],
+    "rank" : 1298,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 13 ],
+    "rank" : 1274,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 13, 13 ],
+    "rank" : 1426,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 13, 13 ],
+    "rank" : 1421,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 14 ],
+    "rank" : 49,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 14 ],
+    "rank" : 70,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 14 ],
+    "rank" : 90,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 14 ],
+    "rank" : 110,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 14 ],
+    "rank" : 131,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 14 ],
+    "rank" : 152,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 14 ],
+    "rank" : 175,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 14 ],
+    "rank" : 196,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 10, 14 ],
+    "rank" : 217,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 11, 14 ],
+    "rank" : 238,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 12, 14 ],
+    "rank" : 259,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 13, 14 ],
+    "rank" : 280,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 14, 14 ],
+    "rank" : 301,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 14 ],
+    "rank" : 98,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 14 ],
+    "rank" : 95,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 14 ],
+    "rank" : 127,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 14 ],
+    "rank" : 126,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 14 ],
+    "rank" : 158,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 14 ],
+    "rank" : 190,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 14 ],
+    "rank" : 188,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 14 ],
+    "rank" : 219,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 14 ],
+    "rank" : 253,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 14 ],
+    "rank" : 252,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 14 ],
+    "rank" : 281,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 14 ],
+    "rank" : 312,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 14 ],
+    "rank" : 346,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 14 ],
+    "rank" : 345,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 14 ],
+    "rank" : 377,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 14 ],
+    "rank" : 376,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 14 ],
+    "rank" : 408,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 14 ],
+    "rank" : 407,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 14, 14 ],
+    "rank" : 438,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 14 ],
+    "rank" : 164,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 14 ],
+    "rank" : 163,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 14 ],
+    "rank" : 207,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 14 ],
+    "rank" : 206,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 14 ],
+    "rank" : 245,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 14 ],
+    "rank" : 284,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 14 ],
+    "rank" : 315,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 14 ],
+    "rank" : 350,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 14 ],
+    "rank" : 385,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 14 ],
+    "rank" : 429,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 14 ],
+    "rank" : 455,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 14 ],
+    "rank" : 452,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 13, 14 ],
+    "rank" : 502,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 13, 14 ],
+    "rank" : 500,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 14, 14 ],
+    "rank" : 532,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 14 ],
+    "rank" : 244,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 14 ],
+    "rank" : 300,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 14 ],
+    "rank" : 297,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 14 ],
+    "rank" : 351,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 14 ],
+    "rank" : 349,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 14 ],
+    "rank" : 391,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 14 ],
+    "rank" : 387,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 14 ],
+    "rank" : 441,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 14 ],
+    "rank" : 439,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 10, 14 ],
+    "rank" : 481,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 14 ],
+    "rank" : 537,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 14 ],
+    "rank" : 533,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 14 ],
+    "rank" : 581,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 14 ],
+    "rank" : 574,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 14 ],
+    "rank" : 632,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 14 ],
+    "rank" : 628,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 14, 14 ],
+    "rank" : 672,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 14 ],
+    "rank" : 343,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 14 ],
+    "rank" : 336,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 14 ],
+    "rank" : 403,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 14 ],
+    "rank" : 399,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 14 ],
+    "rank" : 448,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 14 ],
+    "rank" : 441,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 14 ],
+    "rank" : 507,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 14 ],
+    "rank" : 494,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 10, 14 ],
+    "rank" : 553,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 14 ],
+    "rank" : 621,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 14 ],
+    "rank" : 613,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 14 ],
+    "rank" : 654,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 14 ],
+    "rank" : 645,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 13, 14 ],
+    "rank" : 730,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 13, 14 ],
+    "rank" : 726,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 14, 14 ],
+    "rank" : 777,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 14, 14 ],
+    "rank" : 776,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 14 ],
+    "rank" : 475,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 14 ],
+    "rank" : 471,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 14 ],
+    "rank" : 532,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 14 ],
+    "rank" : 529,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 14 ],
+    "rank" : 600,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 14 ],
+    "rank" : 597,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 14 ],
+    "rank" : 653,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 14 ],
+    "rank" : 725,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 14 ],
+    "rank" : 721,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 14 ],
+    "rank" : 780,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 14 ],
+    "rank" : 774,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 13, 14 ],
+    "rank" : 852,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 13, 14 ],
+    "rank" : 850,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 14, 14 ],
+    "rank" : 909,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 14 ],
+    "rank" : 595,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 14 ],
+    "rank" : 654,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 14 ],
+    "rank" : 726,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 14 ],
+    "rank" : 804,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 14 ],
+    "rank" : 861,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 14 ],
+    "rank" : 843,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 13, 14 ],
+    "rank" : 945,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 13, 14 ],
+    "rank" : 944,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 14, 14 ],
+    "rank" : 1008,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 14, 14 ],
+    "rank" : 1004,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 14 ],
+    "rank" : 725,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 14 ],
+    "rank" : 720,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 14 ],
+    "rank" : 820,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 14 ],
+    "rank" : 808,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 14 ],
+    "rank" : 900,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 14 ],
+    "rank" : 882,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 14 ],
+    "rank" : 960,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 14 ],
+    "rank" : 940,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 13, 14 ],
+    "rank" : 1050,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 13, 14 ],
+    "rank" : 1024,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 14, 14 ],
+    "rank" : 1125,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 14, 14 ],
+    "rank" : 1101,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 10, 14 ],
+    "rank" : 889,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 11, 14 ],
+    "rank" : 981,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 12, 14 ],
+    "rank" : 1050,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 13, 14 ],
+    "rank" : 1154,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 14, 14 ],
+    "rank" : 1232,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 11, 14 ],
+    "rank" : 1093,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 14 ],
+    "rank" : 1182,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 14 ],
+    "rank" : 1153,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 13, 14 ],
+    "rank" : 1292,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 14, 14 ],
+    "rank" : 1376,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 14 ],
+    "rank" : 1260,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 14 ],
+    "rank" : 1234,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 14 ],
+    "rank" : 1389,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 14 ],
+    "rank" : 1370,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 14, 14 ],
+    "rank" : 1484,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 14, 14 ],
+    "rank" : 1449,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 13, 14 ],
+    "rank" : 1511,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 14, 14 ],
+    "rank" : 1614,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 14, 14 ],
+    "rank" : 1725,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 14, 14 ],
+    "rank" : 1719,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 15 ],
+    "rank" : 53,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 15 ],
+    "rank" : 75,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 15 ],
+    "rank" : 96,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 15 ],
+    "rank" : 118,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 15 ],
+    "rank" : 141,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 15 ],
+    "rank" : 164,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 15 ],
+    "rank" : 188,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 15 ],
+    "rank" : 210,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 10, 15 ],
+    "rank" : 233,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 11, 15 ],
+    "rank" : 255,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 12, 15 ],
+    "rank" : 278,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 13, 15 ],
+    "rank" : 300,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 14, 15 ],
+    "rank" : 323,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 15, 15 ],
+    "rank" : 345,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 15 ],
+    "rank" : 105,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 15 ],
+    "rank" : 103,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 15 ],
+    "rank" : 137,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 15 ],
+    "rank" : 136,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 15 ],
+    "rank" : 169,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 15 ],
+    "rank" : 204,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 15 ],
+    "rank" : 200,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 15 ],
+    "rank" : 236,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 15 ],
+    "rank" : 235,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 15 ],
+    "rank" : 270,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 15 ],
+    "rank" : 304,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 15 ],
+    "rank" : 303,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 15 ],
+    "rank" : 335,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 15 ],
+    "rank" : 373,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 15 ],
+    "rank" : 369,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 15 ],
+    "rank" : 405,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 15 ],
+    "rank" : 400,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 15 ],
+    "rank" : 439,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 15 ],
+    "rank" : 435,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 14, 15 ],
+    "rank" : 470,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 14, 15 ],
+    "rank" : 469,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 15, 15 ],
+    "rank" : 504,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 15, 15 ],
+    "rank" : 503,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 15 ],
+    "rank" : 176,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 15 ],
+    "rank" : 221,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 15 ],
+    "rank" : 263,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 15 ],
+    "rank" : 305,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 15 ],
+    "rank" : 339,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 15 ],
+    "rank" : 375,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 15 ],
+    "rank" : 417,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 15 ],
+    "rank" : 413,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 15 ],
+    "rank" : 458,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 15 ],
+    "rank" : 449,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 15 ],
+    "rank" : 488,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 15 ],
+    "rank" : 480,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 13, 15 ],
+    "rank" : 536,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 13, 15 ],
+    "rank" : 520,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 14, 15 ],
+    "rank" : 572,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 14, 15 ],
+    "rank" : 557,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 15, 15 ],
+    "rank" : 599,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 15, 15 ],
+    "rank" : 596,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 15 ],
+    "rank" : 262,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 15 ],
+    "rank" : 320,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 15 ],
+    "rank" : 318,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 15 ],
+    "rank" : 377,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 15 ],
+    "rank" : 375,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 15 ],
+    "rank" : 421,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 15 ],
+    "rank" : 419,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 15 ],
+    "rank" : 468,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 15 ],
+    "rank" : 463,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 10, 15 ],
+    "rank" : 519,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 15 ],
+    "rank" : 577,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 15 ],
+    "rank" : 575,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 15 ],
+    "rank" : 612,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 15 ],
+    "rank" : 675,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 15 ],
+    "rank" : 672,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 14, 15 ],
+    "rank" : 722,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 14, 15 ],
+    "rank" : 721,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 15, 15 ],
+    "rank" : 761,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 15 ],
+    "rank" : 371,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 15 ],
+    "rank" : 360,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 15 ],
+    "rank" : 435,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 15 ],
+    "rank" : 430,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 15 ],
+    "rank" : 484,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 15 ],
+    "rank" : 480,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 15 ],
+    "rank" : 538,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 15 ],
+    "rank" : 529,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 10, 15 ],
+    "rank" : 594,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 15 ],
+    "rank" : 653,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 15 ],
+    "rank" : 703,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 15 ],
+    "rank" : 686,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 13, 15 ],
+    "rank" : 763,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 14, 15 ],
+    "rank" : 814,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 15, 15 ],
+    "rank" : 868,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 15, 15 ],
+    "rank" : 859,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 15 ],
+    "rank" : 511,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 15 ],
+    "rank" : 508,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 15 ],
+    "rank" : 572,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 15 ],
+    "rank" : 557,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 15 ],
+    "rank" : 639,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 15 ],
+    "rank" : 634,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 15 ],
+    "rank" : 694,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 15 ],
+    "rank" : 778,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 15 ],
+    "rank" : 777,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 15 ],
+    "rank" : 815,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 13, 15 ],
+    "rank" : 909,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 14, 15 ],
+    "rank" : 952,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 15, 15 ],
+    "rank" : 1032,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 15 ],
+    "rank" : 639,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 15 ],
+    "rank" : 628,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 15 ],
+    "rank" : 699,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 15 ],
+    "rank" : 784,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 15 ],
+    "rank" : 778,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 15 ],
+    "rank" : 859,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 15 ],
+    "rank" : 848,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 15 ],
+    "rank" : 914,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 15 ],
+    "rank" : 904,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 13, 15 ],
+    "rank" : 991,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 14, 15 ],
+    "rank" : 1063,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 15, 15 ],
+    "rank" : 1137,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 15, 15 ],
+    "rank" : 1130,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 15 ],
+    "rank" : 794,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 15 ],
+    "rank" : 760,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 15 ],
+    "rank" : 864,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 15 ],
+    "rank" : 956,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 15 ],
+    "rank" : 1012,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 15 ],
+    "rank" : 996,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 13, 15 ],
+    "rank" : 1119,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 14, 15 ],
+    "rank" : 1179,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 14, 15 ],
+    "rank" : 1175,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 15, 15 ],
+    "rank" : 1276,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 15, 15 ],
+    "rank" : 1236,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 10, 15 ],
+    "rank" : 957,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 11, 15 ],
+    "rank" : 1050,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 12, 15 ],
+    "rank" : 1122,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 13, 15 ],
+    "rank" : 1230,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 14, 15 ],
+    "rank" : 1314,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 15, 15 ],
+    "rank" : 1389,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 15, 15 ],
+    "rank" : 1385,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 11, 15 ],
+    "rank" : 1169,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 15 ],
+    "rank" : 1234,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 13, 15 ],
+    "rank" : 1377,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 13, 15 ],
+    "rank" : 1371,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 14, 15 ],
+    "rank" : 1432,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 15, 15 ],
+    "rank" : 1548,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 15, 15 ],
+    "rank" : 1540,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 15 ],
+    "rank" : 1332,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 15 ],
+    "rank" : 1280,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 15 ],
+    "rank" : 1470,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 15 ],
+    "rank" : 1442,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 14, 15 ],
+    "rank" : 1546,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 14, 15 ],
+    "rank" : 1538,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 15, 15 ],
+    "rank" : 1650,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 15, 15 ],
+    "rank" : 1600,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 13, 15 ],
+    "rank" : 1605,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 14, 15 ],
+    "rank" : 1681,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 15, 15 ],
+    "rank" : 1797,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 14, 15 ],
+    "rank" : 1798,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 15, 15 ],
+    "rank" : 1895,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 15, 15 ],
+    "rank" : 1890,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 15, 15, 15 ],
+    "rank" : 2058,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 2, 16 ],
+    "rank" : 56,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 3, 16 ],
+    "rank" : 80,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 4, 16 ],
+    "rank" : 102,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 5, 16 ],
+    "rank" : 126,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 6, 16 ],
+    "rank" : 150,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 7, 16 ],
+    "rank" : 175,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 8, 16 ],
+    "rank" : 200,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 9, 16 ],
+    "rank" : 224,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 10, 16 ],
+    "rank" : 248,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 11, 16 ],
+    "rank" : 272,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 12, 16 ],
+    "rank" : 296,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 13, 16 ],
+    "rank" : 320,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 14, 16 ],
+    "rank" : 344,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 15, 16 ],
+    "rank" : 368,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 2, 16, 16 ],
+    "rank" : 392,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 16 ],
+    "rank" : 111,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 3, 16 ],
+    "rank" : 109,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 4, 16 ],
+    "rank" : 146,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 5, 16 ],
+    "rank" : 180,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 16 ],
+    "rank" : 216,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 6, 16 ],
+    "rank" : 214,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 16 ],
+    "rank" : 252,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 7, 16 ],
+    "rank" : 251,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 8, 16 ],
+    "rank" : 288,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 16 ],
+    "rank" : 326,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 9, 16 ],
+    "rank" : 323,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 10, 16 ],
+    "rank" : 355,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 16 ],
+    "rank" : 396,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 11, 16 ],
+    "rank" : 394,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 16 ],
+    "rank" : 432,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 12, 16 ],
+    "rank" : 428,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 16 ],
+    "rank" : 466,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 13, 16 ],
+    "rank" : 464,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 14, 16 ],
+    "rank" : 500,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 15, 16 ],
+    "rank" : 534,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 16, 16 ],
+    "rank" : 571,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 3, 16, 16 ],
+    "rank" : 569,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 4, 16 ],
+    "rank" : 188,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 5, 16 ],
+    "rank" : 235,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 6, 16 ],
+    "rank" : 276,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 7, 16 ],
+    "rank" : 322,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 8, 16 ],
+    "rank" : 357,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 9, 16 ],
+    "rank" : 398,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 10, 16 ],
+    "rank" : 441,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 11, 16 ],
+    "rank" : 480,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 12, 16 ],
+    "rank" : 513,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 13, 16 ],
+    "rank" : 560,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 14, 16 ],
+    "rank" : 598,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 15, 16 ],
+    "rank" : 640,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 15, 16 ],
+    "rank" : 632,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 4, 16, 16 ],
+    "rank" : 666,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 5, 16 ],
+    "rank" : 280,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 6, 16 ],
+    "rank" : 340,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 16 ],
+    "rank" : 400,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 7, 16 ],
+    "rank" : 398,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 8, 16 ],
+    "rank" : 445,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 16 ],
+    "rank" : 503,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 9, 16 ],
+    "rank" : 497,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 10, 16 ],
+    "rank" : 549,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 11, 16 ],
+    "rank" : 609,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 16 ],
+    "rank" : 657,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 12, 16 ],
+    "rank" : 655,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 16 ],
+    "rank" : 718,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 13, 16 ],
+    "rank" : 717,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 14, 16 ],
+    "rank" : 769,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 14, 16 ],
+    "rank" : 768,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 15, 16 ],
+    "rank" : 813,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 5, 16, 16 ],
+    "rank" : 868,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 16 ],
+    "rank" : 392,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 6, 16 ],
+    "rank" : 385,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 16 ],
+    "rank" : 460,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 7, 16 ],
+    "rank" : 457,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 8, 16 ],
+    "rank" : 510,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 16 ],
+    "rank" : 572,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 9, 16 ],
+    "rank" : 552,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 10, 16 ],
+    "rank" : 630,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 11, 16 ],
+    "rank" : 684,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 12, 16 ],
+    "rank" : 736,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 13, 16 ],
+    "rank" : 816,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 13, 16 ],
+    "rank" : 798,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 14, 16 ],
+    "rank" : 864,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 15, 16 ],
+    "rank" : 920,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 6, 16, 16 ],
+    "rank" : 972,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 16 ],
+    "rank" : 540,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 7, 16 ],
+    "rank" : 539,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 8, 16 ],
+    "rank" : 598,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 16 ],
+    "rank" : 677,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 9, 16 ],
+    "rank" : 667,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 16 ],
+    "rank" : 742,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 10, 16 ],
+    "rank" : 736,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 11, 16 ],
+    "rank" : 822,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 12, 16 ],
+    "rank" : 878,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 13, 16 ],
+    "rank" : 966,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 13, 16 ],
+    "rank" : 962,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 14, 16 ],
+    "rank" : 1028,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 14, 16 ],
+    "rank" : 1022,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 15, 16 ],
+    "rank" : 1089,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 15, 16 ],
+    "rank" : 1083,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 16, 16 ],
+    "rank" : 1158,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 7, 16, 16 ],
+    "rank" : 1148,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 8, 16 ],
+    "rank" : 666,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 9, 16 ],
+    "rank" : 735,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 16 ],
+    "rank" : 826,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 10, 16 ],
+    "rank" : 822,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 16 ],
+    "rank" : 914,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 11, 16 ],
+    "rank" : 904,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 12, 16 ],
+    "rank" : 960,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 13, 16 ],
+    "rank" : 1064,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 13, 16 ],
+    "rank" : 1054,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 14, 16 ],
+    "rank" : 1127,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 14, 16 ],
+    "rank" : 1104,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 15, 16 ],
+    "rank" : 1203,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 15, 16 ],
+    "rank" : 1185,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 16, 16 ],
+    "rank" : 1260,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 8, 16, 16 ],
+    "rank" : 1230,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 16 ],
+    "rank" : 824,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 9, 16 ],
+    "rank" : 822,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 16 ],
+    "rank" : 920,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 10, 16 ],
+    "rank" : 916,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 11, 16 ],
+    "rank" : 996,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 16 ],
+    "rank" : 1074,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 12, 16 ],
+    "rank" : 1035,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 13, 16 ],
+    "rank" : 1167,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 14, 16 ],
+    "rank" : 1270,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 14, 16 ],
+    "rank" : 1254,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 15, 16 ],
+    "rank" : 1320,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 9, 16, 16 ],
+    "rank" : 1380,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 10, 16 ],
+    "rank" : 1008,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 11, 16 ],
+    "rank" : 1112,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 12, 16 ],
+    "rank" : 1190,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 12, 16 ],
+    "rank" : 1176,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 13, 16 ],
+    "rank" : 1326,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 13, 16 ],
+    "rank" : 1318,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 14, 16 ],
+    "rank" : 1418,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 14, 16 ],
+    "rank" : 1398,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 15, 16 ],
+    "rank" : 1484,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 15, 16 ],
+    "rank" : 1482,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 16, 16 ],
+    "rank" : 1578,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 10, 16, 16 ],
+    "rank" : 1560,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 11, 16 ],
+    "rank" : 1230,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 16 ],
+    "rank" : 1306,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 12, 16 ],
+    "rank" : 1278,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 13, 16 ],
+    "rank" : 1458,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 13, 16 ],
+    "rank" : 1446,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 14, 16 ],
+    "rank" : 1550,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 14, 16 ],
+    "rank" : 1520,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 15, 16 ],
+    "rank" : 1629,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 15, 16 ],
+    "rank" : 1605,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 16, 16 ],
+    "rank" : 1752,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 11, 16, 16 ],
+    "rank" : 1724,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 12, 16 ],
+    "rank" : 1380,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 16 ],
+    "rank" : 1544,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 13, 16 ],
+    "rank" : 1509,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 14, 16 ],
+    "rank" : 1663,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 14, 16 ],
+    "rank" : 1617,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 15, 16 ],
+    "rank" : 1725,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 16, 16 ],
+    "rank" : 1862,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 12, 16, 16 ],
+    "rank" : 1815,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 13, 16 ],
+    "rank" : 1711,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 13, 16 ],
+    "rank" : 1704,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 14, 16 ],
+    "rank" : 1820,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 14, 16 ],
+    "rank" : 1800,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 15, 16 ],
+    "rank" : 1885,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 16, 16 ],
+    "rank" : 2038,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 13, 16, 16 ],
+    "rank" : 2022,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 14, 16 ],
+    "rank" : 1943,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 14, 16 ],
+    "rank" : 1931,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 15, 16 ],
+    "rank" : 2043,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 15, 16 ],
+    "rank" : 2016,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 16, 16 ],
+    "rank" : 2170,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 14, 16, 16 ],
+    "rank" : 2128,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 15, 15, 16 ],
+    "rank" : 2132,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 15, 16, 16 ],
+    "rank" : 2302,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 15, 16, 16 ],
+    "rank" : 2262,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 16, 16, 16 ],
+    "rank" : 2401,
+    "field" : "Z",
+    "source" : "perminov:status.json"
+  }, {
+    "format" : [ 16, 16, 16 ],
+    "rank" : 2304,
+    "field" : "Q",
+    "source" : "perminov:status.json"
+  } ]
+}

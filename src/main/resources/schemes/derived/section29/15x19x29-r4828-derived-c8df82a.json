@@ -1,0 +1,58 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 9], allocB=[9, 10], allocC=[14, 15], leaves=[9x10x15-r864-perminov_ZT-477779d, 9x9x14-r720-perminov_Q-53d432d, 6x9x15-r529-perminov_Q-5fdb986, ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨9,10,2⟩), Project(9x10x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])), 6x10x15-r594-perminov_ZT-183864a, 9x9x15-r760-perminov_Q-19f51a1, KronProduct(2x2x2, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]))])",
+  "lineage_compact": "R[2x2x2; 6,9 | 9,10 | 14,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 9],
+    "allocB": [9, 10],
+    "allocC": [14, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "9x10x15-r864-perminov_ZT-477779d"},
+      {"op": "Atom", "ref": "9x9x14-r720-perminov_Q-53d432d"},
+      {"op": "Atom", "ref": "6x9x15-r529-perminov_Q-5fdb986"},
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 10,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+        },
+        "right": {
+          "op": "Project",
+          "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          "child": {"op": "Atom", "ref": "9x10x13@8c62898"}
+        }
+      },
+      {"op": "Atom", "ref": "6x10x15-r594-perminov_ZT-183864a"},
+      {"op": "Atom", "ref": "9x9x15-r760-perminov_Q-19f51a1"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    ]
+  },
+  "n": [15, 19, 29],
+  "m": 4828,
+  "hash": "c8df82ae6a9e5fcd989f92f2fbd44803b9b8dcda6894e8d01123a3376c631ed8",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

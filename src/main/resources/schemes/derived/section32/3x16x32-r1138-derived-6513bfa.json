@@ -1,0 +1,74 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,1,2>=2 :: CANONICAL, allocA=[3], allocB=[16], allocC=[16, 16], leaves=[ConcatCols(SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x4x6-r54-alphaevolve-c197868)))), OrientAs(3x10x16-r355-perminov_ZT-6cc036e, ⟨3,16,10⟩))])",
+  "lineage_compact": "R[AxisSplit<1,1,2>=2 :: CANONICAL; 3 | 16 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,1,2>=2 :: CANONICAL"},
+    "allocA": [3],
+    "allocB": [16],
+    "allocC": [16, 16],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "right": {
+            "op": "SumInner",
+            "left": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            },
+            "right": {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [0, 1, 2],
+                "keepP": [1, 2, 3, 4, 5, 6],
+                "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+              },
+              "right": {
+                "op": "SumInner",
+                "left": {
+                  "op": "Project",
+                  "keepN": [0, 1, 2],
+                  "keepM": [0, 1, 2],
+                  "keepP": [1, 2, 3, 4, 5, 6],
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                },
+                "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              }
+            }
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 16,
+          "p": 10,
+          "child": {"op": "Atom", "ref": "3x10x16-r355-perminov_ZT-6cc036e"}
+        }
+      }
+    ]
+  },
+  "n": [3, 16, 32],
+  "m": 1138,
+  "hash": "6513bfa4a101352b9a7d39d715277776abc9c315d100aef010cb43fe264986cb",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

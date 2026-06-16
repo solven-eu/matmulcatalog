@@ -1,0 +1,128 @@
+{
+  "lineage_str": "ConcatRows(SumInner(3x3x3, SumInner(SumInner(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), SumInner(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))), SumInner(ConcatRows(ConcatRows(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), ConcatRows(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))), Recombination(base=Transpose(2x4x4, perm=\"ABC->CBA\"), allocA=[6, 6, 6, 6], allocB=[6, 6, 6, 6], allocC=[2, 1], leaves=[naive-6x6x1, OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,6,2⟩)])))",
+  "lineage_compact": "3x3x3 +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m R[2x4x4^ABC->CBA; 6,6,6,6 | 6,6,6,6 | 2,1]",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "3x3x3@e134de1"},
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        },
+        "right": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        }
+      }
+    },
+    "bottom": {
+      "op": "SumInner",
+      "left": {
+        "op": "ConcatRows",
+        "top": {
+          "op": "ConcatRows",
+          "top": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          },
+          "bottom": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          }
+        },
+        "bottom": {
+          "op": "ConcatRows",
+          "top": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          },
+          "bottom": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          }
+        }
+      },
+      "right": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"}
+        },
+        "allocA": [6, 6, 6, 6],
+        "allocB": [6, 6, 6, 6],
+        "allocC": [2, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-6x6x1"},
+          {
+            "op": "OrientAs",
+            "n": 6,
+            "m": 6,
+            "p": 2,
+            "child": {
+              "op": "Recombination",
+              "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+              "allocA": [1, 1],
+              "allocB": [1, 1, 1, 1, 1, 1],
+              "allocC": [1, 1, 1, 1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "n": [27, 27, 3],
+  "m": 1599,
+  "hash": "a5ef06411fc1f15073c203d61629e6c4ec1ada30ef53c375854dca2d3b05246a",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

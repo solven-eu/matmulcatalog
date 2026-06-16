@@ -1,0 +1,33 @@
+{
+  "lineage_str": "SumInner(OrientAs(4x4x10-r115-perminov_ZT-022a32b, ⟨4,10,4⟩), OrientAs(4x4x10-r115-perminov_ZT-022a32b, ⟨4,10,4⟩))",
+  "lineage_compact": "4x4x10-r115-perminov_ZT-022a32b→⟨4,10,4⟩ +m 4x4x10-r115-perminov_ZT-022a32b→⟨4,10,4⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 10,
+      "p": 4,
+      "child": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 10,
+      "p": 4,
+      "child": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+    }
+  },
+  "n": [4, 20, 4],
+  "m": 230,
+  "hash": "be491ac658bb86158f1f6ac2ddf7e25fa19c0ae1c3cb7252b5007e8da150e605",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

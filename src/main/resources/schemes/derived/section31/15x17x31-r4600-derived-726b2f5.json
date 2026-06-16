@@ -1,0 +1,63 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 6], allocB=[9, 8], allocC=[15, 16], leaves=[9x9x16-r822-perminov_Q-d889f18, 9x9x15-r760-perminov_Q-19f51a1, OrientAs(8x9x15-r699-perminov_Z-c92bc67, ⟨9,8,15⟩), Serendipitous(2x3x8 ⊗ ⟨3,3,2⟩), OrientAs(8x9x16-r735-perminov_ZT-7351588, ⟨9,8,16⟩), KronProduct(2x4x5-r32-alphaevolve-6216e15, Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]))])",
+  "lineage_compact": "R[2x2x2; 9,6 | 9,8 | 15,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [9, 6],
+    "allocB": [9, 8],
+    "allocC": [15, 16],
+    "leaves": [
+      {"op": "Atom", "ref": "9x9x16-r822-perminov_Q-d889f18"},
+      {"op": "Atom", "ref": "9x9x15-r760-perminov_Q-19f51a1"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 8,
+        "p": 15,
+        "child": {"op": "Atom", "ref": "8x9x15-r699-perminov_Z-c92bc67"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x3x8@68085a4"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 8,
+        "p": 16,
+        "child": {"op": "Atom", "ref": "8x9x16-r735-perminov_ZT-7351588"}
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+        "inner": {
+          "op": "Recombination",
+          "base": {
+            "op": "Transpose",
+            "perm": "ABC->CAB",
+            "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+          },
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1],
+          "allocC": [1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    ]
+  },
+  "n": [15, 17, 31],
+  "m": 4600,
+  "hash": "726b2f5e1df2f03ecdc44a43b3e3eebd2c250207727f425904df648ec8817606",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

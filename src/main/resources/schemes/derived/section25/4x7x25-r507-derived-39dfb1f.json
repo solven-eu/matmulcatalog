@@ -1,0 +1,40 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(4x5x7-r104-perminov_ZT-4a1b410, ⟨4,7,5⟩), ConcatCols(Recombination(base=ext[4x7x8-r161-perminov_ZT-281318d.json] / <4,7,8>=161 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x7x12-r242-perminov_ZT-733190e))",
+  "lineage_compact": "4x5x7-r104-perminov_ZT-4a1b410→⟨4,7,5⟩ +p R[ext[4x7x8-r161-perminov_ZT-281318d.json] / <4,7,8>=161 :: CANONICAL; 1,1,1,1 | 1,1,1,1,1,1,1 | 1,1,1,1,1,1,1,1] +p 4x7x12-r242-perminov_ZT-733190e",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 7,
+      "p": 5,
+      "child": {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"}
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[4x7x8-r161-perminov_ZT-281318d.json] / <4,7,8>=161 :: CANONICAL"},
+        "allocA": [1, 1, 1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {"op": "Atom", "ref": "4x7x12-r242-perminov_ZT-733190e"}
+    }
+  },
+  "n": [4, 7, 25],
+  "m": 507,
+  "hash": "39dfb1fe6cd06850bf4adce6bf914b5fc15a7c314e011ddb0007dfe0efe2a4c0",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

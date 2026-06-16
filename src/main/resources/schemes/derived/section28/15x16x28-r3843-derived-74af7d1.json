@@ -1,0 +1,34 @@
+{
+  "lineage_str": "KronProduct(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(4x4x5-r61-alphaevolve-c3a71f1, ⟨5,4,4⟩))",
+  "lineage_compact": "R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 4x4x5-r61-alphaevolve-c3a71f1→⟨5,4,4⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+      "allocA": [1, 1, 1],
+      "allocB": [1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "inner": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 4,
+      "p": 4,
+      "child": {"op": "Atom", "ref": "4x4x5-r61-alphaevolve-c3a71f1"}
+    }
+  },
+  "n": [15, 16, 28],
+  "m": 3843,
+  "hash": "74af7d100bc7f9972d6c360be571f551df14a4ad014210c5c9665f76a74e5b8d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

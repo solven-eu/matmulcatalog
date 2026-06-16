@@ -1,0 +1,40 @@
+{
+  "lineage_str": "KronProduct(OrientAs(Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨2,7,5⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))",
+  "lineage_compact": "R[ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL; 1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1]→⟨2,7,5⟩ ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "OrientAs",
+      "n": 2,
+      "m": 7,
+      "p": 5,
+      "child": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    },
+    "inner": {
+      "op": "Project",
+      "keepN": [0, 1, 2],
+      "keepM": [0, 1, 2],
+      "keepP": [1, 2, 3, 4, 5, 6],
+      "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+    }
+  },
+  "n": [6, 21, 30],
+  "m": 2200,
+  "hash": "18870596ae1f73f1c99dd6aeef1b09740476f417e95cf9701a28c95f0f33f2c3",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,79 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 8], allocB=[8, 9], allocC=[12, 14], leaves=[Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,3,2⟩), Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨4,2,4⟩), KronProduct(2x2x2, 4x4x7-r85-alphaevolve-d4e8670), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 2], allocB=[3, 3, 3], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x3x3, 2x3x3)])])",
+  "lineage_compact": "R[2x2x2; 8,8 | 8,9 | 12,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [8, 8],
+    "allocB": [8, 9],
+    "allocC": [12, 14],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 3,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 3,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 2,
+        "p2": 4,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 4,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "4x4x7-r85-alphaevolve-d4e8670"}
+      },
+      {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+        },
+        "allocA": [3, 3, 2],
+        "allocB": [3, 3, 3],
+        "allocC": [6, 6],
+        "leaves": [
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+            "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+          }
+        ]
+      }
+    ]
+  },
+  "n": [16, 17, 26],
+  "m": 4122,
+  "hash": "1b251d5622bde809132fef3748adf9eca6b7432ed769e182e3a598ea950c7f7b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,44 @@
+{
+  "_description": "Border ranks (approximate / limit-of-bilinear) for small ⟨n,m,p⟩ matmul formats. Distinct from exact rank (lower-bounds.json) — border rank R̃ allows ε-perturbation, giving R̃ ≤ R but the gap is often striking. Field-specific. Manually maintained; add entries as new border-rank results are published.",
+  "_schema": {
+    "format": "[n, m, p] — canonical (sorted) ordering",
+    "field": "F2 | R | C | all",
+    "border_rank": "best known upper bound on R̃(⟨n,m,p⟩) — the border rank",
+    "border_rank_lb": "(optional) lower bound on R̃",
+    "tight": "true if upper == lower (exact border rank)",
+    "source": "primary citation key — original paper announcing the result",
+    "year": "publication year",
+    "notes": "context, technique (Bini-style ε-decomposition, Strassen laser, …), comparison to exact rank"
+  },
+  "entries": [
+    {
+      "format": [2, 2, 2],
+      "field": "C",
+      "border_rank": 7,
+      "border_rank_lb": 7,
+      "tight": true,
+      "source": "Landsberg 2006",
+      "year": 2006,
+      "notes": "R̃(⟨2,2,2⟩) = R(⟨2,2,2⟩) = 7 over C. No border-rank improvement over exact rank for the 2×2 case."
+    },
+    {
+      "format": [2, 2, 3],
+      "field": "C",
+      "border_rank": 10,
+      "tight": false,
+      "source": "Bini-Capalbo-Lotti 1979",
+      "year": 1979,
+      "notes": "First demonstration that border rank can be STRICTLY smaller than rank: R̃(⟨2,2,3⟩) ≤ 10 via Bini's ε-decomposition vs R(⟨2,2,3⟩) = 11. The seminal example for the laser method."
+    },
+    {
+      "format": [3, 3, 3],
+      "field": "C",
+      "border_rank": 19,
+      "tight": false,
+      "source": "Smirnov 2017",
+      "year": 2017,
+      "notes": "R̃(⟨3,3,3⟩) ≤ 19. Exact rank: 21 lb (Bläser 2003) ≤ R(⟨3,3,3⟩) ≤ 23 (Laderman 1976). Gap of at least 2 from R̃."
+    }
+  ],
+  "_TODO": "Add more shapes from Strassen 1983, Pan TA border-rank constructions, Landsberg-Michalek 2016."
+}

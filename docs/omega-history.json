@@ -1,0 +1,99 @@
+{
+  "_description": "Timeline of upper bounds on the matrix-multiplication exponent ω, the smallest constant such that ⟨n,n,n⟩ matrix multiplication can be performed in O(n^ω) arithmetic operations as n → ∞. Each entry is the announcement of a new ω upper bound, attributed to its primary paper. The lower bound has been ω ≥ 2 (information-theoretic trivial) since the problem was posed; whether ω = 2 is one of the major open problems in algebraic complexity. Pan's 2014 survey (refs [66] + [67]) gives a comprehensive narrative of the progress.",
+  "_schema": {
+    "year": "year of public announcement (preprint or proceedings, whichever first)",
+    "omega_upper": "upper bound on ω announced this year",
+    "method": "headline technique used",
+    "source": "primary citation key",
+    "notes": "context, predecessors, supersession"
+  },
+  "lower_bound": 2.0,
+  "lower_bound_source": "information-theoretic (the n² output entries cannot be produced in fewer than n² operations)",
+  "entries": [
+    {
+      "year": 1969,
+      "omega_upper": 2.8074,
+      "method": "Strassen's 2×2 algorithm + recursion",
+      "source": "Strassen 1969",
+      "notes": "log_2(7) ≈ 2.8074. First breach of the cubic barrier. Defied attack for almost a decade."
+    },
+    {
+      "year": 1978,
+      "omega_upper": 2.7962,
+      "method": "Trilinear aggregation (TA)",
+      "source": "Pan 1978",
+      "notes": "First post-Strassen improvement. Pan introduced TA in his 1972 Russian paper; the 1978 FOCS paper announces the new ω bound. log_70(143,640) < 2.7962."
+    },
+    {
+      "year": 1979,
+      "omega_upper": 2.7799,
+      "method": "Bini's border rank + APA algorithms",
+      "source": "Bini-Capalbo-Lotti 1979",
+      "notes": "First use of approximate (any-precision) algorithms via ε-decompositions: R̃(⟨2,2,3⟩) ≤ 10 vs R(⟨2,2,3⟩) = 11."
+    },
+    {
+      "year": 1981,
+      "omega_upper": 2.522,
+      "method": "Schönhage τ-theorem + disjoint MM aggregation",
+      "source": "Schönhage 1981",
+      "notes": "Major jump: laser-method-style aggregation of multiple disjoint matmuls."
+    },
+    {
+      "year": 1986,
+      "omega_upper": 2.479,
+      "method": "Strassen's laser method",
+      "source": "Strassen 1986",
+      "notes": "Cleaner exposition + refinement of Schönhage's framework."
+    },
+    {
+      "year": 1987,
+      "omega_upper": 2.376,
+      "method": "Coppersmith-Winograd construction",
+      "source": "Coppersmith-Winograd 1987",
+      "notes": "Used the CW tensor; the ⟨2,2,2⟩-anchored exponent that held for ~25 years."
+    },
+    {
+      "year": 2010,
+      "omega_upper": 2.374,
+      "method": "Powers of the CW tensor",
+      "source": "Stothers 2010",
+      "notes": "Marginal improvement (10⁻³)."
+    },
+    {
+      "year": 2012,
+      "omega_upper": 2.3729,
+      "method": "Higher CW tensor powers",
+      "source": "Williams 2012",
+      "notes": "Same family of techniques."
+    },
+    {
+      "year": 2014,
+      "omega_upper": 2.37286,
+      "method": "Refined CW analysis",
+      "source": "Le Gall 2014",
+      "notes": "log of the analysis improved another decimal."
+    },
+    {
+      "year": 2020,
+      "omega_upper": 2.37287,
+      "method": "Refined CW analysis (slight regression in some claims)",
+      "source": "Alman-Williams 2020",
+      "notes": "Different analysis of the same family."
+    },
+    {
+      "year": 2023,
+      "omega_upper": 2.371866,
+      "method": "Improved laser-method analysis",
+      "source": "Duan-Wu-Zhou 2023",
+      "notes": "Builds on Alman-Williams framework."
+    },
+    {
+      "year": 2024,
+      "omega_upper": 2.371552,
+      "method": "Further refinement",
+      "source": "Williams-Xu-Xu-Zhou 2024",
+      "notes": "Current published record (as of January 2026)."
+    }
+  ],
+  "_TODO": "Add small-format-anchored exponents (e.g. Pan's 70×70 → 2.7962 in 1978 was anchored to a specific finite shape; we should record the anchoring shape too). Add Sedoglavic-style ω values from individual ⟨n,n,n⟩ algorithms: ω_anchored = 3·log_n(rank)."
+}

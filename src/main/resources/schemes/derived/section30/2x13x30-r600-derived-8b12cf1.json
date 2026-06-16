@@ -1,0 +1,21 @@
+{
+  "lineage_str": "ConcatCols(2x13x13-r260-hk71-15de91f, 2x13x17-r340-hk71-156febc)",
+  "lineage_compact": "2x13x13-r260-hk71-15de91f +p 2x13x17-r340-hk71-156febc",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "2x13x13-r260-hk71-15de91f"},
+    "right": {"op": "Atom", "ref": "2x13x17-r340-hk71-156febc"}
+  },
+  "n": [2, 13, 30],
+  "m": 600,
+  "hash": "8b12cf1efbb91b534e6d97f4bd6f642ae8426295763938b407ec2f5793eda24d",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

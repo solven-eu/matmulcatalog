@@ -1,0 +1,49 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[11, 11], allocC=[12, 12], leaves=[6x11x12-r521-perminov_ZT-77435fe, SumInner(5x5x12-r204-perminov_ZT-61a6cb7, Recombination(base=2x2x2, allocA=[3, 2], allocB=[3, 3], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x3x3, 2x3x3)]))])",
+  "lineage_compact": "R[2x2x2; 6,5 | 11,11 | 12,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [6, 5],
+    "allocB": [11, 11],
+    "allocC": [12, 12],
+    "leaves": [
+      {"op": "Atom", "ref": "6x11x12-r521-perminov_ZT-77435fe"},
+      {
+        "op": "SumInner",
+        "left": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
+        "right": {
+          "op": "Recombination",
+          "base": {"op": "@ref", "id": "L0"},
+          "allocA": [3, 2],
+          "allocB": [3, 3],
+          "allocC": [6, 6],
+          "leaves": [
+            {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            },
+            {
+              "op": "ConcatCols",
+              "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+              "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "n": [11, 22, 24],
+  "m": 3446,
+  "hash": "c9cd114b1f95b2758284ce5398e244debb5e91888585a61170a420f3490a3275",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

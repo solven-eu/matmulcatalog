@@ -1,0 +1,45 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(4x5x12-r174-perminov_ZT-640e987, ⟨5,12,4⟩), Recombination(base=2x4x4, allocA=[3, 2], allocB=[3, 3, 3, 3], allocC=[6, 6, 6, 6], leaves=[ConcatCols(2x3x3, 2x3x3), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]))",
+  "lineage_compact": "4x5x12-r174-perminov_ZT-640e987→⟨5,12,4⟩ +p R[2x4x4; 3,2 | 3,3,3,3 | 6,6,6,6]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 12,
+      "p": 4,
+      "child": {"op": "Atom", "ref": "4x5x12-r174-perminov_ZT-640e987"}
+    },
+    "right": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"},
+      "allocA": [3, 2],
+      "allocB": [3, 3, 3, 3],
+      "allocC": [6, 6, 6, 6],
+      "leaves": [
+        {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+          "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+        },
+        {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
+      ]
+    }
+  },
+  "n": [5, 12, 28],
+  "m": 1114,
+  "hash": "8d7836c8cd4dbd2f501a414f1d3087c42a3022b0328a08fe1236a77e36dd615a",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

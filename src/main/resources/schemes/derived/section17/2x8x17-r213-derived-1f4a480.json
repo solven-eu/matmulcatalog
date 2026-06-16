@@ -1,0 +1,52 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=ext[2x5x8-r63-perminov_Z-0cda074.json] / <2,8,5>=63 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Recombination(base=ext[2x6x8-r75-perminov_Z-b661843.json] / <2,8,6>=75 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[2x6x8-r75-perminov_Z-b661843.json] / <2,8,6>=75 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])))",
+  "lineage_compact": "R[ext[2x5x8-r63-perminov_Z-0cda074.json] / <2,8,5>=63 :: CANONICAL; 1,1 | 1,1,1,1,1,1,1,1 | 1,1,1,1,1] +p R[ext[2x6x8-r75-perminov_Z-b661843.json] / <2,8,6>=75 :: CANONICAL; 1,1 | 1,1,1,1,1,1,1,1 | 1,1,1,1,1,1] +p R[ext[2x6x8-r75-perminov_Z-b661843.json] / <2,8,6>=75 :: CANONICAL; 1,1 | 1,1,1,1,1,1,1,1 | 1,1,1,1,1,1]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "ext[2x5x8-r63-perminov_Z-0cda074.json] / <2,8,5>=63 :: CANONICAL"},
+      "allocA": [1, 1],
+      "allocB": [1, 1, 1, 1, 1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x6x8-r75-perminov_Z-b661843.json] / <2,8,6>=75 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x6x8-r75-perminov_Z-b661843.json] / <2,8,6>=75 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    }
+  },
+  "n": [2, 8, 17],
+  "m": 213,
+  "hash": "1f4a4801485dd6109be6f336bee5fa679f9f06787947611695cf9fff96ed495f",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

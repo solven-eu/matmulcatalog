@@ -1,0 +1,42 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 6], allocB=[12, 14], allocC=[15, 15], leaves=[Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩), 6x12x15-r686-perminov_Q-a06dc94, KronProduct(2x3x3, 2x4x5-r32-alphaevolve-6216e15), 4x14x15-r557-perminov_Q-423ba1e])",
+  "lineage_compact": "R[2x2x2; 4,6 | 12,14 | 15,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [4, 6],
+    "allocB": [12, 14],
+    "allocC": [15, 15],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 2,
+        "p2": 5,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 7,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {"op": "Atom", "ref": "6x12x15-r686-perminov_Q-a06dc94"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      },
+      {"op": "Atom", "ref": "4x14x15-r557-perminov_Q-423ba1e"}
+    ]
+  },
+  "n": [10, 26, 30],
+  "m": 4594,
+  "hash": "dee30bd3f892f1084c0a13b130baa33e83415dac6cd12e6ed87aad2b416bde51",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

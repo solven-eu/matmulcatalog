@@ -1,0 +1,64 @@
+{
+  "lineage_str": "SumInner(ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), OrientAs(2x9x10-r140-hk71-433453b, ⟨9,2,10⟩))), KronProduct(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩)))",
+  "lineage_compact": "2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +p 2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +p 2x9x10-r140-hk71-433453b→⟨9,2,10⟩ +m R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 2,
+        "p": 9,
+        "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+      },
+      "right": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 2,
+          "p": 9,
+          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 2,
+          "p": 10,
+          "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+        }
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 6,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    }
+  },
+  "n": [9, 26, 28],
+  "m": 3794,
+  "hash": "988136dbe7f1711a606418adf4c0c115a48f74e334e5e06a81578c33374577dd",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

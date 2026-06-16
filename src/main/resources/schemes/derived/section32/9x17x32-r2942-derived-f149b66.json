@@ -1,0 +1,51 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[6, 6, 5], allocC=[4, 4], leaves=[OrientAs(3x4x5-r47-alphatensor_Z-6bc7fbe, ⟨3,5,4⟩), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩)]), Project(9x17x25, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]))",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 3,3,3 | 6,6,5 | 4,4] +p 9x17x25 ↓[0,1,2,3,4,5,6,7,8|0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16|1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->CBA",
+        "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+      },
+      "allocA": [3, 3, 3],
+      "allocB": [6, 6, 5],
+      "allocC": [4, 4],
+      "leaves": [
+        {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 5,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"}
+        },
+        {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 6,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        }
+      ]
+    },
+    "right": {
+      "op": "Project",
+      "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+      "child": {"op": "Atom", "ref": "9x17x25@652ac27302b4af7ecab569afe945de243ac4232c3faa534df19cddf974423587"}
+    }
+  },
+  "n": [9, 17, 32],
+  "m": 2942,
+  "hash": "f149b666279226774ff8ba2824e7dbc5f69ce508bcdc7f73e9e3ce8629a1d4ac",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

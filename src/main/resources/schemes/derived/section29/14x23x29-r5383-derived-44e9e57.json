@@ -1,0 +1,54 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[11, 12], allocC=[14, 15], leaves=[8x12x15-r904-perminov_Q-d2e4dc6, Recombination(base=2x2x2, allocA=[4, 4], allocB=[6, 5], allocC=[7, 7], leaves=[Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x5x7-r104-perminov_ZT-4a1b410]), 6x11x15-r653-perminov_ZT-cecce6d, 8x12x14-r843-perminov_Q-6498e80, 6x12x15-r686-perminov_Q-a06dc94, 8x11x15-r848-perminov_Q-2b9aec6, Serendipitous(2x4x7 ⊗ ⟨3,3,2⟩)])",
+  "lineage_compact": "R[2x2x2; 6,8 | 11,12 | 14,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [6, 8],
+    "allocB": [11, 12],
+    "allocC": [14, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "8x12x15-r904-perminov_Q-d2e4dc6"},
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [4, 4],
+        "allocB": [6, 5],
+        "allocC": [7, 7],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL"},
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"}
+        ]
+      },
+      {"op": "Atom", "ref": "6x11x15-r653-perminov_ZT-cecce6d"},
+      {"op": "Atom", "ref": "8x12x14-r843-perminov_Q-6498e80"},
+      {"op": "Atom", "ref": "6x12x15-r686-perminov_Q-a06dc94"},
+      {"op": "Atom", "ref": "8x11x15-r848-perminov_Q-2b9aec6"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x4x7@bd4f4b32aeac118787713525801ac95e5a87f1c24c472c0b52dd26e659057a61"}
+      }
+    ]
+  },
+  "n": [14, 23, 29],
+  "m": 5383,
+  "hash": "44e9e578fdbfae67258267326d4542f4b219de49c63f4decf1b262dfe6e00a78",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

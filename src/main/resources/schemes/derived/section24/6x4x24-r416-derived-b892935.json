@@ -1,0 +1,44 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(2x2x2, Recombination(base=Transpose(2x3x4, perm=\"ABC->BAC\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])), OrientAs(4x6x16-r276-perminov_ZT-68c7c8b, ⟨6,4,16⟩))",
+  "lineage_compact": "2x2x2 ⊗ R[2x3x4^ABC->BAC; 1,1,1 | 1,1 | 1,1,1,1] +p 4x6x16-r276-perminov_ZT-68c7c8b→⟨6,4,16⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "inner": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->BAC",
+          "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+        },
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1],
+        "allocC": [1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 6,
+      "m": 4,
+      "p": 16,
+      "child": {"op": "Atom", "ref": "4x6x16-r276-perminov_ZT-68c7c8b"}
+    }
+  },
+  "n": [6, 4, 24],
+  "m": 416,
+  "hash": "b892935524a65fccc5f4f470af57129eaf222d4762a87000f75c4a5320b79ae3",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

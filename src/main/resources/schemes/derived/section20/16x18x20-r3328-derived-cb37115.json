@@ -1,0 +1,37 @@
+{
+  "lineage_str": "KronProduct(Recombination(base=Transpose(2x4x5, perm=\"ABC->BAC\"), allocA=[1, 1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(4x4x9-r104-smirnov22-9759674, ⟨4,9,4⟩))",
+  "lineage_compact": "R[2x4x5^ABC->BAC; 1,1,1,1 | 1,1 | 1,1,1,1,1] ⊗ 4x4x9-r104-smirnov22-9759674→⟨4,9,4⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->BAC",
+        "child": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"}
+      },
+      "allocA": [1, 1, 1, 1],
+      "allocB": [1, 1],
+      "allocC": [1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "inner": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 9,
+      "p": 4,
+      "child": {"op": "Atom", "ref": "4x4x9-r104-smirnov22-9759674"}
+    }
+  },
+  "n": [16, 18, 20],
+  "m": 3328,
+  "hash": "cb3711507c9240f7210a706470d46b425b5cc723b5104388b032b7d4a0764bde",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

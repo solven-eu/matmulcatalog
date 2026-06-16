@@ -1,0 +1,41 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩)), Project(6x10x25, keepN=[0, 1, 2, 3, 4, 5], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]))",
+  "lineage_compact": "2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +m 2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +p 6x10x25 ↓[0,1,2,3,4,5|0,1,2,3,4,5,6,7,8,9|0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 5,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 5,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      }
+    },
+    "right": {
+      "op": "Project",
+      "keepN": [0, 1, 2, 3, 4, 5],
+      "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      "child": {"op": "Atom", "ref": "6x10x25@9086a32d70bdeaadd259e85777400a4689805122a7b9070f894272da09a85203"}
+    }
+  },
+  "n": [6, 10, 26],
+  "m": 1006,
+  "hash": "9c4e9827849b4f1c5ad03fce6a9cb758f5baadd25e61b4818a7760358de469bc",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

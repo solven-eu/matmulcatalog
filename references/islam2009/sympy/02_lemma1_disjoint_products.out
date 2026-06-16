@@ -1,0 +1,12 @@
+Islam 2009 §5.3: Lemma 1 verification
+======================================================================
+
+── n = 2   (m = 3)  generic blocks padded to zero row/col sums ──
+   computing T(A,B,C) + T(U,V,W) + T(X,Y,Z) ...
+   computing S(...) − R(A,V,Z) − R(U,Y,C) − R(X,B,W) − U(A,Y,C,W,Z) − U(U,B,W,Z,C) − U(X,V,Z,C,W) ...
+   OK — Lemma 1 holds for m = 3
+
+======================================================================
+   m=3: OK
+
+[Phase A step 2] PASS — Lemma 1 holds under zero row/col-sum input.

@@ -1,0 +1,59 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,9,2⟩), OrientAs(2x9x15-r210-hk71-51da406, ⟨9,15,2⟩)), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,8,5⟩)))",
+  "lineage_compact": "2x9x9-r126-hk71-1e432f3→⟨9,9,2⟩ +m 2x9x15-r210-hk71-51da406→⟨9,15,2⟩ +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ R[ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL; 1,1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1,1]→⟨3,8,5⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 9,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 15,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x9x15-r210-hk71-51da406"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 8,
+        "p": 5,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    }
+  },
+  "n": [9, 24, 32],
+  "m": 3936,
+  "hash": "94e63fbe90b5c92757dd4711688d378e015f1e89802ca1f05f24a76491dc6cee",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

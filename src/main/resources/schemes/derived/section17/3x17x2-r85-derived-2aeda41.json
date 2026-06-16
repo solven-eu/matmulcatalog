@@ -1,0 +1,80 @@
+{
+  "lineage_str": "SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x3x5-r25-alphatensor_Z-31f79a7, ⟨3,5,2⟩)))))",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] +m R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] +m R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] +m R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] +m 2x3x5-r25-alphatensor_Z-31f79a7→⟨3,5,2⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "id": "L0",
+        "perm": "ABC->CBA",
+        "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+      },
+      "allocA": [1, 1, 1],
+      "allocB": [1, 1, 1],
+      "allocC": [1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1],
+        "allocC": [1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "Recombination",
+          "base": {"op": "@ref", "id": "L0"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1],
+          "allocC": [1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "right": {
+          "op": "SumInner",
+          "left": {
+            "op": "Recombination",
+            "base": {"op": "@ref", "id": "L0"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 5,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"}
+          }
+        }
+      }
+    }
+  },
+  "n": [3, 17, 2],
+  "m": 85,
+  "hash": "2aeda41bf1671c24d2527f036743d73542559f7adeecf610e3d888663c8131f7",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

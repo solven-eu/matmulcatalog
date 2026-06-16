@@ -1,0 +1,60 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 9], allocB=[12, 13], allocC=[14, 16], leaves=[9x13x16-r1167-perminov_ZT-c77e651, 8x12x14-r843-perminov_Q-6498e80, ConcatCols(SumInner(OrientAs(2x5x8-r63-perminov_Z-0cda074, ⟨8,5,2⟩), OrientAs(2x8x8-r100-hk71-1fe5b7a, ⟨8,8,2⟩)), OrientAs(8x12x13-r781-perminov_Q-f0b186c, ⟨8,13,12⟩)), Project(9x13x16, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 8x13x16-r1054-perminov_Q-5c79aeb, 9x13x14-r1024-perminov_Q-3386a90])",
+  "lineage_compact": "R[2x2x2; 8,9 | 12,13 | 14,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [8, 9],
+    "allocB": [12, 13],
+    "allocC": [14, 16],
+    "leaves": [
+      {"op": "Atom", "ref": "9x13x16-r1167-perminov_ZT-c77e651"},
+      {"op": "Atom", "ref": "8x12x14-r843-perminov_Q-6498e80"},
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "OrientAs",
+            "n": 8,
+            "m": 5,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 8,
+            "m": 8,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x8x8-r100-hk71-1fe5b7a"}
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 8,
+          "m": 13,
+          "p": 12,
+          "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+        }
+      },
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "child": {"op": "Atom", "ref": "9x13x16@4b0ebf7"}
+      },
+      {"op": "Atom", "ref": "8x13x16-r1054-perminov_Q-5c79aeb"},
+      {"op": "Atom", "ref": "9x13x14-r1024-perminov_Q-3386a90"}
+    ]
+  },
+  "n": [17, 25, 30],
+  "m": 7102,
+  "hash": "a2d36a1bad2612db6a5a1defff16b176160f6bf9c21e6b0578aab0ad4cfe5ff3",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

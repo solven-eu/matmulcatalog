@@ -1,0 +1,29 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(6x8x16-r510-perminov_ZT-d67ed06, ⟨8,16,6⟩), KronProduct(2x4x5-r32-alphaevolve-6216e15, 4x4x4))",
+  "lineage_compact": "6x8x16-r510-perminov_ZT-d67ed06→⟨8,16,6⟩ +p 2x4x5-r32-alphaevolve-6216e15 ⊗ 4x4x4",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 8,
+      "m": 16,
+      "p": 6,
+      "child": {"op": "Atom", "ref": "6x8x16-r510-perminov_ZT-d67ed06"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+      "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+    }
+  },
+  "n": [8, 16, 26],
+  "m": 2046,
+  "hash": "ad784f27a4712bc3f0112bdee2dd1e2767a1d8b3c7629020a752d68181fc682d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

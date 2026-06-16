@@ -1,0 +1,31 @@
+{
+  "lineage_str": "ConcatCols(4x8x8-r180-perminov_ZT-7ab537a, ConcatCols(KronProduct(2x2x2, 2x4x5-r32-alphaevolve-6216e15), KronProduct(2x2x2, 2x4x5-r32-alphaevolve-6216e15)))",
+  "lineage_compact": "4x8x8-r180-perminov_ZT-7ab537a +p 2x2x2 ⊗ 2x4x5-r32-alphaevolve-6216e15 +p 2x2x2 ⊗ 2x4x5-r32-alphaevolve-6216e15",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "4x8x8-r180-perminov_ZT-7ab537a"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      },
+      "right": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      }
+    }
+  },
+  "n": [4, 8, 28],
+  "m": 628,
+  "hash": "663be4fa946a94538390124cba0e56403d73ff3afb156428c188452a29e4995c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

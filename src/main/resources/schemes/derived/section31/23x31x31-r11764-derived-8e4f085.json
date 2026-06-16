@@ -1,0 +1,64 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 12], allocB=[15, 16], allocC=[16, 15], leaves=[12x16x16-r1815-perminov_Q-1b69229, 11x15x16-r1605-perminov_Q-52ee511, Recombination(base=3x4x4, allocA=[3, 4, 4], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4], leaves=[Recombination(base=3x4x4, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=4x4x4, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x5x5-r40-alphatensor_Z-67f5fb7, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))])",
+  "lineage_compact": "R[2x2x2; 11,12 | 15,16 | 16,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [11, 12],
+    "allocB": [15, 16],
+    "allocC": [16, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "12x16x16-r1815-perminov_Q-1b69229"},
+      {"op": "Atom", "ref": "11x15x16-r1605-perminov_Q-52ee511"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "3x4x4@644bd5e392bf1f36813d1789373cc4a6c05b27122dbfbe9149e7345f3fa86c05", "id": "L0"},
+        "allocA": [3, 4, 4],
+        "allocB": [4, 4, 4, 4],
+        "allocC": [4, 4, 4, 4],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "@ref", "id": "L0"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "4x4x4@929db4e407faf85e6ff69a5ab89dbd7c6917d95bdf82e156d5692acc9703527b"},
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      }
+    ]
+  },
+  "n": [23, 31, 31],
+  "m": 11764,
+  "hash": "8e4f08578275e9f309c7c345495cf9c0f9f76c3d747233abeb7d55621be0a394",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

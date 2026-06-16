@@ -1,0 +1,30 @@
+{
+  "lineage_str": "ConcatCols(Serendipitous(OrientAs(2x4x4, ⟨4,4,2⟩) ⊗ ⟨6,6,2⟩), 24x24x24-r7020-schwartz_zwecher_2025-e1d81fe)",
+  "lineage_compact": "2x4x4→⟨4,4,2⟩ ⊗ˢ⟨6,6,2⟩ +p 24x24x24-r7020-schwartz_zwecher_2025-e1d81fe",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SerendipitousProduct",
+      "n2": 6,
+      "m2": 6,
+      "p2": 2,
+      "base": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 4,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x4@a4ed740"}
+      }
+    },
+    "right": {"op": "Atom", "ref": "24x24x24-r7020-schwartz_zwecher_2025-e1d81fe"}
+  },
+  "n": [24, 24, 28],
+  "m": 8469,
+  "hash": "589d12f3ae3a61474d6194eff03549bda86c5a37bafea725415a879be4debfe7",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

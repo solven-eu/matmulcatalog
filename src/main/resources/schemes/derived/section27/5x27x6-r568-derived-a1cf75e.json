@@ -1,0 +1,69 @@
+{
+  "lineage_str": "SumInner(OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨5,3,6⟩), SumInner(Recombination(base=2x2x2, allocA=[3, 2], allocB=[6, 6], allocC=[3, 3], leaves=[Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), SumInner(2x3x3, 2x3x3)]), Recombination(base=2x2x2, allocA=[3, 2], allocB=[6, 6], allocC=[3, 3], leaves=[Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), SumInner(2x3x3, 2x3x3)])))",
+  "lineage_compact": "3x5x6-r68-alphaevolve-14be9c3→⟨5,3,6⟩ +m R[2x2x2; 3,2 | 6,6 | 3,3] +m R[2x2x2; 3,2 | 6,6 | 3,3]",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 3,
+      "p": 6,
+      "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+        "allocA": [3, 2],
+        "allocB": [6, 6],
+        "allocC": [3, 3],
+        "leaves": [
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          },
+          {
+            "op": "SumInner",
+            "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+            "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+          }
+        ]
+      },
+      "right": {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [3, 2],
+        "allocB": [6, 6],
+        "allocC": [3, 3],
+        "leaves": [
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          },
+          {
+            "op": "SumInner",
+            "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+            "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+          }
+        ]
+      }
+    }
+  },
+  "n": [5, 27, 6],
+  "m": 568,
+  "hash": "a1cf75e9a82c82e60bf23661f24da03c53375ee09de68a819e5739ad4b6dc229",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

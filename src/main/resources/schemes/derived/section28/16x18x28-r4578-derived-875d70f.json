@@ -1,0 +1,33 @@
+{
+  "lineage_str": "KronProduct(2x2x2, Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,3,2⟩))",
+  "lineage_compact": "2x2x2 ⊗ 7x2x3→⟨2,3,7⟩ ⊗ˢ⟨4,3,2⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+    "inner": {
+      "op": "SerendipitousProduct",
+      "n2": 4,
+      "m2": 3,
+      "p2": 2,
+      "base": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 3,
+        "p": 7,
+        "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+      }
+    }
+  },
+  "n": [16, 18, 28],
+  "m": 4578,
+  "hash": "875d70f3135eba60c82fe0a21eb2113a77962d774aef3c81ec5badbe7f21325f",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

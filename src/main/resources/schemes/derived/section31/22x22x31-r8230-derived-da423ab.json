@@ -1,0 +1,46 @@
+{
+  "lineage_str": "ConcatCols(ConcatRows(Serendipitous(OrientAs(2x3x11, ⟨2,11,3⟩) ⊗ ⟨3,2,3⟩), Serendipitous(OrientAs(3x4x11, ⟨4,11,3⟩) ⊗ ⟨4,2,3⟩)), 22x22x22-r5596-schwartz_zwecher_2025-05d281b)",
+  "lineage_compact": "2x3x11→⟨2,11,3⟩ ⊗ˢ⟨3,2,3⟩ +n 3x4x11→⟨4,11,3⟩ ⊗ˢ⟨4,2,3⟩ +p 22x22x22-r5596-schwartz_zwecher_2025-05d281b",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 2,
+        "p2": 3,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 11,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "2x3x11@af163c4"}
+        }
+      },
+      "bottom": {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 2,
+        "p2": 3,
+        "base": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 11,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "3x4x11@999a6c3"}
+        }
+      }
+    },
+    "right": {"op": "Atom", "ref": "22x22x22-r5596-schwartz_zwecher_2025-05d281b"}
+  },
+  "n": [22, 22, 31],
+  "m": 8230,
+  "hash": "da423abce3dbdb180a06e668758e138b4db1fc41a15f1d199cadcc3034063ced",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,54 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 6], allocB=[9, 8], allocC=[9, 8], leaves=[6x9x9-r332-perminov_Q-1d3cee7, Serendipitous(2x3x4 ⊗ ⟨3,3,2⟩), KronProduct(Recombination(base=2x2x2, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[3x4x4-r38-derived-644bd5e.json] / <3,4,4>=38 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]))])",
+  "lineage_compact": "R[2x2x2; 6,6 | 9,8 | 9,8]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [6, 6],
+    "allocB": [9, 8],
+    "allocC": [9, 8],
+    "leaves": [
+      {"op": "Atom", "ref": "6x9x9-r332-perminov_Q-1d3cee7"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x3x4@91c6b6989329920d31a789f6837f849446627c4143a768f9c8fc9b3e262973b9"}
+      },
+      {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Recombination",
+          "base": {"op": "@ref", "id": "L0"},
+          "allocA": [1, 1],
+          "allocB": [1, 1],
+          "allocC": [1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "inner": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x4-r38-derived-644bd5e.json] / <3,4,4>=38 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    ]
+  },
+  "n": [12, 17, 17],
+  "m": 2114,
+  "hash": "5ddf358e8ac4f25416eddfc2d07d181bf68a208082adf4b515805c063ddd46f1",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

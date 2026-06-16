@@ -1,0 +1,23 @@
+{
+  "lineage_str": "ConcatCols(naive-4x16x1, KronProduct(2x4x5-r32-alphaevolve-6216e15, 2x4x5-r32-alphaevolve-6216e15))",
+  "lineage_compact": "naive-4x16x1 +p 2x4x5-r32-alphaevolve-6216e15 ⊗ 2x4x5-r32-alphaevolve-6216e15",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-4x16x1"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+      "inner": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+    }
+  },
+  "n": [4, 16, 26],
+  "m": 1088,
+  "hash": "eed735370e4afd687f1e7d91c0d9e8f152eb9f3625a89b0352168967adaeb2bf",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,920 @@
+% Derivation strategies — each is a subsection. Treat this section as
+% the technical core of the paper: the reader should be able to
+% understand WHY each strategy exists and WHEN it wins, not just what
+% it does. Where a strategy has been published before (Strassen,
+% Pan, DIS09 §3), cite cleanly; where it's our combination of
+% existing ideas (the recombination + analytical mask search), say
+% so.
+
+A \emph{derivation} strategy takes one or more catalog entries and
+produces a new bilinear algorithm at a target shape --- by combining
+them upward (\emph{composition}: Kronecker, concatenation), splitting a
+larger target onto a smaller scheme (\emph{decomposition}, projection),
+or locally reducing the product set (peel, pair fusion). The strategies
+below cover what the catalog's search and materialiser currently know how
+to do; each has a different cost structure and a different range of
+shapes where it wins.
+
+We adopt the convention that the \emph{outer} scheme is the one whose
+bilinear structure is reused, and the \emph{sub-schemes} (or
+\emph{leaves}) are the ones used to compute each of the outer
+scheme's bilinear products at a smaller shape.
+
+\paragraph{A unifying view, and its ceiling: smoothing \(\omega\) across shapes.}
+Almost every strategy below is \emph{local} in the same sense: it synthesises a
+scheme at a target shape out of schemes at \emph{surrounding} shapes --- the
+sub-blocks of a decomposition, the factors of a Kronecker product, the
+concatenands of an axis split. Read on the landscape of \(\omega\) over shapes,
+these strategies \emph{interpolate}: the rank they produce at \nmpshape{n}{m}{p}
+is an arithmetic combination (sum, product) of the ranks --- hence the
+\(\omega\) --- of the shapes they consume, so the new local \(\omega\) is a
+blend of its neighbours'. This has a structural ceiling. A pure
+composition/decomposition strategy \emph{cannot manufacture a local \(\omega\)
+below all of its inputs}: if every surrounding shape it can draw on has higher
+\(\omega\), the arithmetic combination does too. Pushing a local \(\omega\)
+\emph{below} its neighbourhood needs a mechanism that is not a blend of
+neighbours --- one that rewrites the scheme's own product set rather than gluing
+fixed sub-schemes together. Flip-graph and meta-flip-graph
+moves~\cite{perminov2025fast,kauersmoosbauerwood2026} are exactly such a
+mechanism, which is why they reach ranks our compositional closure cannot.
+
+We must qualify this picture in one direction. The serendipitous
+borrow-and-correct product (Section~\ref{ssec:serendipitous}), and more
+speculatively projection (Section~\ref{ssec:decomposition}), are \emph{not}
+purely additive blends: the borrow injects a correction term that lives outside
+the sum of the consumed ranks, so they can in principle produce a local
+\(\omega\) below all of their neighbours. What is unclear to us is
+\emph{propagation}: even a genuinely lowered local \(\omega\) only helps the
+broader landscape if the surrounding shapes in turn consume the improved scheme,
+and we have no argument that a serendipitous local win propagates outward the way
+a flip-graph improvement does. We therefore treat it as a local-improvement
+mechanism of unproven global reach, not as a closure-completing one.
+
+\subsection{Axis concatenation (block-additive composition)}
+\label{ssec:concat}
+
+If two schemes share two of the three axes, they can be concatenated
+along the third: a \(\nmpshape{n}{m}{p_1}\) scheme of rank \(r_1\)
+and a \(\nmpshape{n}{m}{p_2}\) scheme of rank \(r_2\) compose into a
+\(\nmpshape{n}{m}{p_1 + p_2}\) scheme of rank \(r_1 + r_2\), simply
+by computing the left and right halves of the result independently.
+Analogous concatenations exist along the \(n\) and \(m\) axes. This
+is sometimes referred to as ``plain split along a dimension'';
+it should not be confused with the $\tau$-theorem disjoint sums
+of Section \ref{ssec:disjoint-sum}, which are additive over the
+tensor but not over a single axis.
+
+The operator is trivial but pulls weight: at frontier-closure time
+it is the cheapest way to cover ``rectangular'' shapes
+(\(\nmpshape{n}{m}{p}\) with one large axis) from cubic catalog
+entries.
+
+\subsection{Kronecker product (multiplicative composition)}
+\label{ssec:kronecker}
+
+Given a scheme \(A\) at \(\nmpshape{n_1}{m_1}{p_1}\) of rank \(r_1\)
+and a scheme \(B\) at \(\nmpshape{n_2}{m_2}{p_2}\) of rank \(r_2\),
+the Kronecker product \(A \otimes B\) is a scheme at
+\(\nmpshape{n_1 n_2}{m_1 m_2}{p_1 p_2}\) of rank \(r_1 r_2\). This
+is the classical recursive substitution behind Strassen's \(\omega
+\le \log_2 7\) bound: applying Strassen recursively to a power-of-two
+\(\nmpshape{2^k}{2^k}{2^k}\) target gives \(7^k\) bilinear products.
+
+The catalog exposes Kronecker as a composition operator and the
+search enumerates 2-fold Kronecker chains over the pool.
+Higher-arity chains are derivable but not currently enumerated
+exhaustively -- they appear via repeated 2-fold composition.
+
+\subsubsection{Serendipitous product (bud decomposition)}
+\label{ssec:serendipitous}
+
+The serendipitous product is a multiplicative composition that, unlike
+the Kronecker product, can land \emph{below} the naïve rank product
+\(r_1 r_2\). It was introduced by Smith~\cite{smith2002fast} and
+generalised by Sedoglavic; we follow the bud-based formalisation of
+Perminov~\cite{perminov2026serendipitous} (Definitions
+\(2.9\)--\(2.12\) and \(\S 2.6\)).
+The same fusion was independently formalised by Kauers, Moosbauer and
+Wood~\cite{kauersmoosbauerwood2026} under the name ``divide less,
+conquer more'': recursive calls that share an input, or whose output is
+used in several positions, are merged into a single larger matrix
+multiplication---our \(U\)- and \(W\)-buds, respectively---so that fewer
+recursion levels are needed and the effective exponent drops below what
+the tensor rank alone suggests (they report
+\(\omega(\nmpshape{6}{6}{6}) \le 2.8019\)). Notably, their route to
+\emph{obtaining} bud-rich decompositions is a \emph{search}: a flip-graph
+search maximising the number of shareable \(\nmpshape{1}{1}{k}\),
+\(\nmpshape{1}{\ell}{1}\), \(\nmpshape{m}{1}{1}\) sub-blocks under a
+non-overlap constraint---the same objective as our bud-richness
+selection---supplemented by \emph{random} elements of de~Groote's
+symmetry group for support reduction; their \(\nmpshape{6}{6}{6}\)
+scheme is obtained by analysing a Moosbauer--Poole rank-\(153\)
+decomposition and re-searching for one richer in buds, and they report
+no general \emph{construction} of such structure. Whether a deterministic
+constructor (a targeted basis change in the spirit of the de~Groote
+solve used for kin-row unification by Schwartz and
+Zwecher~\cite{schwartzzwecher2025}) could replace this search is open.
+
+The key object is a \emph{bud}: a pair (or group) of rank-one terms of
+a scheme that share the \emph{same} \(u\) vector (or the same \(v\), or
+the same \(w\)), where ``same'' is up to scaling, since a rank-one
+tensor \(u \otimes v \otimes w\) is invariant under
+\(u \mapsto \lambda u,\ w \mapsto \lambda^{-1} w\). Buds are
+basis-free: the shared vector may be any linear combination of input
+(or output) entries, not a single coordinate. Grouping the \(r\) terms
+of a scheme by their buds decomposes it into \emph{elementary matmul
+tensors}
+\[
+  \mathcal{T} \;=\; \sum_{i} S_i \, \nmpshape{N_i}{M_i}{P_i},
+  \qquad
+  r \;=\; \sum_{i} S_i \, N_i M_i P_i ,
+\]
+where a \(U\)-bud of \(k\) terms is an \(\nmpshape{1}{1}{k}\) block, a
+\(V\)-bud a \(\nmpshape{k}{1}{1}\) block, a \(W\)-bud a
+\(\nmpshape{1}{k}{1}\) block, combined buds give blocks such as
+\(\nmpshape{2}{1}{2}\), and every term in no bud is a trivial
+\(\nmpshape{1}{1}{1}\).
+
+Given a second scheme \(\nmpshape{n_2}{m_2}{p_2}\), the serendipitous
+product applies it to each elementary block independently:
+\[
+  \mathcal{T} \otimes \nmpshape{n_2}{m_2}{p_2}
+  \;=\; \sum_{i} S_i \, \nmpshape{N_i n_2}{M_i m_2}{P_i p_2},
+\]
+and -- crucially -- each enlarged block is realised by the \emph{best
+known} scheme for its format rather than by the naïve product, so
+\[
+  r_s \;=\; \sum_{i} S_i \cdot R(\nmpshape{N_i n_2}{M_i m_2}{P_i p_2}).
+\]
+A saving over the Kronecker product arises whenever
+\(R(\nmpshape{N_i n_2}{M_i m_2}{P_i p_2}) < N_i M_i P_i \cdot
+R(\nmpshape{n_2}{m_2}{p_2})\) for at least one block; for trivial
+blocks the two coincide, so a scheme with no buds reduces exactly to
+the Kronecker product.
+
+\paragraph{Worked example: \(\nmpcount{}{4}{8}{12}{272}\).}
+The Hopcroft--Kerr \(\nmpcount{}{2}{3}{4}{20}\) scheme has four
+\(U\)-buds among its twenty terms, so it decomposes as
+\(12\cdot\nmpshape{1}{1}{1} + 4\cdot\nmpshape{1}{1}{2}\) (note
+\(12 + 4\cdot 2 = 20\)). Taking the serendipitous product with
+\(\nmpshape{2}{4}{2}\) and using \(R(\nmpshape{2}{4}{2})=14\) and
+\(R(\nmpshape{2}{4}{4})=26\),
+\[
+  \nmpshape{2}{3}{4}\otimes\nmpshape{2}{4}{2}
+  \;=\; 12\cdot\nmpshape{2}{4}{2} + 4\cdot\nmpshape{2}{4}{4},
+  \qquad
+  r_s = 12\cdot 14 + 4\cdot 26 = 272,
+\]
+a scheme for \(\nmpshape{4}{12}{8}\) (equivalently
+\(\nmpshape{4}{8}{12}\) up to axis permutation), below the Kronecker
+value \(20\cdot 14 = 280\). The shorthand
+``\(({\nmpshape{2}{3}{4}}{:}20 - 8)\otimes\nmpshape{2}{4}{2} +
+4\,\nmpshape{2}{4}{4}\)'' used by the FMM catalog \cite{fmmlille}
+records exactly this: eight of the twenty terms live in buds and are
+promoted to the four \(\nmpshape{2}{4}{4}\) blocks, the other twelve
+stay as \(\nmpshape{2}{4}{2}\).
+
+\paragraph{Minimal example, multiplication by multiplication.}
+The smallest serendipitous saving \emph{derives Strassen}. Take the base
+\(\nmpshape{1}{1}{2}\) --- a row times a \(1\times 2\) row, products \(a\,b_1\)
+and \(a\,b_2\); both share the single \(A\)-form \(a\), so they form one
+\(U\)-bud of size \(2\). Multiplying by \(\nmpshape{2}{2}{1}\) gives target
+\(\nmpshape{2}{2}{2}\), and the bud fuses the two inner copies into one
+enlarged \(\nmpshape{2}{2}{2}\):
+\[
+  r_s = 1\cdot R(\nmpshape{2}{2}{2}) = 7 \;<\; 2\cdot R(\nmpshape{2}{2}{1}) = 8 .
+\]
+As a plain multiplication list, the Kronecker product runs the two
+\(\nmpshape{2}{2}{1}\) matrix--vector blocks independently --- eight products,
+the naïve \(\nmpshape{2}{2}{2}\) --- and both blocks reuse the \emph{same} \(A\)
+entries; that reuse \emph{is} the bud:
+\begin{quote}\small\ttfamily
+p1=a11*b11\ p2=a12*b21\ p3=a21*b11\ p4=a22*b21\ \ (c11=p1+p2,\ c21=p3+p4)\\
+p5=a11*b12\ p6=a12*b22\ p7=a21*b12\ p8=a22*b22\ \ (c12=p5+p6,\ c22=p7+p8)
+\end{quote}
+Serendipity replaces them with Strassen's seven, in which the shared \(A\) lets
+three products span \emph{both} output columns at once:
+\begin{quote}\small\ttfamily
+M1=(a11+a22)(b11+b22)\ M2=(a21+a22)b11\ M3=a11(b12-b22)\\
+M4=a22(b21-b11)\ M5=(a11+a12)b22\ M6=(a21-a11)(b11+b12)\\
+M7=(a12-a22)(b21+b22)
+\end{quote}
+Exactly one product disappears (\(8\to 7\)): the bud's shared \(A\)-form is what
+lets the cross-column combinations \(M_1,M_6,M_7\) absorb the fourth, otherwise
+redundant pair. This is the whole mechanism in miniature --- buds expose
+\emph{which} products can be merged, and a sub-additive enlarged block
+(\(\nmpshape{2}{2}{2}\!:\!7<8\)) is what turns the merge into a saving.
+
+\paragraph{Why bud-richness can be worth a higher rank.}
+The rank-\emph{minimal} scheme for a format is often the \emph{wrong} base
+for a serendipitous product. A plain example with catalogued ranks builds
+\(\nmpshape{6}{6}{6}\) as \(\nmpshape{2}{2}{2}\otimes\nmpshape{3}{3}{3}\),
+using \(R(\nmpshape{3}{3}{3})=23\) (Laderman) and \(R(\nmpshape{3}{3}{6})=40\)
+(Smirnov; note \(40<2\cdot 23\)):
+\begin{itemize}
+\item The rank-minimal outer base, Strassen \(\nmpcount{}{2}{2}{2}{7}\), has
+\emph{no} buds (its seven products use pairwise non-proportional
+\(u,v,w\)), so it decomposes as \(7\cdot\nmpshape{1}{1}{1}\) and its
+serendipitous product is just the Kronecker product,
+\(7\cdot R(\nmpshape{3}{3}{3}) = 7\cdot 23 = 161\).
+\item The higher-rank \emph{naïve} \(\nmpcount{}{2}{2}{2}{8}\) base is
+bud-rich: each of its four \(A\)-entries feeds two outputs, giving four
+\(U\)-buds, \(4\cdot\nmpshape{1}{1}{2}\). Its serendipitous product fuses
+each bud with the inner \(\nmpshape{3}{3}{3}\) into a \(\nmpshape{3}{3}{6}\):
+\(4\cdot R(\nmpshape{3}{3}{6}) = 4\cdot 40 = 160\).
+\end{itemize}
+The bud-rich rank-\(8\) base beats the rank-minimal rank-\(7\) base
+(\(160<161\)) --- but \emph{only} through serendipity: its plain Kronecker
+product costs \(8\cdot 23 = 184\), the worst of the three. A catalog that
+keeps only the rank-minimal scheme per format discards exactly the base that
+wins here; recovering the \(160\) requires storing the bud-rich rank-\(8\)
+variant alongside the rank-\(7\) one.
+
+\paragraph{How operations act on buds.}
+Bud structure is not preserved uniformly by the composition operators, which
+is why it is tracked explicitly rather than recomputed from the rank-minimal
+scheme.
+\begin{itemize}
+\item \emph{Rank reduction destroys buds.} A bud exists because several
+products share an input or output form; the standard route to lower rank
+replaces un-mixed products by independent linear \emph{combinations} of
+entries, making the \(u,v,w\) vectors pairwise non-proportional.
+\(\nmpcount{}{2}{2}{2}{7}\) is the extreme case --- zero buds, versus four for
+\(\nmpcount{}{2}{2}{2}{8}\); empirically every rank-minimal small-format
+scheme we hold is bud-free, and buds appear only on larger, less-mixed
+schemes.
+\item \emph{The Kronecker product preserves and multiplies buds:} a term
+\(u^1_i\otimes u^2_j\) is proportional to \(u^1_{i'}\otimes u^2_{j'}\) iff
+both factors are proportional, so each bud of one factor lifts to a bud of
+the product. The serendipitous product is the bud-aware way of taking this
+Kronecker product.
+\item \emph{Axis flip / permutation (the \(S_3\) orbit) permutes the bud
+type:} a \(U\)-bud becomes a \(V\)- or \(W\)-bud under the corresponding
+relabelling, leaving the bud \emph{count} unchanged --- one orbit already
+exposes bud-richness on all three axes.
+\item \emph{Projection / DCE can only shrink buds} (it deletes terms), while
+concatenating a scheme with a copy of itself \emph{creates} \(U\)-buds (each
+product gains a twin with the same \(u\) but a fresh output column).
+\end{itemize}
+
+\paragraph{Which schemes to retain.}
+Because \(r_s\) depends only on the bud \emph{multiset}
+\(\{S_i\,\nmpshape{N_i}{M_i}{P_i}\}\), two schemes with the same multiset are
+interchangeable for every second factor: the store keys on the multiset
+(with rank and additions as tie-breakers), not on scheme identity. By the
+\(S_3\) isotropy above, a ``best-\(U\), best-\(V\), best-\(W\)'' triple is
+redundant --- one orbit representative covers all three axes, with the
+orientation chosen at product time to align the bud axis with the contracted
+axis of the second factor. What must be retained is the \emph{Pareto
+frontier} in \((\text{rank},\,\text{bud multiset})\): a higher-rank scheme
+is worth keeping iff its richer buds win some serendipitous product the
+lower-rank scheme cannot, while a scheme of no-better rank whose bud
+multiset is contained in another's is dominated and may be dropped.
+Independent schemes sharing the same maximal bud multiset collapse to the
+cheapest representative.
+
+\paragraph{Aligning buds under isotropy.}
+Because the Kronecker product multiplies proportionalities, the bud structure
+of \(\mathcal{T}_1\otimes\mathcal{T}_2\) depends on how the two factors' bud
+axes line up. A \(U\)-bud of size \(a\) in \(\mathcal{T}_1\) \emph{aligned}
+with a \(U\)-bud of size \(b\) in \(\mathcal{T}_2\) (same axis) yields a
+\(U\)-bud of size \(a\,b\) in the product, since a shared product \(u\)
+requires both \(u^1_i\propto u^1_{i'}\) and \(u^2_j\propto u^2_{j'}\); a
+crossed pair (\(U\) against \(V\)) reinforces nothing and leaves only the
+size-\(a\) bud. The only isotropy that can realign buds is the discrete
+\(S_3\) axis permutation: a basis change \(u\mapsto M u\) preserves
+proportionality (\(M u_i\propto M u_j \Leftrightarrow u_i\propto u_j\)), so
+the continuous \(GL\) part of the isotropy group leaves the bud partition
+\emph{invariant} and only the axis relabelling moves buds between \(U\),
+\(V\) and \(W\). Two levers follow. For the (asymmetric) serendipitous
+product \(\mathcal{T}_1\otimes\nmpshape{n_2}{m_2}{p_2}\), where only
+\(\mathcal{T}_1\)'s buds are used, orienting \(\mathcal{T}_1\) by \(S_3\)
+selects which target axis carries the \(k\)-fold enlargement --- a \(U\)-bud
+gives \(\nmpshape{n_2}{m_2}{k p_2}\), a \(V\)-bud
+\(\nmpshape{k n_2}{m_2}{p_2}\), whose \(R\) differ --- and so changes
+\(r_s\) directly; the search should try all three orientations of the
+bud-provider. For a full \(\mathcal{T}_1\otimes\mathcal{T}_2\) reused as a
+base, aligning both factors' bud axes maximises the \(a\,b\) reinforcement
+and yields a bud-richer scheme for the next multiplication.
+
+\paragraph{What it is, and is not.}
+The serendipitous product is \emph{exact} and \emph{combinatorial}: it
+reads buds off the base scheme's factor matrices and looks up
+sub-block ranks; it requires neither numerical optimisation nor border
+rank. It differs from disjoint-sum / \(\tau\) decomposition
+(\S\ref{ssec:disjoint-sum}), which splits the \emph{target} tensor,
+and from pair fusion (\S\ref{ssec:pair-fusion}), which fuses two
+equal-shape sub-products: here a single base scheme is multiplied by a
+second, and the saving comes from grouping the base's own terms into
+larger matmul blocks before multiplying. Our bud recognizer and
+bud-block constructor follow Perminov's \(\S 2.6\) construction; the
+assembled scheme is certified by the exact symbolic verifier.
+
+\paragraph{Smoothness governs the serendipitous hit rate.}
+A serendipitous product needs the target to factor as
+\(\nmpshape{n_1}{m_1}{p_1}\otimes\nmpshape{n_2}{m_2}{p_2}\) with \emph{both}
+factors non-trivial, and the number of such factorisations of
+\(\nmpshape{N}{M}{P}\) is \(d(N)\,d(M)\,d(P)\), the product of the per-axis
+divisor counts. A \emph{smooth} format --- one whose sides have many (distinct)
+prime factors, e.g. \(30=2\cdot3\cdot5\) --- therefore exposes far more
+base/inner splits than a prime or prime-power format, and each split is an
+independent chance for a bud-rich base to meet a sub-additive enlarged inner
+(both conditions must hold at once). One expects, and we observe, that
+serendipity wins disproportionately on smooth formats. Writing \(\Omega(NMP)\)
+for the number of prime factors of \(N\,M\,P\) counted with multiplicity,
+Table~\ref{tab:serendip-smooth} reports, over all \(5456\) non-commutative
+formats in the catalogue, how often the \emph{best} scheme we hold is the
+serendipitous one.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+\(\Omega(NMP)\) & formats & serendipity best & \% \\
+\midrule
+\(\le 5\) & 2013 & 0 & 0.0 \\
+6 & 1122 & 6 & 0.5 \\
+7 & 979 & 12 & 1.2 \\
+8 & 654 & 11 & 1.7 \\
+9 & 389 & 9 & 2.3 \\
+10 & 178 & 3 & 1.7 \\
+\(\ge 11\) & 121 & 0 & 0.0 \\
+\midrule
+all & 5456 & 41 & 0.75 \\
+\bottomrule
+\end{tabular}
+\caption{How often the best known scheme for a format is a serendipitous
+product, bucketed by the smoothness \(\Omega(NMP)\) of the format. No
+serendipitous scheme wins below \(\Omega=6\); above that floor the hit rate
+rises with smoothness and peaks near \(\Omega=9\). Formats where serendipity
+wins have mean \(\Omega = 7.78\), against \(6.29\) for the whole population.}
+\label{tab:serendip-smooth}
+\end{table}
+
+Below \(\Omega=6\) no serendipitous scheme is ever best: the smallest
+non-trivial base/inner pair already needs \(\Omega\ge6\) (e.g.
+\(\nmpshape{2}{3}{7}\otimes\nmpshape{3}{3}{3}\)), so smaller formats admit no
+serendipitous decomposition at all. Above the floor the win rate tracks
+smoothness, peaking near \(\Omega=9\). The fall-off at \(\Omega\ge11\) is a
+coverage artefact --- those formats are large, beyond our materialisation cap,
+where fewer serendipitous schemes are yet built --- not a ceiling on the
+method. This concerns the practical per-format implied exponent, not the
+asymptotic \(\omega\); operationally it gives the search a prioritisation rule:
+spend serendipitous effort on smooth formats first, and treat prime cubes as
+direct-construction targets where the method cannot help.
+
+\subsection{Decomposition: block-splitting and the sub-problem multiset}
+\label{ssec:decomposition}
+
+The operators above build \emph{up}; the rest of this section builds
+\emph{down}. \emph{Decomposition} splits a large \(\nmpshape{N}{M}{P}\)
+product into a grid of blocks and computes that grid with a smaller
+\emph{outer} scheme of shape \(\nmpshape{n_o}{m_o}{p_o}\) and rank
+\(r_o\): cut each target axis into that many parts, view the target as an
+\(n_o\times m_o\) by \(m_o\times p_o\) block product, and let each of the
+outer scheme's \(r_o\) bilinear products compute one block product. The
+basic expectation to hold onto: a \(\nmpshape{2}{2}{2}\) outer scheme
+turns the target into \emph{seven} block products --- seven
+sub-problems --- and Laderman's \(\nmpshape{3}{3}{3}\) into twenty-three.
+
+\paragraph{The sub-problem multiset.} List those sub-problems by shape,
+with multiplicity, and you get the \emph{sub-problem multiset} of the
+decomposition. Since each is computed independently, the realised rank is
+just the sum of their ranks,
+\[
+  R(\nmpshape{N}{M}{P}) \;\le\;
+  \sum_{\sigma\in\text{multiset}} R(\sigma),
+\]
+so the multiset is the \emph{only} thing that fixes the cost --- order
+and labelling are irrelevant. When the parts are all equal the seven (or
+twenty-three) sub-problems are identical, the multiset is one shape
+repeated, and the sum collapses to \(r_o\cdot R(\text{block})\) ---
+exactly the Kronecker product (Section~\ref{ssec:kronecker}). The
+interesting regime is \emph{unbalanced} parts, where the sub-problems
+differ. (This is a different multiset from the \emph{bud} multiset of
+Section~\ref{ssec:serendipitous}, which groups a scheme's own rank-one
+terms; both are ``multisets'' but of different things, and a more
+specific name for one of them may be worth adopting.)
+
+\paragraph{Padding and the max.} The realised size of each sub-product is
+where padding enters, and it is the heart of the matter. When a product
+\emph{sums} two blocks of unequal size on an output axis, the smaller is
+embedded into the larger with zeros, so it is realised at the \emph{max}
+of the two parts on that axis (the contraction axis takes the
+\emph{min}); the padding zeros are never multiplied. A product that sums
+across an axis is therefore charged that axis's \emph{large} part, while a
+product that uses a \emph{single} block stays at the part it touches.
+Hence the expensive corner \(\nmpshape{M_1}{N_1}{P_1}\) is paid by every
+all-sum product, and the cheap all-small corner
+\(\nmpshape{M_2}{N_2}{P_2}\) is reachable only by a product that is
+single-block on \emph{every} axis.
+
+It is this max that decides Strassen versus Winograd. At a fixed
+orientation both induce the \emph{same} multiset (Section
+\ref{ssec:strassen-vs-winograd}: the \(\nmpshape{3}{3}{3}\) example gives
+\(30\) either way) and differ only in additions. But Strassen's seven
+products are all two-block sums, so every one pays the max on every axis
+and the all-small corner never appears; Winograd has two \emph{single}-block
+products, which the axis-flip orbit (Section~\ref{ssec:axis-flip}) can
+steer onto the small corner, removing one max. So the padding-max --- not
+the rank, not the additions --- is \emph{why} Winograd beats Strassen on
+unbalanced splits. \textbf{Which template} and \textbf{which orientation}
+are the two knobs; recombination with allocation
+(Section~\ref{ssec:recombination}) searches over them.
+
+\subsubsection{Strassen, Winograd, and the structural difference}
+\label{ssec:strassen-vs-winograd}
+
+The two canonical rank-7 algorithms for \(\nmpfield{\Reals}{2}{2}{2}\)
+are Strassen 1969 and Winograd's 1971 reformulation. This section gives
+the \emph{generic} effect of using either as a \(\nmpshape{2}{2}{2}\)
+template over a split
+\(\nmpshape{M_1{+}M_2}{N_1{+}N_2}{P_1{+}P_2}\): the seven sub-products it
+induces, sized by zero-sparing. At this simple (fixed-orientation) level
+the two schemes induce the \emph{same} multiset of sub-problems and
+differ only in additions (Strassen 1969: 18; Winograd 1971: 15). The
+\emph{axis-flip orbit} of Section~\ref{ssec:axis-flip} then re-orients
+the template -- which \emph{does} change the multiplications, and is
+where the two schemes diverge.
+
+\paragraph{Heterogeneous split and zero-sparing.}
+Project a target onto a \(\nmpshape{2}{2}{2}\) template by splitting
+each axis in two, \(M = M_1 + M_2\), \(N = N_1 + N_2\),
+\(P = P_1 + P_2\), with the larger part first and the smaller part at
+the bottom/right (real data top-left, any padding at the bottom). The
+four \(A\)-blocks then have shapes \(A_{11}\!:\!M_1\times N_1\),
+\(A_{12}\!:\!M_1\times N_2\), \(A_{21}\!:\!M_2\times N_1\),
+\(A_{22}\!:\!M_2\times N_2\), and likewise for \(B\) and \(C\). Each
+product is a (sum of \(A\)-blocks)\(\,\cdot\,\)(sum of \(B\)-blocks); to
+add blocks of unequal shape the smaller is embedded into the larger
+envelope with zeros. \emph{Those zeros are never multiplied}: a product
+is realised at the size of its genuine nonzero overlap -- rows = the max
+real rows of the left sum, columns = the max real columns of the right
+sum, inner = the \emph{min} of the two sides. A product that touches
+only the smaller part of an axis is thereby reduced to a lower rank.
+
+\paragraph{The seven products, sized (canonical labelling).}
+With block ``11'' the larger part on every axis, each product's realised
+shape under zero-sparing (``blk'' = single block, ``sum'' = two-block
+sum) is:
+
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Strassen}} & operands & realised size \\
+\midrule
+\(M_1\) & \((A_{11}{+}A_{22})(B_{11}{+}B_{22})\) & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(M_2\) & \((A_{21}{+}A_{22})\,B_{11}\)          & sum\(\cdot\)blk & \(\nmpshape{M_2}{N_1}{P_1}\) \\
+\(M_3\) & \(A_{11}(B_{12}{-}B_{22})\)            & blk\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_2}\) \\
+\(M_4\) & \(A_{22}(B_{21}{-}B_{11})\)            & blk\(\cdot\)sum & \(\nmpshape{M_2}{N_2}{P_1}\) \\
+\(M_5\) & \((A_{11}{+}A_{12})\,B_{22}\)          & sum\(\cdot\)blk & \(\nmpshape{M_1}{N_2}{P_2}\) \\
+\(M_6\) & \((A_{21}{-}A_{11})(B_{11}{+}B_{12})\) & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(M_7\) & \((A_{12}{-}A_{22})(B_{21}{+}B_{22})\) & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_2}{P_1}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Winograd}} & operands & realised size \\
+\midrule
+\(P_1\) & \(A_{11}\,B_{11}\)                     & blk\(\cdot\)blk & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(P_2\) & \(A_{12}\,B_{21}\)                     & blk\(\cdot\)blk & \(\nmpshape{M_1}{N_2}{P_1}\) \\
+\(P_3\) & \((A_{21}{+}A_{22})(B_{12}{-}B_{11})\) & sum\(\cdot\)sum & \(\nmpshape{M_2}{N_1}{P_1}\) \\
+\(P_4\) & \(S_2\,T_2\)                           & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(P_5\) & \(S_3\,T_3\)                           & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_2}\) \\
+\(P_6\) & \(S_4\,B_{22}\)                        & sum\(\cdot\)blk & \(\nmpshape{M_1}{N_2}{P_2}\) \\
+\(P_7\) & \(A_{22}\,T_4\)                        & blk\(\cdot\)sum & \(\nmpshape{M_2}{N_2}{P_1}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent with \(S_2{=}A_{21}{+}A_{22}{-}A_{11}\),
+\(S_3{=}A_{11}{-}A_{21}\),
+\(S_4{=}A_{11}{+}A_{12}{-}A_{21}{-}A_{22}\),
+\(T_2{=}B_{11}{-}B_{12}{+}B_{22}\), \(T_3{=}B_{22}{-}B_{12}\),
+\(T_4{=}B_{11}{-}B_{12}{-}B_{21}{+}B_{22}\).
+
+\paragraph{The generic multiset.}
+Collecting either ``realised size'' column gives the same multiset for
+both schemes:
+\[
+  2\,\nmpshape{M_1}{N_1}{P_1}
+  + \nmpshape{M_2}{N_1}{P_1}
+  + \nmpshape{M_1}{N_1}{P_2}
+  + \nmpshape{M_1}{N_2}{P_1}
+  + \nmpshape{M_1}{N_2}{P_2}
+  + \nmpshape{M_2}{N_2}{P_1}.
+\]
+The largest corner \(\nmpshape{M_1}{N_1}{P_1}\) appears twice, the
+all-small corner \(\nmpshape{M_2}{N_2}{P_2}\) not at all, and the split
+is \emph{not} symmetric: the contraction axis \(N\) carries its smaller
+part in three of the seven products while \(M\) and \(P\) carry theirs in
+two each -- so one minimises the small-part products by making \(N\) the
+largest axis. With equal parts (even dimensions) the multiset collapses
+to \(7\,\nmpshape{M/2}{N/2}{P/2}\), the textbook recursion. At this fixed
+orientation, then, the choice of Strassen vs Winograd changes only the
+additive schedule, not the multiplications; re-orienting the template
+(Section~\ref{ssec:axis-flip}) is what changes the multiplications.
+
+\paragraph{Worked example: \(\nmpshape{3}{3}{3}\).}
+Split \(3 = 2{+}1\) on every axis (\(M_1{=}N_1{=}P_1{=}2\),
+\(M_2{=}N_2{=}P_2{=}1\)). Both schemes yield
+\[
+  2\,\nmpshape{2}{2}{2} +
+  \nmpshape{1}{2}{2} + \nmpshape{2}{2}{1} + \nmpshape{2}{1}{2} +
+  \nmpshape{2}{1}{1} + \nmpshape{1}{1}{2},
+\]
+i.e.\ \(2\cdot 7 + 4 + 4 + 4 + 2 + 2 = 30\) leaf multiplications
+(recursing each \(\nmpshape{2}{2}{2}\) with the same rank-7 scheme) --
+against \(7\cdot 7 = 49\) for the naive pad-to-even \(\nmpshape{4}{4}{4}\)
+embedding and \(3^3 = 27\) for the schoolbook product. The
+\(49 \to 30\) gap is the zero-sparing; the further drop available by
+re-orienting the template is deferred to Section~\ref{ssec:axis-flip}.
+
+\paragraph{Why one needs a \emph{set} of bases.} Strassen and Winograd
+are only two points in the space of rank-7 \(\nmpshape{2}{2}{2}\) schemes,
+and --- as the axis-flip orbit will show --- what matters at an unbalanced
+split is the per-product block/sum structure (how many single-block
+products a scheme has, hence which sub-problem multisets its orbit can
+reach). To exploit this fully the pool should carry a \emph{set} of
+rank-7 \(\nmpshape{2}{2}{2}\) bases that are inequivalent in their
+multiset behaviour, not just the two textbook ones; generating that set
+means enumerating the rank-7 normal forms (Heun 1994; de~Groote's
+classification) and keeping one representative per axis-flip orbit
+(Section~\ref{ssec:axis-flip}). For \(\nmpshape{2}{2}{2}\) this enumeration
+is small and we do it exhaustively. The same idea applies to any base
+shape --- a richer base set gives the recombination more multisets to
+choose from --- but the space of rank-\(r\) schemes at larger shapes
+(\(\nmpshape{3}{3}{3}\) and up) is far too large to enumerate, so there we
+fall back on the imported/known schemes plus the axis-flip orbit of each.
+
+\subsubsection{Axis-flip orbit}
+\label{ssec:axis-flip}
+
+For any bilinear scheme \((U, V, W)\) of shape
+\(\nmpshape{n}{m}{p}\), reversing the row order of any of the three
+factor matrices gives another valid scheme of the same shape and the
+same rank. Composing the three independent axis-flips yields an
+orbit of size 8 per scheme (the elementary abelian \(2^3\)).
+
+Pure axis-flip is a trivial relabeling under uniform allocations
+(the orbit collapses) but becomes non-trivial under \emph{unbalanced}
+allocations such as the \((9, 8) \times \ldots\) split above.
+Different axis-flip orbit members give rise to different padding
+patterns and hence different total ranks. Section
+\ref{ssec:recombination} explains why this matters at the
+recombination step: an axis-flip of the outer scheme corresponds to
+permuting which block-index in the target receives the padding
+penalty.
+
+We canonicalise the pool of outer schemes by axis-flip orbit
+(picking one representative per orbit) and then re-enumerate the
+mask at search time, so the on-disk catalog stays compact while the
+search retains full coverage. The mask enumeration uses an
+analytical short-cut (per-product block-support bitmasks; see
+Section \ref{sec:search}) so 8-mask coverage costs only a constant
+factor over single-mask evaluation.
+
+\paragraph{Why the orbit separates Strassen from Winograd.}
+This is exactly where the two rank-7 templates of
+Section~\ref{ssec:strassen-vs-winograd} stop being interchangeable. At a
+fixed orientation they share the generic multiset above -- two full
+\(\nmpshape{M_1}{N_1}{P_1}\) products and no all-small
+\(\nmpshape{M_2}{N_2}{P_2}\). Strassen's seven products are all
+two-block sums, so under \emph{any} orbit member each still spans a full
+part on every axis: Strassen keeps its two full products and can never
+realise the all-small corner. Winograd's two single-block products
+(\(A_{11}B_{11}\), \(A_{12}B_{21}\)) \emph{can} be flipped onto the small
+blocks -- one becomes \(A_{22}B_{22} = \nmpshape{M_2}{N_2}{P_2}\) -- so
+the best Winograd orbit member drops to a single full product and a
+strictly smaller multiset whenever the split is unbalanced (the orbit
+collapses, and the gain vanishes, only when the parts are equal).
+Concretely, \(\nmpshape{17}{17}{17}\) at the \((9,8)^3\) allocation costs
+\(2930\) multiplications for the best Winograd orbit member -- its lone
+all-small \(\nmpshape{8}{8}{8}\) product replacing one
+\(\nmpshape{9}{9}{9}\) -- against \(2940\) for Strassen. It is a genuine
+\emph{multiplication} saving, distinct from Winograd's lower addition
+count.
+
+\subsection{Recombination with allocation}
+\label{ssec:recombination}
+
+The central composition operator in the catalog. It uses a
+\emph{small} catalog scheme --- the outer \emph{atom}, e.g.\ Strassen
+\(\nmpshape{2}{2}{2}\) --- to multiply a \emph{larger} target
+\(\nmpshape{n}{m}{p}\) by block-partitioning the target onto the
+atom's grid. The atom's dimensions \(\nmpshape{n_o}{m_o}{p_o}\) are
+small (typically \(2\) or \(3\), and \(\le n, m, p\)) and fix only
+\emph{how many} blocks each target axis is cut into, not their sizes.
+Concretely, given the atom of rank \(r_o\), choose three
+\emph{allocations}: a partition of the target's \(n\) into \(n_o\)
+parts, of \(m\) into \(m_o\) parts, and of \(p\) into \(p_o\) parts.
+The atom then treats the target as an \(n_o\times m_o\) by
+\(m_o\times p_o\) block-matrix product: each of its \(r_o\) outer
+products becomes a smaller matmul on the corresponding blocks --- a
+sub-shape fixed by the allocation --- which is looked up in the
+catalog as a sub-scheme, and the assembled algorithm has rank
+\(\sum_k r_{\text{sub-}k}\).
+
+Uniform allocation reduces to Kronecker product (Section
+\ref{ssec:kronecker}); non-uniform allocation gives strictly more
+flexibility -- e.g.\ targeting \(\nmpshape{17}{17}{17}\) via
+Strassen with the allocation \((9, 8)^3\). Non-uniform recombination
+covers the gap left by Kronecker chains, at the price of
+\emph{padding} -- a sub-shape derived from two unequal blocks
+inherits the size of the larger block on the relevant axis.
+
+\subsection{Projection margin: a death-rate score}
+\label{ssec:projmargin}
+
+Projection is the downward operator: restrict a larger scheme to a smaller
+shape and dead-code-eliminate the products that die. A higher-rank parent
+can thereby project to a \emph{lower}-rank child, and this has a clean
+closed form worth isolating, because it turns ``keep the structurally
+better scheme, not the lower-rank one'' into an explicit, computable
+criterion --- the downward analogue of the bud score for the serendipitous
+product (Section~\ref{ssec:serendipitous}).
+
+A product survives the restriction iff \emph{each} of its three factors
+\(U_k,V_k,W_k\) still has a nonzero inside the kept sub-block; it is dead-code-
+eliminated as soon as \emph{any one} of them vanishes there. Fix an axis, say
+the first (\(n\)); only the two matrices carrying an \(n\)-index matter --- \(U\)
+(input rows \(i\)) and \(W\) (output rows \(i\)). Write \(U_n(k)\) and \(W_n(k)\)
+for the sets of \(n\)-indices column \(k\) of \(U\), resp.\ \(W\), touches.
+Dropping index \(i\) kills product \(k\) exactly when \emph{either} its
+\(\alpha\)-form collapses (\(U_n(k)=\{i\}\): all of \(U_k\) sits in the dropped
+input row, so \(\alpha_k\equiv0\) once that row is zeroed) \emph{or} it writes
+only the dropped output (\(W_n(k)=\{i\}\)). The \emph{private rank} at \(i\) is
+the count of such products,
+\[
+  \rho_n(i)=\#\bigl\{\,k:\ U_n(k)=\{i\}\ \text{ or }\ W_n(k)=\{i\}\,\bigr\},
+\]
+(an \(\text{or}\), not an \(\text{and}\): a product with \(U_n(k)=\{i\}\),
+\(W_n(k)=\{i'\}\) dies under dropping \(i\) \emph{or} \(i'\)). Each axis uses two
+of the three matrices --- \(n\!\to\!\{U,W\}\), \(m\!\to\!\{U,V\}\),
+\(p\!\to\!\{V,W\}\) --- and the \emph{projection margin} of \(S\) (single index,
+best axis) is
+\[
+  \mu(S)=\max_{A\in\{n,m,p\}}\ \max_{i}\ \rho_A(i).
+\]
+Projecting out the best single index then gives \emph{exactly}
+\[
+  R_{\text{after}} \;=\; R_{\text{before}}-\mu(S),
+\]
+and dropping a set \(D\) of \(\delta\) indices on one axis generalises to
+\(\mu^{(\delta)}_A(S)=\max_{|D|=\delta}\#\{k:\mathrm{supp}_A(k)\subseteq D\}\),
+with \(R_{\text{after}}=R_{\text{before}}-\mu^{(\delta)}\).
+
+Projection therefore minimises \(R-\mu\), \emph{not} \(R\): a scheme is worth
+keeping over a lower-rank rival whenever \(R_S-\mu(S)<R_{S'}-\mu(S')\), i.e.\ on
+the \((\text{rank},\,\text{projection margin})\) Pareto frontier. The canonical
+instance is \(\nmpshape{29}{30}{30}\): the rank-best parent, a flat
+\(\nmpcount{}{30}{30}{30}{12688}\) (Schwartz--Zwecher 2025, an ALS-style
+decomposition), has \(\mu=62\) and projects to \(12626\); the higher-rank
+\emph{structured} \(\nmpcount{}{30}{30}{30}{12710}\) (Pan trilinear
+aggregation) has \(\mu=122\) and projects to \(12588\), matching FMM. Structure
+localises whole product-slabs to boundary slices (large \(\rho\)); a flat
+decomposition spreads every product across all indices (small \(\rho\)), so it
+projects worse despite the lower rank.
+
+\paragraph{A small worked instance, and how to \emph{raise} the margin.}
+Ordering our small catalog by \(\mu\), the high-margin schemes are uniformly the
+\emph{structured} ones (Pan trilinear aggregation) and the \emph{flip-graph}
+ones (Perminov), never the flat rank-minimal decompositions. For example the
+Perminov \(\nmpcount{}{6}{6}{7}{183}\) has \(\mu=26\) on the \(p\)-axis and
+projects to \(\nmpshape{6}{6}{6}\) at \(183-26=157\) --- acceptable, though not
+the catalog optimum \(153\); the rank-minimal \(\nmpshape{6}{6}{7}\) scheme
+projects worse. Two caveats sharpen the picture. First, at \emph{small}
+dimension the flatter low-rank cube still wins projection outright, because the
+rank gap dwarfs the margin gap; the structured-cube advantage only \emph{flips
+the winner} once the two ranks converge, as at \(\nmpshape{30}{30}{30}\)
+(\(12688\) vs \(12710\), decided by \(\mu=62\) vs \(122\)). Second --- and
+parallel to the open question for buds --- it is not obvious how to
+\emph{construct} a scheme of the \emph{same} rank but a higher \(\mu\). A
+promising route is the flip graph: a meta-flip (a rank-preserving move in the
+flip-graph of decompositions) leaves \(R\) fixed while reshuffling the product
+supports, and can concentrate more products onto a single boundary index ---
+i.e.\ search the flip-graph for the \(\mu\)-maximal representative of a rank
+class, exactly as one would search it for a bud-maximal one. We leave this
+generative direction to future work; here \(\mu\) is used to \emph{select}
+among existing schemes, not to synthesise new ones.
+
+\paragraph{Downward propagation is acyclic and cheap.} Unlike the serendipitous
+product, whose candidate bases form a multiplicative (divisor) lattice,
+projection's dependency graph is a DAG ordered by strictly decreasing dimension:
+each scheme \(\nmpshape{N}{M}{P}\) projects only to its few \(\delta\)-neighbours
+\(\nmpshape{N-\delta}{M}{P},\dots\). The catalog therefore need not be re-swept
+to a fixed point round by round; a single newly-arrived scheme (an import, or a
+fresh search win) with \(\mu>0\) triggers a bounded \emph{downward wave} ---
+project it into its neighbours, and any neighbour that improves is itself
+enqueued for its own projections. Termination is immediate (dimension strictly
+decreases) and the work is event-driven: a new \(\nmpshape{n}{n}{n}\) cube
+refreshes exactly the rectangular and odd-cube shapes beneath it, nothing more.
+This makes projection the natural operator to fire on every catalog update
+(e.g.\ each daily Perminov / FMM sync), in contrast to the global
+recombination / serendipity passes.
+
+\subsection{Zero-peeling: input- and output-side (DIS09 \(\gamma_5\))}
+\label{ssec:peel}
+
+When a recombination over-allocates an axis and pads the excess with
+zeros, the padded rows/columns are dead and the affected sub-products
+can be computed at a smaller shape. There are two directions, dual under
+the matmul tensor's \(S_3\) symmetry:
+\begin{itemize}[itemsep=2pt]
+  \item \emph{input-side}: a sub-product reads \(A\) only in some rows, or
+    \(B\) only in some columns (the rest are padding zeros) -- shrink its
+    input extents;
+  \item \emph{output-side}: a sub-product's \(W\)-support lands only in
+    output positions that are peeled away after un-padding -- shrink its
+    output extents. This is the Drevet--Islam--Schost 2009 / Islam 2009
+    \(\gamma_5\) reduction.
+\end{itemize}
+The peel-aware recombination shrinks each sub-product to the
+\emph{elementwise minimum} of both directions, and the block-split search
+enumerates the (allocation, peel) patterns automatically (overshoot
+bounded per axis). The canonical \(\gamma_5\) case -- \(\nmpshape{3}{3}{3}\)
+via padded \(\nmpshape{4}{4}{4}\) Strassen, where the corner product
+collapses \(\nmpshape{2}{2}{2}{=}7 \to \nmpshape{1}{2}{1}{=}2\) -- is
+closed and tested.
+
+Peeling is the second padding-fighter after axis-flip choice
+(Section~\ref{ssec:axis-flip}); the two are complementary -- flip
+distributes padding across products, peel removes it from a product whose
+slice was dead anyway -- and, like axis-flip, it is \emph{not} a
+sharing-discovery mechanism (Section~\ref{sec:nonoverlap}).
+
+\paragraph{Limit.} Peeling alone does not close the odd-cubic gaps such
+as \(\nmpshape{17}{17}{17}{=}2934\): there, no standard Strassen product
+has its support inside the peeled corner, so peeling leaves us at
+\(2940\). FMM-Lille's \(2934\) recipe instead pair-fuses the diagonal
+\(\nmpshape{9}{9}{9}\) products and substitutes the corner with
+\(\nmpshape{8}{8}{8}\) -- a pair-fusion (Section~\ref{ssec:pair-fusion})
+plus outer-template substitution, not a peel.
+
+\subsection{Pair fusion (Pan trilinear aggregation)}
+\label{ssec:pair-fusion}
+
+Pan 1980 \cite{pan1980} observed that two same-shape sub-products
+arising at distinct positions in a larger scheme can be computed
+\emph{jointly} via a trilinear aggregation that takes
+\(a b c + a b + b c + c a\) bilinear products in place of the
+naïve \(2 a b c\). Cyclic pair-fusion identifies pairs of outer
+products with a compatible block-position pattern and substitutes a
+fused sub-scheme. This is the first derivation strategy that
+\emph{does} introduce sharing across outer products -- but only in a
+constrained, pattern-matching way, not as a generic discovery
+mechanism. The pair-fusion operator is implemented in
+\code{PairFusedRecombination}.
+
+\paragraph{When it pays: a rank-density / \(\omega\) threshold.}
+Fusing is worthwhile only against the \emph{best} independent
+computation, i.e. \(abc + ab + bc + ca < 2\,R(\nmpshape{a}{b}{c})\) -- not
+against the naïve \(2abc\). Writing the leaf's \emph{rank density}
+\(\rho = R(\nmpshape{a}{b}{c})/(abc)\), this is
+\[
+  \rho \;>\; \tfrac{1}{2}\Big(1 + \tfrac{ab+bc+ca}{abc}\Big)
+  \;\approx\; \tfrac{1}{2}.
+\]
+So pair-fusion helps exactly when the leaf is still \emph{``fat''} -- its
+rank has not been driven below about half the naïve \(abc\). For a cubic
+leaf \(\nmpshape{k}{k}{k}=R\) with implied exponent
+\(\omega_{\mathrm{leaf}} = \log_k R\) (naïve \(R=k^3\Rightarrow\omega=3\)),
+the same condition reads
+\[
+  \omega_{\mathrm{leaf}} \;>\; \omega^\star
+  := \log_k\!\tfrac{k^3+3k^2}{2}
+  \;=\; 3 - \log_k 2 + \log_k\!\big(1+\tfrac{3}{k}\big)
+  \;\approx\; 3 - \log_k 2 .
+\]
+
+\emph{Worked examples.} \(\nmpshape{7}{7}{7}=249\) has
+\(\rho=249/343=0.726\) and \(\omega_{\mathrm{leaf}}=\log_7 249=2.835\),
+above its threshold \(\omega^\star=\log_7 245=2.827\): it \emph{fuses}
+(pair cost \(490 < 2\cdot 249 = 498\), saving \(8\)). By contrast
+\(\nmpshape{8}{9}{9}=430\) has \(\rho=430/648=0.664\), just below its
+threshold \(0.673\): it is \emph{not} fused (pair cost
+\(873 > 2\cdot 430 = 860\)).
+
+This is why pair-fusion is a \emph{small-base, constant-factor} device:
+as \(k\to\infty\) the threshold \(\omega^\star\to 3\) while good leaves
+have \(\omega_{\mathrm{leaf}}\) far below \(3\), so the saving vanishes
+asymptotically. (The \emph{full} Pan trilinear aggregation -- aggregating
+many products, not just pairs -- is the genuinely \(\omega\)-improving
+technique; what the catalog fuses is only the two-product instance.)
+
+\paragraph{Why pairs, not triples.}
+Given several same-shape leaves, why fuse them two at a time rather than
+three? Because there is \emph{no} ``fuse three \emph{separate} products''
+primitive. The pair identity genuinely fuses two cyclically-related
+products \(\nmpshape{a}{b}{c}+\nmpshape{b}{c}{a}\) at cost
+\(abc+ab+bc+ca\). The \(\tfrac{1}{3}\) of the full Pan/Islam aggregation
+does \emph{not} come from fusing three products -- it comes from one
+product's own 3-fold cyclic index symmetry. A single
+\(\nmpshape{n}{n}{n}\) costs \(\approx n^3/3 + O(n^2)\), and the
+\(O(n^2)\) term is itself a \emph{best-of} several Pan-family closed
+forms: \((n^3+12n^2+11n)/3\) (Islam 2009~\cite{islam2009} Prop.~1,
+republished as DIS09~\S3) wins for moderate even \(n\), but the smaller
+\(\tfrac{15}{4}n^2\) quadratic of the \(\tfrac{45}{4}n^2\) branch
+(Hadas--Schwartz 1982, sharpened by Schwartz--Zwecher
+2025~\cite{schwartzzwecher2025}) overtakes it for even \(n \gtrsim 28\);
+odd \(n\) uses \((n^3+15n^2+14n-6)/3\). The chooser takes the
+\emph{minimum} over all of these (\code{PanTrilinearAggregation.bestPanTaBound}),
+so the large-\(n\) \(\tfrac{45}{4}n^2\) regime is accounted for, not just
+the \(12n^2\) branch. So the real per-leaf choice is shallow pair fusion
+(\(\approx k^3/2\) per product, light \(O(k^2)\) corrections) versus deep
+single-product TA (\(\approx k^3/3\) per product, but \(\sim 4\times\) the
+\(O(k^2)\) corrections).
+
+At a small leaf the corrections dominate and pairs win decisively. For
+the seven \(\nmpshape{7}{7}{7}\) leaves of a \(\nmpshape{14}{14}{14}\)
+(or padded \(\nmpshape{17}{17}{17}\)) recombination:
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+option & per product & total (7 leaves) \\
+\midrule
+solo (catalog SOTA) & \(249\) & \(1743\) \\
+pair-fused & \(245\) & \(\mathbf{1719}\) \\
+full single-product TA & \(390\) & \(2730\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Pair fusion (\(1719\)) beats both solo (\(1743\)) and full TA
+(\(2730\)). The deep TA's \(\tfrac{1}{3}\) only overcomes its heavier
+corrections at \emph{even} \(k \ge 18\); odd \(k\) carries the heavier
+\(15k^2\) term and never wins in the practical range. This is why the
+catalog pair-fuses small leaves and reserves full TA for large even ones.
+The chooser \code{PairFusedRecombination.chooseBest} weighs all three
+options (\code{SOLO} / \code{PAIR\_FUSED} / \code{FULL\_TA}) per leaf and
+returns the cheapest.
+
+\subsection{Disjoint-sum decomposition ($\tau$-theorem)}
+\label{ssec:disjoint-sum}
+
+A target tensor can decompose as a sum of smaller matmul sub-tensors
+\emph{at the tensor level} -- not at a single-axis level -- when the
+target admits a $\tau$-theorem-style decomposition. The construction
+is constructive: each leg of the disjoint sum computes a smaller
+matmul, and the legs combine via the additive structure of the
+tensor. Schwartz--Zwecher 2025 \cite{schwartzzwecher2025} give explicit
+constructive disjoint-sum decompositions for \emph{large} formats
+(e.g.\ \(n = 44, 56, 60\)). We caution that several FMM
+catalog~\cite{fmmlille} entries that \emph{look} like $\tau$/direct-sum
+identities at smaller shapes (e.g.\ \(\nmpshape{17}{17}{17}\) at rank
+\(2934\)) turned out, on inspection, to be plain recombinations of a
+small base rather than genuine disjoint sums. (Our own
+\(\nmpshape{17}{17}{17}=2930\) is likewise a Winograd recombination,
+Section \ref{ssec:axis-flip}, not a disjoint sum.)
+
+We stress that \emph{we do not currently leverage the $\tau$-theorem
+anywhere}. The disjoint-sum schemes we hold (Schwartz--Zwecher and
+those FMM/Perminov build this way) are \emph{imported as explicit
+factor matrices}, not reconstructed from a $\tau$ decomposition: no
+catalog entry carries a $\tau$ lineage, and every gap we initially
+attributed to a $\tau$ mechanism turned out, on inspection, to close
+(or not) by other means -- Kronecker, recombination, or a fortunate
+cousin scheme. A \code{DisjointSum} lineage node (with optional
+\code{taLegs} groups) is \emph{reserved} in the schema for this
+provenance but is exercised by no scheme today, and we have no search
+operator that constructs disjoint sums. Section
+\ref{sec:openquestions} flags this as the largest open extension to
+the search.
+
+\subsection{Summary table of operators}
+
+\begin{table}[h]
+\centering
+\caption{Derivation strategies used by the catalog. ``Sharing'' is
+the operator's ability to produce a scheme with fewer than
+\(\sum_k r_{\text{sub-}k}\) bilinear products -- see Section
+\ref{sec:nonoverlap}.}
+\label{tab:strategies}
+\begin{tabular}{lll}
+\toprule
+Operator & Source & Sharing? \\
+\midrule
+Axis-flip orbit & folklore + this paper \S\ref{ssec:axis-flip} & no \\
+Kronecker product & Strassen 1969 & no \\
+Axis concatenation & folklore & no \\
+Recombination with allocation & Strassen-style block split & no \\
+Output peel & DIS09 / Islam 2009 \(\gamma_5\) & no \\
+Pair fusion (Pan TA) & Pan 1980 & limited (paired only) \\
+Disjoint-sum / $\tau$\textsuperscript{$\dagger$} & Pan 1980 / Sch\"onhage 1981 / SZ 2025 & n/a (imported) \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\noindent\textsuperscript{$\dagger$}\,Not a search operator: disjoint-sum
+schemes are imported as explicit factor matrices; we do not construct
+them (Section~\ref{sec:openquestions}).
+\end{table}
+
+The ``no-sharing'' rows are the ones that fall under the non-overlap
+property of Section \ref{sec:nonoverlap}. The ``yes-sharing'' rows
+are deliberately written as separate constructors so that the
+non-overlap invariant holds for every operator the generic
+recombination path can produce.

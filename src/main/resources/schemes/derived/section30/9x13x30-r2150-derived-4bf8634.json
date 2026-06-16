@@ -1,0 +1,35 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,2,1>=2 :: CANONICAL, allocA=[9], allocB=[1, 12], allocC=[30], leaves=[naive-9x1x30, KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x4x5-r47-alphatensor_Z-6bc7fbe)])",
+  "lineage_compact": "R[AxisSplit<1,2,1>=2 :: CANONICAL; 9 | 1,12 | 30]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,2,1>=2 :: CANONICAL"},
+    "allocA": [9],
+    "allocB": [1, 12],
+    "allocC": [30],
+    "leaves": [
+      {"op": "Atom", "ref": "naive-9x1x30"},
+      {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        },
+        "inner": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"}
+      }
+    ]
+  },
+  "n": [9, 13, 30],
+  "m": 2150,
+  "hash": "4bf8634224e6828ebf851f4a640d99051d3cfc61a490d3a0eeaf435b38fc3e5b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

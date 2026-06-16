@@ -1,0 +1,33 @@
+{
+  "lineage_str": "KronProduct(OrientAs(2x3x5-r25-alphatensor_Z-31f79a7, ⟨3,2,5⟩), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,2,6⟩))",
+  "lineage_compact": "2x3x5-r25-alphatensor_Z-31f79a7→⟨3,2,5⟩ ⊗ 2x5x6-r47-alphaevolve-7387644→⟨5,2,6⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "OrientAs",
+      "n": 3,
+      "m": 2,
+      "p": 5,
+      "child": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"}
+    },
+    "inner": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 2,
+      "p": 6,
+      "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+    }
+  },
+  "n": [15, 4, 30],
+  "m": 1175,
+  "hash": "b1404ee57ba80e600e1168374aed7c9b6f4fbfb8ce574b48df9bfc56baaeeca8",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,29 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,2,1>=2 :: CANONICAL, allocA=[4], allocB=[1, 16], allocC=[25], leaves=[naive-4x1x25, KronProduct(2x4x5, 2x4x5)])",
+  "lineage_compact": "R[AxisSplit<1,2,1>=2 :: CANONICAL; 4 | 1,16 | 25]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,2,1>=2 :: CANONICAL"},
+    "allocA": [4],
+    "allocB": [1, 16],
+    "allocC": [25],
+    "leaves": [
+      {"op": "Atom", "ref": "naive-4x1x25"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5@6216e15"},
+        "inner": {"op": "Atom", "ref": "2x4x5@6216e15"}
+      }
+    ]
+  },
+  "n": [4, 17, 25],
+  "m": 1124,
+  "hash": "8ccc2934472faf52f8a1bf99a9232b806040a592213e39a5112ec095363bc279",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

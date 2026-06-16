@@ -1,0 +1,115 @@
+{
+  "lineage_str": "SumInner(ConcatCols(KronProduct(naive-1x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(KronProduct(naive-1x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(OrientAs(3x5x9-r102-perminov_ZT-bf97d17, ⟨3,9,5⟩), KronProduct(naive-1x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))))), ConcatCols(KronProduct(naive-1x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(KronProduct(naive-1x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(OrientAs(3x5x9-r102-perminov_ZT-bf97d17, ⟨3,9,5⟩), KronProduct(naive-1x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))))))",
+  "lineage_compact": "naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x5x9-r102-perminov_ZT-bf97d17→⟨3,9,5⟩ +p naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +p 3x5x9-r102-perminov_ZT-bf97d17→⟨3,9,5⟩ +p naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "naive-1x3x1"},
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
+      },
+      "right": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "naive-1x3x1"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 9,
+            "p": 5,
+            "child": {"op": "Atom", "ref": "3x5x9-r102-perminov_ZT-bf97d17"}
+          },
+          "right": {
+            "op": "KronProduct",
+            "outer": {"op": "Atom", "ref": "naive-1x3x1"},
+            "inner": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "naive-1x3x1"},
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
+      },
+      "right": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "naive-1x3x1"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 9,
+            "p": 5,
+            "child": {"op": "Atom", "ref": "3x5x9-r102-perminov_ZT-bf97d17"}
+          },
+          "right": {
+            "op": "KronProduct",
+            "outer": {"op": "Atom", "ref": "naive-1x3x1"},
+            "inner": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "n": [3, 18, 23],
+  "m": 924,
+  "hash": "0b38ee6f2f392373acd21d7881d69b2ba3c2dc8eaee4dc7732bc7bf2eefe49b2",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

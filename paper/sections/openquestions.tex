@@ -1,0 +1,74 @@
+% Open questions / future work — short. List what the catalog
+% cannot answer today and where the next bits of attention should go.
+
+We close with what the catalog cannot currently answer and where the
+next bits of attention should go.
+
+\paragraph{Disjoint-sum search.} The frontier-closure search of
+Section \ref{sec:search} composes via Kronecker, axis concat,
+recombination, peel, and pair fusion. It does \emph{not} construct
+$\tau$-theorem disjoint sums; the disjoint-sum schemes the catalog
+holds are imported as raw factor matrices from external
+sources (Schwartz--Zwecher 2025 at large formats), never reconstructed
+from a $\tau$ decomposition. We caution against reading every
+external-catalog gap as a missing $\tau$ mechanism: gaps we initially
+attributed to $\tau$ (including \(\nmpfield{\Rationals}{17}{17}{17}\),
+where our recombination search already reaches \(2930\)) turned out to
+close via ordinary recombination, not disjoint sums. A constructive
+disjoint-sum operator would nonetheless let us \emph{reproduce} the
+imported large-format schemes rather than carry them as opaque
+matrices; its feasibility check is non-trivial -- ``does this tensor
+admit a disjoint sum into these legs?'' -- and warrants a dedicated
+note.
+
+\paragraph{Salt-tolerant prediction.} Section \ref{sec:nonoverlap}
+flagged that any post-construction sharing discovery (random sign
+salting, column fusion, coefficient mixing) would break the
+search-rank-equals-materialised-rank invariant. We believe the right
+shape for adding such salt is as a separate ``polish'' phase after
+the closure converges, but the interaction with the lazy
+materialise design needs to be worked out before implementing.
+
+\paragraph{\Ftwo\ promotion from \Integers.} Every integer scheme
+reduces mod 2 to give an \Ftwo\ scheme; some of these reductions are
+strictly tighter than the rank claimed over \Integers\ because
+coefficient cancellations land. The catalog does not yet promote
+integer schemes into the \Ftwo\ column automatically; doing so would
+likely surface a number of ``free'' \Ftwo\ entries below the
+current AlphaTensor frontier.
+
+\paragraph{Border-rank track.} The current catalog is exact-rank
+only. A border-rank track would let us include results like
+Bini's \(\nmpfield{\Reals}{2}{2}{2}\) border rank \(7\)
+constructions and Schönhage's $\tau$-theorem upper bounds. A
+separate \code{border-bounds.json} exists and is used by the SPA
+but is not yet integrated into the comparison tables.
+
+\paragraph{Lower-bound integration.} \code{lower-bounds.json} carries
+the best known lower bounds per shape -- Strassen's
+\(\nmpfield{\Reals}{2}{2}{2} \ge 7\), Bl\"aser's family, the
+recent Wang 2026 \(\nmpfield{\Ftwo}{3}{3}{3} \ge 20\). Adding a
+``gap-to-lower-bound'' column to each comparison table would make
+the SOTA frontier read more cleanly: a cell saying ``49 (R, gap 4
+to lower-bound 45)'' tells more than ``49 (R)''.
+
+\paragraph{Border between catalog and hand-crafted-discovery.} The
+non-overlap property of Section \ref{sec:nonoverlap} draws a sharp
+line we want to defend more carefully. Concretely: when a
+hand-crafted construction lands at a shape where composition was
+\emph{also} predicting the same rank, the lineage should record both
+discoveries and the comparison table should report both. Today the
+catalog picks one. A two-attribution column would force the
+distinction into the table.
+
+\paragraph{Reproducibility tooling.} Rather than freeze ranks into
+the paper (Section \ref{ssec:no-static-ranks}), the numeric comparison
+is regenerated from \code{docs/catalog.json},
+\code{docs/cited-bounds.json}, and \code{docs/derived-from-cited-bounds.json} into
+\code{docs/comparison/*.json} (by \code{GenerateSourceComparison}) and
+rendered live by the catalog browser, per the conventions of Section
+\ref{ssec:sota}. The bigger work item is finalising the SOTA
+conventions document (\code{paper/sota-conventions.md}) so the
+comparison has a deterministic rule for every corner case --- the
+prerequisite for the exhaustive SOTA review that the curated paper
+examples wait on.

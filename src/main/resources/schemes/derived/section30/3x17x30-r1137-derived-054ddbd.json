@@ -1,0 +1,70 @@
+{
+  "lineage_str": "ConcatCols(SumInner(3x7x14-r219-perminov_ZT-77b3583, 3x10x14-r312-perminov_ZT-14f1415), SumInner(ConcatCols(SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x4x6-r54-alphaevolve-c197868), ConcatCols(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩), SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x4x6-r54-alphaevolve-c197868))), 3x10x16-r355-perminov_ZT-6cc036e))",
+  "lineage_compact": "3x7x14-r219-perminov_ZT-77b3583 +m 3x10x14-r312-perminov_ZT-14f1415 +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x4x6-r54-alphaevolve-c197868 +p R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1]→⟨3,7,4⟩ +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x4x6-r54-alphaevolve-c197868 +m 3x10x16-r355-perminov_ZT-6cc036e",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "3x7x14-r219-perminov_ZT-77b3583"},
+      "right": {"op": "Atom", "ref": "3x10x14-r312-perminov_ZT-14f1415"}
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 4,
+            "child": {
+              "op": "Recombination",
+              "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1, 1, 1],
+              "allocC": [1, 1, 1, 1, 1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          },
+          "right": {
+            "op": "SumInner",
+            "left": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            },
+            "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          }
+        }
+      },
+      "right": {"op": "Atom", "ref": "3x10x16-r355-perminov_ZT-6cc036e"}
+    }
+  },
+  "n": [3, 17, 30],
+  "m": 1137,
+  "hash": "054ddbd62420fe790a64739a306aa9f6a630131340ddf30fef67f977a1a24bd9",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

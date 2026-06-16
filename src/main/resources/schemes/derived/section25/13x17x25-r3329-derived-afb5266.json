@@ -1,0 +1,102 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 6], allocB=[9, 8], allocC=[13, 12], leaves=[Recombination(base=2x2x2, allocA=[4, 3], allocB=[5, 4], allocC=[7, 6], leaves=[4x5x7-r104-perminov_ZT-4a1b410, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x5x6-r90-alphaevolve-8aa8e60, Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x4x6-r73-perminov_ZT-5bb1a46, 3x5x6-r68-alphaevolve-14be9c3, 4x4x7-r85-alphaevolve-d4e8670]), 6x9x13-r468-perminov_Q-9f65e87, 7x9x12-r508-perminov_Q-bed063c, Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 4], allocC=[7, 6], leaves=[Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x4x6-r54-alphaevolve-c197868]), 7x8x12-r452-perminov_Z-52d4f1a, 6x9x12-r429-perminov_Q-45a8a82, Recombination(base=2x2x2, allocA=[4, 3], allocB=[4, 4], allocC=[7, 6], leaves=[4x4x7-r85-alphaevolve-d4e8670, Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x4x6-r73-perminov_ZT-5bb1a46, 3x4x6-r54-alphaevolve-c197868])])",
+  "lineage_compact": "R[2x2x2; 7,6 | 9,8 | 13,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [7, 6],
+    "allocB": [9, 8],
+    "allocC": [13, 12],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [4, 3],
+        "allocB": [5, 4],
+        "allocC": [7, 6],
+        "leaves": [
+          {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"},
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "4x5x6-r90-alphaevolve-8aa8e60"},
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "4x4x6-r73-perminov_ZT-5bb1a46"},
+          {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+          {"op": "Atom", "ref": "4x4x7-r85-alphaevolve-d4e8670"}
+        ]
+      },
+      {"op": "Atom", "ref": "6x9x13-r468-perminov_Q-9f65e87"},
+      {"op": "Atom", "ref": "7x9x12-r508-perminov_Q-bed063c"},
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [3, 3],
+        "allocB": [4, 4],
+        "allocC": [7, 6],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        ]
+      },
+      {"op": "Atom", "ref": "7x8x12-r452-perminov_Z-52d4f1a"},
+      {"op": "Atom", "ref": "6x9x12-r429-perminov_Q-45a8a82"},
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [4, 3],
+        "allocB": [4, 4],
+        "allocC": [7, 6],
+        "leaves": [
+          {"op": "Atom", "ref": "4x4x7-r85-alphaevolve-d4e8670"},
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "4x4x6-r73-perminov_ZT-5bb1a46"},
+          {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        ]
+      }
+    ]
+  },
+  "n": [13, 17, 25],
+  "m": 3329,
+  "hash": "afb5266c401a74b2139072e9a160a5030e3d791727fc76f726c9bb1c4ac42574",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

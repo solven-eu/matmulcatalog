@@ -1,0 +1,35 @@
+Ambient dim = 36, |S| = 6, rank(S) = 6
+rank(S, T1, T2) = 8  (expect rank(S) + 2 = 8)
+
+[Task 1] dim Q = rank([q1,q2]) = 2  (must be 2)
+
+q1 (= P_⊥ T1):  ai2*xi1 + ap2*xp1 + aj2*xj1
+q2 (= P_⊥ T2):  (-1/3)*ai1*xi1 + (1/3)*ai1*xi2 + (1/3)*ai2*xi2 + ap1*xp2 + (-1/3)*aj1*xj1 + (1/3)*aj1*xj2 + (1/3)*aj2*xj2
+
+In this basis, by construction:
+  T1 ≡ 1·q1 + 0·q2  (mod S)
+  T2 ≡ 0·q1 + 1·q2  (mod S)
+
+[Task 2] α(λ,μ) =
+  l2*m1/3 + l4*m3/3 + l6*m5/3
+
+[Task 2] β(λ,μ) =
+  -l1*m1/5 + l1*m2/5 + l2*m2/5 + 3*l3*m4/5 - l5*m5/5 + l5*m6/5 + l6*m6/5
+
+[Task 3] Jacobian J = ∂(α,β)/∂(λ,μ) is a 2×12 matrix.
+         rank at random integer point {'l1': 1, 'l2': 1, 'l3': -5, 'l4': -1, 'l5': 3, 'l6': 2, 'm1': 1, 'm2': -1, 'm3': 2, 'm4': 1, 'm5': 4, 'm6': -2}:
+         rank = 2
+         rank at a second random point: 2
+
+         Attempting symbolic rank of J (may take a moment) …
+         symbolic rank(J) = 2
+
+[Task 4] Consequences:
+  • If generic rank(J) = 2, the map (λ,μ) → (α,β) is locally surjective
+    on Q ≅ R², so its image is Zariski-dense in Q. There exist rank-1
+    atoms whose projections span Q ⇒ a 3-atom solution exists (in fact 2 suffice).
+  • If generic rank(J) = 1, all rank-1 atom projections lie on a 1-D curve
+    inside Q ⇒ NO finite number of rank-1 atoms can span Q ⇒
+    (2,2,bridge-3) admits NO 3-product solution in any rank-1 family.
+  • If generic rank(J) = 0, α and β are constant on the rank-1 variety —
+    extremely unlikely given the explicit formulas above.

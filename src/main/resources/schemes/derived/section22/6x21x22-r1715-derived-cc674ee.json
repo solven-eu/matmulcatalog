@@ -1,0 +1,33 @@
+{
+  "lineage_str": "SumInner(Serendipitous(2x3x11 ⊗ ⟨3,3,2⟩), Serendipitous(2x4x11 ⊗ ⟨3,3,2⟩))",
+  "lineage_compact": "2x3x11 ⊗ˢ⟨3,3,2⟩ +m 2x4x11 ⊗ˢ⟨3,3,2⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 3,
+      "p2": 2,
+      "base": {"op": "Atom", "ref": "2x3x11@af163c4"}
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 3,
+      "p2": 2,
+      "base": {"op": "Atom", "ref": "2x4x11@0ae9c5e"}
+    }
+  },
+  "n": [6, 21, 22],
+  "m": 1715,
+  "hash": "cc674eec7b95f412ae02cb12806a4fd495cd404a154b1491764fc0adfa2d7ab1",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

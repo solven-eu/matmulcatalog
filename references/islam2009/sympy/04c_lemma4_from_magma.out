@@ -1,0 +1,19 @@
+Islam 2009 / DIS09 Appendix Lemma 4 — port from Magma
+======================================================================
+
+── n_block = 2  (full input 4×4,  m = 6) ──
+   running ProductEven ...
+   computing direct A·B ...
+   mult count:  got 100,  expected (Islam Prop 1) = (4³ + 12·4² + 11·4) / 3 = 100   → OK
+   correctness: OK — C_TA == A·B
+
+── n_block = 3  (full input 6×6,  m = 8) ──
+   running ProductEven ...
+   computing direct A·B ...
+   mult count:  got 238,  expected (Islam Prop 1) = (6³ + 12·6² + 11·6) / 3 = 238   → OK
+   correctness: OK — C_TA == A·B
+
+======================================================================
+[Phase A step 4] PASS — Lemma 4 construction is correct.
+   sympy verifies BOTH (a) C_TA = A·B symbolically,
+   AND  (b) multiplication count = Islam Prop 1 formula.

@@ -1,0 +1,33 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 9], allocB=[12, 11], allocC=[15, 16], leaves=[Project(9x13x16, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 8x12x15-r904-perminov_Q-d2e4dc6, 8x11x15-r848-perminov_Q-2b9aec6, 8x11x16-r904-perminov_Q-4a5d08c, 9x11x15])",
+  "lineage_compact": "R[2x2x2; 8,9 | 12,11 | 15,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [8, 9],
+    "allocB": [12, 11],
+    "allocC": [15, 16],
+    "leaves": [
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "child": {"op": "Atom", "ref": "9x13x16@4b0ebf7"}
+      },
+      {"op": "Atom", "ref": "8x12x15-r904-perminov_Q-d2e4dc6"},
+      {"op": "Atom", "ref": "8x11x15-r848-perminov_Q-2b9aec6"},
+      {"op": "Atom", "ref": "8x11x16-r904-perminov_Q-4a5d08c"},
+      {"op": "Atom", "ref": "9x11x15"}
+    ]
+  },
+  "n": [17, 23, 31],
+  "m": 6717,
+  "hash": "51c1802b1ff187fe74b2353bcef0c991b125a1ce689872e272fdaf89e82da443",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

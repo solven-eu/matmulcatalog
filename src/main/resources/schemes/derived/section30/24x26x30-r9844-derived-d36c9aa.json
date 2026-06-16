@@ -1,0 +1,36 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[12, 12], allocB=[9, 9, 8], allocC=[10, 10, 10], leaves=[OrientAs(8x10x12-r624-perminov_Q-c5b7abd, ⟨12,8,10⟩), Project(13x9x10, keepN=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9])])",
+  "lineage_compact": "R[2x3x3; 12,12 | 9,9,8 | 10,10,10]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+    "allocA": [12, 12],
+    "allocB": [9, 9, 8],
+    "allocC": [10, 10, 10],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 8,
+        "p": 10,
+        "child": {"op": "Atom", "ref": "8x10x12-r624-perminov_Q-c5b7abd"}
+      },
+      {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "child": {"op": "Atom", "ref": "13x9x10@8c62898"}
+      }
+    ]
+  },
+  "n": [24, 26, 30],
+  "m": 9844,
+  "hash": "d36c9aa583b8e40715c97e9a36300ea6f7a5ea34ffd4ef1a96edda1b82549f29",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,330 @@
+{
+  "_description": "Known lower bounds for the bilinear rank of small \u27e8n,m,p\u27e9 matmul formats. Field-specific where known. 'tight: true' means a matching upper-bound algorithm exists in our catalog. Manually maintained \u2014 add entries as new lower bounds are published.",
+  "_schema": {
+    "format": "[n, m, p] \u2014 canonical (sorted) ordering, since rank is permutation-invariant",
+    "field": "F2 | R | C | all \u2014 'all' = field-agnostic argument (rank-independent of field)",
+    "lb": "lower bound on the bilinear rank",
+    "tight": "whether some algorithm achieves this rank (some entry in catalog.json matches lb)",
+    "source": "primary reference (citation key \u2014 use the SAME string across multiple entries for the same paper, so the reference registry deduplicates correctly)",
+    "url": "optional link to the paper/HAL/arXiv",
+    "year": "publication year",
+    "notes": "anything else worth surfacing (e.g., which formula was applied)"
+  },
+  "entries": [
+    {
+      "format": [
+        2,
+        2,
+        2
+      ],
+      "field": "all",
+      "lb": 7,
+      "tight": true,
+      "source": "Winograd 1971 + Hopcroft\u2013Kerr 1971",
+      "year": 1971,
+      "notes": "Classical: rank exactly 7 in any field. Independently proven by Hopcroft & Kerr (Cornell TR 69-44, Sep 1969 / SIAM 1971) and Winograd (in the same 1971 paper that introduces the Winograd-Strassen 15-additions variant). Later re-proven by Pan 1980. Matches Strassen 1969."
+    },
+    {
+      "format": [
+        2,
+        2,
+        3
+      ],
+      "field": "all",
+      "lb": 11,
+      "tight": true,
+      "source": "Hopcroft\u2013Kerr 1971",
+      "year": 1971,
+      "notes": "Tight; matches Smirnov / Hopcroft-Kerr construction. Also independently established by Alexeev 1985 (J.Algorithms 6, 71\u201385), cited as [6] in Burichenko 2014 (arXiv:1408.6273)."
+    },
+    {
+      "format": [
+        2,
+        2,
+        4
+      ],
+      "field": "all",
+      "lb": 14,
+      "tight": true,
+      "source": "Hopcroft\u2013Kerr 1971",
+      "year": 1971,
+      "notes": "Formula R(\u27e82,2,n\u27e9) = \u23087n/2\u2309 for n \u2265 2 (Hopcroft\u2013Kerr tight). Also established by Alexeev\u2013Smirnov 2013, 'On exact and approximate complexities of multiplication of matrices of sizes 4\u00d72 and 2\u00d72', Contemporary problems of mathematics 17, 135\u2013152 (in Russian), cited as [7] in Burichenko 2014 (arXiv:1408.6273)."
+    },
+    {
+      "format": [
+        2,
+        2,
+        5
+      ],
+      "field": "all",
+      "lb": 18,
+      "tight": true,
+      "source": "Hopcroft\u2013Kerr 1971",
+      "year": 1971,
+      "notes": "Formula R(\u27e82,2,n\u27e9) = \u23087n/2\u2309 for n \u2265 2."
+    },
+    {
+      "format": [
+        2,
+        3,
+        3
+      ],
+      "field": "all",
+      "lb": 15,
+      "tight": true,
+      "source": "Hopcroft\u2013Kerr 1971",
+      "year": 1971,
+      "notes": "Hopcroft\u2013Kerr 1971, Theorem 1 + abstract: the \u2308(3pn+max(n,p))/2\u2309 construction is proven minimal for p=1 or 2 (any n) and for p=3, n=3. The p=3, n=3 case = \u27e83,2,3\u27e9 = \u27e82,3,3\u27e9 by S\u2083 symmetry \u2192 R(\u27e82,3,3\u27e9) = 15 tight. Also proven by Pan 1978. (Burichenko 2014 [arXiv:1408.6273] cites only Bl\u00e4ser 2003's weaker LB\u226514 as ref [9], but the HK proof of minimality for p=3,n=3 is explicit and pre-dates Bl\u00e4ser by 32 years.)"
+    },
+    {
+      "format": [
+        2,
+        3,
+        4
+      ],
+      "field": "all",
+      "lb": 20,
+      "tight": true,
+      "source": "Smirnov 2013",
+      "year": 2013
+    },
+    {
+      "format": [
+        3,
+        3,
+        3
+      ],
+      "field": "R",
+      "lb": 19,
+      "tight": false,
+      "source": "Bl\u00e4ser 2003",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0885064X02000079",
+      "year": 2003,
+      "notes": "Bl\u00e4ser, M. 'On the complexity of the multiplication of matrices of small formats', J.Complexity 19, 43\u201360. Applies over R, C, Q. Best upper bound is 23 (Laderman 1976) \u2014 gap of 4 remains open. Held the SOTA for \u27e83,3,3\u27e9 since 2003."
+    },
+    {
+      "format": [
+        3,
+        3,
+        3
+      ],
+      "field": "C",
+      "lb": 19,
+      "tight": false,
+      "source": "Bl\u00e4ser 2003",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0885064X02000079",
+      "year": 2003,
+      "notes": "Same Bl\u00e4ser 2003 paper (J.Complexity 19, 43\u201360); bound holds over C."
+    },
+    {
+      "format": [
+        3,
+        3,
+        3
+      ],
+      "field": "F2",
+      "lb": 20,
+      "tight": false,
+      "source": "Wang 2026",
+      "url": "https://arxiv.org/abs/2603.07280",
+      "year": 2026,
+      "notes": "Wang, C. 'Automated Lower Bounds for Small Matrix Multiplication Complexity over Finite Fields', arXiv:2603.07280 (Mar 2026, latest revision May 2026). Strengthens Bl\u00e4ser's 19 specifically over F\u2082 using orbit classification + dynamic programming with verifiable proof certificates. UB still 23; gap of 3. The R/C/Q bound is unchanged at 19 \u2014 extending Wang's method to characteristic 0 is open."
+    },
+    {
+      "format": [
+        4,
+        4,
+        4
+      ],
+      "field": "R",
+      "lb": 34,
+      "tight": false,
+      "source": "Landsberg\u2013Micha\u0142ek 2017",
+      "year": 2017,
+      "notes": "UB: 49 (Strassen\u00b2), 48 over C (AlphaEvolve 2025), 47 over F\u2082 (AlphaTensor 2022)."
+    },
+    {
+      "format": [
+        5,
+        5,
+        5
+      ],
+      "field": "R",
+      "lb": 47,
+      "tight": false,
+      "source": "Landsberg 2014",
+      "year": 2014,
+      "notes": "Border-rank-based argument. UB: 93 (AlphaEvolve 2025); gap remains large."
+    },
+    {
+      "format": [
+        5,
+        5,
+        5
+      ],
+      "field": "all",
+      "lb": 48,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e85,5,5\u27e9) \u2265 \u2308(5/2)\u00b75\u00b2 \u2212 3\u00b75\u2309 = 48. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        6,
+        6,
+        6
+      ],
+      "field": "all",
+      "lb": 72,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e86,6,6\u27e9) \u2265 \u2308(5/2)\u00b76\u00b2 \u2212 3\u00b76\u2309 = 72. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        7,
+        7,
+        7
+      ],
+      "field": "all",
+      "lb": 102,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e87,7,7\u27e9) \u2265 \u2308(5/2)\u00b77\u00b2 \u2212 3\u00b77\u2309 = 102. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        8,
+        8,
+        8
+      ],
+      "field": "all",
+      "lb": 136,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e88,8,8\u27e9) \u2265 \u2308(5/2)\u00b78\u00b2 \u2212 3\u00b78\u2309 = 136. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        9,
+        9,
+        9
+      ],
+      "field": "all",
+      "lb": 176,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e89,9,9\u27e9) \u2265 \u2308(5/2)\u00b79\u00b2 \u2212 3\u00b79\u2309 = 176. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        10,
+        10,
+        10
+      ],
+      "field": "all",
+      "lb": 220,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e810,10,10\u27e9) \u2265 \u2308(5/2)\u00b710\u00b2 \u2212 3\u00b710\u2309 = 220. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        11,
+        11,
+        11
+      ],
+      "field": "all",
+      "lb": 270,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e811,11,11\u27e9) \u2265 \u2308(5/2)\u00b711\u00b2 \u2212 3\u00b711\u2309 = 270. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        12,
+        12,
+        12
+      ],
+      "field": "all",
+      "lb": 324,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e812,12,12\u27e9) \u2265 \u2308(5/2)\u00b712\u00b2 \u2212 3\u00b712\u2309 = 324. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        13,
+        13,
+        13
+      ],
+      "field": "all",
+      "lb": 384,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e813,13,13\u27e9) \u2265 \u2308(5/2)\u00b713\u00b2 \u2212 3\u00b713\u2309 = 384. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        14,
+        14,
+        14
+      ],
+      "field": "all",
+      "lb": 448,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e814,14,14\u27e9) \u2265 \u2308(5/2)\u00b714\u00b2 \u2212 3\u00b714\u2309 = 448. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        15,
+        15,
+        15
+      ],
+      "field": "all",
+      "lb": 518,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e815,15,15\u27e9) \u2265 \u2308(5/2)\u00b715\u00b2 \u2212 3\u00b715\u2309 = 518. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        16,
+        16,
+        16
+      ],
+      "field": "all",
+      "lb": 592,
+      "tight": false,
+      "source": "Bl\u00e4ser (via Landsberg 2008)",
+      "year": 2008,
+      "notes": "R(\u27e816,16,16\u27e9) \u2265 \u2308(5/2)\u00b716\u00b2 \u2212 3\u00b716\u2309 = 592. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+    },
+    {
+      "format": [
+        2,
+        2,
+        2
+      ],
+      "field": "all",
+      "kind": "border",
+      "lb": 7,
+      "tight": true,
+      "source": "Landsberg 2006",
+      "year": 2006,
+      "notes": "R\u0303(\u27e82,2,2\u27e9) = 7 (border rank). Closed a 23-year open question \u2014 Bini 1980 introduced border rank, Strassen 1983 proved R\u0303 \u2265 6, but whether the border-rank could improve on the tensor rank of 7 was open until Landsberg 2006 settled R\u0303 = 7 exactly. Implication: no \u03b5-aggregation trick can multiply 2\u00d72 matrices with fewer than 7 bilinear multiplications."
+    }
+  ]
+}

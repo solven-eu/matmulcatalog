@@ -1,0 +1,79 @@
+name: Verify catalog
+
+# Generic catalog-integrity check: walks every *.json under
+# src/main/resources/schemes/, loads it via SchemeIO, verifies the matmul
+# tensor identity via Verifier, reports a structured summary and exits
+# non-zero if any scheme is broken or unreadable.
+#
+# Independent of the surefire test suite — the workflow runs the standalone
+# VerifyAllSchemes tool. Single authoritative answer to "is the catalog
+# valid?", suitable as a merge gate.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/main/resources/schemes/**'
+      - 'src/main/java/eu/solven/matmul/**'
+      - 'src/main/java/eu/solven/matmul/docs/VerifyAllSchemes.java'
+      - 'pom.xml'
+      - '.github/workflows/verify-catalog.yml'
+  schedule:
+    - cron: '0 6 * * *'  # daily 06:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: verify-catalog
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Compile
+        run: mvn -B -ntp -q compile
+
+      # Cheap, metadata-only field-claim gate (NO dense materialization):
+      #   lineage      — a derived scheme must not declare a char-0 field
+      #                  narrower than its lineage atoms support (the ⟨3,3,8⟩
+      #                  "declares Z but its smirnov13 leaf is Q-only" bug);
+      #   coefficients — a declared Z must be backed by all-integer U/V/W.
+      # Runs before the heavy pass so a field over-claim fails fast.
+      - name: Verify field claims (lineage + coefficients, no dense)
+        run: |
+          mvn -B -ntp -q exec:java \
+            -Dexec.mainClass=eu.solven.matmul.docs.VerifySchemes \
+            -Dexec.args="--check=lineage,coefficients"
+
+      - name: Verify every scheme on disk
+        env:
+          # Heap-dump on OOM so a memory failure leaves evidence. exec:java runs
+          # in-process, so MAVEN_OPTS governs its heap. (An exit 137/144 with an
+          # EMPTY dump dir means an OS SIGKILL, not a JVM OOM — see CLAUDE.md.)
+          MAVEN_OPTS: >-
+            -Xmx3g
+            -XX:+HeapDumpOnOutOfMemoryError
+            -XX:HeapDumpPath=target/oom-dumps/
+        run: |
+          mkdir -p target/oom-dumps
+          mvn -B -ntp -q exec:java \
+            -Dexec.mainClass=eu.solven.matmul.docs.verify.VerifyAllSchemes
+
+      - name: Upload heap dump (on OOM)
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: verify-catalog-oom-dumps
+          path: target/oom-dumps/*.hprof
+          if-no-files-found: ignore

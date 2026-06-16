@@ -1,0 +1,25 @@
+{
+  "lineage_str": "KronProduct(2x3x3, KronProduct(2x3x3, 2x3x3))",
+  "lineage_compact": "2x3x3 ⊗ 2x3x3 ⊗ 2x3x3",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+    "inner": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "inner": {"op": "Atom", "ref": "2x3x3@497eea7"}
+    }
+  },
+  "n": [8, 27, 27],
+  "m": 3375,
+  "hash": "b107716d157ab743b7bc25a34954efec32432f105d434ea281b704bac4c50138",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

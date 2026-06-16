@@ -1,0 +1,49 @@
+{
+  "lineage_str": "ConcatRows(SumInner(OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨2,11,4⟩), OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨2,11,4⟩)), Serendipitous(OrientAs(2x4x11, ⟨4,11,2⟩) ⊗ ⟨5,2,2⟩))",
+  "lineage_compact": "2x4x11-r70-perminov_ZT-0ae9c5e→⟨2,11,4⟩ +m 2x4x11-r70-perminov_ZT-0ae9c5e→⟨2,11,4⟩ +n 2x4x11→⟨4,11,2⟩ ⊗ˢ⟨5,2,2⟩",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 11,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 11,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+      }
+    },
+    "bottom": {
+      "op": "SerendipitousProduct",
+      "n2": 5,
+      "m2": 2,
+      "p2": 2,
+      "base": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 11,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x11@0ae9c5e"}
+      }
+    }
+  },
+  "n": [22, 22, 4],
+  "m": 1262,
+  "hash": "db2df0d3e4246123cfefa968cf302a1508cf6a0a2598bf433f7f02a641fe4ea4",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

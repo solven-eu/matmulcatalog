@@ -1,0 +1,15 @@
+Islam 2009 §5.4: Eq 5.3 (basic Proposition 2)
+======================================================================
+
+── n_b = 2  (full size 4×4,  m = n_b + 1 = 3) ──
+   computing LHS = T(Ã, B̃, C̃) directly ...
+   computing RHS via Eq 5.3 (4 S-terms + 8 U-terms) ...
+   FAIL — residual has 256 nonzero terms
+     -A_11_11*B_12_11*ct_12_11
+     A_11_11*B_12_11*ct_12_13
+     A_11_11*B_12_11*ct_12_31
+     -A_11_11*B_12_11*ct_12_33
+     A_11_11*B_12_11*ct_21_11
+
+======================================================================
+[Phase A step 4] FAIL — Eq 5.3 doesn't match T(Ã, B̃, C̃).

@@ -1,0 +1,50 @@
+{
+  "lineage_str": "ConcatCols(ConcatRows(SumInner(OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨2,11,4⟩), OrientAs(2x4x11-r70-perminov_ZT-0ae9c5e, ⟨2,11,4⟩)), Serendipitous(OrientAs(2x4x11, ⟨4,11,2⟩) ⊗ ⟨5,2,2⟩)), 22x22x22-r5596-schwartz_zwecher_2025-05d281b)",
+  "lineage_compact": "2x4x11-r70-perminov_ZT-0ae9c5e→⟨2,11,4⟩ +m 2x4x11-r70-perminov_ZT-0ae9c5e→⟨2,11,4⟩ +n 2x4x11→⟨4,11,2⟩ ⊗ˢ⟨5,2,2⟩ +p 22x22x22-r5596-schwartz_zwecher_2025-05d281b",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "SumInner",
+        "left": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 11,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 11,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+        }
+      },
+      "bottom": {
+        "op": "SerendipitousProduct",
+        "n2": 5,
+        "m2": 2,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 11,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x4x11@0ae9c5e"}
+        }
+      }
+    },
+    "right": {"op": "Atom", "ref": "22x22x22-r5596-schwartz_zwecher_2025-05d281b"}
+  },
+  "n": [22, 22, 26],
+  "m": 6858,
+  "hash": "16468c7709d975112c4274c65c2591e75538e2f5f6824a5d336a59b94d315e2d",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

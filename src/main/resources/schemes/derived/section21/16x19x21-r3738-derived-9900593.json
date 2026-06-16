@@ -1,0 +1,50 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,2,1>=2 :: CANONICAL, allocA=[16], allocB=[1, 18], allocC=[21], leaves=[naive-16x1x21, KronProduct(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨4,3,7⟩), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩))])",
+  "lineage_compact": "R[AxisSplit<1,2,1>=2 :: CANONICAL; 16 | 1,18 | 21]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,2,1>=2 :: CANONICAL"},
+    "allocA": [16],
+    "allocB": [1, 18],
+    "allocC": [21],
+    "leaves": [
+      {"op": "Atom", "ref": "naive-16x1x21"},
+      {
+        "op": "KronProduct",
+        "outer": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 3,
+          "p": 7,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        },
+        "inner": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 6,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        }
+      }
+    ]
+  },
+  "n": [16, 19, 21],
+  "m": 3738,
+  "hash": "9900593dde904656af4819c81d81a51fb70ea1bbf7c1496b1fc66267d4b536ee",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

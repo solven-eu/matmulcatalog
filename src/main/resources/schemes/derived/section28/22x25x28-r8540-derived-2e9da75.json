@@ -1,0 +1,135 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[10, 12], allocB=[9, 8, 8], allocC=[9, 10, 9], leaves=[Recombination(base=2x3x3, allocA=[6, 6], allocB=[3, 3, 2], allocC=[3, 3, 3], leaves=[ConcatRows(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])]), KronProduct(2x3x3, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Recombination(base=2x3x3, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), OrientAs(8x9x10-r482-perminov_Z-cba9048, ⟨10,8,9⟩), OrientAs(8x10x10-r528-perminov_ZT-97dba4d, ⟨10,8,10⟩), OrientAs(8x10x12-r624-perminov_Q-c5b7abd, ⟨12,8,10⟩), Project(13x9x10, keepN=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9])])",
+  "lineage_compact": "R[2x3x3; 10,12 | 9,8,8 | 9,10,9]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9", "id": "L0"},
+    "allocA": [10, 12],
+    "allocB": [9, 8, 8],
+    "allocC": [9, 10, 9],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [6, 6],
+        "allocB": [3, 3, 2],
+        "allocC": [3, 3, 3],
+        "leaves": [
+          {
+            "op": "ConcatRows",
+            "top": {
+              "op": "Recombination",
+              "base": {
+                "op": "Transpose",
+                "id": "L1",
+                "perm": "ABC->CAB",
+                "child": {"op": "@ref", "id": "L0"}
+              },
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1],
+              "allocC": [1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            },
+            "bottom": {
+              "op": "Recombination",
+              "base": {"op": "@ref", "id": "L1"},
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1],
+              "allocC": [1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          },
+          {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          }
+        ]
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [4, 6],
+        "allocB": [3, 3, 3],
+        "allocC": [3, 3, 3],
+        "leaves": [
+          {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          },
+          {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->CBA",
+              "child": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"}
+            },
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 8,
+        "p": 9,
+        "child": {"op": "Atom", "ref": "8x9x10-r482-perminov_Z-cba9048"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 8,
+        "p": 10,
+        "child": {"op": "Atom", "ref": "8x10x10-r528-perminov_ZT-97dba4d"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 8,
+        "p": 10,
+        "child": {"op": "Atom", "ref": "8x10x12-r624-perminov_Q-c5b7abd"}
+      },
+      {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "child": {"op": "Atom", "ref": "13x9x10@8c62898"}
+      }
+    ]
+  },
+  "n": [22, 25, 28],
+  "m": 8540,
+  "hash": "2e9da75fd9b217fa7ed29bf4b14674c882d6b29eea29b4a0d02ab1c306eb57f3",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

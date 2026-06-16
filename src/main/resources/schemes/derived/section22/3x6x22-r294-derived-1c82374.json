@@ -1,0 +1,49 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(naive-1x1x3, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), ConcatCols(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), KronProduct(naive-1x1x3, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))))",
+  "lineage_compact": "naive-1x1x3 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +p 3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩ +p naive-1x1x3 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "naive-1x1x3"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      }
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 6,
+        "p": 4,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      },
+      "right": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "naive-1x1x3"},
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      }
+    }
+  },
+  "n": [3, 6, 22],
+  "m": 294,
+  "hash": "1c823744b22158ecef3ec66d309f5ca613209899fa79f28575fd3f63d228b92f",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

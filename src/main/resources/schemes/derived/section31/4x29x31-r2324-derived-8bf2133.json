@@ -1,0 +1,37 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[2, 2], allocB=[7, 7, 7, 8], allocC=[8, 8, 8, 7], leaves=[2x7x8-r88-hk71-e1caeb7, Recombination(base=ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x8x8-r100-hk71-1fe5b7a])",
+  "lineage_compact": "R[2x4x4; 2,2 | 7,7,7,8 | 8,8,8,7]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"},
+    "allocA": [2, 2],
+    "allocB": [7, 7, 7, 8],
+    "allocC": [8, 8, 8, 7],
+    "leaves": [
+      {"op": "Atom", "ref": "2x7x8-r88-hk71-e1caeb7"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {"op": "Atom", "ref": "2x8x8-r100-hk71-1fe5b7a"}
+    ]
+  },
+  "n": [4, 29, 31],
+  "m": 2324,
+  "hash": "8bf2133f948525ff0f58705d3cd50727e26ef8ad745c1b0261e75de45053d76c",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,133 @@
+% Non-overlap property — promote the methodological observation from
+% docs/notes/materialisation-and-overlap.md into a paper section.
+% Keep the salt warning here too — it documents which steps need to
+% stay pure for the invariant to hold.
+
+\emph{[TO BE REWORDED]}
+
+The composition operators of Sections \ref{ssec:axis-flip} through
+\ref{ssec:peel} are subject to the following structural invariant.
+
+\begin{theorem}[Non-overlap]\label{thm:nonoverlap}
+Let \(O\) be an outer bilinear scheme of shape
+\(\nmpshape{n_o}{m_o}{p_o}\) with \(r_o\) products, and let
+\(L_1, \ldots, L_{r_o}\) be sub-schemes assigned via
+\code{Recombination.constructWithAllocation} to a target shape
+\(\nmpshape{n}{m}{p}\) with allocations \((\mathbf{a}_A, \mathbf{a}_B,
+\mathbf{a}_C)\) and an optional output peel pattern. The resulting
+algorithm has rank exactly \(\sum_k r_{L_k}\), and no two of its
+bilinear products are equal as bilinear forms.
+\end{theorem}
+
+\begin{proof}[Sketch]
+The construction is block-substitution: each outer product
+\(k \in [1, r_o]\) is instantiated as the sub-scheme \(L_k\) wired
+into block-positions of \((A, B, C)\) determined by the allocations
+and the outer scheme's bilinear form. Two columns of the resulting
+\((U, V, W)\) can be equal as bilinear forms only if (a) they come
+from the same outer product index AND (b) they correspond to the
+same column of \(L_k\) -- which would require the same column of the
+sub-scheme to be wired to two different positions, contradicting the
+definition of block-substitution. The peel reduction
+(Section \ref{ssec:peel}) removes dead rows of \(W\) but never
+identifies two columns. The axis-flip orbit (Section
+\ref{ssec:axis-flip}) is an outer transformation that does not change
+the rank or the column-distinctness.
+\end{proof}
+
+\paragraph{Scope: the operations that \emph{reduce} below the sum.} The
+theorem is about pure block-substitution, so it governs Kronecker,
+concatenation, recombination-with-allocation, the axis-flip orbit and the
+peel. Three operations deliberately fall \emph{outside} it by producing
+fewer than \(\sum_k r_{L_k}\) products --- and none is a counterexample,
+because none \emph{discovers} sharing; each applies a known,
+\emph{predict-time} reduction.
+\begin{itemize}[itemsep=2pt]
+  \item \textbf{Pair fusion (Pan TA)} is not a composition operator at
+    all: it is an optimisation on a decomposition's product set, fusing
+    complementary pairs through Pan's trilinear-aggregation
+    \emph{identity}. The saving is a property of that fixed identity,
+    counted before materialisation --- TA does not break the invariant,
+    it just is not a \(\sum_k r_{L_k}\) construction.
+  \item \textbf{The serendipitous product} replaces an enlarged sub-block
+    by its catalogued best rank --- again a lookup performed at predict
+    time.
+  \item \textbf{Downward projection} restricts a materialised parent and
+    runs DCE; the resulting rank \(R-\mu\) is exactly what the
+    projection-margin score (Section~\ref{sec:search}) \emph{predicts}
+    from the parent's support. The DCE is the same deterministic step in
+    both the prediction and the materialisation, so nothing is discovered.
+\end{itemize}
+So the deeper invariant below --- \emph{predicted rank equals materialised
+rank, with no sharing found during materialisation} --- holds for these
+three as well, even though the literal \(\sum_k r_{L_k}\) equality of the
+theorem does not.
+
+Theorem \ref{thm:nonoverlap} has two practical consequences worth
+calling out.
+
+\paragraph{Predicted rank equals materialised rank.} The frontier-closure
+search (Section \ref{sec:search}) propagates rank predictions
+\(\hat r = \sum_k r_{\text{sub-}k}\) computed by summing sub-shape
+lookups in the catalog. The materialised scheme has exactly that
+rank. There is no hidden discovery during materialisation; the
+materialisation step is faithful execution of whatever strategy the
+search picked. This is what lets us split the closure loop into a
+fast rank-only search phase and a lazy materialise-only phase
+without losing accuracy -- see Section \ref{sec:search} for the
+algorithm.
+
+\paragraph{A methodological boundary against hand-crafted schemes.}
+Almost every hand-crafted small-format result in the literature
+exists \emph{because} its author found a non-obvious shared
+bilinear core: Strassen's \(\nmpfield{\Reals}{2}{2}{2} = 7\)
+beats 8 because two of his seven products do double duty across
+output cells; Laderman's \(\nmpfield{\Reals}{3}{3}{3} = 23\)
+is the same story at larger scale; Smirnov, Pan, AlphaTensor,
+AlphaEvolve all hunt for non-obvious cross-product sharing.
+Theorem \ref{thm:nonoverlap} says our \emph{composition} operators do
+\emph{not} hunt for such sharing -- the wins come from picking the
+right composition of cataloged building blocks. (The reducing operators
+of Section~\ref{ssec:decomposition} ff.\ --- serendipity, pair fusion,
+projection --- do exploit known reductions, but never discover new ones;
+see the scope remark above.)
+
+This makes a ``composition matches hand-crafted rank'' outcome a
+\emph{co-existence} claim, not a re-discovery claim. When the search
+reaches \(\nmpfield{\Rationals}{17}{17}{17} = 2930\) via a Winograd
+recombination at \((9,8)^3\), it does so by a route structurally
+distinct from the hand-crafted disjoint-sum construction for the same
+shape (FMM-Lille, rank \(2934\)): our scheme is a plain sum of
+independent sub-products and reproduces none of that construction's
+shared bilinear identities. The catalog records both with distinct
+lineages and distinct \code{attribution\_for\_rank}.
+
+The two approaches are complementary, not redundant. Composition
+expands the SOTA frontier without finding new bilinear identities;
+hand-crafted constructions find new bilinear identities that can be
+ingested as new outer schemes, immediately expanding what
+composition can do.
+
+\paragraph{The invariant is current-state, not eternal.}
+Theorem \ref{thm:nonoverlap} depends on \code{constructWithAllocation}
+being pure block-substitution. Several extensions would break it:
+post-construction column fusion that identifies duplicate bilinear
+forms; random sign salting of sub-blocks that enriches the symmetry
+orbit; coefficient mixing between outer products that share a
+sub-shape. Any of these would let materialised rank be \emph{lower}
+than predicted rank, which would be a feature -- but would also
+break the search-rank-equals-materialised-rank invariant that the
+two-phase search of Section \ref{sec:search} relies on. The
+implementor of any such ``salt'' must either restrict it to the
+final materialisation step (so the search keeps its pure prediction)
+or re-derive predictions to account for the salt. The catalog
+documents this in \code{docs/notes/materialisation-and-overlap.md}.
+
+We have considered whether to add such salt and decided against it
+for now: a pure search-time prediction is easier to reason about,
+easier to cache, and avoids a class of subtle correctness bugs at
+the search/materialise boundary. Hand-crafted-style sharing
+discoveries are deferred to the one dedicated constructor we have ---
+pair fusion (Section \ref{ssec:pair-fusion}) --- rather than emerging
+from generic recombination; the disjoint-sum / $\tau$ route
+(Section \ref{ssec:disjoint-sum}) remains future work.

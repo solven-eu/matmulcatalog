@@ -1,0 +1,30 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=5x5x5, allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 5x5x12-r204-perminov_ZT-61a6cb7)",
+  "lineage_compact": "R[5x5x5; 1,1,1,1,1 | 1,1,1,1,1 | 1,1,1,1,1] +p 5x5x12-r204-perminov_ZT-61a6cb7",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "5x5x5@9728dd0a9a23cd60f6ceb20f3e4fbc1d130b3e3542485ff321abc5edff5d392a"},
+      "allocA": [1, 1, 1, 1, 1],
+      "allocB": [1, 1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "right": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+  },
+  "n": [5, 5, 17],
+  "m": 297,
+  "hash": "4beeef5c30fa0a386f740c63ed2dcb6b47a7e82c60d784f3d88dff7740b62174",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

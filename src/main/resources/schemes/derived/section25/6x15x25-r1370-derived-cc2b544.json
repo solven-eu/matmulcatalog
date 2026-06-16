@@ -1,0 +1,42 @@
+{
+  "lineage_str": "ConcatCols(naive-6x15x1, KronProduct(Recombination(base=Transpose(2x4x5, perm=\"ABC->ACB\"), allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])))",
+  "lineage_compact": "naive-6x15x1 +p R[2x4x5^ABC->ACB; 1,1 | 1,1,1,1,1 | 1,1,1,1] ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-6x15x1"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->ACB",
+          "child": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"}
+        },
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      }
+    }
+  },
+  "n": [6, 15, 25],
+  "m": 1370,
+  "hash": "cc2b544bb9b281c9b1b6d03958bf6ea855edfe39f9616884531cac00b316b24f",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

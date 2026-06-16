@@ -1,0 +1,31 @@
+{
+  "lineage_str": "KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(4x5x6-r90-alphaevolve-8aa8e60, ⟨5,6,4⟩))",
+  "lineage_compact": "3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 4x5x6-r90-alphaevolve-8aa8e60→⟨5,6,4⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Project",
+      "keepN": [0, 1, 2],
+      "keepM": [0, 1, 2],
+      "keepP": [1, 2, 3, 4, 5, 6],
+      "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+    },
+    "inner": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 6,
+      "p": 4,
+      "child": {"op": "Atom", "ref": "4x5x6-r90-alphaevolve-8aa8e60"}
+    }
+  },
+  "n": [15, 18, 24],
+  "m": 3600,
+  "hash": "35fde7d8144769d0880ee6418c0bc92849aafa0a3a547c68aa439583d1bbf537",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

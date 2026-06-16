@@ -1,0 +1,50 @@
+{
+  "lineage_str": "Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[4, 4, 4], allocB=[6, 6, 6], allocC=[3, 2], leaves=[OrientAs(Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨4,6,2⟩), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩)])",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 4,4,4 | 6,6,6 | 3,2]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->CBA",
+      "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+    },
+    "allocA": [4, 4, 4],
+    "allocB": [6, 6, 6],
+    "allocC": [3, 2],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 2,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL"},
+          "allocA": [1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 3,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    ]
+  },
+  "n": [12, 18, 5],
+  "m": 720,
+  "hash": "982700e5ece789819b6df4700d0b1fee17dd5e1e67cd9b835198f2e4041ff1da",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

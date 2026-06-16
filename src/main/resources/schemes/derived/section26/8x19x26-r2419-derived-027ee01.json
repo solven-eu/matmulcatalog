@@ -1,0 +1,46 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 4], allocB=[10, 9], allocC=[13, 13], leaves=[Recombination(base=2x2x2, allocA=[2, 2], allocB=[5, 5], allocC=[7, 6], leaves=[Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x5x6-r47-alphaevolve-7387644]), 4x9x13-r325-perminov_ZT-b1a732e])",
+  "lineage_compact": "R[2x2x2; 4,4 | 10,9 | 13,13]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [4, 4],
+    "allocB": [10, 9],
+    "allocC": [13, 13],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [2, 2],
+        "allocB": [5, 5],
+        "allocC": [7, 6],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        ]
+      },
+      {"op": "Atom", "ref": "4x9x13-r325-perminov_ZT-b1a732e"}
+    ]
+  },
+  "n": [8, 19, 26],
+  "m": 2419,
+  "hash": "027ee01ddcb6fb2e8ab5189fbc50f8b1871f13ded631eeb905ff43c88230dd83",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

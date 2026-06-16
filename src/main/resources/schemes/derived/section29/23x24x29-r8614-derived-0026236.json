@@ -1,0 +1,36 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 12], allocB=[12, 12], allocC=[15, 14], leaves=[KronProduct(2x4x5-r32-alphaevolve-6216e15, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 11x12x14-r1153-perminov_Q-da0c7e7, 12x12x14-r1234-perminov_Q-7f09f61, 11x12x15-r1234-perminov_Z-1d3d4cf])",
+  "lineage_compact": "R[2x2x2; 11,12 | 12,12 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [11, 12],
+    "allocB": [12, 12],
+    "allocC": [15, 14],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {"op": "Atom", "ref": "11x12x14-r1153-perminov_Q-da0c7e7"},
+      {"op": "Atom", "ref": "12x12x14-r1234-perminov_Q-7f09f61"},
+      {"op": "Atom", "ref": "11x12x15-r1234-perminov_Z-1d3d4cf"}
+    ]
+  },
+  "n": [23, 24, 29],
+  "m": 8614,
+  "hash": "0026236f579dd8ae9eacc80e269f855abf89df6add5a7beac7a07b48500d32f5",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

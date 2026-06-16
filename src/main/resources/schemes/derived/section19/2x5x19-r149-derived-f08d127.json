@@ -1,0 +1,34 @@
+{
+  "lineage_str": "ConcatCols(2x5x6-r47-alphaevolve-7387644, ConcatCols(2x5x6-r47-alphaevolve-7387644, Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])))",
+  "lineage_compact": "2x5x6-r47-alphaevolve-7387644 +p 2x5x6-r47-alphaevolve-7387644 +p R[ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL; 1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+      "right": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    }
+  },
+  "n": [2, 5, 19],
+  "m": 149,
+  "hash": "f08d127d43dc50abe910a69b7e76dfebd9ce42e02095b458e36b22e79e842018",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

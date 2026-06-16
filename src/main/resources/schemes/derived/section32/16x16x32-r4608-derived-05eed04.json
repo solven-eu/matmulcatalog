@@ -1,0 +1,27 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(4x4x4, 4x4x4), KronProduct(4x4x4, 4x4x4))",
+  "lineage_compact": "4x4x4 ⊗ 4x4x4 +p 4x4x4 ⊗ 4x4x4",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "4x4x4@929db4e"},
+      "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "4x4x4@929db4e"},
+      "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+    }
+  },
+  "n": [16, 16, 32],
+  "m": 4608,
+  "hash": "05eed04397afaf958387a5ec5790c3c4563509d93bd954dafc8869a8e1e1c6c8",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

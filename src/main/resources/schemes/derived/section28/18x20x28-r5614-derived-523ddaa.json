@@ -1,0 +1,40 @@
+{
+  "lineage_str": "ConcatCols(Serendipitous(OrientAs(2x3x10, ⟨3,10,2⟩) ⊗ ⟨6,2,2⟩), KronProduct(2x2x2, Project(9x10x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])))",
+  "lineage_compact": "2x3x10→⟨3,10,2⟩ ⊗ˢ⟨6,2,2⟩ +p 2x2x2 ⊗ 9x10x13 ↓[0,1,2,3,4,5,6,7,8|0,1,2,3,4,5,6,7,8,9|1,2,3,4,5,6,7,8,9,10,11,12]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SerendipitousProduct",
+      "n2": 6,
+      "m2": 2,
+      "p2": 2,
+      "base": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 10,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x3x10@60807c7"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "child": {"op": "Atom", "ref": "9x10x13@8c62898"}
+      }
+    }
+  },
+  "n": [18, 20, 28],
+  "m": 5614,
+  "hash": "523ddaa8aa692700617c290f2c5fe66452601580f809a336af370f2df7a925ed",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

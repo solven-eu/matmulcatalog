@@ -1,0 +1,266 @@
+% A constructive realisation of the Hopcroft–Kerr bound for ⟨2,p,n⟩.
+% Contributions: (i) operational closure of HK's same-method bridge cases over
+% the true reusable set — including the cases covered by a published
+% impossibility theorem for a narrower set; (ii) a repaired Case-2 Step 3
+% (circulant matching + Z-pairs) avoiding the genuinely-impossible (3,3) case;
+% (iii) an exact-arithmetic pipeline; (iv) machine-verified schemes, several
+% strictly below all published catalogs.
+
+Hopcroft and Kerr~\cite{hopcroftkerr1971} proved
+\(R(\nmpshape{2}{p}{n}) \le \lceil (3pn + \max(p,n))/2 \rceil\)
+over any field, by an explicit construction (their Theorem~1). The published
+proof, however, compresses its hardest steps, and it is worth recording
+precisely \emph{what the 1971 paper makes explicit and what it does not}:
+
+\begin{itemize}\itemsep1pt
+  \item \textbf{Explicit in the paper}: the three diagonal methods (their
+    p.~9); Lemma~2 with worked formulas for the three different-method pair
+    cases \((1,2), (1,3), (2,3)\) (p.~7); ONE same-method pair case,
+    \((1,1,\mathrm{bridge}\text{-}2)\) (p.~10); Lemma~1's augmentation-matrix
+    existence proof (pp.~5--6); Lemma~3's method-sequence existence (pp.~7--8);
+    the Case-2 Step~1/2/3 outline with the \(Z\)-aggregation identities
+    (pp.~11--13).
+  \item \textbf{Not in the paper}: the remaining five same-method cases
+    (``the other cases follow by symmetry'' — they do not: the natural
+    involutions swap methods 1 and 2 but fix method~3); any concrete
+    augmentation matrix (the existence proof is non-constructive about
+    conditioning); the fact that Lemma~3's own sequence forces
+    \((3,3)\)-same-method pairs, a case for which no derivation is given and
+    — as we show below — none exists within the natural product family.
+\end{itemize}
+
+For five decades the bound has effectively been a black box. The empirical
+record is telling: the community catalogs (FMM-Lille~\cite{fmmlille},
+Perminov~\cite{perminov}) credit Hopcroft--Kerr for many
+\(\nmpshape{2}{p}{n}\) entries, yet at several shapes — as of our 2026-06
+full synchronisation of both catalogs — \emph{neither holds a scheme
+attaining the formula, nor any reference to the formula's value as an
+attainable bound}: at \(\nmpshape{2}{10}{15}\) both publish 234 against the
+formula's 233; at \(\nmpshape{2}{12}{16}\) the best published is 298 against
+296; at \(\nmpshape{2}{10}{16}\) (formula 248) no attaining scheme is
+published at all. If a working constructive reading of the 1971 paper
+existed anywhere, these entries would attain the formula. This section gives
+a complete, machine-verified constructive realisation, identifies precisely
+which ingredient resisted (and why), and produces schemes strictly below
+every published catalog at exactly those shapes.
+
+\subsection{The construction, in blocks}
+
+Write \(Y = \bar A X\) with \(A \in K^{p\times 2}\) augmented to
+\(\bar A = MA \in K^{n\times 2}\), \(X \in K^{2\times n}\), and
+\(p \le n \le 2p-1\). The constructive pipeline decomposes into seven blocks.
+Blocks (i)--(iii) are Hopcroft--Kerr's (with (iii) only partially explicit in
+the paper); blocks (iv)--(vii) are this work's, and are what turn the 1971
+existence argument into an algorithm.
+
+\paragraph{(i) Diagonal methods.} Each internal row \(i\) carries a method
+\(c(i)\in\{1,2,3\}\) computing \(y_{ii}\) with two reusable products:
+method 1 uses \(\{A{=}a_2(x_1{+}x_2),\,B{=}(a_1{-}a_2)x_1\}\), method 2
+\(\{C{=}(a_1{-}a_2)x_2,\,D{=}a_1(x_1{+}x_2)\}\), method 3
+\(\{E{=}a_2x_2,\,F{=}a_1x_1\}\).
+
+\paragraph{(ii) Different-method pairs (HK Lemma 2).} A pair
+\((y_{ij}, y_{ji})\) with \(c(i)\ne c(j)\) costs three new products. A
+structural fact we use heavily: the \((\alpha,\beta)\)-method pair emits the
+\emph{third} method's two products on a signed combination of the rows
+(\((1,2)\to E,F\) on \(a_i{+}a_j\); \((1,3)\to C,D\) and \((2,3)\to A,B\) on
+\(a_j{-}a_i\)) — each pair manufactures a \emph{virtual diagonal} for free.
+
+\paragraph{(iii) Same-method pairs via a bridge.} When \(c(i)=c(j)\), three
+new products suffice by routing through a third row \(b\), consuming the
+diagonal and pair products of \((i,b)\) and \((b,j)\). Which bridge methods
+are derivable is the crux below.
+
+\paragraph{(iv) Bridge selection.} In cyclic distance-ordered processing,
+\emph{any} arc-interior position \(b = i+e \ (1 \le e < d)\) is a legal
+bridge: both required pairs are already computed. With an alternating
+\(1,2\)-coloring an opposite-method interior position essentially always
+exists, so the benign cases \((1,1,\mathrm{b}2)\), \((2,2,\mathrm{b}1)\)
+carry almost all pairs.
+
+\paragraph{(v) Unimodular Lemma-1 matrices: integer schemes.}
+\(M\) needs every cyclic \(p\)-window nonsingular; we strengthen this to
+\emph{unimodular} (every window determinant \(\pm 1\)), which makes the
+back-substituted \(W\) — hence the whole scheme — \emph{integer}, over
+\(\Integers\) rather than \(\Rationals\). (The classical Vandermonde rows
+are computationally toxic — overflowing window determinants, inexact
+double back-substitution from \(n \approx p+2\) — and dense \(\pm1\) rows
+can \emph{never} be unimodular for \(n-p \ge 2\), since every \(2\times2\)
+\(\pm1\)-minor is even: exactly where a first emission's denominators
+\(2, 4, 8, \dots\) came from.) Window determinants of \([I_p; B]\) reduce
+to three minor families of the augmented block \(B\) (\(m = n-p\) rows):
+leading, trailing, and sliding \(m\)-column minors. These are satisfied by
+a \emph{Euclidean construction}: a period-\(m\) comb body
+(\(B_{u,c} = 1 \iff c \equiv u \bmod m\) on the first \(p - (p \bmod m)\)
+columns; its sliding windows are permutation matrices), and — for
+\(r = p \bmod m > 0\) — a tail of \(r\) columns equal to
+\(B(m, r)^{\!\top}\): eliminating the comb's permutation part shows the
+crossing and trailing minors of \(B\) are exactly the same three families
+of the tail transposed, so the recursion descends like the gcd and
+terminates at the pure comb. Pure \(0/1\) entries, no search; every window
+is still certified by fraction-free BigInteger elimination, and the
+back-substitution \(A x_j = M_{\mathrm{win}(j)}^{-1}(\bar A
+X)_{\mathrm{win}(j),j}\) is exact integer arithmetic.
+
+\paragraph{(vi) Case 2: circulant matching and the repaired Step 3.} For even
+\(p = 2k+2\), the band of half-width \(k\) leaves each column one cell short;
+the budget — \(\lceil(3pn{+}n)/2\rceil - n(3k{+}2)\) — is exactly \(n/2\)
+full pairs at distance \(k{+}1\): a perfect matching in the circulant
+\(i \leftrightarrow i{+}k{+}1 \pmod n\), whose \(\gcd(n,k{+}1)\) orbit
+cycles are matched edge-alternately. Odd cycles each leave one column,
+completed in pairs by Hopcroft--Kerr's \emph{Z-trick} (their pp.~12--13),
+which we restate operationally: for leftover columns \(i_2, i_4\) at
+separation \(\delta \le k\), set \(i_1 = i_2{+}k{+}1\), \(i_3 = i_4{-}k{-}1\)
+and treat \(\alpha = a_{i_2}{+}a_{i_3}\), \(\beta = a_{i_1}{-}a_{i_4}\) as
+virtual rows: their method products already exist as the band pairs'
+cross-products (by the structural fact in (ii)), so the virtual Lemma-2 cross
+pair \(Z(\beta,\alpha_x), Z(\alpha,\beta_x)\) costs three new products and
+yields both missing cells after subtracting cells of \emph{complete} columns
+— including out-of-band cells, recovered exactly as rational combinations
+through the Lemma-1 window relation. One leftover (n odd) is absorbed by the
+formula's ceiling.
+
+\paragraph{(vii) Chained augmentation for \(n > 2p{-}1\).} One Lemma-1 band
+covers at most \(2p{-}1\) columns, so for larger \(n\) the columns are
+partitioned into segments of size \(s \in [p, 2p{-}1]\), each built by the
+band construction and concatenated along the column axis (the products of
+distinct segments share nothing; ranks add). Because \(\max(p,s) = s\)
+throughout the segment range, per-segment formula values telescope to the
+global \(\lceil n(3p{+}1)/2 \rceil\) whenever the ceiling slack vanishes:
+automatic for odd \(p\) (each segment cost \(s(3p{+}1)/2\) is an integer),
+and for even \(p\) achievable by using at most one odd-size segment, of
+parity matching \(n\). Rather than hand-coding these rules, the partition is
+chosen by a dynamic program over the \emph{achieved} ranks of the segment
+builds, which also routes around the degraded \(g \ge 6\) segment sizes of
+block (vi) — e.g.\ \(p{=}12, n{=}36\) splits as \(16{+}20\) (both exact), not
+\(18{+}18\) (both \(+1\)). The chain attains the formula at \emph{every}
+swept \(n > 2p{-}1\), all parities.
+
+\subsection{The bridge-3 cases: a published impossibility, and its
+operational reversal}
+
+The repository's prior analysis proved (Gr\"obner-verified): \emph{no three
+rank-1 products complete the \((2,2,\mathrm{bridge}\text{-}3)\) case over
+characteristic 0 when the reusable set is}
+\(S = \{C_i, D_i, C_j, D_j, E_b, F_b\}\). That theorem is correct — and
+turns out not to bind. The emission actually disposes of \emph{twelve}
+reusables: the three diagonals \emph{and all products of the Lemma-2 pairs
+\((i,b)\) and \((b,j)\)}, each independently weightable in the output
+combination. Over this true set, exact search (120 candidate atoms, rational
+arithmetic) finds three-product completions; solving for the weights gives
+the explicit identities
+\begin{align*}
+(2,2,\mathrm{b}3):\quad
+y_{ij} &= -C_i + D_i + E_b - A(\delta_{ib}) + G_{ib} + A(\delta_{bj})
+          - E(\sigma) - G^\ast,\\
+y_{ji} &= -C_i + D_i + F_b - B(\delta_{ib}) - G_{ib} + B(\delta_{bj})
+          - F(\sigma) + G^\ast,
+\end{align*}
+with \(\delta_{ib} = a_b - a_i\), \(\delta_{bj} = a_b - a_j\),
+\(\sigma = a_i + a_b - a_j\) (mirrored on the \(x\)-side), and the single
+genuinely new mixed product
+\(G^\ast = (a_{i,1} + a_{b,2} - a_{j,2})\,(x_{1,b} - x_{1,j} - x_{2,i})\);
+the three \emph{new} multiplications are \(E(\sigma), F(\sigma), G^\ast\).
+An analogous identity closes \((1,1,\mathrm{b}3)\). This vindicates
+Hopcroft--Kerr's ``three additional multiplications'' claim for the bridge-3
+cases: the published impossibility holds for its narrow \(S\), but the
+construction was never confined to it.
+
+\subsection{The genuine gap, and a geometric limit}
+
+The same exact search over the true reusable set finds \emph{no}
+three-product completion for \((3,3,\mathrm{bridge}\text{-}1)\) or
+\((3,3,\mathrm{bridge}\text{-}2)\) — and here the negative can be promoted
+from a catalog falsification to a structural theorem. Block-decompose the
+monomial space by rows \(\{a_i,a_b\}\) versus \(a_j\) and columns
+\(\{x_i,x_b\}\) versus \(x_j\): the two bridge-sum targets sit, with rank 2,
+in blocks no reusable product touches, which forces \emph{any} three rank-1
+completing atoms (arbitrary linear forms on rows and columns \(\{i,b,j\}\) —
+no candidate catalog) to be supported on all four blocks, pins their
+coefficient supports, and collapses their spill into the
+\((\{a_i,a_b\},\{x_i,x_b\})\) block to two nonzero dyads with factors in the
+virtual-row space \(\langle a_i{+}a_b\rangle\) and virtual-column space
+\(\langle x_i{+}x_b\rangle\), each required to lie in the reusable span. An
+exact computation shows that intersection is one-dimensional, generated by
+the \emph{rank-2} virtual diagonal
+\((a_{i1}{+}a_{b1})\otimes(x_{1i}{+}x_{1b}) +
+(a_{i2}{+}a_{b2})\otimes(x_{2i}{+}x_{2b})\) — it contains no rank-1 element,
+so no three-product completion exists, for either bridge method
+(\code{derive\_33bridge\_general.py}; scope: the emitter's nine-product
+reusable set and atoms local to \(\{i,b,j\}\)). This is the robust
+obstruction:
+Hopcroft--Kerr's own Lemma-3 method sequence places method-3 rows at
+spacing~2, forcing \((3,3)\) same-method band pairs — so \emph{the paper's
+Theorem-1 proof, as written, rests on an underivable case}. Our construction
+avoids it by keeping method-3 rows pairwise more than \(k\) apart, which is
+possible except at a sharply characterised family: for \(n = 3(k{+}1)\) the
+circulant decomposes into \(k{+}1\) triangles, demanding
+\(\lfloor (k{+}1)/2 \rfloor\) Z-pairs; three method-3 rows pairwise
+\({>}k\) apart on \(C_{3(k+1)}\) would need their arcs to sum to at least
+\(3k{+}6 > n\) — impossible. Those shapes (\(g \ge 6\) odd cycles; six in
+the full sweep range, \(\nmpshape{2}{12}{18}\) through
+\(\nmpshape{2}{24}{30}\)) land at formula\(+1\) to \(+3\); everything else
+closes exactly.
+
+\subsection{Results}
+
+All schemes are machine-verified three ways: a 20{,}000-sample randomized
+spot check; the full residual over every tensor cell; and an
+\emph{exact-rational symbolic} verification (every coefficient recovered as
+an exact fraction, the bilinear identity
+\(\sum_k U_{a k} V_{b k} W_{c k} = T_{abc}\) checked coefficient-wise over
+\(\Rationals\) with no floating point).
+
+\begin{center}
+\begin{tabular}{llll}
+\hline
+Family & swept & at formula & verified \\
+\hline
+square \(\nmpshape{2}{n}{n}\) & \(n \le 16\) & 14/14 & 14/14 \\
+odd \(p\), \(p \le n \le 2p{-}1\) & \(p \le 13\) & 40/40 & 40/40 \\
+even \(p\), \(p \le n \le 2p{-}1\) & \(p \le 14\) & 52/54 & 54/54 \\
+chained, \(2p \le n \le 32\) & \(3 \le p \le 16\) & 196/196 & 196/196 \\
+\hline
+\end{tabular}
+\end{center}
+
+Highlights, all exact-formula and triple-verified:
+\(\nmpfield{\Integers}{2}{10}{15}{=}233\) — \emph{strictly below every
+published catalog} (FMM-Lille and Perminov: 234);
+\(\nmpfield{\Integers}{2}{12}{16}{=}296\) (published best 298);
+\(\nmpfield{\Integers}{2}{10}{16}{=}248\), \(\nmpshape{2}{11}{12}{=}204\),
+\(\nmpshape{2}{11}{13}{=}221\), \(\nmpshape{2}{13}{15}{=}300\) (absent from
+all catalogs); and shapes beyond every catalog's range (e.g.\
+\(\nmpshape{2}{13}{25}{=}500\)). The full sweep
+\(3 \le p \le 32\), \(p \le n \le 32\) — \textbf{465 schemes, 459 at the
+exact formula} (the six exceptions are precisely the \(g \ge 6\) family of
+the geometric limit above, at \(+1\)..\(+3\)) — is emitted into the
+catalog's \code{constructed/} category with per-scheme provenance
+(\code{GenerateHk2npConstructed}); the schemes are regenerable from the
+emitter alone. Of these, 197 strictly improved on the union of all external
+catalogs at first (band-range) emission, and the chained range added 22
+further strict improvements over everything previously held — including our
+own recursive-closure constructions — at \(2p \le n \le 32\) (e.g.\
+\(\nmpfield{\Integers}{2}{15}{32}{=}736\) vs.\ 741,
+\(\nmpfield{\Integers}{2}{14}{31}{=}667\) vs.\ 670). Beyond the
+emission-time quadruple gate, every published file was re-verified by an
+\emph{independent} checker sharing no code with the generator (Python
+standard-library rationals, own parser): 465/465 verify the bilinear
+identity exactly over \(\Rationals\).
+
+\subsection{Honesty notes}
+
+The construction is an upper-bound realisation; Hopcroft--Kerr proved
+matching lower bounds only for \(\nmpshape{2}{2}{n}\) and
+\(\nmpshape{2}{3}{3}\). The \((3,3,\cdot)\) impossibility theorem is exact
+over all rank-1 atoms \emph{local to the three rows/columns} \(\{i,b,j\}\)
+and scoped to the emitter's nine-product reusable set; widening the
+reusable set to all twelve products of both adjacent Lemma-2 pairs (which
+couples the block decomposition), admitting non-local atoms, or trading a
+four-product completion against savings elsewhere remain open — these are
+the only identified routes to the six \(g \ge 6\) shapes still at
+\(+1\)..\(+3\) over the formula (themselves below every published catalog).
+Lower bounds beyond Hopcroft--Kerr's own remain out of scope. Sympy
+artifacts (\code{derive\_bridge\_true\_reusables.py},
+\code{extract\_bridge\_identity.py}, \code{derive\_33bridge\_general.py})
+reproduce every claim in minutes.

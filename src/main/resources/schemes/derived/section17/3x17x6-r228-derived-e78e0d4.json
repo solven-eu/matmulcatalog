@@ -1,0 +1,31 @@
+{
+  "lineage_str": "SumInner(3x3x6-r40-smirnov13-d246191, SumInner(3x3x6-r40-smirnov13-d246191, SumInner(3x3x6-r40-smirnov13-d246191, SumInner(3x3x6-r40-smirnov13-d246191, 3x5x6-r68-alphaevolve-14be9c3))))",
+  "lineage_compact": "3x3x6-r40-smirnov13-d246191 +m 3x3x6-r40-smirnov13-d246191 +m 3x3x6-r40-smirnov13-d246191 +m 3x3x6-r40-smirnov13-d246191 +m 3x5x6-r68-alphaevolve-14be9c3",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"},
+    "right": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"},
+      "right": {
+        "op": "SumInner",
+        "left": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"},
+        "right": {
+          "op": "SumInner",
+          "left": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"},
+          "right": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+        }
+      }
+    }
+  },
+  "n": [3, 17, 6],
+  "m": 228,
+  "hash": "e78e0d4cd2075c32304cfbd4ea73b342d8ea21ac9dfa5f88e50f92c4dc959548",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

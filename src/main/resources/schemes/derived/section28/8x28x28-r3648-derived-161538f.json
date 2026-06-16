@@ -1,0 +1,28 @@
+{
+  "lineage_str": "KronProduct(Recombination(base=ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x4x4)",
+  "lineage_compact": "R[ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL; 1,1 | 1,1,1,1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 4x4x4",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL"},
+      "allocA": [1, 1],
+      "allocB": [1, 1, 1, 1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+  },
+  "n": [8, 28, 28],
+  "m": 3648,
+  "hash": "161538faac2ff0085dee623cfae3f0cfd7211d45def0eb97ad3d0545c489d2f1",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

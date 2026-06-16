@@ -1,0 +1,66 @@
+{
+  "lineage_str": "Recombination(base=Transpose(2x3x3, perm=\"ABC->BAB\"), allocA=[5, 4, 4], allocB=[7, 7], allocC=[6, 6, 5], leaves=[OrientAs(5x5x7-r127-perminov_ZT-9d68374, ⟨5,7,5⟩), OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨5,7,6⟩), OrientAs(Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨4,7,6⟩), OrientAs(4x5x7-r104-perminov_ZT-4a1b410, ⟨4,7,5⟩)])",
+  "lineage_compact": "R[2x3x3^ABC->BAB; 5,4,4 | 7,7 | 6,6,5]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->BAB",
+      "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+    },
+    "allocA": [5, 4, 4],
+    "allocB": [7, 7],
+    "allocC": [6, 6, 5],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 7,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 7,
+        "p": 6,
+        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 7,
+        "p": 6,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL"},
+          "allocA": [1, 1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 7,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"}
+      }
+    ]
+  },
+  "n": [13, 14, 17],
+  "m": 1923,
+  "hash": "435178cda331df2cad313f8b83a0460a5c8fbcf93b03e8b574240db51bd71da2",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

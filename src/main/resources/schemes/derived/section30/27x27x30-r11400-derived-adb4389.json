@@ -1,0 +1,31 @@
+{
+  "lineage_str": "KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), 9x9x15-r760-perminov_Q-19f51a1)",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] ⊗ 9x9x15-r760-perminov_Q-19f51a1",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "perm": "ABC->CBA",
+        "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+      },
+      "allocA": [1, 1, 1],
+      "allocB": [1, 1, 1],
+      "allocC": [1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "inner": {"op": "Atom", "ref": "9x9x15-r760-perminov_Q-19f51a1"}
+  },
+  "n": [27, 27, 30],
+  "m": 11400,
+  "hash": "adb4389935782407b7652a91f90a5a3d199bf8ed08ebb27ef4ce061694085487",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

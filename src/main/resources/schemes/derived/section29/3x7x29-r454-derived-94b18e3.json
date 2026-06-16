@@ -1,0 +1,33 @@
+{
+  "lineage_str": "ConcatCols(SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x4x6-r54-alphaevolve-c197868), ConcatCols(3x7x9-r141-perminov_ZT-50734ab, 3x7x14-r219-perminov_ZT-77b3583))",
+  "lineage_compact": "3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x4x6-r54-alphaevolve-c197868 +p 3x7x9-r141-perminov_ZT-50734ab +p 3x7x14-r219-perminov_ZT-77b3583",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "3x7x9-r141-perminov_ZT-50734ab"},
+      "right": {"op": "Atom", "ref": "3x7x14-r219-perminov_ZT-77b3583"}
+    }
+  },
+  "n": [3, 7, 29],
+  "m": 454,
+  "hash": "94b18e3cb94414f72089dca24d1c77e858ab70ba35e06af890e8c7b7f22842da",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

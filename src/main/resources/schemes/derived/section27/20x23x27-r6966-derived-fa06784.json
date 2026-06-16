@@ -1,0 +1,65 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 10], allocB=[12, 11], allocC=[14, 13], leaves=[KronProduct(2x2x2, 5x6x7-r150-kauers_2026-b7666c1), Recombination(base=2x2x2, allocA=[5, 5], allocB=[6, 6], allocC=[7, 6], leaves=[5x6x7-r150-kauers_2026-b7666c1, 5x6x6-r130-perminov_ZT-653ce4e]), Recombination(base=2x2x2, allocA=[5, 5], allocB=[6, 5], allocC=[7, 7], leaves=[5x6x7-r150-kauers_2026-b7666c1, 5x5x7-r127-perminov_ZT-9d68374]), Recombination(base=2x2x2, allocA=[5, 5], allocB=[6, 5], allocC=[7, 6], leaves=[5x6x7-r150-kauers_2026-b7666c1, 5x6x6-r130-perminov_ZT-653ce4e, 5x5x7-r127-perminov_ZT-9d68374, 5x5x6-r110-perminov_ZT-3420f61])])",
+  "lineage_compact": "R[2x2x2; 10,10 | 12,11 | 14,13]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [10, 10],
+    "allocB": [12, 11],
+    "allocC": [14, 13],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [5, 5],
+        "allocB": [6, 6],
+        "allocC": [7, 6],
+        "leaves": [
+          {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
+          {"op": "Atom", "ref": "5x6x6-r130-perminov_ZT-653ce4e"}
+        ]
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [5, 5],
+        "allocB": [6, 5],
+        "allocC": [7, 7],
+        "leaves": [
+          {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
+          {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"}
+        ]
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [5, 5],
+        "allocB": [6, 5],
+        "allocC": [7, 6],
+        "leaves": [
+          {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
+          {"op": "Atom", "ref": "5x6x6-r130-perminov_ZT-653ce4e"},
+          {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"},
+          {"op": "Atom", "ref": "5x5x6-r110-perminov_ZT-3420f61"}
+        ]
+      }
+    ]
+  },
+  "n": [20, 23, 27],
+  "m": 6966,
+  "hash": "fa06784656a8d77b68dd4a316e59fef4b356687bb33b72f85926f521522c89e5",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

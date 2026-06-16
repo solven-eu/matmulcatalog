@@ -1,0 +1,27 @@
+{
+  "lineage_str": "Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨4,2,10⟩)",
+  "lineage_compact": "2x3x4→⟨2,4,3⟩ ⊗ˢ⟨4,2,10⟩",
+  "lineage": {
+    "op": "SerendipitousProduct",
+    "n2": 4,
+    "m2": 2,
+    "p2": 10,
+    "base": {
+      "op": "OrientAs",
+      "n": 2,
+      "m": 4,
+      "p": 3,
+      "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+    }
+  },
+  "n": [8, 8, 30],
+  "m": 1228,
+  "hash": "b7c6932c7b454c23972ba585437c5fb09c36fc903b53231764083e7dbb512053",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,37 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 9], allocB=[13, 12], allocC=[15, 14], leaves=[10x13x15-r1230-perminov_Z-b6d17f9, 10x12x15-r1122-perminov_Z-83aca77, 9x13x14-r1024-perminov_Q-3386a90, KronProduct(2x2x2, 5x6x7-r150-kauers_2026-b7666c1), Serendipitous(3x4x5 ⊗ ⟨3,3,3⟩)])",
+  "lineage_compact": "R[2x2x2; 10,9 | 13,12 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [10, 9],
+    "allocB": [13, 12],
+    "allocC": [15, 14],
+    "leaves": [
+      {"op": "Atom", "ref": "10x13x15-r1230-perminov_Z-b6d17f9"},
+      {"op": "Atom", "ref": "10x12x15-r1122-perminov_Z-83aca77"},
+      {"op": "Atom", "ref": "9x13x14-r1024-perminov_Q-3386a90"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 3,
+        "base": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+      }
+    ]
+  },
+  "n": [19, 25, 29],
+  "m": 7676,
+  "hash": "bd379782b29344e2c208fb2160a67fd9aed85c126ce4548b267e4d434fb5b1ce",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

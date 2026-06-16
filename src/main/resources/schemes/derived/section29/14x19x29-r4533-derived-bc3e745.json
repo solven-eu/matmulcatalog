@@ -1,0 +1,54 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[9, 10], allocC=[14, 15], leaves=[8x10x15-r778-perminov_Q-f76b305, Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,3,2⟩), 6x9x15-r529-perminov_Q-5fdb986, 8x10x14-r726-perminov_ZT-df53451, 6x10x15-r594-perminov_ZT-183864a, 8x9x15-r699-perminov_Z-c92bc67, KronProduct(2x2x2, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]))])",
+  "lineage_compact": "R[2x2x2; 6,8 | 9,10 | 14,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 8],
+    "allocB": [9, 10],
+    "allocC": [14, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "8x10x15-r778-perminov_Q-f76b305"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 3,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 3,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {"op": "Atom", "ref": "6x9x15-r529-perminov_Q-5fdb986"},
+      {"op": "Atom", "ref": "8x10x14-r726-perminov_ZT-df53451"},
+      {"op": "Atom", "ref": "6x10x15-r594-perminov_ZT-183864a"},
+      {"op": "Atom", "ref": "8x9x15-r699-perminov_Z-c92bc67"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    ]
+  },
+  "n": [14, 19, 29],
+  "m": 4533,
+  "hash": "bc3e74523479a971e80d225150e4392f673a13c9ecf9ab6a9051344cf278f046",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

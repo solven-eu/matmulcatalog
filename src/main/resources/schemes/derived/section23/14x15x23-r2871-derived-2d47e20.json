@@ -1,0 +1,33 @@
+{
+  "lineage_str": "Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[4, 5, 5], allocB=[5, 5, 5], allocC=[12, 11], leaves=[4x5x11-r160-perminov_ZT-06e75ba, 5x5x12-r204-perminov_ZT-61a6cb7, 4x5x12-r174-perminov_ZT-640e987, 5x5x11-r195-perminov_ZT-6771ab6])",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 4,5,5 | 5,5,5 | 12,11]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->CBA",
+      "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+    },
+    "allocA": [4, 5, 5],
+    "allocB": [5, 5, 5],
+    "allocC": [12, 11],
+    "leaves": [
+      {"op": "Atom", "ref": "4x5x11-r160-perminov_ZT-06e75ba"},
+      {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
+      {"op": "Atom", "ref": "4x5x12-r174-perminov_ZT-640e987"},
+      {"op": "Atom", "ref": "5x5x11-r195-perminov_ZT-6771ab6"}
+    ]
+  },
+  "n": [14, 15, 23],
+  "m": 2871,
+  "hash": "2d47e208532b2d1d5a8b108dc935ab60667a44417dc791da415b043cc3b9887b",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

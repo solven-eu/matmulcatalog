@@ -1,0 +1,45 @@
+{
+  "lineage_str": "SumInner(KronProduct(2x3x5-r25-alphatensor_Z-31f79a7, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), KronProduct(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])))",
+  "lineage_compact": "2x3x5-r25-alphatensor_Z-31f79a7 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 2x5x6-r47-alphaevolve-7387644→⟨2,6,5⟩ ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 6,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      }
+    }
+  },
+  "n": [6, 27, 30],
+  "m": 2880,
+  "hash": "e80713b0f86c66e82e298de06e8b606517c6c8b7cea85c7b73aeddb16ab1c2e1",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

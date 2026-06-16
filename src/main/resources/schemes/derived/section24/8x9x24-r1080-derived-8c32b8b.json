@@ -1,0 +1,25 @@
+{
+  "lineage_str": "KronProduct(2x3x4, OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩))",
+  "lineage_compact": "2x3x4 ⊗ 3x4x6-r54-alphaevolve-c197868→⟨4,3,6⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {"op": "Atom", "ref": "2x3x4@91c6b69"},
+    "inner": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 3,
+      "p": 6,
+      "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+    }
+  },
+  "n": [8, 9, 24],
+  "m": 1080,
+  "hash": "8c32b8bc265853288e36dcb97f26836cecfec05fc5f85ea2eb72b80e293de575",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,61 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[9, 12], allocC=[14, 15], leaves=[10x12x15-r1122-perminov_Z-83aca77, ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨10,9,2⟩), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])), 9x9x15-r760-perminov_Q-19f51a1, KronProduct(2x2x2, 5x6x7-r150-kauers_2026-b7666c1), Serendipitous(3x4x5 ⊗ ⟨3,3,3⟩), OrientAs(9x10x15-r864-perminov_ZT-477779d, ⟨10,9,15⟩), 9x12x14-r940-perminov_Q-ffecb1f])",
+  "lineage_compact": "R[2x2x2; 9,10 | 9,12 | 14,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [9, 10],
+    "allocB": [9, 12],
+    "allocC": [14, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "10x12x15-r1122-perminov_Z-83aca77"},
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 10,
+          "m": 9,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+        },
+        "right": {
+          "op": "Project",
+          "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+        }
+      },
+      {"op": "Atom", "ref": "9x9x15-r760-perminov_Q-19f51a1"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 3,
+        "base": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 9,
+        "p": 15,
+        "child": {"op": "Atom", "ref": "9x10x15-r864-perminov_ZT-477779d"}
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"}
+    ]
+  },
+  "n": [19, 21, 29],
+  "m": 6540,
+  "hash": "363930c24d52fd0e25cb1fc4466e1e94d71453d53049557607c0736147a61586",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

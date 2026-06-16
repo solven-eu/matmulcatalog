@@ -1,0 +1,43 @@
+{
+  "lineage_str": "SumInner(OrientAs(2x5x5-r40-alphatensor_Z-67f5fb7, ⟨5,2,5⟩), SumInner(OrientAs(5x5x12-r204-perminov_ZT-61a6cb7, ⟨5,12,5⟩), OrientAs(5x5x12-r204-perminov_ZT-61a6cb7, ⟨5,12,5⟩)))",
+  "lineage_compact": "2x5x5-r40-alphatensor_Z-67f5fb7→⟨5,2,5⟩ +m 5x5x12-r204-perminov_ZT-61a6cb7→⟨5,12,5⟩ +m 5x5x12-r204-perminov_ZT-61a6cb7→⟨5,12,5⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 2,
+      "p": 5,
+      "child": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"}
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 12,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 12,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+      }
+    }
+  },
+  "n": [5, 26, 5],
+  "m": 448,
+  "hash": "fec8df026f326f2976fd3f972b217d3bc537bef20c83cf97b26c46b825c146a9",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

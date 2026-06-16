@@ -1,0 +1,53 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 7], allocB=[8, 8], allocC=[9, 8], leaves=[7x8x9-r347-perminov_Z-2f9b000, Recombination(base=2x2x2, allocA=[4, 3], allocB=[4, 4], allocC=[4, 4], leaves=[Recombination(base=ext[4x4x4-r48-derived-929db4e.json] :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[3x4x4-r38-derived-644bd5e.json] / <3,4,4>=38 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_compact": "R[2x2x2; 7,7 | 8,8 | 9,8]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [7, 7],
+    "allocB": [8, 8],
+    "allocC": [9, 8],
+    "leaves": [
+      {"op": "Atom", "ref": "7x8x9-r347-perminov_Z-2f9b000"},
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [4, 3],
+        "allocB": [4, 4],
+        "allocC": [4, 4],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[4x4x4-r48-derived-929db4e.json] :: CANONICAL"},
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x4-r38-derived-644bd5e.json] / <3,4,4>=38 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "n": [14, 16, 17],
+  "m": 2306,
+  "hash": "64e830fb6cb6e7ccbd4a43474710fadf1cff02be7e7a8059d52431a3717a7520",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

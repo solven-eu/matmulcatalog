@@ -1,0 +1,33 @@
+{
+  "lineage_str": "ConcatRows(2x27x27-r1107-hk71-20b900f, KronProduct(2x3x3, KronProduct(2x3x3, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))))",
+  "lineage_compact": "2x27x27-r1107-hk71-20b900f +n 2x3x3 ⊗ 2x3x3 ⊗ 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2]",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "2x27x27-r1107-hk71-20b900f"},
+    "bottom": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "inner": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      }
+    }
+  },
+  "n": [26, 27, 27],
+  "m": 10107,
+  "hash": "997a43af0739131fec84ce58e8ab724edcae1096ac15e03cfb39a6806ed95b84",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

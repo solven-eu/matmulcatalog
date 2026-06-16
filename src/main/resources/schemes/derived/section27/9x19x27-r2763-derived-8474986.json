@@ -1,0 +1,45 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,2,1>=2 :: CANONICAL, allocA=[9], allocB=[1, 18], allocC=[27], leaves=[naive-9x1x27, KronProduct(ConcatCols(3x3x3, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))])",
+  "lineage_compact": "R[AxisSplit<1,2,1>=2 :: CANONICAL; 9 | 1,18 | 27]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,2,1>=2 :: CANONICAL"},
+    "allocA": [9],
+    "allocB": [1, 18],
+    "allocC": [27],
+    "leaves": [
+      {"op": "Atom", "ref": "naive-9x1x27"},
+      {
+        "op": "KronProduct",
+        "outer": {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "3x3x3@e134de1"},
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      }
+    ]
+  },
+  "n": [9, 19, 27],
+  "m": 2763,
+  "hash": "84749864103e0207f47b0b206dc69c08fb3b15bca8a592736939997fa2edecb1",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

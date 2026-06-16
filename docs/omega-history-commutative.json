@@ -1,0 +1,77 @@
+{
+  "_description": "Per-scheme upper bounds on the COMMUTATIVE exponent ω_c, defined as the smallest constant such that ⟨n,n,n⟩ matmul over a commutative ring can be done in O(n^ω_c) operations. Each entry is a single-shape claim of the form ω_c ≤ log_n(R_c(n)) derived from a published commutative-only construction. CAVEAT: unlike NC ω (see omega-history.json), commutative algorithms do NOT lift to recursive matrix matmul over non-commutative rings — block recursion fails because matrices don't commute. So each entry below is a fixed-n upper bound, not an asymptotically-aggregated exponent in the NC sense. See FUTURE_WORK.md §'Commutative asymptotic exponent ω_c' for the subtleties; the Islam 2009 MSc thesis (`references/papers/islam_2009_msc_optim_matmul.pdf`) discusses the recursion-for-commutative argument more carefully than this catalog entry can.",
+  "_schema": {
+    "year": "year of public announcement (preprint or proceedings, whichever first)",
+    "n": "cubic shape side length",
+    "rank": "commutative bilinear / non-bilinear rank of ⟨n,n,n⟩",
+    "omega_c_upper": "log_n(rank) — single-shape upper bound on the commutative exponent",
+    "method": "construction technique",
+    "source": "primary citation key",
+    "scheme_file": "catalog file providing the explicit construction (relative to src/main/resources/schemes/), or null if rank-only claim",
+    "notes": "context, predecessors, dominance"
+  },
+  "lower_bound": 2.0,
+  "lower_bound_source": "information-theoretic — n² output entries cannot be produced in fewer than n² operations; same lower bound as NC ω",
+  "entries": [
+    {
+      "year": 1969,
+      "n": 2,
+      "rank": 7,
+      "omega_c_upper": 2.8074,
+      "method": "Strassen ⟨2,2,2⟩ (NC scheme; valid over any commutative ring)",
+      "source": "Strassen 1969",
+      "scheme_file": "section2/strassen_2x2x2_r7_a18.json",
+      "notes": "log_2(7). Strassen's algorithm works over any ring; usable commutatively too. Defied attack for ~7 years even in the commutative setting."
+    },
+    {
+      "year": 1970,
+      "n": 4,
+      "rank": 46,
+      "omega_c_upper": 2.7604,
+      "method": "Waksman ⟨n,n,n⟩ generic commutative formula",
+      "source": "Waksman 1970",
+      "scheme_file": "section4/waksman-1970_4x4x4_r46_a230_commutative.json",
+      "notes": "log_4(46). Generic formula (n²+2n−1)·⌊n/2⌋+(n%2)·n² applied at n=4. Strictly commutative — does not lift to matrix block recursion. Waksman's n=3 case (rank 23) yields log_3(23)=2.854, dominated by Strassen even commutatively."
+    },
+    {
+      "year": 1970,
+      "n": 6,
+      "rank": 141,
+      "omega_c_upper": 2.7607,
+      "method": "Waksman ⟨n,n,n⟩ at n=6",
+      "source": "Waksman 1970",
+      "scheme_file": "section6/waksman-1970_6x6x6_r141_a837_commutative.json",
+      "notes": "log_6(141). Same Waksman formula at n=6 — comparable to n=4. Waksman's series log_n(R_c(n)) does NOT tend to a sub-3 limit; the curve has a local minimum near n=4–6 and rises back toward 3 for large n. See ROADMAP / FUTURE_WORK for the asymptotic-claim discussion."
+    },
+    {
+      "year": 1976,
+      "n": 3,
+      "rank": 23,
+      "omega_c_upper": 2.8540,
+      "method": "Laderman ⟨3,3,3⟩ (NC scheme; valid commutatively)",
+      "source": "Laderman 1976",
+      "scheme_file": "section3/laderman-1976_3x3x3_r23_a98.json",
+      "notes": "log_3(23). First explicit ⟨3,3,3⟩=23. Tied with Waksman 1970 ⟨3,3,3⟩=23 at base shape; both above Strassen's 2.807 even commutatively."
+    },
+    {
+      "year": 1986,
+      "n": 3,
+      "rank": 22,
+      "omega_c_upper": 2.8133,
+      "method": "Makarov ⟨3,3,3⟩ commutative",
+      "source": "Makarov 1986",
+      "scheme_file": null,
+      "notes": "log_3(22). First commutative-only improvement at ⟨3,3,3⟩. Paper is in Russian; explicit factor matrices not yet located — only the rank claim is registered (docs/cited-bounds.json)."
+    },
+    {
+      "year": 2019,
+      "n": 3,
+      "rank": 21,
+      "omega_c_upper": 2.7712,
+      "method": "Rosowski Corollary 1 / Thm 3 ⟨3,3,3⟩ commutative",
+      "source": "Rosowski 2019",
+      "scheme_file": "section3/rosowski-2019-cor1_3x3x3_r21.json",
+      "notes": "log_3(21). First explicit commutative ⟨3,3,3⟩=21 in published literature. Bit-distinct from RosowskiAlgorithm1 specialised to n=3 (same rank, different product indexing). Beats Strassen's 2.807 only at this single base shape; does NOT beat Waksman ⟨4,4,4⟩ in single-shape ω_c."
+    }
+  ]
+}

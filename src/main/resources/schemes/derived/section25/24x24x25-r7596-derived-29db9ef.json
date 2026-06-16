@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-24x24x1, 24x24x24-r7020-schwartz_zwecher_2025-e1d81fe)",
+  "lineage_compact": "naive-24x24x1 +p 24x24x24-r7020-schwartz_zwecher_2025-e1d81fe",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-24x24x1"},
+    "right": {"op": "Atom", "ref": "24x24x24-r7020-schwartz_zwecher_2025-e1d81fe"}
+  },
+  "n": [24, 24, 25],
+  "m": 7596,
+  "hash": "29db9ef4cff862929bef8873e5170ad4346b42aff62d6f5a61c0bd857f7cc673",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

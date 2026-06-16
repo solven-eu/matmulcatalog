@@ -1,0 +1,51 @@
+{
+  "lineage_str": "ConcatRows(ConcatRows(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), ConcatRows(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])))",
+  "lineage_compact": "7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2]",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6],
+        "keepM": [0, 1, 2],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+      },
+      "bottom": {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6],
+        "keepM": [0, 1, 2],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+      }
+    },
+    "bottom": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6],
+        "keepM": [0, 1, 2],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+      },
+      "bottom": {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6],
+        "keepM": [0, 1, 2],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+      }
+    }
+  },
+  "n": [24, 3, 3],
+  "m": 160,
+  "hash": "90fa562f25f79fa2ef39c23de2fef26f8cda22f43d66fd10904bd086a4b6a21c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

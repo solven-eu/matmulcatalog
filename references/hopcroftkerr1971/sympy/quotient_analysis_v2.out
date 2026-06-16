@@ -1,0 +1,53 @@
+rank(P_garbage) = 28  (expect 36 - 6 - 2 = 28)
+
+garbage vector has 34 non-zero coordinates (as polynomials in λ, μ)
+
+34 independent garbage-vanishing equations to solve.
+First 5 equations:
+   4*l1*m1/15 - 4*l1*m2/15 - 4*l2*m2/15 + l3*m4/5 - l5*m5/15 + l5*m6/15 + l6*m6/15 = 0
+   -4*l1*m1/15 + 4*l1*m2/15 + 4*l2*m2/15 - l3*m4/5 + l5*m5/15 - l5*m6/15 - l6*m6/15 = 0
+   l1*m3 = 0
+   l1*m4 = 0
+   l1*m5 = 0
+
+Attempting partial symbolic solve …
+  partial solve over first 10 eqs returned 6 solution branches
+    branch 0: {l1: 0, l2: 0, l3: (l5*m5 - l5*m6 - l6*m6)/(3*m4), l4: -l6*m5/m3}
+    branch 1: {l1: 0, l2: l6*m5/(2*m1), l5: l6*(m1*m6 - 2*m2*m5)/(m1*(m5 - m6)), m3: 0, m4: 0}
+    branch 2: {l1: 0, l2: 0, m3: 0, m4: 0, m5: 0, m6: 0}
+
+Numerical: out of 50 random integer-{-3..3}-valued rank-1 atoms,
+  0 have ZERO garbage (= live entirely in span(S, q1, q2))
+  50 have non-zero garbage
+
+Computing Jacobian rank of (λ,μ) → garbage(λ,μ) …
+  Jacobian is 34 × 12 (= garbage eqs × λ,μ)
+  rank at random point = 11
+
+======================================================================
+INTERPRETATION:
+======================================================================
+
+The (α, β) Q-projection alone is necessary but NOT sufficient for a
+3-atom (2,2,bridge-3) construction. Each atom L·M, projected to S^⊥,
+carries a 28-D 'garbage' component in (S^⊥ \ Q) that must cancel in
+the W-weighted sum of the three atoms.
+
+Specifically: let U = [u_1 u_2 u_3] be the 28×3 matrix of the three
+atoms' garbage components. The output weights W_1, W_2 ∈ R^3 must lie
+in the left null space of U (a 3 - rank(U)-dimensional subspace), AND
+must produce (1, 0) and (0, 1) on the (α, β) projections.
+
+For a solution to exist:
+  rank(U) ≤ 1   AND   the (α, β) 2×3 matrix has rank 2 with W ∈ ker(U^T).
+
+Conclusions hinge on:
+  • Whether atoms with zero garbage form a positive-dimensional variety.
+  • If not, whether the 'garbage' image is low-dimensional enough that
+    three atoms can be picked with rank-1 garbage AND linearly
+    independent (α, β).
+
+A definitive impossibility result requires showing rank(U) ≥ 2 for ALL
+choices of three rank-1 atoms with (α, β)-projections spanning Q — a
+much stronger statement than "the (α, β) Jacobian has rank 2".
+

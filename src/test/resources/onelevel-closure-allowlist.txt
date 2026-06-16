@@ -1,0 +1,4 @@
+# Shapes (canonical n x m x p, maxDim ≤ GUARD_MAX_DIM) that are knowingly NOT
+# closed under one-level concat/Kron composition — documented residuals for
+# TestCatalogOneLevelClosure. This list may only SHRINK. Each entry should have
+# a reason. Empty = the guarded band is fully closed.

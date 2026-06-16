@@ -1,0 +1,40 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(4x9x10-r250-perminov_ZT-cdbf4b3, ⟨4,10,9⟩), KronProduct(2x2x2, Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])))",
+  "lineage_compact": "4x9x10-r250-perminov_ZT-cdbf4b3→⟨4,10,9⟩ +p 2x2x2 ⊗ R[ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL; 1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 10,
+      "p": 9,
+      "child": {"op": "Atom", "ref": "4x9x10-r250-perminov_ZT-cdbf4b3"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "inner": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    }
+  },
+  "n": [4, 10, 23],
+  "m": 635,
+  "hash": "a7bdc85755937057883ee6c71932549ef6b4dfc6c26cc582e0c1fa037314d5e4",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

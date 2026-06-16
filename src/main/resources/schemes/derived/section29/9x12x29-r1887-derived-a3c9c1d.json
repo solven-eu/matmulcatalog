@@ -1,0 +1,31 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(2x9x12-r168-hk71-1e99416, ⟨9,12,2⟩), Serendipitous(3x3x9 ⊗ ⟨3,4,3⟩))",
+  "lineage_compact": "2x9x12-r168-hk71-1e99416→⟨9,12,2⟩ +p 3x3x9 ⊗ˢ⟨3,4,3⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 9,
+      "m": 12,
+      "p": 2,
+      "child": {"op": "Atom", "ref": "2x9x12-r168-hk71-1e99416"}
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 4,
+      "p2": 3,
+      "base": {"op": "Atom", "ref": "3x3x9@e225518"}
+    }
+  },
+  "n": [9, 12, 29],
+  "m": 1887,
+  "hash": "a3c9c1d32a57a0d884cb44d63b86c92297843bbdd77d77107f37fe95aadb2f5a",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

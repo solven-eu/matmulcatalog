@@ -1,0 +1,21 @@
+{
+  "lineage_str": "ConcatCols(5x5x11-r195-perminov_ZT-6771ab6, 5x5x12-r204-perminov_ZT-61a6cb7)",
+  "lineage_compact": "5x5x11-r195-perminov_ZT-6771ab6 +p 5x5x12-r204-perminov_ZT-61a6cb7",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "5x5x11-r195-perminov_ZT-6771ab6"},
+    "right": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+  },
+  "n": [5, 5, 23],
+  "m": 399,
+  "hash": "54f9d1c62f76f102a15d51516847a246bf54c0d06c3fb411a72a4c3e7538e119",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

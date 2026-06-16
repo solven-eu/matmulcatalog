@@ -1,0 +1,246 @@
+[   0.1s] Projector P_garbage built
+[   3.2s] #garbage(A) polys = 34
+[   6.8s] #garbage(A') polys = 34
+[   7.0s] #non-trivial paired equations = 32
+[   7.0s] Total variables: 25  (l1..l6, m1..m6, L1..L6, M1..M6, c)
+
+Sample (first 5) paired equations:
+   L4*M6 - c*l4*m6 = 0
+   L5*M1 - c*l5*m1 = 0
+   4*L1*M1/15 - 4*L1*M2/15 - 4*L2*M2/15 + L3*M4/5 - L5*M5/15 + L5*M6/15 + L6*M6/15 - 4*c*l1*m1/15 + 4*c*l1*m2/15 + 4*c*l2*m2/15 - c*l3*m4/5 + c*l5*m5/15 - c*l5*m6/15 - c*l6*m6/15 = 0
+   L1*M1/5 - L1*M2/5 - L2*M2/5 + 2*L3*M4/5 + L5*M5/5 - L5*M6/5 - L6*M6/5 - c*l1*m1/5 + c*l1*m2/5 + c*l2*m2/5 - 2*c*l3*m4/5 - c*l5*m5/5 + c*l5*m6/5 + c*l6*m6/5 = 0
+   L5*M2 - c*l5*m2 = 0
+[   7.1s] Building 'linearised' formulation in t_kj = Lk*Mj
+[   7.2s] Linearised garbage(A') into t_kj basis (proper Poly extraction)
+[   7.3s] #linearised paired equations = 34
+[   7.3s] Solving linear-in-(t, c) system at a generic random A ...
+   A = {l1: 1, l2: 1, l3: -3, l4: -1, l5: 2, l6: 1, m1: 1, m2: -1, m3: 1, m4: -1, m5: 2, m6: -2}
+
+Sanity check - first 3 pair_eqs_lin after subs(A_dict):
+   eq[0]: -11*c/15 + 4*t1_1/15 - 4*t1_2/15 - 4*t2_2/15 + t3_4/5 - t5_5/15 + t5_6/15 + t6_6/15
+     coeff(c) = -11/15
+   eq[1]: 11*c/15 - 4*t1_1/15 + 4*t1_2/15 + 4*t2_2/15 - t3_4/5 + t5_5/15 - t5_6/15 - t6_6/15
+     coeff(c) = 11/15
+   eq[2]: -c + t1_3
+     coeff(c) = -1
+[   8.1s]   shape: (34, 37), rank: 28
+[   8.1s]   b (RHS) is zero? True
+[   8.1s]   residual of proportional solution || = 0
+[   8.3s]   solution space dimension d_lin = 9  (vars=37, rank=28)
+[   8.3s]   particular solution = 0 (homogeneous system); computing nullspace ...
+[   8.3s]   kernel dimension = 9
+
+Particular solution (sol[i] for [t_kj..., c]):
+
+Kernel basis vectors:
+   k_0: [(t1_1, 1), (t1_2, 1)]
+   k_1: [(t1_1, 1), (t2_2, 1)]
+   k_2: [(t3_3, 1)]
+   k_3: [(t4_4, 1)]
+   k_4: [(t1_1, 1), (t3_4, -1), (t5_5, 1)]
+   k_5: [(t1_1, -1), (t3_4, 1), (t5_6, 1)]
+   k_6: [(t2_1, 1), (t4_3, 1), (t6_5, 1)]
+   k_7: [(t1_1, -1), (t3_4, 1), (t6_6, 1)]
+   k_8: [(t1_1, -7), (t1_3, 1), (t1_4, -1), (t1_5, 2), (t1_6, -2), (t2_1, -1), (t2_3, 1), (t2_4, -1), (t2_5, 2), (t2_6, -2), (t3_1, -3), (t3_2, 3), (t3_4, 13), (t3_5, -6), (t3_6, 6), (t4_1, -1), (t4_2, 1), (t4_3, -3), (t4_5, -2), (t4_6, 2), (t5_1, 2), (t5_2, -2), (t5_3, 2), (t5_4, -2), (t6_1, 1), (t6_2, -1), (t6_3, 1), (t6_4, -1), (c, 1)]
+[   8.3s] T_alpha and c_alpha built; #parameters α = 9
+[   8.6s] #non-trivially-zero 2x2 minors (in α-params): 195
+[   8.7s] #unique minor equations: 141
+
+Sample minor equations (first 5):
+   a0*a3 + a8**2 = 0
+   a2*a8 - a4*a8 + a5*a8 + a7*a8 + 13*a8**2 = 0
+   -2*a6*a8 + 4*a8**2 = 0
+   a4*a8 - 4*a8**2 = 0
+   -a4**2 + a4*a5 + a4*a7 + 13*a4*a8 - 12*a8**2 = 0
+[   8.7s] Computing Jacobian rank of minor equations at random α ...
+[   9.7s]   Jacobian shape: (141, 9)
+[  10.5s]   Jacobian rank at random α point = 9
+[  11.0s]   Jacobian rank at the proportional point (α_8=1, others 0) = 9
+[  11.1s]   Tangent-space dim at proportional point = 0
+[  11.1s]      (upper bound on local variety dim around proportional solution)
+[  11.1s]   → using tangent dim 0 as variety dim estimate
+[  11.1s] 
+--- Splitting X into c=0 and c≠0 sub-fibers ---
+[  11.1s] c=0 sub-fiber over any A: g(A')=0. This is the zero-garbage variety V
+[  11.1s]    from zero_garbage_variety.py — max component dim = 6 (in (L',M') ∈ R^12).
+[  11.1s]    So c=0 sub-fiber over A is 6-D.
+[  11.1s] 
+c=1 (normalised) sub-fiber over generic A: solve g(A')=g(A) in (L',M').
+[  11.4s]   #equations after c=1 and A=concrete: 32
+[  11.5s]   residual at (L'=L, M'=M, c=1): max |r| = 0
+[  11.9s]   Jacobian shape: (32, 12), rank at proportional point: 11
+[  11.9s]   Tangent dim at proportional point (c=1 fiber) = 1
+[  11.9s]      proportional fiber expected dim = 1 (just (ρ, 1/ρ) reparam)
+[  11.9s]      EXCESS non-proportional directions in c=1 fiber: 0
+[  11.9s] 
+  Re-testing proportionality theorem at additional random A's:
+[  12.5s]      trial 0: prop residual=0, c=1 tangent dim = 1
+[  13.1s]      trial 1: prop residual=0, c=1 tangent dim = 1
+[  13.8s]      trial 2: prop residual=0, c=1 tangent dim = 1
+[  14.5s]      trial 3: prop residual=0, c=1 tangent dim = 1
+[  15.1s]      trial 4: prop residual=0, c=1 tangent dim = 1
+[  15.1s]   All 5 trials gave tangent dim = 1: True
+[  15.1s] ======================================================================
+[  15.1s] STALE intermediate count (kept for audit trail; supersede by CORRECTED below):
+[  15.1s]    linear solution-space d_lin = 9   (= dim of (t, c) variety)
+[  15.1s]    rank-1 cut: variety in α-space has dim ≈ 0
+[  15.1s]    lifting to (L', M'): add 1 free scaling
+[  15.1s]    ⇒ dim X_A (fiber over single generic A) = 1
+[  15.1s] ======================================================================
+[  15.1s]    dim X = 12 (A) + 1 (fiber) = 13
+[  15.1s] ======================================================================
+[  15.1s] PROPORTIONALITY ANALYSIS
+[  15.1s] ======================================================================
+[  15.1s]    dim X (over generic A) = 12 + 1 = 13
+[  15.1s]    dim 'proportional' locus = 12 + 2 = 14
+[  15.1s]    excess freedom = -1
+[  15.1s]    ⇒ Fewer than 2 fiber dims — suggests numerical/algebraic anomaly.
+[  15.1s]      Recheck the linearisation and rank-1 cut.
+[  15.1s] 
+--- Concrete kernel-direction rank checks ---
+[  15.1s]    T_part rank = 0
+[  15.1s]    kernel[0]: K rank = 1, c-component = 0
+[  15.1s]    kernel[1]: K rank = 2, c-component = 0
+[  15.1s]    kernel[2]: K rank = 1, c-component = 0
+[  15.1s]    kernel[3]: K rank = 1, c-component = 0
+[  15.1s]    kernel[4]: K rank = 3, c-component = 0
+[  15.1s]    kernel[5]: K rank = 3, c-component = 0
+[  15.1s]    Kernel directions that are rank ≤ 1 perturbations: 3 / 9
+[  15.1s] 
+--- Symbolic solve of minor system via Groebner basis ---
+[  15.1s]    Computing Groebner basis of 141 minors over 9 α's (lex order)...
+[  15.5s]    Groebner basis has 38 polynomials
+   Groebner basis polys (first 20):
+     a0*a1 + a1**2 - 2*a8**2 = 0
+     a0*a2 - 3*a8**2 = 0
+     a0*a3 + a8**2 = 0
+     a0*a4 + 4*a8**2 = 0
+     a0*a5 - 4*a8**2 = 0
+     a0*a6 + 2*a8**2 = 0
+     a0*a7 - 2*a8**2 = 0
+     a0*a8 + a8**2 = 0
+     a1*a2 - 3*a8**2 = 0
+     a1*a3 + a8**2 = 0
+     a1*a4 + 4*a8**2 = 0
+     a1*a5 - 4*a8**2 = 0
+     a1*a6 + 2*a8**2 = 0
+     a1*a7 - 2*a8**2 = 0
+     a1*a8 + a8**2 = 0
+     a2*a3 + 3*a8**2 = 0
+     a2*a4 + 12*a8**2 = 0
+     a2*a5 - 12*a8**2 = 0
+     a2*a6 + 6*a8**2 = 0
+     a2*a7 - 6*a8**2 = 0
+[  15.5s]    Solving the Groebner basis ...
+[  18.9s]    solve returned 26 branches
+[  18.9s]    branch 0: solved [a0, a1, a2, a3, a4, a5, a6, a8] ; free = [a7]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = 0
+[  18.9s]    branch 1: solved [a0, a1, a2, a3, a4, a5, a6, a8] ; free = [a7]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = 0
+[  18.9s]    branch 2: solved [a0, a1, a2, a3, a4, a5, a6, a8] ; free = [a7]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = 0
+[  18.9s]    branch 3: solved [a0, a1, a2, a3, a4, a5, a6, a8] ; free = [a7]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = 0
+[  18.9s]    branch 4: solved [a0, a1, a2, a3, a4, a5, a6, a8] ; free = [a7]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = 0
+[  18.9s]    branch 5: solved [a0, a1, a2, a3, a4, a5, a6, a8] ; free = [a7]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = 0
+[  18.9s]    branch 6: solved [a0, a1, a2, a3, a4, a5, a6, a8] ; free = [a7]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = 0
+[  18.9s]    branch 7: solved [a0, a1, a2, a3, a4, a6, a7, a8] ; free = [a5]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = a5
+[  18.9s]    branch 8: solved [a0, a1, a2, a3, a4, a6, a7, a8] ; free = [a5]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = a5
+[  18.9s]    branch 9: solved [a0, a1, a2, a3, a4, a6, a7, a8] ; free = [a5]
+     a0 = 0
+     a1 = 0
+     a2 = 0
+     a3 = 0
+     a4 = a5
+[  18.9s] 
+======================================================================
+[  18.9s] CORRECTED CONCLUSION (decomposing X by c=0 vs c≠0)
+[  18.9s] ======================================================================
+[  18.9s]    At a generic A, the fiber X_A := {(A', c) : g(A') = c·g(A)} decomposes:
+[  18.9s] 
+[  18.9s]    c ≠ 0 (rescale to c=1):
+[  18.9s]      Tangent dim of c=1 fiber at (A'=A) = 1
+[  18.9s]      Proportional fiber dim = 1   (the (ρ, 1/ρ) reparam line)
+[  18.9s]      EXCESS non-proportional directions = 0
+[  18.9s]      ⇒ The c=1 sub-fiber over generic A is EXACTLY the proportional locus.
+[  18.9s]      ⇒ The c≠0 component of X_A is parameterised by (c, σ) — 2 dim.
+[  18.9s] 
+[  18.9s]    c = 0:
+[  18.9s]      g(A') = 0 ⇔ A' ∈ V (zero-garbage variety, from zero_garbage_variety.py).
+[  18.9s]      V is positive-dim, max component dim = 6 in (L', M') ∈ R^12.
+[  18.9s]      ⇒ The c=0 component of X_A is V — 6 dim (max).
+[  18.9s] 
+[  18.9s]    Total: X has (at least) two irreducible components:
+[  18.9s]      X_{proportional} : dim 12 (A) + 2 (fiber) = 14.
+[  18.9s]      X_{c=0}          : dim 12 (A) + 6 (V max) = 18.
+[  18.9s] 
+[  18.9s] ======================================================================
+[  18.9s] PROPORTIONALITY THEOREM (this script's main result)
+[  18.9s] ======================================================================
+[  18.9s]    For every (A, A', c) ∈ X with c ≠ 0:
+[  18.9s]      A' is forced to come from a PROPORTIONAL rank-1 tensor.
+[  18.9s]      I.e. ∃ ρ, σ ≠ 0 with L' = ρL/σ and M' = σM (so L'·M' = ρ·L·M, c=ρ).
+[  18.9s] 
+[  18.9s]    For (A, A', c) ∈ X with c = 0:
+[  18.9s]      A' ∈ V; by zero_garbage_variety.py, α(A') = β(A') = 0.
+[  18.9s] 
+[  18.9s] ======================================================================
+[  18.9s] IMPOSSIBILITY OF (2,2,bridge-3) IN THE RANK-1 ATOM FAMILY
+[  18.9s] ======================================================================
+[  18.9s]    A 3-atom (2, 2, bridge-3) construction needs the 28×3 garbage matrix
+[  18.9s]    U = [g(A1) | g(A2) | g(A3)] to have rank ≤ 1, AND the (α, β) projections
+[  18.9s]    to span Q ≅ R^2.
+[  18.9s] 
+[  18.9s]    rank(U) ≤ 1 means any two columns are proportional (allowing 0 columns).
+[  18.9s]    For any i, j with g(A_i), g(A_j) both non-zero and proportional with
+[  18.9s]    ratio c ≠ 0: by the proportionality theorem, A_i and A_j are themselves
+[  18.9s]    proportional rank-1 tensors. So their (α, β) projections are proportional.
+[  18.9s] 
+[  18.9s]    For any column g(A_k) = 0: A_k ∈ V, so α(A_k) = β(A_k) = 0.
+[  18.9s] 
+[  18.9s]    ⇒ In any such triple, the (α, β) projections all lie on a single line
+[  18.9s]      through the origin in Q. The (α, β) image has rank ≤ 1, cannot span Q.
+[  18.9s] 
+[  18.9s]    ⇒ NO (2, 2, bridge-3) construction exists in the rank-1 atom family.
+[  18.9s] ======================================================================

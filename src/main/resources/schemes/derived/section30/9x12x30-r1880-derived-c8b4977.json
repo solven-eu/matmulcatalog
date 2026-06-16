@@ -1,0 +1,25 @@
+{
+  "lineage_str": "KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x4x5-r47-alphatensor_Z-6bc7fbe)",
+  "lineage_compact": "3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x4x5-r47-alphatensor_Z-6bc7fbe",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "Project",
+      "keepN": [0, 1, 2],
+      "keepM": [0, 1, 2],
+      "keepP": [1, 2, 3, 4, 5, 6],
+      "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+    },
+    "inner": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"}
+  },
+  "n": [9, 12, 30],
+  "m": 1880,
+  "hash": "c8b49775eee37a959a695ea0aa1d65637097976685ac74571fef137de3b22e49",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

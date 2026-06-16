@@ -1,0 +1,51 @@
+{
+  "lineage_str": "Recombination(base=2x2x4, allocA=[3, 2], allocB=[3, 3], allocC=[7, 6, 6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(naive-3x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(2x3x3, 2x3x4), ConcatCols(2x3x3, 2x3x3)])",
+  "lineage_compact": "R[2x2x4; 3,2 | 3,3 | 7,6,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x4@d24ab18b9ea791e5fb64e3524cb3d77470db1e00a67869413849dfb41c909a02"},
+    "allocA": [3, 2],
+    "allocB": [3, 3],
+    "allocC": [7, 6, 6, 6],
+    "leaves": [
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "naive-3x3x1"},
+        "right": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "right": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+      }
+    ]
+  },
+  "n": [5, 6, 25],
+  "m": 528,
+  "hash": "a21e8a1d3df0f32286afb49785febc1d9d71e75421b57f191fb0f9c9ab7b232f",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

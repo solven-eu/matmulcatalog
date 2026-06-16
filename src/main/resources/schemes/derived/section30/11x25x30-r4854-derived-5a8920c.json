@@ -1,0 +1,64 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[13, 12], allocC=[15, 15], leaves=[6x13x15-r763-perminov_Z-cacc65a, Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 4, 4], allocC=[5, 5, 5], leaves=[2x4x5-r32-alphaevolve-6216e15, 3x5x5-r58-alphatensor_Z-263818a, 3x4x5-r47-alphatensor_Z-6bc7fbe, 2x5x5-r40-alphatensor_Z-67f5fb7]), ConcatCols(OrientAs(5x5x12-r204-perminov_ZT-61a6cb7, ⟨5,12,5⟩), ConcatCols(OrientAs(5x5x12-r204-perminov_ZT-61a6cb7, ⟨5,12,5⟩), OrientAs(5x5x12-r204-perminov_ZT-61a6cb7, ⟨5,12,5⟩))), 6x12x15-r686-perminov_Q-a06dc94])",
+  "lineage_compact": "R[2x2x2; 6,5 | 13,12 | 15,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 5],
+    "allocB": [13, 12],
+    "allocC": [15, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "6x13x15-r763-perminov_Z-cacc65a"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+        "allocA": [3, 2],
+        "allocB": [5, 4, 4],
+        "allocC": [5, 5, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+          {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"},
+          {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"},
+          {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"}
+        ]
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 12,
+          "p": 5,
+          "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 5,
+            "m": 12,
+            "p": 5,
+            "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 5,
+            "m": 12,
+            "p": 5,
+            "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "6x12x15-r686-perminov_Q-a06dc94"}
+    ]
+  },
+  "n": [11, 25, 30],
+  "m": 4854,
+  "hash": "5a8920cfba59dea17fe3942f6cfb129f8632304c6e63dd15c8666255e30fa4d0",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

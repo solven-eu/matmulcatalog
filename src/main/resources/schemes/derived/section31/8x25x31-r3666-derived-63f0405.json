@@ -1,0 +1,30 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 4], allocB=[13, 12], allocC=[16, 15], leaves=[4x13x16-r560-perminov_Z-da406a3, 4x13x15-r520-perminov_Q-77c8bff, 4x12x16-r513-perminov_ZT-eb31d9a, KronProduct(2x3x3, 2x4x5-r32-alphaevolve-6216e15)])",
+  "lineage_compact": "R[2x2x2; 4,4 | 13,12 | 16,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [4, 4],
+    "allocB": [13, 12],
+    "allocC": [16, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "4x13x16-r560-perminov_Z-da406a3"},
+      {"op": "Atom", "ref": "4x13x15-r520-perminov_Q-77c8bff"},
+      {"op": "Atom", "ref": "4x12x16-r513-perminov_ZT-eb31d9a"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      }
+    ]
+  },
+  "n": [8, 25, 31],
+  "m": 3666,
+  "hash": "63f0405395114373b03985e5d84567cf76da9f52bf13b42687346c90101d55c9",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

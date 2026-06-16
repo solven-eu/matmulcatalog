@@ -1,0 +1,67 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 10], allocB=[9, 12], allocC=[9, 12], leaves=[11x12x12-r968-perminov_Q-501db78, Recombination(base=2x3x3, allocA=[6, 5], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Recombination(base=Transpose(3x3x5, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])]), OrientAs(9x11x12-r738-perminov_Q-435e5a3, ⟨11,12,9⟩), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])])",
+  "lineage_compact": "R[2x2x2; 11,10 | 9,12 | 9,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [11, 10],
+    "allocB": [9, 12],
+    "allocC": [9, 12],
+    "leaves": [
+      {"op": "Atom", "ref": "11x12x12-r968-perminov_Q-501db78"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+        "allocA": [6, 5],
+        "allocB": [3, 3, 3],
+        "allocC": [3, 3, 3],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->CBA",
+              "child": {"op": "Atom", "ref": "3x3x5@3895b40cff82ad2a5971d5a69c73bfc0bfca96d6026ffebce7fe6926014ff3c2"}
+            },
+            "allocA": [1, 1, 1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          }
+        ]
+      },
+      {
+        "op": "OrientAs",
+        "n": 11,
+        "m": 12,
+        "p": 9,
+        "child": {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"}
+      },
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "child": {"op": "Atom", "ref": "10x9x13@16f3df1"}
+      }
+    ]
+  },
+  "n": [21, 21, 21],
+  "m": 5254,
+  "hash": "338dd0e58b136ca492b660040a40ed8e9589a00067bbb1768cd8c6b3f00a8e0c",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

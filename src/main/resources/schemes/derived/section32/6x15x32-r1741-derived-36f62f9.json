@@ -1,0 +1,55 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩), SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩))), KronProduct(2x5x5-r40-alphatensor_Z-67f5fb7, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])))",
+  "lineage_compact": "2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +m 2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +m 2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +p 2x5x5-r40-alphatensor_Z-67f5fb7 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 5,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "OrientAs",
+          "n": 6,
+          "m": 5,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 6,
+          "m": 5,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        }
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      }
+    }
+  },
+  "n": [6, 15, 32],
+  "m": 1741,
+  "hash": "36f62f9b4f3c5144521a74420f56d157dad50a217f009ab85f79c730742a8db7",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,44 @@
+{
+  "lineage_str": "Recombination(base=Transpose(4x5x5, perm=\"ABC->CBA\"), allocA=[3, 3, 3, 3, 3], allocB=[3, 3, 3, 3, 3], allocC=[4, 6, 6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x3x4, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_compact": "R[4x5x5^ABC->CBA; 3,3,3,3,3 | 3,3,3,3,3 | 4,6,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->CBA",
+      "child": {"op": "Atom", "ref": "4x5x5@54f4614c03ee4cb6830b6d8894d1513faacfcdfc8cdd3e13889929cc60746e02"}
+    },
+    "allocA": [3, 3, 3, 3, 3],
+    "allocB": [3, 3, 3, 3, 3],
+    "allocC": [4, 6, 6, 6],
+    "leaves": [
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1],
+        "allocC": [1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    ]
+  },
+  "n": [15, 15, 22],
+  "m": 2897,
+  "hash": "08d7eaba32d4dcd260da223c50d6d1aa62e36a5f00a2a61ef45a6bf88ce0d63b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

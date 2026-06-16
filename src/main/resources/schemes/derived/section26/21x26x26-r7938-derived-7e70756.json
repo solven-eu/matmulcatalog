@@ -1,0 +1,67 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[12, 14], allocC=[12, 14], leaves=[Serendipitous(OrientAs(7x2x3, ⟨3,2,7⟩) ⊗ ⟨4,7,2⟩), KronProduct(2x4x4, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 9x12x14-r940-perminov_Q-ffecb1f, OrientAs(12x12x14-r1234-perminov_Q-7f09f61, ⟨12,14,12⟩), Serendipitous(OrientAs(7x2x3, ⟨3,2,7⟩) ⊗ ⟨3,7,2⟩)])",
+  "lineage_compact": "R[2x2x2; 9,12 | 12,14 | 12,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [9, 12],
+    "allocB": [12, 14],
+    "allocC": [12, 14],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 7,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 2,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x4@8e5986a"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 14,
+        "p": 12,
+        "child": {"op": "Atom", "ref": "12x12x14-r1234-perminov_Q-7f09f61"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 7,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 2,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      }
+    ]
+  },
+  "n": [21, 26, 26],
+  "m": 7938,
+  "hash": "7e70756ef3896d5fd0d4a1247637bc208b08d7bd491962ba9559bf396e2b6ba9",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

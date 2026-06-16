@@ -1,0 +1,51 @@
+{
+  "lineage_str": "SumInner(ConcatRows(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), ConcatRows(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩))), OrientAs(3x10x16-r355-perminov_ZT-6cc036e, ⟨10,16,3⟩))",
+  "lineage_compact": "3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x4x6-r54-alphaevolve-c197868→⟨4,6,3⟩ +m 3x10x16-r355-perminov_ZT-6cc036e→⟨10,16,3⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      },
+      "bottom": {
+        "op": "ConcatRows",
+        "top": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        },
+        "bottom": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 6,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        }
+      }
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 10,
+      "m": 16,
+      "p": 3,
+      "child": {"op": "Atom", "ref": "3x10x16-r355-perminov_ZT-6cc036e"}
+    }
+  },
+  "n": [10, 22, 3],
+  "m": 489,
+  "hash": "e774fd25368c9760fea5b3879e1f4b3b577c066df48d1828fba30811ca123124",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

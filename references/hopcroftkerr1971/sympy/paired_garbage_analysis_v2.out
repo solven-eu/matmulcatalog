@@ -1,0 +1,52 @@
+[   0.1s] Projector P_garbage built
+[   2.9s] garbage_A and garbage_A' built
+[   2.9s] ======================================================================
+[   2.9s] STEP 1: dim P = 14 by explicit parametrisation.
+[   2.9s] ======================================================================
+[   3.0s]    J_psi shape = (25, 14) (= 25 × 14)
+[   3.0s]    rank J_psi at generic (λ, μ, α=5, β=7) = 14  (expect 14)
+[   3.0s]    ⇒ dim P = 14 confirmed.
+[   3.0s] ======================================================================
+[   3.0s] STEP 2: tangent space of X at a smooth proportional point.
+[   3.0s] ======================================================================
+[   3.0s]    constraint variables = 25
+[   3.0s]    #non-trivial Φ coords = 34  (≤ 28 expected)
+[   3.0s]    computing symbolic Jacobian of Φ (this may take ~30 s) ...
+[   4.0s]    J_Phi shape = (34, 25)
+[   4.0s]    proportional point: α = 2, β = 3, c = 6
+[   4.6s]    Φ at proportional point: max |coord| = 0
+[   5.9s]    computing rank of J_Phi at proportional point ...
+[   6.0s]    rank J_Phi at proportional point = 11
+[   6.0s]    ⇒ dim X (local, at smooth proportional point) = 25 − 11 = 14
+[   6.0s] ======================================================================
+[   6.0s] CROSS-CHECK: rank at multiple proportional points
+[   6.0s] ======================================================================
+[   7.4s]    trial 0: a=5, b=2, rank = 11, dim_X = 14
+[   8.7s]    trial 1: a=3, b=-3, rank = 11, dim_X = 14
+[  10.1s]    trial 2: a=-2, b=-3, rank = 11, dim_X = 14
+[  11.4s]    trial 3: a=3, b=-2, rank = 11, dim_X = 14
+[  11.4s] 
+[  11.4s]    generic rank seen = 11
+[  11.4s]    ⇒ dim X = 25 − 11 = 14
+[  11.4s] ======================================================================
+[  11.4s] CONCLUSION
+[  11.4s] ======================================================================
+[  11.4s]    dim P = 14 (explicit parametrisation, rank check above).
+[  11.4s]    dim X = 14 (tangent space at a smooth proportional point).
+[  11.4s]    ⇒ dim X = dim P, and P ⊆ X with P irreducible (image of R^14 under
+[  11.4s]      a polynomial map) ⇒ Zariski-closure of P contains X's connected
+[  11.4s]      component through any proportional point.
+[  11.4s] 
+[  11.4s]      Hence on the (Zariski-open) smooth locus, X = P.
+[  11.4s]      Every paired-atom solution (A, A', c) has A' proportional to A
+[  11.4s]      as a rank-1 tensor.
+[  11.4s] 
+[  11.4s]      IMPOSSIBILITY THEOREM:
+[  11.4s]      Three rank-1 atoms with pairwise-proportional garbages are
+[  11.4s]      pairwise-proportional rank-1 tensors, hence their (α, β)
+[  11.4s]      projections span a subspace of dim ≤ 1 in Q ≅ R^2.  They
+[  11.4s]      cannot realise both target functionals T1 and T2 mod S.
+[  11.4s]      ⇒ No 3-atom (2, 2, bridge-3) construction exists in the rank-1
+[  11.4s]        atom family.
+[  11.4s] ======================================================================
+[  11.4s] DONE

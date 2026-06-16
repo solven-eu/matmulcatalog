@@ -1,0 +1,58 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), KronProduct(Recombination(base=Transpose(3x3x4, perm=\"ABC->BCA\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))), Serendipitous(3x13x6 ⊗ ⟨3,2,3⟩))",
+  "lineage_compact": "2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +m R[3x3x4^ABC->BCA; 1,1,1 | 1,1,1,1 | 1,1,1] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +p 3x13x6 ⊗ˢ⟨3,2,3⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 2,
+        "p": 9,
+        "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+      },
+      "right": {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Recombination",
+          "base": {
+            "op": "Transpose",
+            "perm": "ABC->BCA",
+            "child": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"}
+          },
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      }
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 2,
+      "p2": 3,
+      "base": {"op": "Atom", "ref": "3x13x6@2335bcc"}
+    }
+  },
+  "n": [9, 26, 27],
+  "m": 3696,
+  "hash": "7272175dec64e59a0a23e77694df0c8ce0a21f16a820beaf98c7098d7d8d757b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

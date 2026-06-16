@@ -1,0 +1,53 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[11, 11], allocB=[9, 8, 8], allocC=[9, 9, 9], leaves=[OrientAs(8x9x11-r521-perminov_ZT-fa59ef2, ⟨11,8,9⟩), Recombination(base=2x3x3, allocA=[6, 5], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨5,3,3⟩), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])])])",
+  "lineage_compact": "R[2x3x3; 11,11 | 9,8,8 | 9,9,9]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9", "id": "L0"},
+    "allocA": [11, 11],
+    "allocB": [9, 8, 8],
+    "allocC": [9, 9, 9],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 11,
+        "m": 8,
+        "p": 9,
+        "child": {"op": "Atom", "ref": "8x9x11-r521-perminov_ZT-fa59ef2"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [6, 5],
+        "allocB": [3, 3, 3],
+        "allocC": [3, 3, 3],
+        "leaves": [
+          {
+            "op": "OrientAs",
+            "n": 5,
+            "m": 3,
+            "p": 3,
+            "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"}
+          },
+          {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          }
+        ]
+      }
+    ]
+  },
+  "n": [22, 25, 27],
+  "m": 8145,
+  "hash": "8446bffb51b36c4a795ebbf763990ba4f349b88ff560a61f015395357e831e77",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

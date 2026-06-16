@@ -1,0 +1,50 @@
+{
+  "lineage_str": "Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[4, 4, 4], allocB=[7, 7, 7], allocC=[3, 2], leaves=[OrientAs(2x4x7-r45-alphaevolve-7a1bd74, ⟨4,7,2⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨4,7,3⟩)])",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 4,4,4 | 7,7,7 | 3,2]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->CBA",
+      "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+    },
+    "allocA": [4, 4, 4],
+    "allocB": [7, 7, 7],
+    "allocC": [3, 2],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 7,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x7-r45-alphaevolve-7a1bd74"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 7,
+        "p": 3,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      }
+    ]
+  },
+  "n": [12, 21, 5],
+  "m": 837,
+  "hash": "044dc9d8680a9c44905db619634b58b0ae8f9529ea72425880ad1cedecf9923d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

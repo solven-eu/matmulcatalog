@@ -1,0 +1,35 @@
+{
+  "lineage_str": "SumInner(ConcatCols(4x4x10-r115-perminov_ZT-022a32b, ConcatCols(4x4x10-r115-perminov_ZT-022a32b, 4x4x10-r115-perminov_ZT-022a32b)), Serendipitous(2x5x6 ⊗ ⟨2,5,5⟩))",
+  "lineage_compact": "4x4x10-r115-perminov_ZT-022a32b +p 4x4x10-r115-perminov_ZT-022a32b +p 4x4x10-r115-perminov_ZT-022a32b +m 2x5x6 ⊗ˢ⟨2,5,5⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"},
+        "right": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+      }
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 5,
+      "p2": 5,
+      "base": {"op": "Atom", "ref": "2x5x6@7387644"}
+    }
+  },
+  "n": [4, 29, 30],
+  "m": 2224,
+  "hash": "f0d3592377f4bd60fbb08a46937a07f6098c6725339ac3cccd8ea924abd8c5b8",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

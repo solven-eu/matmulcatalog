@@ -1,0 +1,50 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[8, 9], allocC=[11, 10], leaves=[8x9x11-r521-perminov_ZT-fa59ef2, Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 4], allocC=[6, 5], leaves=[3x4x6-r54-alphaevolve-c197868, Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x9x11-r404-perminov_Q-634a6fe, KronProduct(2x2x2, 4x4x5), 6x9x10-r367-perminov_Q-ceb0594])",
+  "lineage_compact": "R[2x2x2; 6,8 | 8,9 | 11,10]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [6, 8],
+    "allocB": [8, 9],
+    "allocC": [11, 10],
+    "leaves": [
+      {"op": "Atom", "ref": "8x9x11-r521-perminov_ZT-fa59ef2"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [3, 3],
+        "allocB": [4, 4],
+        "allocC": [6, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x4x5@6bc7fbe6fd386c409ad56effa3a0ce7845ff2bc393482367c9e80c4b2e8861ec"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {"op": "Atom", "ref": "6x9x11-r404-perminov_Q-634a6fe"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "4x4x5@c3a71f1"}
+      },
+      {"op": "Atom", "ref": "6x9x10-r367-perminov_Q-ceb0594"}
+    ]
+  },
+  "n": [14, 17, 21],
+  "m": 3024,
+  "hash": "5103929d245fd18c07e05250d109ad4cd4609cd6fc41a088a89c7c6cf356d28d",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

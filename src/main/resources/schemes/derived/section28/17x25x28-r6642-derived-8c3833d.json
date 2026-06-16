@@ -1,0 +1,52 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 9], allocB=[13, 12], allocC=[14, 14], leaves=[9x13x14-r1024-perminov_Q-3386a90, ConcatCols(SumInner(OrientAs(2x5x8-r63-perminov_Z-0cda074, ⟨8,5,2⟩), OrientAs(2x8x8-r100-hk71-1fe5b7a, ⟨8,8,2⟩)), OrientAs(8x12x13-r781-perminov_Q-f0b186c, ⟨8,13,12⟩)), 9x12x14-r940-perminov_Q-ffecb1f, 8x12x14-r843-perminov_Q-6498e80])",
+  "lineage_compact": "R[2x2x2; 8,9 | 13,12 | 14,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [8, 9],
+    "allocB": [13, 12],
+    "allocC": [14, 14],
+    "leaves": [
+      {"op": "Atom", "ref": "9x13x14-r1024-perminov_Q-3386a90"},
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "OrientAs",
+            "n": 8,
+            "m": 5,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 8,
+            "m": 8,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x8x8-r100-hk71-1fe5b7a"}
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 8,
+          "m": 13,
+          "p": 12,
+          "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+        }
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+      {"op": "Atom", "ref": "8x12x14-r843-perminov_Q-6498e80"}
+    ]
+  },
+  "n": [17, 25, 28],
+  "m": 6642,
+  "hash": "8c3833df1d4defe41157afa964f8d14802d483e3e73959b22eb096fe51cb09bf",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

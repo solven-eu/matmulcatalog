@@ -1,0 +1,25 @@
+{
+  "lineage_str": "KronProduct(naive-1x1x4, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))",
+  "lineage_compact": "naive-1x1x4 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {"op": "Atom", "ref": "naive-1x1x4"},
+    "inner": {
+      "op": "Project",
+      "keepN": [0, 1, 2],
+      "keepM": [0, 1, 2],
+      "keepP": [1, 2, 3, 4, 5, 6],
+      "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+    }
+  },
+  "n": [3, 3, 24],
+  "m": 160,
+  "hash": "f97073e01adcd6705aec154e0c9a6c7c6159045ded37a36e221ca9a24eb8cdab",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

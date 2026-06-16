@@ -1,0 +1,88 @@
+# Build the LaTeX paper to PDF on every push that touches paper/.
+#
+# The workflow:
+#   1. Compiles `paper/article.tex` to PDF using the official latex-action.
+#   2. Uploads the PDF as a workflow artifact (downloadable from the run).
+#   3. On push to master, also publishes the PDF to a `paper-pdf` branch
+#      under `paper.pdf` so it can be downloaded directly without GitHub
+#      login.
+#
+# Local equivalent:
+#   cd paper && latexmk -pdf article.tex
+
+name: paper
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'paper/**'
+      - '.github/workflows/paper.yml'
+  pull_request:
+    paths:
+      - 'paper/**'
+      - '.github/workflows/paper.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Compile paper/article.tex
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: paper
+          root_file: article.tex
+          latexmk_use_xelatex: false
+          # latexmk handles bibtex automatically when needed.
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: paper-pdf
+          path: paper/article.pdf
+          if-no-files-found: error
+
+      # arXiv wants LaTeX SOURCE, not a PDF. Reuse the .bbl the compile step
+      # above already produced (arxiv-bundle has no PDF prerequisite, so latexmk
+      # does not run a second time) and publish the source tarball as a
+      # downloadable artifact — upload THIS to arXiv, not the PDF.
+      - name: Bundle arXiv source tarball
+        run: make -C paper arxiv-bundle
+
+      - name: Upload arXiv source artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: paper-arxiv-src
+          path: paper/article-arxiv.tar.gz
+          if-no-files-found: error
+
+      - name: Publish to paper-pdf branch (master only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          set -euo pipefail
+          # Stage the freshly built PDF in a clean orphan branch so the
+          # latest paper.pdf is always one click away from the repo.
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p /tmp/paper-publish
+          cp paper/article.pdf /tmp/paper-publish/paper.pdf
+          git fetch origin paper-pdf || true
+          if git show-ref --verify --quiet refs/remotes/origin/paper-pdf; then
+            git checkout paper-pdf
+            git rm -rf . || true
+          else
+            git checkout --orphan paper-pdf
+            git rm -rf . || true
+          fi
+          cp /tmp/paper-publish/paper.pdf paper.pdf
+          git add paper.pdf
+          git commit -m "Update paper.pdf (build from $GITHUB_SHA)" \
+            || echo "no changes to commit"
+          git push origin paper-pdf

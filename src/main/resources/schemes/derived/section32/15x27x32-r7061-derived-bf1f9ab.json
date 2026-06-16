@@ -1,0 +1,41 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(2x15x27-r621-hk71-f6b84a3, ⟨15,27,2⟩), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(5x5x9-r161-perminov_ZT-0972b0d, ⟨5,9,5⟩)))",
+  "lineage_compact": "2x15x27-r621-hk71-f6b84a3→⟨15,27,2⟩ +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 5x5x9-r161-perminov_ZT-0972b0d→⟨5,9,5⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 15,
+      "m": 27,
+      "p": 2,
+      "child": {"op": "Atom", "ref": "2x15x27-r621-hk71-f6b84a3"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 9,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"}
+      }
+    }
+  },
+  "n": [15, 27, 32],
+  "m": 7061,
+  "hash": "bf1f9ab8b9844015dcf0fee45e004ad8f8b59a5e5c880b7606f0c41858fceb64",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

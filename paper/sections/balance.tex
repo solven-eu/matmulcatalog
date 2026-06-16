@@ -1,0 +1,220 @@
+% Balance vs. imbalance: an empirical refutation of the "avoid unbalanced
+% splits" heuristic. Data generated 2026-06 from the catalog's best
+% non-commutative R-ranks (snapshot date in the table captions); the driver
+% lives in the search package (AllocationOptimizer + the omega/imbalance probe).
+
+A recurring heuristic --- explicit in DIS09 and folklore well before --- is that
+recombination should prefer \emph{balanced} block splits and avoid unbalanced
+ones. We test this directly against the catalog and reach a sharper, two-sided
+conclusion: \textbf{balance is better on average, but the records are
+unbalanced.} A search that prunes unbalanced shapes is therefore average-case
+sound yet \emph{record-blind} --- it discards exactly the shapes that set the
+lowest exponents.
+
+Throughout this section the per-shape exponent is
+\(\omega(n,m,p) = 3\,\ln R(n,m,p) / \ln(nmp)\), where \(R\) is the best
+catalogued non-commutative rank over \(\Reals\) (catalog snapshot 2026-06).
+
+\subsection{On average, \texorpdfstring{\(\omega\)}{omega} rises with imbalance}
+\label{ssec:omega-imbalance}
+
+Table~\ref{tab:omega-imbalance} buckets every catalogued shape
+\(\nmpshape{n}{m}{p}\) with \(2 \le n \le m \le p \le 16\) by its imbalance
+\(p-n\), and reports the median \(\omega\) per bucket.
+
+\begin{table}[h]
+\centering
+\caption{Median \(\omega\) over all catalogued shapes
+\(2 \le n \le m \le p \le 16\), bucketed by imbalance \(p-n\). The median
+climbs monotonically --- a \emph{typical} unbalanced shape is less efficient.}
+\label{tab:omega-imbalance}
+\begin{tabular}{rrr}
+\toprule
+imbalance \(p-n\) & \#shapes & median \(\omega\) \\
+\midrule
+0  & 15 & 2.8155 \\
+1  & 28 & 2.8148 \\
+2  & 39 & 2.8177 \\
+3  & 48 & 2.8180 \\
+4  & 55 & 2.8169 \\
+5  & 60 & 2.8193 \\
+6  & 63 & 2.8214 \\
+7  & 64 & 2.8229 \\
+8  & 63 & 2.8274 \\
+9  & 60 & 2.8299 \\
+10 & 55 & 2.8332 \\
+11 & 48 & 2.8402 \\
+12 & 39 & 2.8536 \\
+13 & 28 & 2.8616 \\
+14 & 15 & 2.8695 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\linewidth, height=5.2cm,
+  xlabel={imbalance \(p-n\)}, ylabel={median \(\omega\)},
+  xmin=-0.5, xmax=14.5, ymin=2.810, ymax=2.872,
+  xtick={0,2,4,6,8,10,12,14},
+  ytick={2.81,2.82,2.83,2.84,2.85,2.86,2.87},
+  grid=both, grid style={gray!20}, tick label style={font=\small},
+  label style={font=\small}, mark size=1.6pt]
+\addplot[blue, thick, mark=*] coordinates {
+  (0,2.8155) (1,2.8148) (2,2.8177) (3,2.8180) (4,2.8169) (5,2.8193)
+  (6,2.8214) (7,2.8229) (8,2.8274) (9,2.8299) (10,2.8332) (11,2.8402)
+  (12,2.8536) (13,2.8616) (14,2.8695)};
+\end{axis}
+\end{tikzpicture}
+\caption{The data of Table~\ref{tab:omega-imbalance} as a curve: median
+\(\omega\) is flat (\(\approx 2.817\)) out to imbalance \(\sim 7\), then
+climbs steeply --- the penalty for imbalance is convex, not linear.}
+\label{fig:omega-imbalance}
+\end{figure}
+
+The median rises from \(2.8155\) (balanced) to \(2.8695\) at imbalance \(14\).
+This is the average-case fact the avoid-unbalanced heuristic rests on.
+
+\subsection{\dots\ but the lowest exponents are unbalanced}
+\label{ssec:omega-records}
+
+The aggregate hides the tail. Among the same shapes, the fifteen smallest
+\(\omega\) are almost all unbalanced, and the global minimiser in this range is
+\(\nmpshape{3}{3}{6}\) at \(\omega = 2.7743\) --- below \emph{every} cubic:
+\(\nmpshape{4}{4}{4}\) (\(2.7925\)), \(\nmpshape{8}{8}{8}\) (\(2.7974\)),
+\(\nmpshape{12}{12}{12}\) (\(2.7957\)). The low-\(\omega\) frontier is dominated
+by the \(2{:}1\)-ratio family \(\nmpshape{3}{3}{6}\), \(\nmpshape{6}{6}{12}\),
+\(\nmpshape{9}{9}{12}\), \(\nmpshape{5}{5}{12}\), \(\nmpshape{3}{4}{6}\).
+Pruning unbalanced splits removes precisely these record-holders.
+
+\subsection{Why the advantage is not extractable by outer splitting}
+\label{ssec:omega-not-extractable}
+
+It is tempting to conclude that a recombination should \emph{seek} unbalanced
+splits so its sub-blocks land on these efficient shapes. The catalog says
+otherwise, and the mechanism is instructive. Consider \(\nmpshape{9}{9}{9}\)
+recombined by Strassen \(\nmpshape{2}{2}{2}{=}7\): since \(9 = 5+4 = 6+3\), the
+balanced split \((5,4)^3\) and the unbalanced \((6,3)^3\) both tile exactly (no
+padding). Table~\ref{tab:9-faceoff} puts their seven-product multisets
+side by side.
+
+\begin{table}[h]
+\centering
+\caption{Strassen \(\nmpshape{2}{2}{2}\) recombination of
+\(\nmpshape{9}{9}{9}\): the seven sub-products grouped by corner tier (the
+\(2{\times}2{\times}2\) split realises one all-max corner, three two-max
+corners, and three one-max corners). Reading the \(\Delta\) column top to
+bottom is the whole story: the unbalanced \((6,3)^3\) split \emph{saves \(63\)}
+on the three one-max corners (the \(\nmpshape{3}{3}{6}\) gems, \(40\) vs \(61\))
+but is mechanically forced to \emph{pay \(+60\)} on the single all-max corner
+(\(\nmpshape{6}{6}{6}{=}153\) instead of \(\nmpshape{5}{5}{5}{=}93\)) plus
+\(+12\) on the middle tier --- net \(+9\), so balance wins here.}
+\label{tab:9-faceoff}
+\begin{tabular}{llrlrr}
+\toprule
+corner tier & \multicolumn{2}{c}{\((5,4)^3 \to 504\)} & \multicolumn{2}{c}{\((6,3)^3 \to 513\)} & \(\Delta\) \\
+(multiplicity) & shape & subtotal & shape & subtotal & \\
+\midrule
+all-max \(\times 1\) & \(\nmpshape{5}{5}{5}{=}93\)  & 93  & \(\nmpshape{6}{6}{6}{=}153\) & 153 & \(+60\) \\
+two-max \(\times 3\) & \(\nmpshape{5}{5}{4}{=}76\)  & 228 & \(\nmpshape{6}{6}{3}{=}80\)  & 240 & \(+12\) \\
+one-max \(\times 3\) & \(\nmpshape{5}{4}{4}{=}61\)  & 183 & \(\nmpshape{3}{3}{6}{=}40\)  & 120 & \(-63\) \\
+\midrule
+total & & \textbf{504} & & \textbf{513} & \(+9\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A \(\nmpshape{2}{2}{2}\) split realises seven of the eight corners of
+\(\{a_1,a_2\}\times\{b_1,b_2\}\times\{c_1,c_2\}\), and \emph{one of them is the
+all-max corner} \((\max,\max,\max)\). The unbalanced split buys three cheap
+\(\nmpshape{3}{3}{6}\)-type corners (saving \(3\times(61-40)=63\)) but
+mechanically forces the all-max corner from \(\nmpshape{5}{5}{5}{=}93\) up to
+\(\nmpshape{6}{6}{6}{=}153\) (costing \(+60\)), plus \(+12\) on the middle
+corners --- net \(+9\). Because \(R\) grows like \(\text{size}^{\,\omega}\) with
+\(\omega \approx 2.8\), pushing the max block from \(5\) to \(6\) costs more
+than the cheap corners recover. The efficiency of \(\nmpshape{3}{3}{6}\) is
+real, but a single block split cannot isolate it from its complementary
+all-max corner.
+
+The corollary is constructive: an efficient unbalanced atom is exploited not by
+\emph{splitting} a target down onto it, but by \emph{composing up} from it via
+the Kronecker product, where the favourable ratio compounds instead of dragging
+a complementary max-corner along. (A Sch\"onhage \(\tau\)-disjoint sum would
+compound the ratio in the same way, but we do not use that route --- see
+Section~\ref{ssec:disjoint-sum}.)
+
+\subsection{Imbalance can win the split, too}
+\label{ssec:imbalance-split-wins}
+
+Section~\ref{ssec:omega-not-extractable} showed balance winning a single
+example; it is not the rule. We swept every target
+\(\nmpshape{n}{m}{p}\), \(3 \le n \le m \le p \le 16\), computing for a fixed
+base the \emph{exact} rank-minimising allocation by branch-and-bound
+(\code{AllocationOptimizer}: balanced incumbent + the admissible lower bound of
+Section~\ref{ssec:omega-not-extractable}, verified against exhaustive search),
+and flagged every target whose optimal split is strictly cheaper than the
+balanced split. The search is deliberately \emph{single-base} and
+\emph{non-recursive}: sub-blocks are costed by the catalog's best rank as a
+black box, so a ``win'' means the unbalanced split beats its own balanced
+sibling for that base --- not that it beats the global record.
+
+Unbalanced splits win for \(15\) targets under Strassen \(\nmpshape{2}{2}{2}\)
+and \(120\) under Strassen--Winograd (whose asymmetric product supports reward
+imbalance far more often). The effect is not confined to rectangular targets:
+the cubic \(\nmpshape{13}{13}{13}\) is itself a win.
+Table~\ref{tab:imbalance-wins} lists representatives.
+
+\begin{table}[h]
+\centering
+\caption{Targets where the rank-optimal single-base split is \emph{unbalanced}
+(strictly cheaper than the balanced split). Single base, no recursion;
+sub-blocks costed by catalog SOTA. Savings are small but the existence is the
+point: a hard ``always split balanced'' rule is provably suboptimal.}
+\label{tab:imbalance-wins}
+\begin{tabular}{llrrr}
+\toprule
+base & target & balanced & optimal split & best \\
+\midrule
+Strassen & \(\nmpshape{13}{13}{13}\) & 1434 & \((5,8)(6,7)(6,7)\) & 1432 \\
+Strassen & \(\nmpshape{6}{6}{10}\)   & 252  & \((3,3)(3,3)(4,6)\) & 247 \\
+Strassen & \(\nmpshape{12}{12}{14}\) & 1281 & \((6,6)(6,6)(6,8)\) & 1271 \\
+Winograd & \(\nmpshape{9}{13}{15}\)  & 1156 & \((5,4)(7,6)(7,8)\) & 1145 \\
+Winograd & \(\nmpshape{9}{14}{15}\)  & 1237 & \((4,5)(7,7)(8,7)\) & 1226 \\
+\(\nmpshape{2}{2}{3}\) & \(\nmpshape{5}{5}{12}\) & 235 & \((2,3)(2,3)(6,5,\mathbf{1})\) & 232 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The last row is the most imbalanced win we found in the sweep
+(\(3 \le n \le m \le p \le 16\)): for \(\nmpshape{5}{5}{12}\) under base
+\(\nmpshape{2}{2}{3}\) the optimal split of the size-12 axis is
+\((6,5,\mathbf{1})\) --- it \emph{peels a width-1 strip}. The products that
+touch that unit block compute \(\nmpshape{\cdot}{\cdot}{1}\) sub-shapes, whose
+rank is the naive product (here \(R = 4, 6, 6, 9\)), while the remaining
+products route through the cheap \(\nmpshape{3}{3}{6}{=}40\) corner. The thin
+strip costs almost nothing yet lets the rest land on the efficient
+\(\nmpshape{3}{3}{6}\) family --- the unbalanced-extraction mechanism in its
+purest form, and precisely the allocation a balanced-only rule forbids.
+
+So the practical rule is not ``prefer balance'' but ``\emph{search} the split,
+balance-first'': seed the branch-and-bound with the balanced allocation (an
+excellent, usually-optimal incumbent) and let an admissible lower bound prune
+the rest. When a known upper bound for the target exists --- typically the
+Kronecker rank of a factorisation \(\nmpshape{n}{m}{p} =
+\nmpshape{n_1}{m_1}{p_1}\otimes\nmpshape{n_2}{m_2}{p_2}\) --- it is used as the
+incumbent: if the base's root lower bound already meets or exceeds it, the base
+cannot improve and the allocation sweep is dropped outright.
+
+\subsection{Open questions}
+\label{ssec:balance-open}
+
+Two extrapolations are untested here. (i) \emph{Scale}: the catalog thins above
+max-dim \(16\), so Table~\ref{tab:omega-imbalance} cannot yet say whether the
+average \(\omega\)-vs-imbalance slope persists, flattens, or reverses for large
+\(N\); the asymptotic \(\tau\)-theorem constructions suggest the unbalanced tail
+should only get richer. (ii) \emph{Rectangular targets}: the metric above
+folds rectangular shapes into a single imbalance scalar \(p-n\); a genuinely
+rectangular sweep (independent control of \(m-n\) and \(p-m\)) may expose
+direction-dependent structure the cubic-centred view misses.

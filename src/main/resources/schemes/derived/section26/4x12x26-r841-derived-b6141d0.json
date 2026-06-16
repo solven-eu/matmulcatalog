@@ -1,0 +1,24 @@
+{
+  "lineage_str": "ConcatCols(Serendipitous(2x4x4 ⊗ ⟨2,3,3⟩), 4x12x14-r452-perminov_Q-62715f7)",
+  "lineage_compact": "2x4x4 ⊗ˢ⟨2,3,3⟩ +p 4x12x14-r452-perminov_Q-62715f7",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 3,
+      "p2": 3,
+      "base": {"op": "Atom", "ref": "2x4x4@a4ed740"}
+    },
+    "right": {"op": "Atom", "ref": "4x12x14-r452-perminov_Q-62715f7"}
+  },
+  "n": [4, 12, 26],
+  "m": 841,
+  "hash": "b6141d070157b158487aa935f2ed790ebadb284eb86d704c385a67a152877ffe",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

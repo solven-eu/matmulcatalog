@@ -1,0 +1,23 @@
+{
+  "lineage_str": "ConcatCols(naive-8x16x1, KronProduct(2x4x5, 4x4x4))",
+  "lineage_compact": "naive-8x16x1 +p 2x4x5 ⊗ 4x4x4",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-8x16x1"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x4x5@6216e15"},
+      "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+    }
+  },
+  "n": [8, 16, 21],
+  "m": 1664,
+  "hash": "bf420e4d40a0a53172452d9f1094c060341bc28dafa7a93e1f84376e65b72f90",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

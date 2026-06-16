@@ -1,0 +1,26 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(2x2x2, 4x4x4), KronProduct(2x2x2, 4x4x9-r104-smirnov22-9759674))",
+  "lineage_compact": "2x2x2 ⊗ 4x4x4 +p 2x2x2 ⊗ 4x4x9-r104-smirnov22-9759674",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "inner": {"op": "Atom", "ref": "4x4x9-r104-smirnov22-9759674"}
+    }
+  },
+  "n": [8, 8, 26],
+  "m": 1064,
+  "hash": "62b356507dd6963b34190809432c8e50231b892971f6c98af24070fca5e27be3",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,80 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[6, 5], allocB=[9, 8, 8], allocC=[9, 9, 9], leaves=[ConcatCols(OrientAs(Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,8,3⟩), OrientAs(5x6x8-r170-perminov_ZT-b476d2a, ⟨5,8,6⟩)), 6x9x9-r332-perminov_Q-1d3cee7, Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨3,2,3⟩), ConcatCols(OrientAs(4x5x9-r132-perminov_ZT-ec019d6, ⟨5,9,4⟩), OrientAs(5x5x9-r161-perminov_ZT-0972b0d, ⟨5,9,5⟩))])",
+  "lineage_compact": "R[2x3x3; 6,5 | 9,8,8 | 9,9,9]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+    "allocA": [6, 5],
+    "allocB": [9, 8, 8],
+    "allocC": [9, 9, 9],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 8,
+          "p": 3,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 8,
+          "p": 6,
+          "child": {"op": "Atom", "ref": "5x6x8-r170-perminov_ZT-b476d2a"}
+        }
+      },
+      {"op": "Atom", "ref": "6x9x9-r332-perminov_Q-1d3cee7"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 2,
+        "p2": 3,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 4,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+        }
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 9,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 9,
+          "p": 5,
+          "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"}
+        }
+      }
+    ]
+  },
+  "n": [11, 25, 27],
+  "m": 4431,
+  "hash": "905c1973e43da6c4a748cbdbf02f974cdfe670b3e6eb952a48798151ddf146b5",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

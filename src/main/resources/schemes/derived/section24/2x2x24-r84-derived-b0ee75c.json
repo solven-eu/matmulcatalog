@@ -1,0 +1,61 @@
+{
+  "lineage_str": "ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, ConcatCols(2x2x2, 2x2x2)))))))))))",
+  "lineage_compact": "2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2 +p 2x2x2",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "right": {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "right": {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+            "right": {
+              "op": "ConcatCols",
+              "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+              "right": {
+                "op": "ConcatCols",
+                "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                "right": {
+                  "op": "ConcatCols",
+                  "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                  "right": {
+                    "op": "ConcatCols",
+                    "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                    "right": {
+                      "op": "ConcatCols",
+                      "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                      "right": {
+                        "op": "ConcatCols",
+                        "left": {"op": "Atom", "ref": "2x2x2@18678ba"},
+                        "right": {"op": "Atom", "ref": "2x2x2@18678ba"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "n": [2, 2, 24],
+  "m": 84,
+  "hash": "b0ee75ccd5b8eef72c9fd70571d2cf31dcb52352f675e065767ea4680451cf77",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

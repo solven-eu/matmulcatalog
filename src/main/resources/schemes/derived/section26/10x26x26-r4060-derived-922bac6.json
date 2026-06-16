@@ -1,0 +1,56 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[5, 5], allocB=[6, 6, 6, 8], allocC=[6, 6, 8, 6], leaves=[5x6x6-r130-perminov_ZT-653ce4e, 5x6x8-r170-perminov_ZT-b476d2a, Recombination(base=2x2x2, allocA=[3, 2], allocB=[4, 4], allocC=[4, 4], leaves=[Recombination(base=3x4x4, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=2x4x4, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_compact": "R[2x4x4; 5,5 | 6,6,6,8 | 6,6,8,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2", "id": "L0"},
+    "allocA": [5, 5],
+    "allocB": [6, 6, 6, 8],
+    "allocC": [6, 6, 8, 6],
+    "leaves": [
+      {"op": "Atom", "ref": "5x6x6-r130-perminov_ZT-653ce4e"},
+      {"op": "Atom", "ref": "5x6x8-r170-perminov_ZT-b476d2a"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [3, 2],
+        "allocB": [4, 4],
+        "allocC": [4, 4],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x4x4@644bd5e392bf1f36813d1789373cc4a6c05b27122dbfbe9149e7345f3fa86c05"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "@ref", "id": "L0"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "n": [10, 26, 26],
+  "m": 4060,
+  "hash": "922bac647e7845d68c5cf6ea6ebe447984822a22a44862eb28dcdc2af82e27a6",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

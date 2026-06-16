@@ -1,0 +1,45 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨4,5,2⟩), OrientAs(2x4x8-r51-alphaevolve-0426307, ⟨4,8,2⟩)), Recombination(base=2x3x3, allocA=[2, 2], allocB=[5, 4, 4], allocC=[8, 8, 8], leaves=[2x4x8-r51-alphaevolve-0426307, 2x5x8-r63-perminov_Z-0cda074]))",
+  "lineage_compact": "2x4x5-r32-alphaevolve-6216e15→⟨4,5,2⟩ +m 2x4x8-r51-alphaevolve-0426307→⟨4,8,2⟩ +p R[2x3x3; 2,2 | 5,4,4 | 8,8,8]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 5,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 8,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"}
+      }
+    },
+    "right": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+      "allocA": [2, 2],
+      "allocB": [5, 4, 4],
+      "allocC": [8, 8, 8],
+      "leaves": [
+        {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"},
+        {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+      ]
+    }
+  },
+  "n": [4, 13, 26],
+  "m": 920,
+  "hash": "88cf49baeb39f53d927c7b06f13f6ea66296fbb714ebd89c1913c11719784757",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

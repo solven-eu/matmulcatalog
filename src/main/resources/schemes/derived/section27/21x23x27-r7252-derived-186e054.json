@@ -1,0 +1,76 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[12, 9], allocB=[12, 11], allocC=[12, 15], leaves=[KronProduct(2x4x5-r32-alphaevolve-6216e15, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), KronProduct(2x4x4, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), OrientAs(11x12x12-r968-perminov_Q-501db78, ⟨12,11,12⟩), Serendipitous(3x4x5 ⊗ ⟨3,3,3⟩), ConcatCols(OrientAs(6x11x12-r521-perminov_ZT-77435fe, ⟨12,11,6⟩), OrientAs(9x11x12-r738-perminov_Q-435e5a3, ⟨12,11,9⟩)), 9x11x12-r738-perminov_Q-435e5a3])",
+  "lineage_compact": "R[2x2x2; 12,9 | 12,11 | 12,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [12, 9],
+    "allocB": [12, 11],
+    "allocC": [12, 15],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x4@8e5986a"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 11,
+        "p": 12,
+        "child": {"op": "Atom", "ref": "11x12x12-r968-perminov_Q-501db78"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 3,
+        "base": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 12,
+          "m": 11,
+          "p": 6,
+          "child": {"op": "Atom", "ref": "6x11x12-r521-perminov_ZT-77435fe"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 12,
+          "m": 11,
+          "p": 9,
+          "child": {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"}
+        }
+      },
+      {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"}
+    ]
+  },
+  "n": [21, 23, 27],
+  "m": 7252,
+  "hash": "186e054496ddb6b77ab10df764a8968c8442926112bd0222a8f2a59234301b6e",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

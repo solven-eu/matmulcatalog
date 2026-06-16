@@ -1,0 +1,37 @@
+{
+  "lineage_str": "Recombination(base=Transpose(2x4x4, perm=\"ABC->CBA\"), allocA=[5, 5, 5, 5], allocB=[6, 6, 6, 6], allocC=[2, 1], leaves=[naive-5x6x1, OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩)])",
+  "lineage_compact": "R[2x4x4^ABC->CBA; 5,5,5,5 | 6,6,6,6 | 2,1]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->CBA",
+      "child": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"}
+    },
+    "allocA": [5, 5, 5, 5],
+    "allocB": [6, 6, 6, 6],
+    "allocC": [2, 1],
+    "leaves": [
+      {"op": "Atom", "ref": "naive-5x6x1"},
+      {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 6,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      }
+    ]
+  },
+  "n": [20, 24, 3],
+  "m": 1052,
+  "hash": "1018f412a5ba142c67f129fbafce61d75cc6f99e16e1fae14093313566b0bcac",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,62 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[6, 5], allocB=[6, 6, 5], allocC=[7, 7, 7], leaves=[5x5x7-r127-perminov_ZT-9d68374, Recombination(base=2x2x2, allocA=[3, 3], allocB=[3, 3], allocC=[4, 3], leaves=[Recombination(base=3x3x4, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x3x3, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨6,5,7⟩)])",
+  "lineage_compact": "R[2x3x3; 6,5 | 6,6,5 | 7,7,7]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+    "allocA": [6, 5],
+    "allocB": [6, 6, 5],
+    "allocC": [7, 7, 7],
+    "leaves": [
+      {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [3, 3],
+        "allocB": [3, 3],
+        "allocC": [4, 3],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x3x3@b173cf254ec4ec1c9ca85756c1a82341e487a85e62a4107907e5f529c71672c1"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 5,
+        "p": 7,
+        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+      }
+    ]
+  },
+  "n": [11, 17, 21],
+  "m": 2425,
+  "hash": "4bde6a4d98acd3925a186a0832e0d27b884745a9a9c4283b27ddceef89a2cdbe",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

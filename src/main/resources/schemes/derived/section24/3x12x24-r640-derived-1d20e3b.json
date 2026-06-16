@@ -1,0 +1,63 @@
+{
+  "lineage_str": "SumInner(KronProduct(naive-1x1x4, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), SumInner(KronProduct(naive-1x1x4, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), ConcatCols(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), KronProduct(naive-1x1x7, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))))",
+  "lineage_compact": "naive-1x1x4 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m naive-1x1x4 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +p naive-1x1x7 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "naive-1x1x4"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      }
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "naive-1x1x4"},
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
+      },
+      "right": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        },
+        "right": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "naive-1x1x7"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        }
+      }
+    }
+  },
+  "n": [3, 12, 24],
+  "m": 640,
+  "hash": "1d20e3b3ca55695b80134f5d678d504ecd021a7eef305c92c460d6a5e7416a4c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

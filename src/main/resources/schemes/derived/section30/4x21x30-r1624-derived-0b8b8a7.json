@@ -1,0 +1,23 @@
+{
+  "lineage_str": "SumInner(naive-4x1x30, KronProduct(2x4x5-r32-alphaevolve-6216e15, 2x5x6-r47-alphaevolve-7387644))",
+  "lineage_compact": "naive-4x1x30 +m 2x4x5-r32-alphaevolve-6216e15 ⊗ 2x5x6-r47-alphaevolve-7387644",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "naive-4x1x30"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+      "inner": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+    }
+  },
+  "n": [4, 21, 30],
+  "m": 1624,
+  "hash": "0b8b8a79fb4cf5dd6b1fcf7828b9bcd051e565c2458967dd21d66f4942a2b80c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

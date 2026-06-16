@@ -1,0 +1,27 @@
+{
+  "lineage_str": "ConcatCols(2x4x5-r32-alphaevolve-6216e15, ConcatCols(2x4x5-r32-alphaevolve-6216e15, ConcatCols(2x4x11-r70-perminov_ZT-0ae9c5e, 2x4x11-r70-perminov_ZT-0ae9c5e)))",
+  "lineage_compact": "2x4x5-r32-alphaevolve-6216e15 +p 2x4x5-r32-alphaevolve-6216e15 +p 2x4x11-r70-perminov_ZT-0ae9c5e +p 2x4x11-r70-perminov_ZT-0ae9c5e",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"},
+        "right": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+      }
+    }
+  },
+  "n": [2, 4, 32],
+  "m": 204,
+  "hash": "7e599e3e5b6290558f4fe667cc1fa4326f115a3c8ac0acc74727b0db530c2f3b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

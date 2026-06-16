@@ -1,0 +1,54 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 8], allocB=[16, 15], allocC=[16, 16], leaves=[8x16x16-r1230-perminov_Q-dca2cc8, Recombination(base=2x4x4, allocA=[4, 3], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4], leaves=[Recombination(base=3x4x4, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=4x4x4, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), 8x15x16-r1185-perminov_Q-b360074, 7x15x16-r1083-perminov_Q-494e198])",
+  "lineage_compact": "R[2x2x2; 7,8 | 16,15 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [7, 8],
+    "allocB": [16, 15],
+    "allocC": [16, 16],
+    "leaves": [
+      {"op": "Atom", "ref": "8x16x16-r1230-perminov_Q-dca2cc8"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"},
+        "allocA": [4, 3],
+        "allocB": [4, 4, 4, 4],
+        "allocC": [4, 4, 4, 4],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x4x4@644bd5e392bf1f36813d1789373cc4a6c05b27122dbfbe9149e7345f3fa86c05"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "4x4x4@929db4e407faf85e6ff69a5ab89dbd7c6917d95bdf82e156d5692acc9703527b"},
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {"op": "Atom", "ref": "8x15x16-r1185-perminov_Q-b360074"},
+      {"op": "Atom", "ref": "7x15x16-r1083-perminov_Q-494e198"}
+    ]
+  },
+  "n": [15, 31, 32],
+  "m": 8189,
+  "hash": "d0f90f79b8096fd4346a7ddd960335433d35b7d17b31c3ad1496e9278dfa32bd",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,135 @@
+% Honest accounting of the human/AI division of labour. Written in the same
+% spirit as the optimality discipline: state exactly what was done by whom, and
+% how confidently it can be attributed. The percentages are self-assessments.
+
+This catalog, its search engine, and much of this paper were developed in close
+collaboration with an AI coding agent (Anthropic's Claude, via Claude Code). We
+record the division of labour explicitly --- in the same spirit as the
+optimality discipline of the rest of the paper: say exactly what was done, and
+how confidently it can be attributed.
+
+A fairly clean split emerged between \emph{direction} and \emph{execution}. The
+human author supplied the direction: which questions to pose, which perspectives
+were worth digging into, what counted as an interesting result, plus domain
+framing and final judgement. The agent supplied most of the execution ---
+implementation, routine derivations, test scaffolding, provenance bookkeeping ---
+and a substantial share of the \emph{theory}, but only \emph{once a direction was
+fixed}. Two concrete cases, with our (necessarily subjective) attribution:
+
+\begin{itemize}\itemsep2pt
+  \item \textbf{The recombination branch-and-bound} --- the allocation/orbit
+  search that assigns target dimensions to a base's slots and prunes by a rank
+  bound --- was roughly \textbf{95\% agent}: both the idea to cast allocation as
+  a bounded search and its implementation.
+
+  \item \textbf{The exhaustive enumeration of recombination multisets}
+  (Section~\ref{sec:multisets}): the \emph{theory} --- the per-axis decoupling
+  lemma that turns an intractable \(39\text{k}^7\) search into an exact,
+  direction-stratified enumeration --- and its implementation were again roughly
+  \textbf{95\% agent}. But the \emph{idea to investigate the multiset
+  perspective at all} was \textbf{100\% the human author}: the agent did not
+  propose that this was a fruitful lens, it only developed and executed it once
+  asked.
+\end{itemize}
+
+A second, less flattering pattern was just as consistent: the agent
+\textbf{hallucinated frequently}. It routinely produced confident, plausible, and
+\emph{wrong} intermediate claims --- false ``facts'', derivations that did not
+hold, and bugs reported as fixes. A representative case occurs in this very work:
+the agent first concluded that the \nmpshape{2}{2}{2} recombination multisets
+collapse to \emph{two} classes once per-axis block-flips are quotiented out ---
+which silently contradicts the paper's own premise that Strassen and Winograd
+differ. The error surfaced only when the claim was cross-checked against the
+catalog's independent cost machinery, exactly the sort of confident-but-false
+output that pervaded the collaboration. A second, \emph{recurring} instance was
+more telling still: asked to explain how the Universit\'e de Lille FMM catalog
+attains a particular finite-size rank, the agent would repeatedly reach for
+Sch\"onhage's \(\tau\)-theorem (the asymptotic sum inequality)~\cite{schonhage1981}
+as the mechanism --- something this project neither runs nor derives, and which
+does not produce the concrete finite schemes in question (those come from FMM's
+own recursive concatenation and projection). This confabulation was strikingly
+persistent: it recurred across sessions and survived explicit standing
+instructions recorded in the agent's persistent project memory that warn against
+exactly it, requiring the human to steer the agent off it hard and often. That
+written, recalled-in-context rules did not reliably suppress a favoured
+hallucination is itself worth recording. (Fittingly, an earlier draft of this
+very paragraph mislocated those instructions in the repository's
+\code{CLAUDE.md} --- they live in the agent's memory files --- an error caught
+only by the same grep-and-verify gating the paragraph prescribes.) The practical consequence is structural:
+\emph{every} agent-produced claim in this work had to be gated behind an
+independent check --- a verifier, an exhaustive recomputation, or an adversarial
+second pass --- and the project's emphasis on cheap, automatic verification
+(Section~\ref{sec:nonoverlap}) is in part a direct response to how unreliable the
+agent's unverified assertions were. Hallucination was the norm, not the
+exception; what made the collaboration productive was not trusting the agent but
+\emph{cheaply catching} it.
+
+We find the split informative. The agent is strongest at turning a well-posed
+direction into correct theory and code, and at the breadth a research-grade
+catalog demands (hundreds of schemes, fields, provenance, verification). The
+scarce, human-supplied ingredient is the choice of question. The multiset case
+is the sharp illustration: once ``look at the multiset, and list them
+exhaustively'' was posed, the decoupling lemma, its completeness argument, the
+registration of the novel triple-aggregation base, and even this section's prose
+followed largely from the agent --- yet nothing in the agent's behaviour
+generated the framing itself. The branch-and-bound is the complementary case,
+where both framing and execution were the agent's, the human contributing
+review and acceptance.
+
+Some problems defeated earlier agents outright — and the clearest case study
+ended, months later, as a breakthrough by a newer model (next paragraph), so
+we narrate it chronologically. Through the Opus-4.x period, the
+Hopcroft--Kerr~1971 construction for \nmpshape{2}{m}{p} resisted: the agent
+could not rebuild a constructive derivation of the published ranks with our
+own toolkit. (The related
+\emph{below}-HK schemes --- those beating the HK ranks, such as AlphaEvolve's
+\nmpshape{2}{4}{5} at 32 --- need a characteristic-0 half-symmetrisation
+\(\tfrac{1}{2}(a_i\pm a_j)\) our integer toolkit provably cannot express; the HK
+ranks themselves are attained by ternary integer schemes, so no such excuse
+applies there.) The author pursued the same question in parallel with a
+\emph{different} agent (OpenAI's ChatGPT~5.5), whose style was markedly more
+theoretical than Claude Code's implementation-first one --- arguing about the
+underlying algebra and attempting proofs through Mathematica scripts rather than
+enumerative code. That line was equally inconclusive: it neither produced a
+derivation within reach of our methods nor established that the
+\nmpshape{2}{m}{p} case is unreachable, nor did it surface an error in the
+original paper. The HK schemes therefore stood in the catalog, for months, as
+\emph{imported but not re-derived}: explicit factor matrices (via the
+FMM-Lille catalog), machine-verified and correctly attributed, but with no
+in-toolkit constructive route to them --- two independent agents, with
+opposite working styles, stalled on the same genuinely hard point.
+
+\paragraph{A cross-model breakthrough data point.} The Hopcroft--Kerr
+\(\nmpshape{2}{p}{n}\) constructive problem (Section~\ref{sec:hk71}) doubles
+as a controlled comparison across model generations, because three distinct
+agents attacked the \emph{same} problem with the same repository context.
+OpenAI's ChatGPT~5.5 (theory-first, Mathematica) and Anthropic's Claude
+Opus~4.8 (implementation-first) both stalled: between them they produced the
+partial emitters, a correct-but-narrow impossibility theorem, and no
+formula-attaining rectangular scheme. Claude Fable~5 broke the problem in a
+few hours of session time: it located the stale empirical premises, found the
+cyclic-wrap bug and the bridge-selection escape, replaced the numerically
+toxic Vandermonde pipeline with exact arithmetic, decoded the paper's
+\(Z\)-trick once the PDF was supplied, overturned the operative impossibility
+by re-deriving the bridge-3 cases over the true reusable set, and emitted the
+machine-verified schemes — including \(\nmpshape{2}{10}{15}{=}233\), below
+every published catalog. The human contribution remained the direction
+(``crack HK71 constructively''), the paper PDF, and the acceptance tests; the
+chain of mathematical moves was the agent's. We report this as a single data
+point, not a benchmark — but it is the clearest capability step we have
+observed between model generations on this project.
+
+\paragraph{Tooling.} The bulk of the work was carried out with Anthropic's Claude
+Code on Claude Opus~4.7, with a smaller share on Opus~4.8; the most recent work
+(including parts of this section) runs on its newly released successor, Claude
+Fable~5. The hallucination rate noted above is for the Opus~4.x models
+specifically, and is a moving target --- a reader reproducing this with a later
+model should not assume the same reliability, in either direction.
+
+These percentages are self-assessments, not measurements, and are offered in the
+same honest-bounds spirit as the rest of the paper --- an upper bound on the
+author's share of the keystrokes, rather than a proven division of credit. We
+state them because reproducibility increasingly includes \emph{how} a result was
+produced, and because the boundary this work happened to draw --- human chooses
+the lens, agent builds the optics --- may be a useful data point for others doing
+mathematics with these tools.

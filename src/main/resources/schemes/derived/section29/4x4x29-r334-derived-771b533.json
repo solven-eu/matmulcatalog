@@ -1,0 +1,22 @@
+{
+  "lineage_str": "ConcatCols(4x4x9-r104-smirnov22-9759674, ConcatCols(4x4x10-r115-perminov_ZT-022a32b, 4x4x10-r115-perminov_ZT-022a32b))",
+  "lineage_compact": "4x4x9-r104-smirnov22-9759674 +p 4x4x10-r115-perminov_ZT-022a32b +p 4x4x10-r115-perminov_ZT-022a32b",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "4x4x9-r104-smirnov22-9759674"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"},
+      "right": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+    }
+  },
+  "n": [4, 4, 29],
+  "m": 334,
+  "hash": "771b533ba41a366bc58fce0cd9aeda663ef01465b9b1d3e1cab22c2c5d8cd949",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

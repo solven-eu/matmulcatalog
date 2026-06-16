@@ -1,0 +1,73 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(5x5x7-r127-perminov_ZT-9d68374, ⟨5,7,5⟩), Recombination(base=2x2x2, allocA=[3, 2], allocB=[4, 3], allocC=[12, 12], leaves=[ConcatCols(3x4x6-r54-alphaevolve-c197868, 3x4x6-r54-alphaevolve-c197868), ConcatCols(2x4x4, 2x4x8-r51-alphaevolve-0426307), ConcatCols(2x3x3, ConcatCols(2x3x3, ConcatCols(2x3x3, 2x3x3))), ConcatCols(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))]))",
+  "lineage_compact": "5x5x7-r127-perminov_ZT-9d68374→⟨5,7,5⟩ +p R[2x2x2; 3,2 | 4,3 | 12,12]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 7,
+      "p": 5,
+      "child": {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"}
+    },
+    "right": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+      "allocA": [3, 2],
+      "allocB": [4, 3],
+      "allocC": [12, 12],
+      "leaves": [
+        {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        },
+        {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x4x4@8e5986a"},
+          "right": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"}
+        },
+        {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+          "right": {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+            "right": {
+              "op": "ConcatCols",
+              "left": {"op": "Atom", "ref": "2x3x3@497eea7"},
+              "right": {"op": "Atom", "ref": "2x3x3@497eea7"}
+            }
+          }
+        },
+        {
+          "op": "ConcatCols",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      ]
+    }
+  },
+  "n": [5, 7, 29],
+  "m": 717,
+  "hash": "a2da3d19a5bace274dac09ff7f19c9094eaf4d0122b5ab9313f02b326528c208",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

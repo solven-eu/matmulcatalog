@@ -1,0 +1,31 @@
+{
+  "lineage_str": "KronProduct(OrientAs(2x5x8-r63-perminov_Z-0cda074, ⟨2,8,5⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))",
+  "lineage_compact": "2x5x8-r63-perminov_Z-0cda074→⟨2,8,5⟩ ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "OrientAs",
+      "n": 2,
+      "m": 8,
+      "p": 5,
+      "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+    },
+    "inner": {
+      "op": "Project",
+      "keepN": [0, 1, 2],
+      "keepM": [0, 1, 2],
+      "keepP": [1, 2, 3, 4, 5, 6],
+      "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+    }
+  },
+  "n": [6, 24, 30],
+  "m": 2520,
+  "hash": "b1cb61d7ee2a60acc974933c7be0b90984cd91f6e0ef660f5a281c4f41e8b1ee",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

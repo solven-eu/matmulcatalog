@@ -1,0 +1,50 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[9, 10], allocC=[12, 11], leaves=[8x10x12-r624-perminov_Q-c5b7abd, 6x9x12-r429-perminov_Q-45a8a82, KronProduct(2x2x2, 3x5x6-r68-alphaevolve-14be9c3), 8x9x11-r521-perminov_ZT-fa59ef2, Recombination(base=2x2x2, allocA=[3, 3], allocB=[5, 5], allocC=[6, 5], leaves=[3x5x6-r68-alphaevolve-14be9c3, Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_compact": "R[2x2x2; 6,8 | 9,10 | 12,11]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [6, 8],
+    "allocB": [9, 10],
+    "allocC": [12, 11],
+    "leaves": [
+      {"op": "Atom", "ref": "8x10x12-r624-perminov_Q-c5b7abd"},
+      {"op": "Atom", "ref": "6x9x12-r429-perminov_Q-45a8a82"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+      },
+      {"op": "Atom", "ref": "8x9x11-r521-perminov_ZT-fa59ef2"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [3, 3],
+        "allocB": [5, 5],
+        "allocC": [6, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "3x5x5@263818a8fc3dab9f6fa0d9adb7a25e543286906c6e7dd8e8d3a40c3eb160910b"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "n": [14, 19, 23],
+  "m": 3641,
+  "hash": "e7c2d5a66772a42f679ceab6c7430845d436e2308e9a8b81342ed21a43f2f972",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

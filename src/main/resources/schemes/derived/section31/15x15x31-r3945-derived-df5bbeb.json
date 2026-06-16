@@ -1,0 +1,29 @@
+{
+  "lineage_str": "ConcatCols(naive-15x15x1, KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 5x5x5-r93-alphaevolve-9728dd0))",
+  "lineage_compact": "naive-15x15x1 +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 5x5x5-r93-alphaevolve-9728dd0",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-15x15x1"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {"op": "Atom", "ref": "5x5x5-r93-alphaevolve-9728dd0"}
+    }
+  },
+  "n": [15, 15, 31],
+  "m": 3945,
+  "hash": "df5bbebe5360a30071db19bc3eec3790436362ba9c30faabeb100254005dfb8e",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

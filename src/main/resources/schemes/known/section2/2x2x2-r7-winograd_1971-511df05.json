@@ -1,0 +1,95 @@
+{
+  "lineage_str": "winograd-1971-7mult",
+  "lineage_compact": "winograd-1971-7mult",
+  "lineage": {"op": "Atom", "ref": "winograd-1971-7mult"},
+  "n": [2, 2, 2],
+  "m": 7,
+  "scheduled_additions": 15,
+  "scheduled_additions_note": "Strassen-Winograd 1971 schedule: 15 additions when intermediates s1..s4, t1..t4 (CSE) are shared; raw bilinear additionCount from U/V/W is 24. See MaterializeStrassenWinograd.java for the explicit schedule.",
+  "commutative": false,
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "fields_not": [],
+  "zt": true,
+  "u": [
+    [-1, 0, 1, 1],
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 1],
+    [1, 0, -1, 0],
+    [1, 1, -1, -1],
+    [0, 0, 0, 1]
+  ],
+  "v": [
+    [1, -1, 0, 1],
+    [1, 0, 0, 0],
+    [0, 0, 1, 0],
+    [-1, 1, 0, 0],
+    [0, -1, 0, 1],
+    [0, 0, 0, 1],
+    [1, -1, -1, 1]
+  ],
+  "w": [
+    [0, 1, 1, 1],
+    [1, 1, 1, 1],
+    [1, 0, 0, 0],
+    [0, 0, 1, 1],
+    [0, 1, 0, 1],
+    [0, 0, 1, 0],
+    [0, -1, 0, 0]
+  ],
+  "min_additions": 15,
+  "additions_optimal": false,
+  "slp": {
+    "additions": 15,
+    "scalar_mults": 2,
+    "optimality": "bound",
+    "optimality_method": "greedy cancellation-free CSE (Paar-style)",
+    "a": {
+      "inputs": 4,
+      "ops": [
+        ["+", 4, 2, 3],
+        ["-", 5, 0, 4],
+        ["*", 6, 5, -1],
+        ["-", 7, 0, 2],
+        ["+", 8, 1, 5]
+      ],
+      "forms": [6, 0, 1, 4, 7, 8, 3]
+    },
+    "b": {
+      "inputs": 4,
+      "ops": [
+        ["-", 4, 0, 1],
+        ["+", 5, 3, 4],
+        ["*", 6, 4, -1],
+        ["-", 7, 3, 1],
+        ["-", 8, 5, 2]
+      ],
+      "forms": [5, 0, 2, 6, 7, 3, 8]
+    },
+    "out": {
+      "inputs": 7,
+      "ops": [
+        ["+", 7, 0, 1],
+        ["+", 8, 3, 7],
+        ["+", 9, 1, 2],
+        ["+", 10, 5, 8],
+        ["+", 11, 4, 7],
+        ["-", 12, 11, 6],
+        ["+", 13, 4, 8]
+      ],
+      "forms": [9, 10, 12, 13]
+    }
+  },
+  "verified": true,
+  "additions": 24,
+  "has_buds": false,
+  "projection_margin": 3,
+  "source": "Winograd_1971"
+}

@@ -1,0 +1,43 @@
+{
+  "lineage_str": "SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), OrientAs(2x5x8-r63-perminov_Z-0cda074, ⟨2,8,5⟩)))",
+  "lineage_compact": "2x5x6-r47-alphaevolve-7387644→⟨2,6,5⟩ +m 2x5x6-r47-alphaevolve-7387644→⟨2,6,5⟩ +m 2x5x8-r63-perminov_Z-0cda074→⟨2,8,5⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 2,
+      "m": 6,
+      "p": 5,
+      "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 6,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 8,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+      }
+    }
+  },
+  "n": [2, 20, 5],
+  "m": 157,
+  "hash": "490215141b5a3aed48f85b690b0ff98e5825fef5455d84b5484677cab907a0aa",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

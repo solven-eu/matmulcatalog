@@ -1,0 +1,90 @@
+{
+  "source": "solven-cousin-hunt-2026",
+  "lineage_str": "winograd-1971 axis-flip mask=1 (DIS09 S_{J,I,I})",
+  "lineage_compact": "winograd-1971-7mult^J<1>",
+  "lineage": {"op": "AxisFlip", "ref": "winograd-1971-7mult", "mask": 1},
+  "discovery_note": "Improved upper bound for ⟨17,17,17⟩ at the (9,8)^3 Strassen-base allocation: this Winograd cousin produces sub-shape distribution 1×⟨9,9,9⟩ + 4×⟨8,9,9⟩-cyc + 1×⟨8,8,9⟩ + 1×⟨8,8,8⟩ = 486 + 4·430 + 388 + 336 = 2930, beating canonical Strassen (2940) and the FMM-Lille published bound (2934). Found by TestStrassenCousinHunt in src/test/java/eu/solven/matmul/search/.",
+  "n": [2, 2, 2],
+  "m": 7,
+  "commutative": false,
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "fields_not": [],
+  "zt": true,
+  "u": [
+    [1, 1, -1, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1],
+    [1, 1, 0, 0],
+    [-1, 0, 1, 0],
+    [-1, -1, 1, 1],
+    [0, 1, 0, 0]
+  ],
+  "v": [
+    [1, -1, 0, 1],
+    [1, 0, 0, 0],
+    [0, 0, 1, 0],
+    [-1, 1, 0, 0],
+    [0, -1, 0, 1],
+    [0, 0, 0, 1],
+    [1, -1, -1, 1]
+  ],
+  "w": [
+    [1, 0, 1, 1],
+    [1, 1, 1, 1],
+    [0, 1, 0, 0],
+    [0, 0, 1, 1],
+    [1, 0, 1, 0],
+    [0, 0, 0, 1],
+    [-1, 0, 0, 0]
+  ],
+  "min_additions": 15,
+  "additions_optimal": false,
+  "slp": {
+    "additions": 15,
+    "scalar_mults": 2,
+    "optimality": "bound",
+    "optimality_method": "greedy cancellation-free CSE (Paar-style)",
+    "a": {
+      "inputs": 4,
+      "ops": [
+        ["+", 4, 0, 1],
+        ["-", 5, 2, 4],
+        ["*", 6, 5, -1],
+        ["-", 7, 2, 0],
+        ["+", 8, 3, 5]
+      ],
+      "forms": [6, 2, 3, 4, 7, 8, 1]
+    },
+    "b": {
+      "inputs": 4,
+      "ops": [
+        ["-", 4, 0, 1],
+        ["+", 5, 3, 4],
+        ["*", 6, 4, -1],
+        ["-", 7, 3, 1],
+        ["-", 8, 5, 2]
+      ],
+      "forms": [5, 0, 2, 6, 7, 3, 8]
+    },
+    "out": {
+      "inputs": 7,
+      "ops": [
+        ["+", 7, 0, 1],
+        ["+", 8, 3, 7],
+        ["+", 9, 4, 7],
+        ["-", 10, 9, 6],
+        ["+", 11, 4, 8],
+        ["+", 12, 1, 2],
+        ["+", 13, 5, 8]
+      ],
+      "forms": [10, 11, 12, 13]
+    }
+  }
+}

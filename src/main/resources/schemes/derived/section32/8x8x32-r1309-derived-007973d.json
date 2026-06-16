@@ -1,0 +1,37 @@
+{
+  "lineage_str": "ConcatCols(Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨4,2,4⟩), KronProduct(2x2x2, 4x4x10-r115-perminov_ZT-022a32b))",
+  "lineage_compact": "2x3x4→⟨2,4,3⟩ ⊗ˢ⟨4,2,4⟩ +p 2x2x2 ⊗ 4x4x10-r115-perminov_ZT-022a32b",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SerendipitousProduct",
+      "n2": 4,
+      "m2": 2,
+      "p2": 4,
+      "base": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 4,
+        "p": 3,
+        "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "inner": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
+    }
+  },
+  "n": [8, 8, 32],
+  "m": 1309,
+  "hash": "007973d81f5360858f445f9a13595d77ac01179e5123dc35b573f8c1a1685bf4",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

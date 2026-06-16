@@ -1,0 +1,35 @@
+{
+  "lineage_str": "ConcatRows(naive-1x4x30, KronProduct(OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨4,2,5⟩), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,2,6⟩)))",
+  "lineage_compact": "naive-1x4x30 +n 2x4x5-r32-alphaevolve-6216e15→⟨4,2,5⟩ ⊗ 2x5x6-r47-alphaevolve-7387644→⟨5,2,6⟩",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "naive-1x4x30"},
+    "bottom": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 2,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 2,
+        "p": 6,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      }
+    }
+  },
+  "n": [21, 4, 30],
+  "m": 1624,
+  "hash": "516dc659e6f76d9e7e2efc1bea38b8d96098e9829d12b3713179955b11a2f944",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,65 @@
+{
+  "lineage_str": "ConcatCols(SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x5x6-r68-alphaevolve-14be9c3))), ConcatCols(OrientAs(3x10x14-r312-perminov_ZT-14f1415, ⟨3,14,10⟩), OrientAs(3x10x14-r312-perminov_ZT-14f1415, ⟨3,14,10⟩)))",
+  "lineage_compact": "3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x5x6-r68-alphaevolve-14be9c3 +p 3x10x14-r312-perminov_ZT-14f1415→⟨3,14,10⟩ +p 3x10x14-r312-perminov_ZT-14f1415→⟨3,14,10⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        },
+        "right": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "right": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+        }
+      }
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 14,
+        "p": 10,
+        "child": {"op": "Atom", "ref": "3x10x14-r312-perminov_ZT-14f1415"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 14,
+        "p": 10,
+        "child": {"op": "Atom", "ref": "3x10x14-r312-perminov_ZT-14f1415"}
+      }
+    }
+  },
+  "n": [3, 14, 26],
+  "m": 812,
+  "hash": "93e591bd969ad8fa1551306c74b283095d5de54cf2b0d71c69c66b323b8e0b74",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

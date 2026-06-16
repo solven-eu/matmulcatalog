@@ -1,0 +1,32 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[12, 14], allocC=[15, 15], leaves=[10x14x15-r1314-perminov_Z-31eeee1, 10x12x15-r1122-perminov_Z-83aca77, Serendipitous(3x4x5 ⊗ ⟨3,3,3⟩), 9x14x15-r1175-perminov_Q-a5ff639])",
+  "lineage_compact": "R[2x2x2; 9,10 | 12,14 | 15,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [9, 10],
+    "allocB": [12, 14],
+    "allocC": [15, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "10x14x15-r1314-perminov_Z-31eeee1"},
+      {"op": "Atom", "ref": "10x12x15-r1122-perminov_Z-83aca77"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 3,
+        "base": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+      },
+      {"op": "Atom", "ref": "9x14x15-r1175-perminov_Q-a5ff639"}
+    ]
+  },
+  "n": [19, 26, 30],
+  "m": 8218,
+  "hash": "65fc9f84b616b3e3337c5d09ab3102c811496cac868905054d3d30d42ea02a62",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

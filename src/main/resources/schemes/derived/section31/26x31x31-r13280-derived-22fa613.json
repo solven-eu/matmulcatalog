@@ -1,0 +1,56 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[14, 12], allocB=[16, 15], allocC=[15, 16], leaves=[14x16x16-r2128-perminov_Q-b3523dc, KronProduct(2x4x5-r32-alphaevolve-6216e15, OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,4,3⟩)), 14x15x15-r1890-perminov_Q-201f413, 12x16x16-r1815-perminov_Q-1b69229, KronProduct(2x5x5-r40-alphatensor_Z-67f5fb7, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))])",
+  "lineage_compact": "R[2x2x2; 14,12 | 16,15 | 15,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [14, 12],
+    "allocB": [16, 15],
+    "allocC": [15, 16],
+    "leaves": [
+      {"op": "Atom", "ref": "14x16x16-r2128-perminov_Q-b3523dc"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+        "inner": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 4,
+          "p": 3,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        }
+      },
+      {"op": "Atom", "ref": "14x15x15-r1890-perminov_Q-201f413"},
+      {"op": "Atom", "ref": "12x16x16-r1815-perminov_Q-1b69229"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      }
+    ]
+  },
+  "n": [26, 31, 31],
+  "m": 13280,
+  "hash": "22fa613b6dc9c5140b6f22d0c885201c05e950000036a746f1f63059554f840b",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

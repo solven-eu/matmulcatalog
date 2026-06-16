@@ -1,0 +1,62 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨4,2,5⟩)), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨4,2,5⟩)))",
+  "lineage_compact": "R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] ⊗ 2x4x5-r32-alphaevolve-6216e15→⟨4,2,5⟩ +p R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] ⊗ 2x4x5-r32-alphaevolve-6216e15→⟨4,2,5⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "id": "L0",
+          "perm": "ABC->CAB",
+          "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+        },
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1],
+        "allocC": [1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 2,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1],
+        "allocC": [1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 2,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+      }
+    }
+  },
+  "n": [12, 4, 30],
+  "m": 960,
+  "hash": "1d6db9e63be9971beb618f0340df3fed43e2dbb6825ee7e08f98cc2d4e4685e0",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

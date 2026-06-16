@@ -1,0 +1,65 @@
+{
+  "lineage_str": "ConcatCols(naive-9x29x1, SumInner(ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), OrientAs(2x9x12-r168-hk71-1e99416, ⟨9,2,12⟩))), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(3x5x9-r102-perminov_ZT-bf97d17, ⟨3,9,5⟩))))",
+  "lineage_compact": "naive-9x29x1 +p 2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +p 2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +p 2x9x12-r168-hk71-1e99416→⟨9,2,12⟩ +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x5x9-r102-perminov_ZT-bf97d17→⟨3,9,5⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-9x29x1"},
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 2,
+          "p": 9,
+          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 9,
+            "m": 2,
+            "p": 9,
+            "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 9,
+            "m": 2,
+            "p": 12,
+            "child": {"op": "Atom", "ref": "2x9x12-r168-hk71-1e99416"}
+          }
+        }
+      },
+      "right": {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        },
+        "inner": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 9,
+          "p": 5,
+          "child": {"op": "Atom", "ref": "3x5x9-r102-perminov_ZT-bf97d17"}
+        }
+      }
+    }
+  },
+  "n": [9, 29, 31],
+  "m": 4761,
+  "hash": "2b6cc8d2acb49af9bb73954e3687846e6ac46bb065f5ffc79abf5b8b8faa1099",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

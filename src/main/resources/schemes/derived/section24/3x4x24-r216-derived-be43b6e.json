@@ -1,0 +1,27 @@
+{
+  "lineage_str": "ConcatCols(3x4x6-r54-alphaevolve-c197868, ConcatCols(3x4x6-r54-alphaevolve-c197868, ConcatCols(3x4x6-r54-alphaevolve-c197868, 3x4x6-r54-alphaevolve-c197868)))",
+  "lineage_compact": "3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+        "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    }
+  },
+  "n": [3, 4, 24],
+  "m": 216,
+  "hash": "be43b6ea27f9dafcc5e6a1eccf2f3625abd0c240450ec5f386a3ec254fecc987",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

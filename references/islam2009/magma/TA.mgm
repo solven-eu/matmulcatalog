@@ -1,0 +1,480 @@
+/*------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------*/
+/* trilinear aggregating matrix multiplication                                  */
+/* this implementation uses multivariate polynomials to mimic tensor operations */
+/*------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------*/
+
+
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*          base ring multiplication             */
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+
+/*-----------------------------------------------*/
+/* hack: adding a global variable called NB      */
+/* this will count the number of multiplications */
+/*-----------------------------------------------*/
+AddAttribute(RngInt, "NB");
+
+/*-----------------------------------------------*/
+/* computes a b c, where a,b are constants and c */
+/* is a polynomial                               */
+/* increments the counter NB                     */
+/*-----------------------------------------------*/
+function Mul(a,b,c)
+    if a*b*c eq 0 then
+	return 0;
+    end if;
+    R:=Integers();
+    R`NB+:=1;
+    return a*b*c;
+end function;
+
+
+
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*                preprocessing                  */
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+
+/*-----------------------------------------------*/
+/* returns the preprocessing matrices L and R    */
+/*-----------------------------------------------*/
+function L(K, m)
+    u0T:=Matrix(K,1,m,[1 : i in [1..m]]);
+    u0:=Transpose(u0T);  
+    I:=DiagonalMatrix(K,m,[1 : i in [1..m]]);
+    return VerticalJoin(I,-u0T);
+end function;
+
+function R(K, m)
+    u0T:=Matrix(K,1,m,[1 : i in [1..m]]);
+    u0:=Transpose(u0T);  
+    I:=DiagonalMatrix(K,m,[1 : i in [1..m]]);
+    return HorizontalJoin(I-1/(m+1)*u0*u0T, -1/(m+1)*u0);
+end function;
+
+/*-----------------------------------------------*/
+/* applies the preprocessing matrices L and R    */
+/*-----------------------------------------------*/
+function EnlargeLeft(M)
+    m:=Nrows(M);
+    n:=Ncols(M);
+    K:=BaseRing(M);
+    return L(K,m)*M*R(K,n);
+end function;
+
+function EnlargeRight(M)
+    n:=Nrows(M);
+    p:=Ncols(M);
+    K:=BaseRing(M);
+    return L(K,n)*M*Transpose(L(K,p));
+end function;
+
+
+/*-------------------------------------------------*/
+/* turns the polynomial s=sum_{i,j} s[i,j] c[i,j]  */
+/* into the matrix [s[i,j]]                        */
+/* c[i,j] are indeterminates stored in the matrix C*/
+/*-------------------------------------------------*/
+function ExtractMatrix(s,C)
+    n:=Nrows(C);
+    QC:=BaseRing(C);
+    M:=Matrix(QC,n,n,[0 : i in [1..n*n]]);
+    for i in [1..n] do 
+	for j in [1..n] do
+	    if C[i][j] ne 0 then
+		M[i][j]:=MonomialCoefficient(s,C[i][j]);
+	    end if;
+	end for;
+    end for;
+    return M;
+end function;
+
+
+
+/*-------------------------------------------------*/
+/* conditions defining S1, S2                      */
+/*-------------------------------------------------*/
+function Prop1(i,j,k,m)
+    b1:=(0 le i) and (i le j) and (j lt k);
+    b2:=(0 le k) and (k lt j) and (j le i);
+    return b1 or b2;
+end function;
+
+function Prop2(i,j,k,m)
+    return #[x : x in [i,j,k] | x eq m] lt 2;
+end function;
+
+PropS1:=func<i,j,k,m | Prop1(i,j,k,m) and Prop2(i,j,k,m)>;
+PropS2:=func<i,j,k,m | Prop2(i,j,k,m) and not (i eq j and j eq k)>;
+
+/*------------------------------------------*/
+/* s0                                       */
+/*------------------------------------------*/
+function s0(A,B,C)
+    m:=Nrows(A);
+    return &+[Mul(A[i,i], B[i,i], C[i,i]) : i in [1..m-1]];
+end function;
+
+/*------------------------------------------*/
+/* s1                                       */
+/*------------------------------------------*/
+function s1(A,B,C)
+    tmp:=BaseRing(A)!0;
+    m:=Nrows(A);
+    for i in [1..m] do
+	for j in [1..m] do
+	    for k in [1..m] do
+		if PropS1(i,j,k,m) then
+		    tmp+:=Mul(A[i,j]+A[j,k]+A[k,i], B[j,k]+B[k,i]+B[i,j], C[k,i]+C[i,j]+C[j,k]);
+		end if;
+	    end for;
+	end for;
+    end for;
+    return tmp;
+end function;
+
+/*------------------------------------------*/
+/* s2                                       */
+/*------------------------------------------*/
+function s2(A,B,C,U,V,W,X,Y,Z)
+    m:=Nrows(A);
+    return &+[&+[&+([ 
+	Mul(A[i,j]+U[j,k]+X[k,i], B[j,k]+V[k,i]+Y[i,j], C[k,i]+W[i,j]+Z[j,k]) 
+	: i in [1..m] | PropS2(i,j,k,m)] cat [0]) : j in [1..m]] : k in [1..m]];
+end function;
+
+/*------------------------------------------*/
+/* u1                                       */
+/*------------------------------------------*/
+function u1(A,B,C,W,Z)
+    m:=Nrows(A);
+    return &+[ &+[ Mul(A[i,j], B[i,j],
+	m*W[i,j] + &+[C[k,i] : k in [1..m]] + &+[Z[j,k] : k in [1..m]]) : i in [1..m-1] | i ne j] : j in [1..m-1]];
+end function;
+
+/*------------------------------------------*/
+/* u2                                       */
+/*------------------------------------------*/
+function u2(A,B,D,W,Z)
+    m:=Nrows(A);
+    return &+[ Mul(A[i,i], B[i,i],
+	&+[D[k,i] : k in [1..m]] + m*W[i,i] + &+[Z[i,k] : k in [1..m]]) : i in [1..m-1]]; 
+end function;
+
+/*------------------------------------------*/
+/* modified form of u2                      */
+/*------------------------------------------*/
+function u2_prime(A,B,C)
+  m:=Nrows(A);
+  return &+[ Mul(A[i,i],B[i,i],
+           (m-9)*C[i,i] + &+[C[k,i] : k in [1..m]] + &+[C[i,k] : k in [1..m]]) : i in [1..m-1]];
+end function;
+
+/*------------------------------------------*/
+/* u3                                       */
+/*------------------------------------------*/
+function u3(A,Y,C)
+    m:=Nrows(A);
+    return &+[ Mul(A[i,m], Y[i,m], &+[C[k,i] : k in [1..m]]) : i in [1..m-1]];
+end function;
+
+/*------------------------------------------*/
+/* u4                                       */
+/*------------------------------------------*/
+function u4(A,Y,Z)
+    m:=Nrows(A);
+    return &+[ Mul(A[m,j], Y[m,j], &+[Z[j,k] : k in [1..m]]) : j in [1..m-1]];
+end function;
+
+
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*          matrix product, even case            */
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+function ProductEven(a,b)
+
+    nn:=Nrows(a);
+    assert IsEven(nn);
+    n:=nn div 2;
+    m:=nn+2;
+    Q:=BaseRing(a);
+    QC<[c]>:=PolynomialRing(Q,m*m);
+
+    C:=Matrix(QC,m,m,c[1..m*m]);
+    
+    for i in [1..nn] do
+	C[i,n+1]:=0;
+	C[i,m]:=0;
+	C[n+1,i]:=0;
+	C[m,i]:=0;
+    end for;
+    
+    a:=ChangeRing(a,QC);
+    b:=ChangeRing(b,QC);
+
+    // cutting a into pieces
+    a11:=Submatrix(a, 1, 1, n, n);
+    a12:=Submatrix(a, 1, n+1, n, n);
+    a21:=Submatrix(a, n+1, 1, n, n);
+    a22:=Submatrix(a, n+1, n+1, n, n);
+    // same for b
+    b11:=Submatrix(b, 1, 1, n, n);
+    b12:=Submatrix(b, 1, n+1, n, n);
+    b21:=Submatrix(b, n+1, 1, n, n);
+    b22:=Submatrix(b, n+1, n+1, n, n);
+    // same for C
+    C11:=Submatrix(C, 1, 1, n+1, n+1);
+    C12:=Submatrix(C, 1, n+2, n+1, n+1);
+    C21:=Submatrix(C, n+2, 1, n+1, n+1);
+    C22:=Submatrix(C, n+2, n+2, n+1, n+1);
+
+    // putting in the zero-sum relations for a
+    A11:=EnlargeLeft(a11); 
+    A12:=EnlargeLeft(a12); 
+    A21:=EnlargeLeft(a21); 
+    A22:=EnlargeLeft(a22); 
+    // same for b
+    B11:=EnlargeRight(b11);
+    B12:=EnlargeRight(b12);
+    B21:=EnlargeRight(b21);
+    B22:=EnlargeRight(b22);
+    
+    // computes all terms in the sum  
+    product:=QC!0;
+    
+    product+:=s0(A12-A11+A21, B21+B12+B11, C11-C12+C21);
+    product+:=s0(A12+A21-A22, B22+B12+B21, C12+C22-C21);
+    
+    product+:=s1(A11,B11,C11);
+    product+:=s1(A22,B22,C22);
+
+    product+:=s2(A12,B21,C11, -A11,B12,-C12, A21,B11,C21);
+    product+:=s2(A12,B22,C12, A21,B12,C22, -A22,B21,-C21);
+        
+    product-:=u1( A11, B11,  C11, C11, C11); 
+    product-:=u1(-A11, B21, -C12, C21, C11);
+    product-:=u1( A12, B21,  C12, C22,-C21);
+    product-:=u1(-A22, B12, -C21, C12, C22);    
+    product-:=u1( A12, B11,  C11,-C12, C21);    
+    product-:=u1( A21, B12,  C21, C11,-C12);
+    product-:=u1( A21, B22,  C22,-C21, C12);
+    product-:=u1( A22, B22,  C22, C22, C22);
+
+    product-:=u2_prime(A11, B11, C11);
+    product-:=u2(A11, B21, C12,-C21,-C11);
+    product-:=u2(A12, B11, C11,-C12, C21);
+    product-:=u2(A21, B12, C21, C11,-C12);
+    product-:=u2(A22, B12, C21,-C12,-C22);
+    product-:=u2(A21, B22, C22,-C21, C12);
+    product-:=u2(A12, B21, C12, C22,-C21);
+    product-:=u2_prime(A22, B22, C22);
+    
+    product-:=u3(A11+A12, B11, C11);
+    product-:=u3(A11+A12, B21, C12);
+    product-:=u3(A21+A22, B12, C21);
+    product-:=u3(A21+A22, B22, C22);
+
+    product-:=u4(A11, B11-B21, C11);
+    product-:=u4(A12, B11-B21, C21);
+    product-:=u4(A21,-B12+B22, C12);
+    product-:=u4(A22,-B12+B22, C22);
+
+    extr:=func<M | Submatrix(M,1,1,n,n)>;
+    CC11:=ExtractMatrix(product,C11);
+    CC12:=ExtractMatrix(product,C12);
+    CC21:=ExtractMatrix(product,C21);
+    CC22:=ExtractMatrix(product,C22);
+    tmp1:=HorizontalJoin(Transpose(extr(CC11)),Transpose(extr(CC12)));
+    tmp2:=HorizontalJoin(Transpose(extr(CC21)),Transpose(extr(CC22)));
+    return ChangeRing(VerticalJoin(tmp1,tmp2), Q);
+end function;
+
+
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*          matrix product, odd case             */
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+function ProductOdd(a, b)
+
+    nn:=Nrows(a);
+    Q:=BaseRing(a);
+    assert IsOdd(nn);
+    n:=(nn+1) div 2; // pads a zero, and divides by 2
+    m:=nn+2;
+    QC<[c]>:=PolynomialRing(Q, m*m); // indeterminates for our polyomials
+    
+    C:=Matrix(QC, m, m, c[1..m*m]);
+    a:=ChangeRing(a, QC);
+    b:=ChangeRing(b, QC);
+
+    // cut a into pieces
+    a11:=Submatrix(a, 1, 1, n, n);
+    a12:=Submatrix(a, 1, n+1, n, nn-n);
+    a21:=Submatrix(a, n+1, 1, nn-n, n);
+    a22:=Submatrix(a, n+1, n+1, nn-n, nn-n);
+
+    // same for b
+    b11:=Submatrix(b, 1, 1, n, n);
+    b12:=Submatrix(b, 1, n+1, n, nn-n);
+    b21:=Submatrix(b, n+1, 1, nn-n, n);
+    b22:=Submatrix(b, n+1, n+1, nn-n, nn-n);
+    
+    // same for C
+    c11:=Submatrix(C, 1, 1, n+1, n+1);
+    c12:=Submatrix(C, 1, n+2, n+1, nn-n+1);
+    c21:=Submatrix(C, n+2, 1, nn-n+1, n+1);
+    c22:=Submatrix(C, n+2, n+2, nn-n+1, nn-n+1);
+  
+  
+    // putting in the zero-sum relations for a --> everybody has size (n+1)
+    // makes sure that the zero rows / columns are in the last-but-one entry
+    a11:=EnlargeLeft(a11);
+    A11:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~A11, a11, 1, 1);
+  
+    a12:=EnlargeLeft(a12);
+    A12:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~A12, a12, 1, 1);
+    A12:=SwapColumns(A12, n, n+1);
+    
+    a21:=EnlargeLeft(a21); 
+    A21:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~A21, a21, 1, 1);
+    A21:=SwapRows(A21, n, n+1);
+  
+    a22:=EnlargeLeft(a22); 
+    A22:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~A22, a22, 1, 1);
+    A22:=SwapRows(A22, n, n+1);
+    A22:=SwapColumns(A22, n, n+1);
+  
+    // same for b
+    b11:=EnlargeRight(b11);
+    B11:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~B11, b11, 1, 1);
+    
+    b12:=EnlargeRight(b12);
+    B12:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~B12, b12, 1, 1);
+    B12:=SwapColumns(B12, n, n+1);
+  
+    b21:=EnlargeRight(b21);
+    B21:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~B21, b21, 1, 1);
+    B21:=SwapRows(B21, n, n+1);
+  
+    b22:=EnlargeRight(b22);
+    B22:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~B22, b22, 1, 1);
+    B22:=SwapRows(B22, n, n+1);
+    B22:=SwapColumns(B22, n, n+1);
+  
+    // prepares C  
+    C11:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~C11, c11, 1, 1);
+    
+    C12:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~C12, c12, 1, 1);
+
+    C21:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~C21, c21, 1, 1);
+  
+    C22:=ZeroMatrix(QC, n+1, n+1);
+    InsertBlock(~C22, c22, 1, 1);
+  
+    // computes all terms in the sum  
+    product:=QC!0;
+    
+    product+:=s0(A12-A11+A21, B21+B12+B11, C11-C12+C21);
+    product+:=s0(A12+A21-A22, B22+B12+B21, C12+C22-C21);
+    
+    product+:=s1(A11, B11, C11);  
+    product+:=s1(A22, B22, C22);
+   
+    product+:=s2(-A11,B12,-C12, A21,B11,C21, A12,B21,C11);  
+    product+:=s2(-A22,B21,-C21, A12,B22,C12, A21,B12,C22);
+
+    product-:=u2_prime(A11,B11, C11);
+    product-:=u2(-A11, B21, -C12, C21, C11);
+    product-:=u2( A12, B11,  C11,-C12, C21);
+    product-:=u2( A21, B12,  C21, C11,-C12);
+    product-:=u2(-A22, B12, -C21, C12, C22);
+    product-:=u2( A21, B22,  C22,-C21, C12);
+    product-:=u2( A12, B21,  C12, C22,-C21);
+    product-:=u2_prime(A22,B22, C22);
+    
+    product-:=u1( A11, B11,  C11, C11, C11); 
+    product-:=u1(-A11, B21, -C12, C21, C11);
+    product-:=u1( A12, B21,  C12, C22,-C21);
+    product-:=u1(-A22, B12, -C21, C12, C22);    
+    product-:=u1( A12, B11,  C11,-C12, C21);    
+    product-:=u1( A21, B12,  C21, C11,-C12);
+    product-:=u1( A21, B22,  C22,-C21, C12);
+    product-:=u1( A22, B22,  C22, C22, C22);
+
+    product-:=u3(A11+A12, B11, C11);
+    product-:=u3(A11+A12, B21, C12);
+    product-:=u3(A21+A22, B12, C21);
+    product-:=u3(A21+A22, B22, C22);
+
+    product-:=u4(A11, B11-B21, C11);
+    product-:=u4(A12, B11-B21, C21);
+    product-:=u4(A21,-B12+B22, C12);
+    product-:=u4(A22,-B12+B22, C22);
+    
+    extr:=func<M | Submatrix(M,1,1,n,n)>;
+    CC11:=ExtractMatrix(product,C11);
+    CC12:=ExtractMatrix(product,C12);
+    CC21:=ExtractMatrix(product,C21);
+    CC22:=ExtractMatrix(product,C22);
+    tmp1:=HorizontalJoin(Transpose(extr(CC11)),Transpose(extr(CC12)));
+    tmp2:=HorizontalJoin(Transpose(extr(CC21)),Transpose(extr(CC22)));
+    return Submatrix(ChangeRing(VerticalJoin(tmp1,tmp2), Q), 1, 1, nn, nn);
+end function;
+
+
+
+/*-----------------------------------------------*/
+/* performs a multiplication in size n           */
+/* returns the number of base ring operations    */
+/*-----------------------------------------------*/
+function CountAndTest(n)
+    R:=Integers();
+    R`NB:=0;
+    Q:=GF(NextPrime(10^10));
+    a:=Matrix(Q,n,n,[Random(Q) : i in [1..n*n]]);
+    b:=Matrix(Q,n,n,[Random(Q) : i in [1..n*n]]);
+    if IsEven(n) then
+	c:=ProductEven(a,b);
+    else
+	c:=ProductOdd(a,b);
+    end if;
+    assert c eq a*b;
+    return R`NB;
+end function;
+
+
+/*-----------------------------------------------*/
+/* tests for all sizes in 3..14                  */
+/* interpolates the number of multiplications    */
+/*-----------------------------------------------*/
+A:=[];
+for i in [3..14] do
+    A[i]:=Rationals()!CountAndTest(i);
+end for;
+
+P<n>:=PolynomialRing(Rationals());
+even:=[2*i : i in [2..6]];
+odd:=[2*i+1 : i in [2..6]];
+Seven:=Interpolation(ChangeUniverse(even,Rationals()), [A[i] : i in even]);
+Sodd:=Interpolation(ChangeUniverse(odd,Rationals()), [A[i] : i in odd]);
+
+"cost for the even case", Seven;
+"cost for the odd case", Sodd;

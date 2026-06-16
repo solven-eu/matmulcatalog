@@ -1,0 +1,28 @@
+{
+  "lineage_str": "Recombination(base=Transpose(2x3x4, perm=\"ABC->ACB\"), allocA=[4, 4], allocB=[4, 4, 4, 4], allocC=[10, 10, 9], leaves=[4x4x10-r115-perminov_ZT-022a32b, 4x4x9-r104-smirnov22-9759674])",
+  "lineage_compact": "R[2x3x4^ABC->ACB; 4,4 | 4,4,4,4 | 10,10,9]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->ACB",
+      "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+    },
+    "allocA": [4, 4],
+    "allocB": [4, 4, 4, 4],
+    "allocC": [10, 10, 9],
+    "leaves": [
+      {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"},
+      {"op": "Atom", "ref": "4x4x9-r104-smirnov22-9759674"}
+    ]
+  },
+  "n": [8, 16, 29],
+  "m": 2256,
+  "hash": "38a687aa53575afe21ba4a3f2c9275921fe57db1af18e9d36d09847c7a9bf67c",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

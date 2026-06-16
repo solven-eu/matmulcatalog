@@ -1,0 +1,92 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[10, 12], allocC=[11, 12], leaves=[KronProduct(2x3x3, 4x4x4), Recombination(base=2x2x2, allocA=[4, 4], allocB=[5, 5], allocC=[6, 5], leaves=[4x5x6-r90-alphaevolve-8aa8e60, Recombination(base=4x5x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, 3x5x6-r68-alphaevolve-14be9c3), OrientAs(8x11x12-r676-perminov_Q-4b544d3, ⟨8,12,11⟩), ConcatCols(KronProduct(2x2x2, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), KronProduct(2x2x2, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))), 8x10x12-r624-perminov_Q-c5b7abd, OrientAs(6x11x12-r521-perminov_ZT-77435fe, ⟨6,12,11⟩)])",
+  "lineage_compact": "R[2x2x2; 6,8 | 10,12 | 11,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [6, 8],
+    "allocB": [10, 12],
+    "allocC": [11, 12],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [4, 4],
+        "allocB": [5, 5],
+        "allocC": [6, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "4x5x6-r90-alphaevolve-8aa8e60"},
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "4x5x5@54f4614c03ee4cb6830b6d8894d1513faacfcdfc8cdd3e13889929cc60746e02"},
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 8,
+        "m": 12,
+        "p": 11,
+        "child": {"op": "Atom", "ref": "8x11x12-r676-perminov_Q-4b544d3"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        },
+        "right": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "8x10x12-r624-perminov_Q-c5b7abd"},
+      {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 12,
+        "p": 11,
+        "child": {"op": "Atom", "ref": "6x11x12-r521-perminov_ZT-77435fe"}
+      }
+    ]
+  },
+  "n": [14, 22, 23],
+  "m": 4165,
+  "hash": "6c5ba7d8222ea770d923dbbfbbf86a31e1a6bda95bac871fe812006836ca56e0",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

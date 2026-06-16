@@ -1,0 +1,61 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(2x12x13-r241-hk71-0aeffee, ⟨12,13,2⟩), Recombination(base=2x2x2, allocA=[6, 6], allocB=[7, 6], allocC=[12, 12], leaves=[Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 3], allocC=[6, 6], leaves=[3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))]))",
+  "lineage_compact": "2x12x13-r241-hk71-0aeffee→⟨12,13,2⟩ +p R[2x2x2; 6,6 | 7,6 | 12,12]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 12,
+      "m": 13,
+      "p": 2,
+      "child": {"op": "Atom", "ref": "2x12x13-r241-hk71-0aeffee"}
+    },
+    "right": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+      "allocA": [6, 6],
+      "allocB": [7, 6],
+      "allocC": [12, 12],
+      "leaves": [
+        {
+          "op": "Recombination",
+          "base": {"op": "@ref", "id": "L0"},
+          "allocA": [3, 3],
+          "allocB": [4, 3],
+          "allocC": [6, 6],
+          "leaves": [
+            {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          ]
+        },
+        {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "inner": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      ]
+    }
+  },
+  "n": [12, 13, 26],
+  "m": 2425,
+  "hash": "fbe21a93df0112538b8e336c82c131c38328199a0ee56a436135215bc2b29b3c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

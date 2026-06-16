@@ -1,0 +1,62 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 8], allocB=[12, 13], allocC=[12, 14], leaves=[ConcatCols(SumInner(OrientAs(2x5x8-r63-perminov_Z-0cda074, ⟨8,5,2⟩), OrientAs(2x8x8-r100-hk71-1fe5b7a, ⟨8,8,2⟩)), OrientAs(8x12x13-r781-perminov_Q-f0b186c, ⟨8,13,12⟩)), KronProduct(2x3x3, 4x4x4), 8x12x14-r843-perminov_Q-6498e80, OrientAs(8x12x13-r781-perminov_Q-f0b186c, ⟨8,13,12⟩)])",
+  "lineage_compact": "R[2x2x2; 8,8 | 12,13 | 12,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [8, 8],
+    "allocB": [12, 13],
+    "allocC": [12, 14],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "OrientAs",
+            "n": 8,
+            "m": 5,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 8,
+            "m": 8,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x8x8-r100-hk71-1fe5b7a"}
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 8,
+          "m": 13,
+          "p": 12,
+          "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+      },
+      {"op": "Atom", "ref": "8x12x14-r843-perminov_Q-6498e80"},
+      {
+        "op": "OrientAs",
+        "n": 8,
+        "m": 13,
+        "p": 12,
+        "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+      }
+    ]
+  },
+  "n": [16, 25, 26],
+  "m": 5856,
+  "hash": "8dfd9c738382db7eae90ce5d92f4cfff8bf2f4faca7e6dad30bed0b8644b922e",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

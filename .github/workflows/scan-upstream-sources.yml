@@ -1,0 +1,62 @@
+name: Scan upstream sources
+
+# Weekly scan of upstream rank catalogs (Sedoglavic fmm_digest, Perminov
+# status.json, …) for ranks that strictly beat what we have on disk.
+# Writes generated/UPSTREAM_SCAN.md and opens a tracking issue if any new gap appears.
+#
+# Manual: `gh workflow run scan-upstream-sources.yml`
+on:
+  schedule:
+    - cron: '0 5 * * 1'         # Mondays 05:00 UTC, one hour after catalog regen
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: scan-upstream-sources
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Compile
+        run: mvn -B -ntp -q compile
+
+      - name: Run scan
+        id: scan
+        run: |
+          mvn -B -ntp -q exec:java \
+            -Dexec.mainClass=eu.solven.matmul.docs.explore.ScanUpstreamSources \
+            -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md"
+          echo "report_path=generated/UPSTREAM_SCAN.md" >> "$GITHUB_OUTPUT"
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: upstream-scan-${{ github.run_id }}
+          path: generated/UPSTREAM_SCAN.md
+          retention-days: 90
+
+      - name: Surface report in workflow summary
+        if: always()
+        run: |
+          {
+            echo "## Upstream scan output"
+            echo ""
+            cat generated/UPSTREAM_SCAN.md
+          } >> "$GITHUB_STEP_SUMMARY"

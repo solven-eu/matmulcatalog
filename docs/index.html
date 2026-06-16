@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MMC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+<!-- MermaidJS: renders the per-entry lineage tree in the detail modal (#lineage-graph-box).
+     startOnLoad:false — we render on demand via mermaid.render() when a modal opens. -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ startOnLoad: false, theme: "neutral", securityLevel: "loose",
+      flowchart: { htmlLabels: true, curve: "basis" } });
+  }
+</script>
+</head>
+<body>
+<div role="alert" style="background:#fff3cd;border:1px solid #ffc107;color:#664d03;padding:10px 16px;margin:0;font-weight:600;text-align:center">
+  ⚠️ WORK IN PROGRESS — This catalog is actively under construction.
+  Some entries may be missing, incorrect, or mis-attributed. Treat all
+  values as provisional until cross-checked against the cited source.
+  See
+  <a href="https://github.com/solven-eu/matmulcatalog/blob/master/DISCOVERIES_PENDING_ANALYSIS.md"
+     style="color:#664d03;text-decoration:underline">DISCOVERIES_PENDING_ANALYSIS.md</a>
+  and
+  <a href="https://github.com/solven-eu/matmulcatalog/blob/master/ROADMAP.md"
+     style="color:#664d03;text-decoration:underline">ROADMAP.md</a>
+  for known gaps.
+</div>
+<header>
+  <h1>MMC — Matrix Multiplication Catalog</h1>
+  <p class="sub">
+    Browse 2,300+ verified factor matrices for fast matrix-multiplication
+    algorithms, drawn from Strassen 1969 → AlphaEvolve 2025. Every entry
+    here has its factor matrices on disk and round-trips through a Java
+    verifier. See the
+    <a href="https://github.com/solven-eu/matmulcatalog">repository</a> for
+    the methodology and source.
+  </p>
+</header>
+
+<section class="filters">
+  <label title="Pick a field; schemes valid over a narrower field are included automatically (a Z scheme also satisfies a Q / R / C query). ZT is NOT a field — it is the sub-class of Z (integer) schemes whose coefficients are all in {-1,0,1} ('ternary integer', distinct from F₃'s ternary modular); selecting it shows Z schemes with the ZT flag set. Click 'field implications' for the full inclusion map; see the 'Fields covered' legend below for what each algebra means.">
+    Field:
+    <select id="f-field">
+      <option value="">all</option>
+      <option disabled>─────────────</option>
+      <option value="F2">Z2/F2 (integer % 2)</option>
+      <option value="F3">Z3/F3 (ternary modular — integer % 3)</option>
+      <option disabled>─────────────</option>
+      <option value="Z">Z (integers)</option>
+      <option value="ZT">ZT (ternary integer — Z with {-1,0,1})</option>
+      <option value="Q" selected>Q (rationals)</option>
+      <option value="R">R (reals)</option>
+      <option disabled>─────────────</option>
+      <option value="C">C (complex)</option>
+    </select>
+  </label>
+  <button type="button" id="fields-impl-btn"
+    style="margin-left:6px;cursor:pointer;background:none;border:none;color:#06c;text-decoration:underline;font:inherit;padding:0"
+    title="Show the field-inclusion map — which selections include which schemes">ⓘ field implications</button>
+
+  <div class="filter-checkboxes">
+    <label>
+      Cubic only (n = m = p):
+      <input type="checkbox" id="f-cubic" checked>
+    </label>
+
+    <label title="Show only rows whose implied ω is strictly less than Strassen's ω = log₂(7) ≈ 2.8074. Per Perminov 2026 arXiv:2603.02398 these are 'better-than-Strassen' bilinear algorithms; their count is a useful catalog-progress metric.">
+      ω &lt; Strassen (2.8074):
+      <input type="checkbox" id="f-omega-beats-strassen">
+    </label>
+
+    <label title="By default the table shows only the best (lowest-rank) algorithm per (format, field, commutative). Tick to reveal dominated rows — superseded or non-SOTA bounds kept for chronological context (e.g. a 2009 cited rank already beaten by a 1976 Kronecker construction).">
+      Show history (dominated rows):
+      <input type="checkbox" id="f-show-history">
+    </label>
+  </div>
+
+  <label>
+    Commutative:
+    <select id="f-commutative">
+      <option value="include">include</option>
+      <option value="exclude" selected>exclude</option>
+      <option value="require">require</option>
+    </select>
+  </label>
+
+  <label title="Border-rank rows (R̃ ≤ …) are asymptotic/degenerate bounds, NOT exact-multiplication schemes — excluded by default. 'only' isolates them; 'include' mixes them with exact ranks.">
+    Border rank:
+    <select id="f-border">
+      <option value="include">include</option>
+      <option value="exclude" selected>exclude</option>
+      <option value="only">only</option>
+    </select>
+  </label>
+
+  <label title="Derived = built via recursion / Kronecker / concat / recombine (has a lineage), as opposed to an atom or imported scheme">
+    Derived:
+    <select id="f-composed">
+      <option value="include" selected>include</option>
+      <option value="exclude">exclude</option>
+      <option value="require">require</option>
+    </select>
+  </label>
+
+
+  <label title="Hide rows where any of (n, m, p) is below this threshold">
+    min(n, m, p) ≥
+    <input type="number" id="f-min-dim" min="1" max="32" value="2">
+  </label>
+
+  <label title="Hide rows where any of (n, m, p) exceeds this threshold">
+    max(n, m, p) ≤
+    <input type="number" id="f-max-dim" min="1" max="32" value="32">
+  </label>
+
+  <label>
+    Source contains:
+    <input type="text" id="f-source" placeholder="e.g. alphaevolve">
+  </label>
+
+  <!-- Shape-pattern filter. Positional on the displayed ⟨n,m,p⟩. Per axis: `N`
+       exact, `N+` at-least (30+ = 30 or bigger), `N-` at-most (16- = 16 or less),
+       `*` wildcard. The separator is lax (any non-digit char: . , x space -); a
+       `-` between digits is a separator, so `2-3-16` is the exact ⟨2,3,16⟩. Fewer
+       tokens sub-match (`2x16` → all ⟨2,16,·⟩). Requested specifically for
+       Perminov — his FastMatrixMultiplication catalog is browsed per-format, so a
+       wildcard or an `N±` band on an axis pulls "all ⟨2,·,16⟩" at once. -->
+  <label title="Filter by shape, positional on ⟨n,m,p⟩. Per axis: N exact, N+ means ≥N (30+), N- means ≤N (16-), * wildcard. Any separator works (. , x space); a dash BETWEEN digits is a separator, so 2-3-16 = exact ⟨2,3,16⟩. Fewer tokens sub-match leading axes. Examples: 2.*.16, 30+.2.16, 2-3-16, 2x16">
+    Shape (e.g. 2.*.16):
+    <input type="text" id="f-shape" placeholder="2.*.16">
+  </label>
+
+  <label>
+    Sort by:
+    <select id="f-sort">
+      <option value="format">format ↑</option>
+      <!-- Pure lexicographic shape order (⟨2,2,2⟩…⟨2,2,16⟩, ⟨2,3,2⟩…): first axis
+           is the primary key, so ALL ⟨2,·,·⟩ shapes precede any ⟨3,·,·⟩ — unlike
+           "format", which groups by max(n,m,p). Requested specifically for
+           Perminov, to scan our catalog in lockstep with his per-format ordering. -->
+      <option value="format_lex">format lex ↑</option>
+      <option value="rank">rank ↑</option>
+      <option value="omega_asc">ω ↑</option>
+      <option value="buds_desc">buds ↓</option>
+      <option value="year">year ↓</option>
+      <option value="year_asc">year ↑</option>
+    </select>
+  </label>
+
+  <label title="When several schemes tie on rank for a shape/field, this picks which one is the single 'best' shown by default (and breaks ties within rank in the table).">
+    Tie-break (rank then…):
+    <select id="f-secondary">
+      <option value="additions">additions ↑</option>
+      <option value="buds">buds ↓</option>
+      <option value="projection_margin">projection margin ↓</option>
+    </select>
+  </label>
+</section>
+
+<section class="fields-legend">
+  <details>
+    <summary><strong>Fields covered</strong> — what each algebra means (and why ZT is not one)</summary>
+    <table class="fields-legend-table">
+      <thead>
+        <tr><th>Tag</th><th>Algebra</th><th>Coefficients</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>F2</code> (= <code>Z2</code>)</td>
+          <td>GF(2)</td>
+          <td>{0, 1}, integers mod 2</td>
+          <td>Characteristic 2 — its own universe, no inclusion into the
+              characteristic-0 chain. AlphaTensor's home field.</td>
+        </tr>
+        <tr>
+          <td><code>F3</code> (= <code>Z3</code>)</td>
+          <td>GF(3)</td>
+          <td>{0, 1, 2}, integers mod 3</td>
+          <td><strong>Ternary <em>modular</em></strong> — three residues in a
+              characteristic-3 field. Distinct from ZT below: same "three values"
+              count, completely different arithmetic.</td>
+        </tr>
+        <tr>
+          <td><code>Z</code></td>
+          <td>integers ℤ</td>
+          <td>any integer</td>
+          <td>Characteristic 0. <code>Z ⊂ Q ⊂ R ⊂ C</code>.</td>
+        </tr>
+        <tr class="fields-legend-sub">
+          <td>↳ <code>ZT</code></td>
+          <td><em>sub-class of Z — not a field</em></td>
+          <td>{−1, 0, +1} ⊂ ℤ</td>
+          <td><strong>Ternary <em>integer</em></strong>: a Z scheme whose every
+              factor-matrix coefficient is −1, 0 or +1 (Perminov's "ternary"
+              schemes). Carried as the per-scheme boolean <code>ZT</code>, present
+              only when Z is covered. <strong>It is NOT F₂/Z₂</strong> — that was
+              a historical conflation; ZT is integer arithmetic, not mod-2.</td>
+        </tr>
+        <tr>
+          <td><code>Q</code></td>
+          <td>rationals ℚ</td>
+          <td>any rational</td>
+          <td>Characteristic 0; implies R, C.</td>
+        </tr>
+        <tr>
+          <td><code>R</code></td>
+          <td>reals ℝ</td>
+          <td>any real</td>
+          <td>Characteristic 0; implies C.</td>
+        </tr>
+        <tr>
+          <td><code>C</code></td>
+          <td>complex ℂ</td>
+          <td>any complex</td>
+          <td>Accepts every R/Q/Z scheme; plus C-only schemes (e.g. AlphaEvolve's
+              complex-coefficient originals — its ⟨4,4,4⟩=48 rank is no longer
+              C-only since Dumas–Pernet–Sedoglavic 2025 rationalised it to Q/R).</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin:.4em 0 0">
+      "Ternary" is overloaded: <code>F3</code>/<code>Z3</code> is ternary
+      <em>modular</em> (GF(3)), whereas <code>ZT</code> is ternary
+      <em>integer</em> (coefficients in {−1,0,1} over ℤ). They are unrelated
+      algebras that happen to share the word.
+    </p>
+  </details>
+</section>
+
+<section class="summary">
+  <span id="result-count">loading…</span>
+</section>
+
+<section class="results">
+  <table id="results-table">
+    <thead>
+      <tr>
+        <th>format</th>
+        <th>field</th>
+        <th class="rank" title="Schönhage-style implied matmul exponent ω = 3·ln(rank)/ln(n·m·p) — calibrated heatmap over current selection (green = best, red = worst)">ω</th>
+        <th class="rank">rank (UB)</th>
+        <th class="rank">+ adds</th>
+        <th title="Bud structure (Perminov Def 2.9): groups of rank-one terms sharing a u/v/w vector up to scaling. A bud-richer scheme gives a cheaper serendipitous product downstream. ★ = on the (rank, buds) Pareto frontier — registered 'best' even if not rank-minimal. Certainty: exact (cancellation-free lineage / expanded) vs est (structural lower bound, e.g. through a concat).">buds</th>
+        <th title="Atom = primary scheme imported / hand-constructed; an expression like Kron(Strassen<2,2,2>=7, AE<4,4,4>=48) = composed via the named composition operators; Formula = derived bound, no factor matrices on disk; Cited = upper-bound claim in literature without an explicit scheme">lineage</th>
+        <th>source</th>
+        <th>scheme</th>
+        <th title="Copy a one-line identifier of this row to the clipboard"></th>
+      </tr>
+    </thead>
+    <tbody id="results-body"><!-- populated by JS --></tbody>
+  </table>
+</section>
+
+<section class="omega-history" id="omega-history-section">
+  <details>
+    <summary><h2 style="display:inline">⟨∞,∞,∞⟩ — asymptotic exponent ω over time</h2></summary>
+    <p class="muted">
+      The matrix-multiplication exponent ω — smallest constant such that
+      <code>⟨n,n,n⟩</code> can be done in <code>O(n^ω)</code> operations as
+      <code>n → ∞</code>. Lower bound is the information-theoretic
+      <code>ω ≥ 2</code>; whether <code>ω = 2</code> is open. Data from
+      <code>docs/omega-history.json</code>. The plot also overlays the
+      <strong>commutative</strong> exponent <code>ω<sub>c</sub></code>
+      (data from <code>docs/omega-history-commutative.json</code>) — each
+      green point is a <em>single-shape</em> upper bound
+      <code>log<sub>n</sub>(R<sub>c</sub>(n))</code>; commutative algorithms
+      do NOT lift to recursive matrix matmul, so the commutative series
+      is not an aggregated asymptotic like NC ω.
+    </p>
+    <div style="margin:8px 0;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+      <label style="display:inline-flex;gap:6px;align-items:center;cursor:pointer">
+        <input type="checkbox" id="omega-log-scale">
+        log-scale y-axis (expands the band near ω = 2)
+      </label>
+      <span class="muted" style="font-size:0.85em">
+        y-axis is bounded [2, max(ω) + 0.05]; linear by default.
+      </span>
+    </div>
+    <div style="padding-left:8px;padding-right:8px">
+      <svg id="omega-timeline" viewBox="0 0 800 240"
+           style="width:100%;max-width:900px;border:1px solid #ddd;background:#fafafa">
+      </svg>
+    </div>
+    <table id="omega-history-table" style="margin-top:16px;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th>kind</th>
+          <th>year</th>
+          <th>ω ≤</th>
+          <th>method</th>
+          <th>source</th>
+          <th>notes</th>
+        </tr>
+      </thead>
+      <tbody id="omega-history-body"></tbody>
+    </table>
+  </details>
+</section>
+
+<section class="omega-triangle-section" id="omega-triangle-section">
+  <h2>ω heatmap — per-format effective exponent</h2>
+  <p class="muted">
+    Each cell is a format ⟨n,m,p⟩ coloured by its effective exponent
+    <code>ω = 3·ln(r)/ln(n·m·p)</code> (the best non-commutative rank we hold;
+    lower = closer to optimal, 3 = naïve). <strong>Rows</strong> are the largest
+    axis <code>maxDim = p</code> (2…32), labelled on the <strong>right</strong>.
+    Each row is <strong>right-anchored on the cube axis</strong>: the rightmost
+    cell of every row is the cube ⟨p,p,p⟩ (outlined), so the cubes line up in a
+    single vertical column on the right. Moving <strong>left</strong> within a
+    row visits the smaller shapes ⟨n,m,p⟩ (<code>n≤m≤p</code>), so the left edge
+    is ragged — the lone ⟨2,2,2⟩ cell up top, the full ⟨…,…,32⟩ row at the
+    bottom. <strong>Prime maxDim</strong> rows are flagged
+    <span style="color:#b00;font-weight:bold">◆</span> — they are the smoothness
+    floor where serendipity and cube-projection have least to exploit. Block
+    width <strong>tapers with distance from the cube</strong> so the cube and
+    near-cube columns stay legible while the long tail stays compact. Hover a
+    cell for the exact rank and ω.
+  </p>
+  <p class="muted" style="margin:0 0 6px">
+    <label>Colour by:
+      <select id="omega-heat-mode">
+        <option value="omega">ω (effective exponent)</option>
+        <option value="source">source / composition type</option>
+      </select>
+    </label>
+    &nbsp;
+    <label>Column order:
+      <select id="omega-heat-order">
+        <option value="max">by larger axis m (…3,3; 2,4)</option>
+        <option value="min" selected>by smaller axis n (2,3; 2,4; …)</option>
+      </select>
+    </label>
+    <span style="color:#888">— same cells (best held NC rank per shape), recoloured / reordered.</span>
+  </p>
+  <div id="omega-triangle" style="overflow:auto;max-width:100%;border:1px solid #ddd;padding:4px">
+    <!-- SVG heatmap populated by renderOmegaTriangle() -->
+  </div>
+  <p class="muted" style="margin-top:6px" id="omega-legend-omega">
+    Colour is <strong>self-calibrated</strong> to the best/worst ω actually held
+    (not a fixed 2…3 window):
+    <span style="background:hsl(120,70%,50%);padding:0 6px;color:#000" id="omega-legend-best">best</span>
+    →
+    <span style="background:hsl(0,70%,50%);padding:0 6px;color:#000" id="omega-legend-worst">worst</span>
+    &nbsp; <span style="background:#eee;padding:0 6px">no scheme</span>
+    &nbsp; <span style="display:inline-block;width:10px;height:10px;border:2px solid #0033cc;vertical-align:middle"></span>
+    ω &lt; Strassen (log₂7 ≈ 2.807) — better-than-Strassen shape.
+    Heatmap respects the <strong>Field</strong> filter.
+  </p>
+  <div class="muted" style="margin-top:6px;display:none" id="omega-legend-source">
+    <!-- categorical legend populated by renderOmegaTriangle() in source mode -->
+  </div>
+</section>
+
+<section class="references">
+  <h2>References</h2>
+  <p class="muted">
+    Lower-bound citations referenced in the table above. Numbers are
+    stable across filter changes.
+  </p>
+  <ul id="references-list" class="ref-list">
+    <!-- populated by JS from lower-bounds.json — numbers are stable across
+         filter changes (each entry carries its assigned [N] explicitly so
+         filtering a hidden item doesn't renumber the visible ones). -->
+  </ul>
+</section>
+
+<footer>
+  <p>
+    Catalog manifest: <code>catalog.json</code>; regenerate via
+    <code>java … GenerateCatalogManifest</code>. Scheme files live under
+    <code>src/main/resources/schemes/section{N}/</code> in the
+    <a href="https://github.com/solven-eu/matmulcatalog">repo</a>.
+  </p>
+  <p>
+    Lower bounds (<code>lower-bounds.json</code>) and references are
+    loaded but currently hidden from the main table to reduce per-row
+    repetition (LB is a per-format property — same value across every
+    algorithm row for the same format). They will resurface in a future
+    per-format detail view. The reference numbers in the References
+    section below remain stable.
+  </p>
+  <p>
+    <strong>Field fallback</strong>: filtering by <code>C</code> also
+    shows R/Q/Z-class schemes with an <code>↗ C</code> tag, because
+    <code>R ⊂ C</code> — every R-algorithm is automatically valid over
+    C. Conversely, filtering by <code>R</code> hides C-only schemes
+    (they may use unrepresentable coefficients). F₂ is its own bucket
+    with no fallback (different arithmetic / characteristic 2). All
+    catalog schemes are <strong>non-commutative</strong>, which is the
+    correct mode for recursive matmul; if commutative-only schemes are
+    ever imported they'd need their own tag (see
+    <a href="https://github.com/solven-eu/matmulcatalog/blob/master/RANK_KNOWLEDGE.md">RANK_KNOWLEDGE.md</a>
+    §1.2bis).
+  </p>
+  <p>
+    <strong>Derived bounds</strong> (italicised purple rows):
+    <code>derived-from-cited-bounds.json</code> is auto-generated by
+    <code>GenerateDerivedBounds</code> and records formula-derived
+    upper-bound entries (e.g. Sedoglavic's
+    <code>⟨u+v,u+v,u+v⟩ ≤ ⟨u,u,u⟩ + 3·⟨u,u,v⟩ + 3·⟨u,v,v⟩</code>) for
+    targets where the formula beats — or is the only source for — the
+    direct catalog rank. The <em>scheme</em> column shows
+    "↻ construct on demand" (no scheme file exists yet); the source
+    cell's tooltip shows the formula breakdown. To materialise the
+    actual algorithm, see the construction recipe (e.g.
+    <code>Recombination.constructWithAllocation(Strassen, lookup,
+    [u,v]³)</code>).
+  </p>
+  <p>
+    <strong>Cited bounds</strong> (yellow rows):
+    <code>cited-bounds.json</code> is auto-generated by
+    <code>GenerateCitedBounds</code> from
+    <code>references/dis09-cubic-tables.json</code> et al. — published
+    rank claims that don't (or don't easily) come with factor matrices,
+    typically superseded by later work that does. They're shown so the
+    Pages table doubles as a per-format history. Look for the
+    <code>cmt</code> tag in the field column for commutative-only
+    results (e.g. DIS09's <code>R_c(⟨3,3,3⟩) = 22</code> from
+    Makarov333 — strictly better than the non-commutative 23, but only
+    useful for scalar matmul, not recursive matmul).
+  </p>
+</footer>
+
+<script src="catalog.js"></script>
+</body>
+</html>

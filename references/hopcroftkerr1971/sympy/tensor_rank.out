@@ -1,0 +1,19 @@
+=== Baseline: rank of (T1, T2) before modification ===
+  rank(T1) = 2, rank(T2) = 2, joint = 4
+
+=== Searching modifications to reduce joint matrix rank ===
+    (lower joint rank → fewer new products needed)
+
+  Searched 728 modifications in 1.4s
+  Best modified joint rank: 4
+
+*** Joint matrix rank cannot drop below 4 across simple modifications. ***
+    Strong evidence for 4-product requirement (HK formula +1 per pair).
+
+=== Extended search: vary all 9 shared atoms ===
+    (3^18 = 387M too large for full enumeration; sample randomly)
+Traceback (most recent call last):
+  File "/tmp/hk_tensor_rank.py", line 145, in <module>
+    M1 = T1_mat + sum(c1_vec[k] * shared_mats[k][1] for k in range(9) if c1_vec[k])
+                  ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported operand type(s) for +: 'int' and 'MutableDenseMatrix'

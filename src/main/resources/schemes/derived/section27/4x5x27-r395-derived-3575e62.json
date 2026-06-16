@@ -1,0 +1,31 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(3x4x5-r47-alphatensor_Z-6bc7fbe, ⟨4,5,3⟩), ConcatCols(4x5x12-r174-perminov_ZT-640e987, 4x5x12-r174-perminov_ZT-640e987))",
+  "lineage_compact": "3x4x5-r47-alphatensor_Z-6bc7fbe→⟨4,5,3⟩ +p 4x5x12-r174-perminov_ZT-640e987 +p 4x5x12-r174-perminov_ZT-640e987",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 5,
+      "p": 3,
+      "child": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"}
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "4x5x12-r174-perminov_ZT-640e987"},
+      "right": {"op": "Atom", "ref": "4x5x12-r174-perminov_ZT-640e987"}
+    }
+  },
+  "n": [4, 5, 27],
+  "m": 395,
+  "hash": "3575e62321d23c00720030c48e2b66c074e7e79dbd93ee50c2cec251e70685e8",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

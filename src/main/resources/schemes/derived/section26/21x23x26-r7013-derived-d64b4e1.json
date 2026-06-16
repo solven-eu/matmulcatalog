@@ -1,0 +1,62 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[12, 9], allocB=[12, 11], allocC=[12, 14], leaves=[Serendipitous(OrientAs(2x3x4, ⟨3,4,2⟩) ⊗ ⟨4,3,7⟩), KronProduct(2x4x4, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), OrientAs(11x12x12-r968-perminov_Q-501db78, ⟨12,11,12⟩), 9x12x14-r940-perminov_Q-ffecb1f, OrientAs(11x12x14-r1153-perminov_Q-da0c7e7, ⟨12,11,14⟩), 9x11x12-r738-perminov_Q-435e5a3])",
+  "lineage_compact": "R[2x2x2; 12,9 | 12,11 | 12,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [12, 9],
+    "allocB": [12, 11],
+    "allocC": [12, 14],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 3,
+        "p2": 7,
+        "base": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 4,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x4@8e5986a"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 11,
+        "p": 12,
+        "child": {"op": "Atom", "ref": "11x12x12-r968-perminov_Q-501db78"}
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 11,
+        "p": 14,
+        "child": {"op": "Atom", "ref": "11x12x14-r1153-perminov_Q-da0c7e7"}
+      },
+      {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"}
+    ]
+  },
+  "n": [21, 23, 26],
+  "m": 7013,
+  "hash": "d64b4e122ea53a627b89e3922197390b319baf0c52d57bc4e5aecaadec131b03",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,58 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 9], allocB=[12, 9], allocC=[15, 16], leaves=[Serendipitous(OrientAs(3x4x5, ⟨5,3,4⟩) ⊗ ⟨2,4,4⟩), 10x12x15-r1122-perminov_Z-83aca77, OrientAs(9x10x15-r864-perminov_ZT-477779d, ⟨10,9,15⟩), Project(9x13x16, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), OrientAs(9x10x16-r916-perminov_Q-b172bc2, ⟨10,9,16⟩), 9x9x15-r760-perminov_Q-19f51a1])",
+  "lineage_compact": "R[2x2x2; 10,9 | 12,9 | 15,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [10, 9],
+    "allocB": [12, 9],
+    "allocC": [15, 16],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 2,
+        "m2": 4,
+        "p2": 4,
+        "base": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 3,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+        }
+      },
+      {"op": "Atom", "ref": "10x12x15-r1122-perminov_Z-83aca77"},
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 9,
+        "p": 15,
+        "child": {"op": "Atom", "ref": "9x10x15-r864-perminov_ZT-477779d"}
+      },
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "child": {"op": "Atom", "ref": "9x13x16@4b0ebf7"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 9,
+        "p": 16,
+        "child": {"op": "Atom", "ref": "9x10x16-r916-perminov_Q-b172bc2"}
+      },
+      {"op": "Atom", "ref": "9x9x15-r760-perminov_Q-19f51a1"}
+    ]
+  },
+  "n": [19, 21, 31],
+  "m": 6908,
+  "hash": "d820fc352a1e7049ee6537de6f55aa41cd37bbb334e97ca574fa94a740411eb2",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

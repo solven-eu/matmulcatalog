@@ -1,0 +1,57 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 6], allocB=[12, 11], allocC=[12, 14], leaves=[8x12x14-r843-perminov_Q-6498e80, KronProduct(2x3x3, 4x4x4), 8x11x12-r676-perminov_Q-4b544d3, Serendipitous(2x4x7 ⊗ ⟨3,3,2⟩), Recombination(base=2x2x2, allocA=[4, 4], allocB=[6, 5], allocC=[7, 7], leaves=[Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 4x5x7-r104-perminov_ZT-4a1b410]), 6x11x12-r521-perminov_ZT-77435fe])",
+  "lineage_compact": "R[2x2x2; 8,6 | 12,11 | 12,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [8, 6],
+    "allocB": [12, 11],
+    "allocC": [12, 14],
+    "leaves": [
+      {"op": "Atom", "ref": "8x12x14-r843-perminov_Q-6498e80"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+      },
+      {"op": "Atom", "ref": "8x11x12-r676-perminov_Q-4b544d3"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x4x7@bd4f4b32aeac118787713525801ac95e5a87f1c24c472c0b52dd26e659057a61"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [4, 4],
+        "allocB": [6, 5],
+        "allocC": [7, 7],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL"},
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"}
+        ]
+      },
+      {"op": "Atom", "ref": "6x11x12-r521-perminov_ZT-77435fe"}
+    ]
+  },
+  "n": [14, 23, 26],
+  "m": 4854,
+  "hash": "69089b20dda4c31919b824864fc352b4ea6baac21a867f8f9f01e8da05c8530a",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

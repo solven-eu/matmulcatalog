@@ -1,0 +1,121 @@
+name: Regenerate catalog manifests
+
+# Re-runs the three docs/* generators and commits the updated files
+# if they differ from the committed version:
+#
+#   * GenerateCatalogManifest  → docs/catalog.json
+#   * GenerateCitedBounds      → docs/cited-bounds.json
+#       (now also dynamically flips scheme_provided based on on-disk files,
+#       so adding a materialised scheme should regenerate this file)
+#   * GenerateDerivedBounds    → docs/derived-from-cited-bounds.json
+#
+# Triggers:
+#   * push to master that touches scheme JSON or any input the generators read
+#   * manual via `workflow_dispatch`
+#   * daily cron (04:00 UTC, 1h after the 03:00 digest sync) — keeps the
+#     manifest fresh against FMM/Perminov upstream changes
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/main/resources/schemes/**'
+      - 'src/main/java/eu/solven/matmul/**'
+      - 'src/main/java/eu/solven/matmul/docs/GenerateCatalogManifest.java'
+      - 'src/main/java/eu/solven/matmul/docs/GenerateCitedBounds.java'
+      - 'src/main/java/eu/solven/matmul/docs/GenerateDerivedBounds.java'
+      - 'references/catalogs/fmm-lille-catalog.json'
+      - 'references/catalogs/perminov-catalog.json'
+      - 'pom.xml'
+      - '.github/workflows/regenerate-catalog.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'  # daily 04:00 UTC, 1h after the 03:00 digest sync
+  # Run right AFTER the digest sync (which commits references/*-catalog.json with
+  # [skip ci], so its commit does NOT fire the push trigger above). This makes the
+  # report refresh on the SAME freshly-committed digests the sync just wrote — no
+  # re-download. Guarded to only run when the sync actually succeeded.
+  workflow_run:
+    workflows: ["Sync reference catalogs (FMM + Perminov)"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: regenerate-catalog
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    # When triggered by the sync's completion, only proceed if the sync succeeded
+    # (workflow_run fires on any conclusion). Other triggers (push/cron/manual)
+    # always run.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Compile
+        run: mvn -B -ntp -q compile
+
+      - name: Run GenerateCatalogManifest
+        run: >
+          mvn -B -ntp -q exec:java
+          -Dexec.mainClass=eu.solven.matmul.docs.generate.GenerateCatalogManifest
+
+      - name: Run GenerateCitedBounds
+        run: >
+          mvn -B -ntp -q exec:java
+          -Dexec.mainClass=eu.solven.matmul.docs.generate.GenerateCitedBounds
+
+      - name: Run GenerateDerivedBounds
+        run: >
+          mvn -B -ntp -q exec:java
+          -Dexec.mainClass=eu.solven.matmul.docs.generate.GenerateDerivedBounds
+
+      - name: Detect changes
+        id: diff
+        run: |
+          changed_files=$(git diff --name-only -- \
+              docs/catalog.json \
+              docs/cited-bounds.json \
+              docs/derived-from-cited-bounds.json)
+          if [ -z "$changed_files" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::All docs/*.json manifests are up-to-date."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Changed manifests:"
+            echo "$changed_files"
+            git --no-pager diff --stat -- \
+                docs/catalog.json \
+                docs/cited-bounds.json \
+                docs/derived-from-cited-bounds.json
+          fi
+
+      - name: Commit + push regenerated manifests
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          git add docs/catalog.json docs/cited-bounds.json docs/derived-from-cited-bounds.json
+          git commit -m "Regenerate docs/*.json via Generate{CatalogManifest,CitedBounds,DerivedBounds}
+
+          Auto-commit from the regenerate-catalog workflow. Source of truth
+          is src/main/resources/schemes/** + the Generate*.java code — these
+          docs/*.json files are regenerated, not hand-edited."
+          git push origin HEAD:master

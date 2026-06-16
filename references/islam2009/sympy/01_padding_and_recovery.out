@@ -1,0 +1,40 @@
+Islam 2009 §5.4: padding + recovery verification
+======================================================================
+
+── n = 2   (block size, full matrices are 4 × 4) ──
+   L shape = (3, 2),  R shape = (2, 3)
+
+   [claim 1]  Ã and B̃ have zero row + column sums:
+      Ã^11: OK
+      Ã^12: OK
+      Ã^21: OK
+      Ã^22: OK
+      B̃^11: OK
+      B̃^12: OK
+      B̃^21: OK
+      B̃^22: OK
+
+   [claim 2]  Recovery from C̃ by resizing to size n:
+      OK — C_recovered == AB (all 4n² entries match)
+
+── n = 3   (block size, full matrices are 6 × 6) ──
+   L shape = (4, 3),  R shape = (3, 4)
+
+   [claim 1]  Ã and B̃ have zero row + column sums:
+      Ã^11: OK
+      Ã^12: OK
+      Ã^21: OK
+      Ã^22: OK
+      B̃^11: OK
+      B̃^12: OK
+      B̃^21: OK
+      B̃^22: OK
+
+   [claim 2]  Recovery from C̃ by resizing to size n:
+      OK — C_recovered == AB (all 4n² entries match)
+
+======================================================================
+   n=2: OK
+   n=3: OK
+
+[Phase A step 1] PASS — padding scheme is correct.

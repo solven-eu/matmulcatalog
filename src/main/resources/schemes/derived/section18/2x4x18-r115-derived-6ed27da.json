@@ -1,0 +1,41 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=2x4x5, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Recombination(base=2x4x5, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x4x8-r51-alphaevolve-0426307))",
+  "lineage_compact": "R[2x4x5; 1,1 | 1,1,1,1 | 1,1,1,1,1] +p R[2x4x5; 1,1 | 1,1,1,1 | 1,1,1,1,1] +p 2x4x8-r51-alphaevolve-0426307",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f", "id": "L0"},
+      "allocA": [1, 1],
+      "allocB": [1, 1, 1, 1],
+      "allocC": [1, 1, 1, 1, 1],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x1x1"}
+      ]
+    },
+    "right": {
+      "op": "ConcatCols",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"}
+    }
+  },
+  "n": [2, 4, 18],
+  "m": 115,
+  "hash": "6ed27da266c44f6d64cf3afbc1b011c4af0847863c051b0e1aa38756ac08d2e8",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

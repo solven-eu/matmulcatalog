@@ -1,0 +1,38 @@
+{
+  "lineage_str": "Recombination(base=Transpose(2x4x5, perm=\"ABC->ACB\"), allocA=[3, 3], allocB=[4, 4, 4, 4, 4], allocC=[6, 6, 6, 5], leaves=[3x4x6-r54-alphaevolve-c197868, Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_compact": "R[2x4x5^ABC->ACB; 3,3 | 4,4,4,4,4 | 6,6,6,5]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->ACB",
+      "child": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"}
+    },
+    "allocA": [3, 3],
+    "allocB": [4, 4, 4, 4, 4],
+    "allocC": [6, 6, 6, 5],
+    "leaves": [
+      {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "3x4x5@6bc7fbe6fd386c409ad56effa3a0ce7845ff2bc393482367c9e80c4b2e8861ec"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    ]
+  },
+  "n": [6, 20, 23],
+  "m": 1714,
+  "hash": "108fff28db1a2dbc299dff046b0a43437166418aa646eef9732b8f066eb089ef",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

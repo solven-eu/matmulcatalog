@@ -1,0 +1,65 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[12, 16], allocC=[14, 15], leaves=[OrientAs(8x15x16-r1185-perminov_Q-b360074, ⟨8,16,15⟩), 8x12x14-r843-perminov_Q-6498e80, 6x12x15-r686-perminov_Q-a06dc94, OrientAs(Project(8x14x17, keepN=[0, 1, 2, 3, 4, 5, 6, 7], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), ⟨8,16,14⟩), Serendipitous(OrientAs(2x3x8, ⟨2,8,3⟩) ⊗ ⟨3,2,5⟩), 8x12x15-r904-perminov_Q-d2e4dc6, OrientAs(6x14x16-r864-perminov_ZT-d51381b, ⟨6,16,14⟩)])",
+  "lineage_compact": "R[2x2x2; 6,8 | 12,16 | 14,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 8],
+    "allocB": [12, 16],
+    "allocC": [14, 15],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 8,
+        "m": 16,
+        "p": 15,
+        "child": {"op": "Atom", "ref": "8x15x16-r1185-perminov_Q-b360074"}
+      },
+      {"op": "Atom", "ref": "8x12x14-r843-perminov_Q-6498e80"},
+      {"op": "Atom", "ref": "6x12x15-r686-perminov_Q-a06dc94"},
+      {
+        "op": "OrientAs",
+        "n": 8,
+        "m": 16,
+        "p": 14,
+        "child": {
+          "op": "Project",
+          "keepN": [0, 1, 2, 3, 4, 5, 6, 7],
+          "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+          "child": {"op": "Atom", "ref": "8x14x17@d91a54619e35bae0ef41dc75968f899ca5c5b48e13835f6ec2c899455feeaeda"}
+        }
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 2,
+        "p2": 5,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 8,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "2x3x8@68085a4"}
+        }
+      },
+      {"op": "Atom", "ref": "8x12x15-r904-perminov_Q-d2e4dc6"},
+      {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 16,
+        "p": 14,
+        "child": {"op": "Atom", "ref": "6x14x16-r864-perminov_ZT-d51381b"}
+      }
+    ]
+  },
+  "n": [14, 28, 29],
+  "m": 6506,
+  "hash": "d214f23cc0564b425a13fef2a39071ef657431c8e77fcbb8ca8c31c1eb26d8a7",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

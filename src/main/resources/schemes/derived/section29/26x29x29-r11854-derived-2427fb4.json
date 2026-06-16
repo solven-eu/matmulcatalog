@@ -1,0 +1,61 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[14, 12], allocB=[15, 14], allocC=[14, 15], leaves=[Serendipitous(OrientAs(5x5x7, ⟨7,5,5⟩) ⊗ ⟨2,3,3⟩), Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨7,5,2⟩), 14x14x14-r1719-solven_strassen_2026-3b651b5, KronProduct(2x5x5-r40-alphatensor_Z-67f5fb7, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 12x14x14-r1449-perminov_Q-123d024])",
+  "lineage_compact": "R[2x2x2; 14,12 | 15,14 | 14,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [14, 12],
+    "allocB": [15, 14],
+    "allocC": [14, 15],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 2,
+        "m2": 3,
+        "p2": 3,
+        "base": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 5,
+          "p": 5,
+          "child": {"op": "Atom", "ref": "5x5x7@9d68374"}
+        }
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 7,
+        "m2": 5,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 3,
+          "p": 7,
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+        }
+      },
+      {"op": "Atom", "ref": "14x14x14-r1719-solven_strassen_2026-3b651b5"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {"op": "Atom", "ref": "12x14x14-r1449-perminov_Q-123d024"}
+    ]
+  },
+  "n": [26, 29, 29],
+  "m": 11854,
+  "hash": "2427fb456eb27c378ae47cc27993625e2b601cfee23b63ca3fdeb03e00842534",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

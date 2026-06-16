@@ -1,0 +1,24 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[9, 9], allocC=[15, 14], leaves=[9x9x15-r760-perminov_Q-19f51a1, 9x9x14-r720-perminov_Q-53d432d])",
+  "lineage_compact": "R[2x2x2; 9,9 | 9,9 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [9, 9],
+    "allocB": [9, 9],
+    "allocC": [15, 14],
+    "leaves": [
+      {"op": "Atom", "ref": "9x9x15-r760-perminov_Q-19f51a1"},
+      {"op": "Atom", "ref": "9x9x14-r720-perminov_Q-53d432d"}
+    ]
+  },
+  "n": [18, 18, 29],
+  "m": 5200,
+  "hash": "3f726d20849365b4950997cc661517dbf6b78635a5acf6095c4e9d9894a8d70c",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,27 @@
+{
+  "lineage_str": "KronProduct(2x2x2, Serendipitous(2x3x8 ⊗ ⟨2,5,2⟩))",
+  "lineage_compact": "2x2x2 ⊗ 2x3x8 ⊗ˢ⟨2,5,2⟩",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+    "inner": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 5,
+      "p2": 2,
+      "base": {"op": "Atom", "ref": "2x3x8@68085a4"}
+    }
+  },
+  "n": [8, 30, 32],
+  "m": 4424,
+  "hash": "55e6c091f39150df801d7dd2b7f98b361363b037dae442b5a5504f29f3969eca",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

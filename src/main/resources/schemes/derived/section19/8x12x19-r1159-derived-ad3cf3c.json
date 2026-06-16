@@ -1,0 +1,37 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(Recombination(base=2x2x2, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩)), 8x12x13-r781-perminov_Q-f0b186c)",
+  "lineage_compact": "R[2x2x2; 1,1 | 1,1 | 1,1] ⊗ 3x4x6-r54-alphaevolve-c197868→⟨4,6,3⟩ +p 8x12x13-r781-perminov_Q-f0b186c",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [1, 1],
+        "allocB": [1, 1],
+        "allocC": [1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 3,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    },
+    "right": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+  },
+  "n": [8, 12, 19],
+  "m": 1159,
+  "hash": "ad3cf3c1c92b19c9072934b3c8e957277156fc00f5cd826d34daabd967adf24b",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

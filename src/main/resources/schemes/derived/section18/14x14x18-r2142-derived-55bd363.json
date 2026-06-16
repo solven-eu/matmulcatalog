@@ -1,0 +1,48 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[7, 7], allocB=[5, 5, 4], allocC=[6, 6, 6], leaves=[OrientAs(Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,4,6⟩), OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨7,5,6⟩)])",
+  "lineage_compact": "R[2x3x3; 7,7 | 5,5,4 | 6,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+    "allocA": [7, 7],
+    "allocB": [5, 5, 4],
+    "allocC": [6, 6, 6],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 7,
+        "m": 4,
+        "p": 6,
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL"},
+          "allocA": [1, 1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 7,
+        "m": 5,
+        "p": 6,
+        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+      }
+    ]
+  },
+  "n": [14, 14, 18],
+  "m": 2142,
+  "hash": "55bd363374fda1b55e1db2188be8dc44bb17e12452725b2cf229d096a78d43be",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

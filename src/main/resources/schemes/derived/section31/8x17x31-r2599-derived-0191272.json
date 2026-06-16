@@ -1,0 +1,47 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 4], allocB=[9, 8], allocC=[16, 15], leaves=[4x9x16-r398-perminov_ZT-a6d41e1, KronProduct(2x3x3, 2x3x5-r25-alphatensor_Z-31f79a7), KronProduct(2x2x2, 2x4x8-r51-alphaevolve-0426307), Recombination(base=2x2x2, allocA=[2, 2], allocB=[4, 4], allocC=[8, 7], leaves=[2x4x8-r51-alphaevolve-0426307, 2x4x7-r45-alphaevolve-7a1bd74])])",
+  "lineage_compact": "R[2x2x2; 4,4 | 9,8 | 16,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [4, 4],
+    "allocB": [9, 8],
+    "allocC": [16, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "4x9x16-r398-perminov_ZT-a6d41e1"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"}
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [2, 2],
+        "allocB": [4, 4],
+        "allocC": [8, 7],
+        "leaves": [
+          {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"},
+          {"op": "Atom", "ref": "2x4x7-r45-alphaevolve-7a1bd74"}
+        ]
+      }
+    ]
+  },
+  "n": [8, 17, 31],
+  "m": 2599,
+  "hash": "019127278fc6d765630e38c5cdc6cb4c821ea3cc9e588d8fa3f769d2194201f1",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

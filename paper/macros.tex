@@ -1,0 +1,39 @@
+% ── Shape notation (per CLAUDE.md "Shape notation — always tag the algebra") ──
+%
+% K⟨n,m,p⟩          non-commutative matmul over K
+% K⟨n,m,p⟩ᶜ         commutative matmul over K
+% K⟨n,m,p⟩:m        multiplications count
+% K⟨n,m,p⟩:r        rank
+% K⟨n,m,p⟩:a        addition count
+%
+% Implemented as plain LaTeX commands so they render cleanly in the
+% paper. Authors should USE these macros and not bare angle brackets.
+
+\newcommand{\nmpshape}[3]{\ensuremath{\langle #1, #2, #3 \rangle}}
+\newcommand{\nmpshapec}[3]{\ensuremath{\langle #1, #2, #3 \rangle^{\mathrm{c}}}}% field-less commutative shape
+\newcommand{\nmpfield}[4]{\ensuremath{#1\langle #2, #3, #4 \rangle}}     % K⟨n,m,p⟩
+\newcommand{\nmpfieldc}[4]{\ensuremath{#1\langle #2, #3, #4 \rangle^{\mathrm{c}}}}% K⟨n,m,p⟩ᶜ
+\newcommand{\nmpcount}[5]{\ensuremath{#1\langle #2, #3, #4 \rangle\!:\!#5}} % suffix :m / :r / :a
+
+% Common short forms
+\newcommand{\Ff}{\ensuremath{\mathbb{F}}}
+\newcommand{\Ftwo}{\ensuremath{\Ff_2}}
+\newcommand{\Fthree}{\ensuremath{\Ff_3}}
+\newcommand{\Reals}{\ensuremath{\mathbb{R}}}
+\newcommand{\Complex}{\ensuremath{\mathbb{C}}}
+\newcommand{\Rationals}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Integers}{\ensuremath{\mathbb{Z}}}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Style for code-ish identifiers (file names, JSON keys, Java symbols)
+\newcommand{\code}[1]{\texttt{#1}}

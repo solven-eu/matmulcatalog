@@ -1,0 +1,64 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[5, 6], allocB=[12, 13], allocC=[16, 15], leaves=[6x13x16-r798-perminov_Q-00f491c, 5x12x16-r655-perminov_Q-ec8e2d9, Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 4, 4], allocC=[6, 5, 5], leaves=[Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x5x6-r68-alphaevolve-14be9c3, 3x5x5-r58-alphatensor_Z-263818a, 3x4x5-r47-alphatensor_Z-6bc7fbe, 3x4x6-r54-alphaevolve-c197868, 2x5x5-r40-alphatensor_Z-67f5fb7, 2x4x5-r32-alphaevolve-6216e15, 2x5x6-r47-alphaevolve-7387644]), 6x12x15-r686-perminov_Q-a06dc94, Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 4, 4], allocC=[5, 5, 5], leaves=[2x4x5-r32-alphaevolve-6216e15, 3x5x5-r58-alphatensor_Z-263818a, 3x4x5-r47-alphatensor_Z-6bc7fbe, 2x5x5-r40-alphatensor_Z-67f5fb7])])",
+  "lineage_compact": "R[2x2x2; 5,6 | 12,13 | 16,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [5, 6],
+    "allocB": [12, 13],
+    "allocC": [16, 15],
+    "leaves": [
+      {"op": "Atom", "ref": "6x13x16-r798-perminov_Q-00f491c"},
+      {"op": "Atom", "ref": "5x12x16-r655-perminov_Q-ec8e2d9"},
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9", "id": "L0"},
+        "allocA": [3, 2],
+        "allocB": [5, 4, 4],
+        "allocC": [6, 5, 5],
+        "leaves": [
+          {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+          {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"},
+          {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"},
+          {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
+          {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+          {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        ]
+      },
+      {"op": "Atom", "ref": "6x12x15-r686-perminov_Q-a06dc94"},
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [3, 2],
+        "allocB": [5, 4, 4],
+        "allocC": [5, 5, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+          {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"},
+          {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"},
+          {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"}
+        ]
+      }
+    ]
+  },
+  "n": [11, 25, 31],
+  "m": 5012,
+  "hash": "5f74eaf2a7acbeb2c899e2f7449f610a5e906eaa0e93c9267c9c35eacdcb94c7",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

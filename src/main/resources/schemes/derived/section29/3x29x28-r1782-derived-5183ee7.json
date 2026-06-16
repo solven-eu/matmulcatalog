@@ -1,0 +1,44 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[1, 2], allocB=[7, 7, 7, 8], allocC=[7, 7, 7, 7], leaves=[Recombination(base=ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), naive-1x7x7, OrientAs(2x7x8-r88-hk71-e1caeb7, ⟨2,8,7⟩), naive-1x8x7])",
+  "lineage_compact": "R[2x4x4; 1,2 | 7,7,7,8 | 7,7,7,7]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@8cad2d94115a935be395d08eb6a36fef1ac953f78fad3b453f5298e97fcefeb2"},
+    "allocA": [1, 2],
+    "allocB": [7, 7, 7, 8],
+    "allocC": [7, 7, 7, 7],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {"op": "Atom", "ref": "naive-1x7x7"},
+      {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 8,
+        "p": 7,
+        "child": {"op": "Atom", "ref": "2x7x8-r88-hk71-e1caeb7"}
+      },
+      {"op": "Atom", "ref": "naive-1x8x7"}
+    ]
+  },
+  "n": [3, 29, 28],
+  "m": 1782,
+  "hash": "5183ee7d56940803d6edeb3151da6703331289f0450cc9c0f17062e2862adb12",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

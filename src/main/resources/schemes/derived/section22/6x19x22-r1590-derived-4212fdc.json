@@ -1,0 +1,81 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,2,1>=2 :: CANONICAL, allocA=[6], allocB=[3, 16], allocC=[22], leaves=[ConcatCols(KronProduct(naive-1x1x3, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,3,4⟩))))), Serendipitous(2x4x11 ⊗ ⟨3,4,2⟩)])",
+  "lineage_compact": "R[AxisSplit<1,2,1>=2 :: CANONICAL; 6 | 3,16 | 22]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,2,1>=2 :: CANONICAL"},
+    "allocA": [6],
+    "allocB": [3, 16],
+    "allocC": [22],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "naive-1x1x3"},
+          "inner": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          }
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          },
+          "right": {
+            "op": "ConcatCols",
+            "left": {
+              "op": "Project",
+              "keepN": [1, 2, 3, 4, 5, 6],
+              "keepM": [0, 1, 2],
+              "keepP": [0, 1, 2],
+              "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            },
+            "right": {
+              "op": "ConcatCols",
+              "left": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+              },
+              "right": {
+                "op": "OrientAs",
+                "n": 6,
+                "m": 3,
+                "p": 4,
+                "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              }
+            }
+          }
+        }
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 4,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x4x11@0ae9c5e"}
+      }
+    ]
+  },
+  "n": [6, 19, 22],
+  "m": 1590,
+  "hash": "4212fdcb60a0bd773611caaf0847b495173217d8480e20be5023d29c4776c67f",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
