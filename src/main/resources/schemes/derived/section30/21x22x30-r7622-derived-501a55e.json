@@ -1,0 +1,47 @@
+{
+  "lineage_str": "SumInner(Serendipitous(OrientAs(2x5x7, ⟨7,2,5⟩) ⊗ ⟨3,2,6⟩), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨7,6,5⟩)))",
+  "lineage_compact": "2x5x7→⟨7,2,5⟩ ⊗ˢ⟨3,2,6⟩ +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 5x6x7-r150-kauers_2026-b7666c1→⟨7,6,5⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 2,
+      "p2": 6,
+      "base": {
+        "op": "OrientAs",
+        "n": 7,
+        "m": 2,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x5x7@8c6aace"}
+      }
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 7,
+        "m": 6,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+      }
+    }
+  },
+  "n": [21, 22, 30],
+  "m": 7622,
+  "hash": "501a55ef305c3af7f3bdc6ac22d2833b51c10d31aeb9c65e3f0e9f12b86d738b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

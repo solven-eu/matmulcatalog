@@ -1,0 +1,40 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x12x12-r222-hk71-89d7933, ⟨12,12,2⟩), OrientAs(2x12x14-r259-hk71-2fcfde5, ⟨12,14,2⟩)), OrientAs(12x24x26, ⟨12,26,24⟩))",
+  "lineage_compact": "2x12x12-r222-hk71-89d7933→⟨12,12,2⟩ +m 2x12x14-r259-hk71-2fcfde5→⟨12,14,2⟩ +p 12x24x26→⟨12,26,24⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 12,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x12x12-r222-hk71-89d7933"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 14,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x12x14-r259-hk71-2fcfde5"}
+      }
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 12,
+      "m": 26,
+      "p": 24,
+      "child": {"op": "Atom", "ref": "12x24x26@f65992753b2c79a98fc39f292267f37ffcde515e4973e7062af45ee5ebd26d24"}
+    }
+  },
+  "n": [12, 26, 26],
+  "m": 4641,
+  "hash": "0b3315bbb1038ae9147fceec04a465330a319a2e7eccb675db03f578722aa9e7",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

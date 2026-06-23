@@ -1,0 +1,38 @@
+{
+  "lineage_str": "Recombination(base=Transpose(4x4x5, perm=\"ABC->CBA\"), allocA=[2, 3, 3, 3, 3], allocB=[4, 4, 4, 4], allocC=[7, 7, 7, 7], leaves=[Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x4x7-r45-alphaevolve-7a1bd74])",
+  "lineage_compact": "R[4x4x5^ABC->CBA; 2,3,3,3,3 | 4,4,4,4 | 7,7,7,7]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->CBA",
+      "child": {"op": "Atom", "ref": "4x4x5@c3a71f13fb4f10ca367957eeb8da7c8ca2906f0990040078fb3d6577fdc2ed84"}
+    },
+    "allocA": [2, 3, 3, 3, 3],
+    "allocB": [4, 4, 4, 4],
+    "allocC": [7, 7, 7, 7],
+    "leaves": [
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {"op": "Atom", "ref": "2x4x7-r45-alphaevolve-7a1bd74"}
+    ]
+  },
+  "n": [14, 16, 28],
+  "m": 3681,
+  "hash": "096d11b2625fc6dc535fd3ca1d682e66020db2ce38744793a6530e399232b96f",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

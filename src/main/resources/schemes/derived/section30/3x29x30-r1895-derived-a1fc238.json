@@ -1,0 +1,45 @@
+{
+  "lineage_str": "SumInner(ConcatCols(3x4x6-r54-alphaevolve-c197868, ConcatCols(3x4x6-r54-alphaevolve-c197868, ConcatCols(3x4x6-r54-alphaevolve-c197868, ConcatCols(3x4x6-r54-alphaevolve-c197868, 3x4x6-r54-alphaevolve-c197868)))), Recombination(base=2x5x5, allocA=[2, 1], allocB=[5, 5, 5, 5, 5], allocC=[6, 6, 6, 6, 6], leaves=[naive-1x5x6, 2x5x6-r47-alphaevolve-7387644]))",
+  "lineage_compact": "3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +p 3x4x6-r54-alphaevolve-c197868 +m R[2x5x5; 2,1 | 5,5,5,5,5 | 6,6,6,6,6]",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+      "right": {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+        "right": {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          "right": {
+            "op": "ConcatCols",
+            "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "right": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          }
+        }
+      }
+    },
+    "right": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x5x5@5e3b69e8989d3ac4c5bd80eb8f6c01e25797d0be4096286bc5fa0f762c281e2f"},
+      "allocA": [2, 1],
+      "allocB": [5, 5, 5, 5, 5],
+      "allocC": [6, 6, 6, 6, 6],
+      "leaves": [
+        {"op": "Atom", "ref": "naive-1x5x6"},
+        {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      ]
+    }
+  },
+  "n": [3, 29, 30],
+  "m": 1895,
+  "hash": "a1fc238cac65dbde9e5a83ba61eddfb047dbb2f7f633c8760cb31fbc19fcfeb5",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

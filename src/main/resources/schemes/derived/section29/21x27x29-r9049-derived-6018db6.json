@@ -1,0 +1,66 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[12, 15], allocC=[14, 15], leaves=[KronProduct(2x5x5, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 9x12x14-r940-perminov_Q-ffecb1f, Serendipitous(3x5x7 ⊗ ⟨3,3,2⟩), KronProduct(2x4x5, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Serendipitous(3x5x5 ⊗ ⟨3,3,3⟩), Serendipitous(3x3x7 ⊗ ⟨4,5,2⟩)])",
+  "lineage_compact": "R[2x2x2; 9,12 | 12,15 | 14,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [9, 12],
+    "allocB": [12, 15],
+    "allocC": [14, 15],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x5x5@67f5fb7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "3x5x7@9953f57"}
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5@6216e15"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        }
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 3,
+        "base": {"op": "Atom", "ref": "3x5x5@18f0836"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 5,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "3x3x7@438169e"}
+      }
+    ]
+  },
+  "n": [21, 27, 29],
+  "m": 9049,
+  "hash": "6018db60de5bb01c6ac117c2761dce97602e1ecda7f27bba711c679904be99b7",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

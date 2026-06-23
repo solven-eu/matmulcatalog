@@ -1,0 +1,30 @@
+{
+  "lineage_str": "ConcatCols(Project(10x13x9, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8]), OrientAs(10x10x12-r766-perminov_ZT-a1e93e9, ⟨10,12,10⟩))",
+  "lineage_compact": "10x13x9 ↓[0,1,2,3,4,5,6,7,8,9|1,2,3,4,5,6,7,8,9,10,11,12|0,1,2,3,4,5,6,7,8] +p 10x10x12-r766-perminov_ZT-a1e93e9→⟨10,12,10⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Project",
+      "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "keepM": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      "child": {"op": "Atom", "ref": "10x13x9@8c62898"}
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 10,
+      "m": 12,
+      "p": 10,
+      "child": {"op": "Atom", "ref": "10x10x12-r766-perminov_ZT-a1e93e9"}
+    }
+  },
+  "n": [10, 12, 19],
+  "m": 1434,
+  "hash": "da21d007e85e1e7ec23d03477a4f40d31e200978a4e8b8cd91c888c776a395fe",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,31 @@
+{
+  "lineage_str": "ConcatRows(naive-1x28x4, Serendipitous(OrientAs(2x5x7, ⟨5,7,2⟩) ⊗ ⟨5,4,2⟩))",
+  "lineage_compact": "naive-1x28x4 +n 2x5x7→⟨5,7,2⟩ ⊗ˢ⟨5,4,2⟩",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "naive-1x28x4"},
+    "bottom": {
+      "op": "SerendipitousProduct",
+      "n2": 5,
+      "m2": 4,
+      "p2": 2,
+      "base": {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 7,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x5x7@8c6aace"}
+      }
+    }
+  },
+  "n": [26, 28, 4],
+  "m": 1865,
+  "hash": "d2bb9d14ed8a3d6a415ccad9739b1983e4bc75f8807568046d265db0a2284d4c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

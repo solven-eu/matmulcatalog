@@ -425,6 +425,23 @@ public final class RecursiveMaterialiser {
 				}
 			}
 
+			// Direct dis09 / Pan-TA formula cube for cubic ⟨n,n,n⟩ above the materialise
+			// cap. tryProjection only projects from LARGER parents (identity is skipped), so
+			// the SAME-shape buildable cube at cubicBound(n) — a DIS09Lemma4(n) atom that
+			// replays exactly — is otherwise unreachable: materialise then settles for a
+			// worse Project(⟨n,n,n+1⟩) that ProjectionSearch mis-prices AT cubicBound while it
+			// actually replays higher (the Schwartz-Zwecher rank). That split-source result is
+			// the ⟨2k,2k,2k+2⟩ phantom/divergence GENERATOR (⟨22,22,22⟩ claimed 5566, replayed
+			// 5596). Offer the cube directly and PREFER it on tie (≤): same rank, but genuinely
+			// buildable. verifies()+replaysConsistently gate out fields where the Q-strict cube
+			// is invalid. [[project_findrank_poisoned_by_nonbuildable_stubs]]
+			if (n == m && m == p && n > eu.solven.matmul.catalog.CatalogPolicy.MATERIALISE_MAX_DIM) {
+				Result cube = tryDis09Cube(n);
+				if (cube != null && (built == null || cube.alg.r <= built.alg.r)) {
+					built = cube;
+				}
+			}
+
 			if (built == null) {
 				log.info("⟨{}⟩ no materialisable strategy", key);
 				return Optional.empty();
@@ -461,16 +478,20 @@ public final class RecursiveMaterialiser {
 						bases.add(ws.alg());
 						basePaths.put(ws.alg(), ws.path());
 					});
-					// Serendipity feeds on BUDS, not minimal rank — so also offer the
-					// bud-richest base at this shape (the rank-best one is usually
-					// bud-free, e.g. Strassen). This makes serendipity a live strategy
-					// in the closure rather than a near-no-op.
-					budRichestAt(n1, m1, p1).ifPresent(b -> {
-						if (budScore(b.alg()) > 0) {
-							bases.add(b.alg());
-							basePaths.put(b.alg(), b.path());
-						}
-					});
+					// Serendipity feeds on BUDS, not minimal rank — so also offer EVERY
+					// bud-bearing base at this shape (the rank-best one is usually bud-free,
+					// e.g. Strassen). Crucially we offer ALL of them, NOT just the single
+					// budScore-MAX one: budScore is a misleading proxy for the actual saving
+					// σ, and the σ-paying base is often a LOWER-budScore sibling whose bud is
+					// on the axis THIS factorisation enlarges. The ⟨8,9,9⟩=430 case: its
+					// size-3 V-bud base has budScore 4 and was masked by a budScore-11 U-bud
+					// sibling (σ_V=0 here) → the old picker lost the win at 432. bestFor
+					// prices every candidate by σ over all orderings in its cheap PREDICT
+					// phase and builds only the winner, so feeding all bud-bearers is ~free.
+					for (BudBase b : budBasesAt(n1, m1, p1)) {
+						bases.add(b.alg());
+						basePaths.put(b.alg(), b.path());
+					}
 				}
 			}
 		}
@@ -499,15 +520,26 @@ public final class RecursiveMaterialiser {
 	 *  the oriented alg's content-hash, which matches NO file → a dangling lineage ref. */
 	private record BudBase(NonCubicBilinearAlgorithm alg, Path path) {}
 
-	/** Per-shape cache of the bud-richest base, for serendipitous bases. */
-	private final Map<String, Optional<BudBase>> budRichestCache =
+	/** Per-shape cache of ALL bud-bearing bases, for serendipitous bases. */
+	private final Map<String, List<BudBase>> budBasesCache =
 			new java.util.concurrent.ConcurrentHashMap<>();
 
-	/** The bud-richest scheme on disk at ⟨n,m,p⟩ (oriented) + its source file, or empty. */
-	private Optional<BudBase> budRichestAt(int n, int m, int p) {
-		return budRichestCache.computeIfAbsent(n + "x" + m + "x" + p, k -> {
-			BudBase best = null;
-			int bestScore = 0;
+	/**
+	 * EVERY scheme on disk at ⟨n,m,p⟩ (oriented) that carries at least one bud
+	 * ({@code budScore > 0}), with its source file. We hand ALL of them to
+	 * {@link eu.solven.matmul.catalog.SerendipitousSearch#bestFor} rather than the
+	 * single budScore-maximal one, because budScore COUNTS buds while the real
+	 * currency σ PRICES them against the chosen inner: the σ-paying base for a given
+	 * product is frequently a lower-budScore sibling whose bud sits on the axis that
+	 * factorisation enlarges (⟨8,9,9⟩=430's size-3 V-bud, budScore 4, masked by a
+	 * budScore-11 U-bud sibling). bestFor prices each candidate over all orderings in
+	 * its cheap predict-only phase and builds only the winner, so offering every
+	 * bud-bearer costs ~nothing and lets the σ-right base win. See
+	 * references/BUD_STRUCTURE_THEORY.md (count vs value).
+	 */
+	private List<BudBase> budBasesAt(int n, int m, int p) {
+		return budBasesCache.computeIfAbsent(n + "x" + m + "x" + p, k -> {
+			List<BudBase> out = new java.util.ArrayList<>();
 			for (Path path : diskLookup.findFiles(n, m, p)) {
 				NonCubicBilinearAlgorithm a;
 				try {
@@ -519,13 +551,11 @@ public final class RecursiveMaterialiser {
 				if (oriented.isEmpty()) {
 					continue;
 				}
-				int sc = budScore(oriented.get());
-				if (sc > bestScore) {
-					bestScore = sc;
-					best = new BudBase(oriented.get(), path);
+				if (budScore(oriented.get()) > 0) {
+					out.add(new BudBase(oriented.get(), path));
 				}
 			}
-			return Optional.ofNullable(best);
+			return out;
 		});
 	}
 
@@ -823,7 +853,7 @@ public final class RecursiveMaterialiser {
 		// rank-best one (a structured higher-rank cube can project lower: see the
 		// projection-margin R−μ argument, paper §projmargin). A bare shape-ref would
 		// resolve to the rank-best sibling and reconstruct a different scheme.
-		java.util.IdentityHashMap<NonCubicBilinearAlgorithm, String> parentRef =
+		java.util.IdentityHashMap<NonCubicBilinearAlgorithm, Lineage.Node> parentRef =
 				new java.util.IdentityHashMap<>();
 		for (int dn = 0; dn <= PROJECTION_MAX_DELTA; dn++)
 			for (int dm = 0; dm <= PROJECTION_MAX_DELTA; dm++)
@@ -859,7 +889,12 @@ public final class RecursiveMaterialiser {
 						// ref: projection DCE is sensitive to the precise parent — a different
 						// (even better-rank) parent eliminates different products, so a bare
 						// "@sota" parent makes the projection non-reproducible.
-						parentRef.put(parent, preciseParentRef(ph.path(), N, M, P));
+						// Pin by the file's NATIVE shape@hash with orientation made EXPLICIT in the
+						// lineage (an exact-perm Transpose), never an ORIENTED "NxMxP@hash" the replay
+						// must re-derive — for an equal-axis parent (⟨19,20,20⟩, two 20-axes) that
+						// re-derivation is ambiguous → picks a worse-projecting axis → predict/build
+						// divergence (⟨19,19,20⟩ 4154 vs 4237). [[project_projection_parent_orientation_not_pinned]]
+						parentRef.put(parent, projectionParentNode(ph.path(), parent, N, M, P));
 					}
 					// Structured parent: a Pan-trilinear-aggregation cube projects far
 					// better than a flat rank-best cube (high projection margin), so
@@ -869,7 +904,7 @@ public final class RecursiveMaterialiser {
 						NonCubicBilinearAlgorithm panta = pantaCube(N);
 						if (panta != null) {
 							parents.add(panta);
-							parentRef.put(panta, "DIS09Lemma4(n=" + N + ")");
+							parentRef.put(panta, new Lineage.Atom("DIS09Lemma4(n=" + N + ")"));
 						}
 					}
 				}
@@ -879,9 +914,8 @@ public final class RecursiveMaterialiser {
 		if (hit.isEmpty()) return null;
 		var h = hit.get();
 		if (!verifies(h.scheme())) return null;
-		String ref = parentRef.getOrDefault(h.parent(),
-				h.parent().n + "x" + h.parent().m + "x" + h.parent().p);
-		Lineage.Node baseNode = new Lineage.Atom(ref);
+		Lineage.Node baseNode = parentRef.getOrDefault(h.parent(),
+				new Lineage.Atom(h.parent().n + "x" + h.parent().m + "x" + h.parent().p));
 		Lineage.Node tree = new Lineage.Project(baseNode, h.keepN(), h.keepM(), h.keepP());
 		// Enforce replayability before we persist: a written scheme (especially a
 		// stub above MATERIALISE_MAX_DIM) is only its lineage on disk, so the
@@ -1042,6 +1076,25 @@ public final class RecursiveMaterialiser {
 		}).orElse(null);
 	}
 
+	/**
+	 * The buildable dis09 / Pan-TA Lemma-4 cube for ⟨n,n,n⟩ as a {@link Result}:
+	 * rank {@code cubicBound(n)}, lineage the parametric atom
+	 * {@code DIS09Lemma4(n=N)} (which {@link LineageReplayer} reconstructs via
+	 * {@link eu.solven.matmul.papers.dis2009.PanTrilinearAggregation#build}). This
+	 * is the SAME-shape buildable cube that {@link #tryProjection} cannot reach (it
+	 * only projects from LARGER parents), so offering it directly is what stops
+	 * materialise settling for a worse, mis-priced {@code Project(⟨n,n,n+1⟩)}.
+	 * Returns {@code null} when the cube can't be built, doesn't verify over this
+	 * field (the Q-strict ÷3 makes it invalid over e.g. F₂/ℤ), or doesn't replay.
+	 */
+	private Result tryDis09Cube(int n) {
+		NonCubicBilinearAlgorithm cube = pantaCube(n);
+		if (cube == null || !verifies(cube)) return null;
+		Lineage.Node tree = new Lineage.Atom("DIS09Lemma4(n=" + n + ")");
+		if (!replaysConsistently(tree, cube)) return null;
+		return new Result(cube, tree, false);
+	}
+
 
 	/** Like {@link #resolveParent} but also returns the SOURCE file the parent was
 	 *  loaded/replayed from, so a building-block leaf can be pinned by that file's
@@ -1057,12 +1110,28 @@ public final class RecursiveMaterialiser {
 
 	private ParentHit resolveParentUncached(int N, int M, int P) {
 		Optional<FieldAwareLookup.WithSource> direct = diskLookup.findWithSource(N, M, P);
-		if (direct.isPresent()) return new ParentHit(direct.get().alg(), direct.get().path());
-		// No dense file → the entries are lineage-only stubs (maxDim>16). Try them
-		// in rank order and return the first that REPLAYS — don't give up on the
-		// single lowest-rank file when it happens to be a non-replayable stub
-		// (e.g. a Schwartz-Zwecher or Strassen-mask cube), since a slightly
-		// higher-rank but replayable sibling (e.g. the dis09 cube) may follow.
+		// Stub-blindness guard: findWithSource (like find) SKIPS lineage-only stubs, so
+		// it can return a dense Schwartz-Zwecher ⟨2k,2k,2k⟩=5596 while a strictly-cheaper
+		// BUILDABLE dis09 cube STUB (5566, a DIS09Lemma4(n) formula atom) exists that
+		// findRank sees. Returning the dense 5596 makes the concat operand EXCEED what
+		// the upward search priced it at (findRank=5566) → the ⟨2k,2k,2k+2⟩ predict/build
+		// divergence (⟨22,22,24⟩ evaluated 6303, built 6333). Only short-circuit on the
+		// dense hit when findRank agrees nothing cheaper exists; otherwise fall through to
+		// the rank-ordered scan below, which replays the cheaper stub (dis09) first.
+		// [[project_findrank_poisoned_by_nonbuildable_stubs]] / find-vs-findRank stub-blindness.
+		if (direct.isPresent() && diskLookup.findRank(N, M, P) >= direct.get().alg().r) {
+			return new ParentHit(direct.get().alg(), direct.get().path());
+		}
+		// No usable dense file (or a cheaper stub is known) → try the lineage-only stubs
+		// (maxDim>16) in rank order and return the first that REPLAYS TO ≤ ITS CLAIMED
+		// RANK — don't give up on the single lowest-rank file when it happens to be a
+		// non-replayable stub (e.g. a Schwartz-Zwecher or Strassen-mask cube), since a
+		// slightly higher-rank but replayable sibling (e.g. the dis09 cube) may follow.
+		// CRITICAL: a candidate whose lineage replays WORSE than it claims is a CORRUPT
+		// phantom (the ⟨2k,2k,2k⟩ derived dup: claims cubicBound 5566, its Project lineage
+		// replays 5596). It "replays" fine, so the old "first that replays" rule returned
+		// IT and the concat operand exceeded what findRank priced → the divergence. Skip
+		// any over-claimer so the honest dis09 cube (claims 5566, replays 5566) wins.
 		// Honour the commutativity mode (default NC): an NC projection must lift over
 		// NC rings, so a commutative scheme (e.g. the Rosowski ⟨N,3,3⟩ Algorithm-1,
 		// which is also non-bilinear and so un-replayable by the bilinear replayer) is
@@ -1082,6 +1151,16 @@ public final class RecursiveMaterialiser {
 					log.info("projection: replayed stub parent ⟨{},{},{}⟩ r={} in {}ms ({})",
 							N, M, P, parent.r, ms, path.getFileName());
 				}
+				int claimed = recordedRankOf(path);
+				if (claimed >= 0 && parent.r > claimed) {
+					// CORRUPT_RANK phantom: lineage replays worse than the file claims. Using it
+					// would silently inflate the parent → predict/build divergence. Skip it.
+					log.warn("projection parent {} CLAIMS r={} but lineage REPLAYS WORSE to r={} "
+							+ "(corrupt over-claim) — skipping so an honest sibling wins.",
+							path.getFileName(), claimed, parent.r);
+					anyFailed = true;
+					continue;
+				}
 				return new ParentHit(parent.orientAs(N, M, P).orElse(parent), path);
 			} catch (RuntimeException e) {
 				anyFailed = true;
@@ -1091,9 +1170,21 @@ public final class RecursiveMaterialiser {
 		}
 		if (anyFailed) {
 			log.warn("projection parent ⟨{},{},{}⟩: ALL {} catalog file(s) failed to replay"
-					+ " — fix the stub lineages so projection can use this shape.", N, M, P, files.size());
+					+ " (or were corrupt over-claimers) — fix the stub lineages so projection can use"
+					+ " this shape.", N, M, P, files.size());
 		}
 		return null;
+	}
+
+	/** The rank ({@code m}) a scheme file records on disk, or −1 if unreadable. Used to
+	 *  detect CORRUPT_RANK over-claimers (lineage replays worse than the file claims). */
+	private static int recordedRankOf(Path path) {
+		try {
+			tools.jackson.databind.JsonNode d = SchemeIO.parseJson(path.toFile());
+			return d.has("m") ? d.get("m").asInt() : -1;
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 	/** Memoise a freshly-composed scheme and (if configured) write it to disk. */
@@ -1230,6 +1321,56 @@ public final class RecursiveMaterialiser {
 					+ "," + M + "," + P + "⟩ (the exact parent is load-bearing for projection DCE).");
 		}
 		return N + "x" + M + "x" + P + "@" + hash;
+	}
+
+	/**
+	 * Pin a projection parent as a replayable {@link Lineage.Node}: the file's NATIVE
+	 * (as-stored) {@code shape@hash} Atom, wrapped in an EXACT-perm {@link Lineage.Transpose}
+	 * whenever the search oriented the parent into a different ⟨N,M,P⟩ frame. This keeps the
+	 * {@code @hash} a true content ref of the file as stored and makes the orientation EXPLICIT
+	 * in the lineage, so replay reconstructs the exact parent the search projected — never an
+	 * ambiguous re-{@code orientAs}. For an EQUAL-AXIS parent (e.g. ⟨19,20,20⟩, two 20-axes) that
+	 * re-orientation is ambiguous and can pick a worse-projecting axis → predict/build divergence
+	 * (⟨19,19,20⟩ evaluated 4154, replayed 4237). The exact perm is found by matching the search's
+	 * oriented parent against {@link SymmetryTransforms#s3OrbitWithPerms} (by content hash).
+	 * [[project_projection_parent_orientation_not_pinned]]
+	 */
+	private Lineage.Node projectionParentNode(Path src, NonCubicBilinearAlgorithm orientedParent,
+			int N, int M, int P) {
+		String hash;
+		tools.jackson.databind.JsonNode root;
+		try {
+			root = SchemeIO.parseJson(src.toFile());
+			hash = SchemeIO.readHash(root);
+		} catch (Exception e) {
+			throw new IllegalStateException("projection parent " + src + " unreadable — refusing a"
+					+ " bare parent ref for ⟨" + N + "," + M + "," + P + "⟩", e);
+		}
+		if (hash == null || hash.isBlank()) hash = hashFromFilename(src);
+		if (hash == null || hash.isBlank()) {
+			throw new IllegalStateException("projection parent " + src.getFileName() + " has no content"
+					+ " hash — refusing a bare parent ref (exact parent is load-bearing for projection DCE).");
+		}
+		tools.jackson.databind.JsonNode shp = root.get("n");
+		if (shp == null || !shp.isArray() || shp.size() != 3) {
+			throw new IllegalStateException("projection parent " + src.getFileName() + " has no n[] shape.");
+		}
+		int nn = shp.get(0).asInt(), nm = shp.get(1).asInt(), np = shp.get(2).asInt();
+		Lineage.Node atom = new Lineage.Atom(nn + "x" + nm + "x" + np + "@" + hash);
+		if (nn == N && nm == M && np == P) return atom; // already in the projected frame; no Transpose
+		// Orientation needed: pin the EXACT axis-perm reproducing the search's oriented parent.
+		if (replayer == null) replayer = LineageReplayer.withDefaultPool(diskLookup);
+		NonCubicBilinearAlgorithm nativeAlg = replayer.replayFromFile(src.toFile());
+		String wanted = SchemeIO.contentHash(orientedParent);
+		for (eu.solven.matmul.SymmetryTransforms.S3Variant v
+				: eu.solven.matmul.SymmetryTransforms.s3OrbitWithPerms(nativeAlg)) {
+			NonCubicBilinearAlgorithm a = v.alg();
+			if (a.n == N && a.m == M && a.p == P && SchemeIO.contentHash(a).equals(wanted)) {
+				return new Lineage.Transpose(atom, v.perm());
+			}
+		}
+		throw new IllegalStateException("projection parent ⟨" + N + "," + M + "," + P + "⟩: no S3 perm of "
+				+ src.getFileName() + " reproduces the search's oriented parent — refusing an ambiguous ref.");
 	}
 
 	/** Content hash from a scheme filename's {@code -<hash7>.json} suffix — the canonical

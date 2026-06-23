@@ -1,0 +1,178 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(3x5x9-r102-perminov_ZT-bf97d17, ⟨9,3,5⟩), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[6, 6, 6], allocC=[3, 2], leaves=[SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1])), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])])), SumInner(ConcatCols(ConcatRows(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))), ConcatCols(ConcatRows(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))), ConcatRows(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))))), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))))",
+  "lineage_compact": "3x5x9-r102-perminov_ZT-bf97d17→⟨9,3,5⟩ +m R[2x3x3^ABC->CBA; 3,3,3 | 6,6,6 | 3,2] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +n 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 3,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "3x5x9-r102-perminov_ZT-bf97d17"}
+      },
+      "right": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "id": "L0",
+          "perm": "ABC->CBA",
+          "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+        },
+        "allocA": [3, 3, 3],
+        "allocB": [6, 6, 6],
+        "allocC": [3, 2],
+        "leaves": [
+          {
+            "op": "SumInner",
+            "left": {
+              "op": "Recombination",
+              "base": {"op": "@ref", "id": "L0"},
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1, 1],
+              "allocC": [1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            },
+            "right": {
+              "op": "Recombination",
+              "base": {"op": "@ref", "id": "L0"},
+              "allocA": [1, 1, 1],
+              "allocB": [1, 1, 1],
+              "allocC": [1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          },
+          {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [1, 2, 3, 4, 5, 6],
+            "keepP": [0, 1, 2],
+            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          }
+        ]
+      }
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "ConcatRows",
+          "top": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "bottom": {
+            "op": "ConcatCols",
+            "left": {
+              "op": "Project",
+              "keepN": [1, 2, 3, 4, 5, 6],
+              "keepM": [0, 1, 2],
+              "keepP": [0, 1, 2],
+              "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            },
+            "right": {
+              "op": "Project",
+              "keepN": [1, 2, 3, 4, 5, 6],
+              "keepM": [0, 1, 2],
+              "keepP": [0, 1, 2],
+              "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            }
+          }
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "ConcatRows",
+            "top": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            },
+            "bottom": {
+              "op": "ConcatCols",
+              "left": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+              },
+              "right": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+              }
+            }
+          },
+          "right": {
+            "op": "ConcatRows",
+            "top": {
+              "op": "Project",
+              "keepN": [0, 1, 2],
+              "keepM": [0, 1, 2],
+              "keepP": [1, 2, 3, 4, 5, 6],
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            },
+            "bottom": {
+              "op": "ConcatCols",
+              "left": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+              },
+              "right": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+              }
+            }
+          }
+        }
+      },
+      "right": {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [0, 1, 2],
+          "keepP": [1, 2, 3, 4, 5, 6],
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        },
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      }
+    }
+  },
+  "n": [9, 21, 23],
+  "m": 2602,
+  "hash": "88878d32487d221b88c7c521ea7a69a75195d64d5ee7bcc5471badea139d12fa",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

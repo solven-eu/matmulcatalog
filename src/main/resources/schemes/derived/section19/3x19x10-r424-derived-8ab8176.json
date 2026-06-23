@@ -1,0 +1,35 @@
+{
+  "lineage_str": "SumInner(ConcatCols(3x3x4, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), OrientAs(3x10x16-r355-perminov_ZT-6cc036e, ⟨3,16,10⟩))",
+  "lineage_compact": "3x3x4 +p 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] +m 3x10x16-r355-perminov_ZT-6cc036e→⟨3,16,10⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "ConcatCols",
+      "left": {"op": "Atom", "ref": "3x3x4@a5da05f"},
+      "right": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      }
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 3,
+      "m": 16,
+      "p": 10,
+      "child": {"op": "Atom", "ref": "3x10x16-r355-perminov_ZT-6cc036e"}
+    }
+  },
+  "n": [3, 19, 10],
+  "m": 424,
+  "hash": "8ab81767fdb770487ee4d22f3fdd297ff65f4ee814734731a17e911e0431809a",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

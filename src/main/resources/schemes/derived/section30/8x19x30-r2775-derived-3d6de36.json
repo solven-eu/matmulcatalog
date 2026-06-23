@@ -1,0 +1,31 @@
+{
+  "lineage_str": "SumInner(naive-8x1x30, Serendipitous(OrientAs(2x5x6, ⟨2,6,5⟩) ⊗ ⟨4,3,6⟩))",
+  "lineage_compact": "naive-8x1x30 +m 2x5x6→⟨2,6,5⟩ ⊗ˢ⟨4,3,6⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "naive-8x1x30"},
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 4,
+      "m2": 3,
+      "p2": 6,
+      "base": {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 6,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "2x5x6@7387644"}
+      }
+    }
+  },
+  "n": [8, 19, 30],
+  "m": 2775,
+  "hash": "3d6de36d69389f5915158390fa008b6a8c9eb2f921ab1b5364a83d047cd8f634",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

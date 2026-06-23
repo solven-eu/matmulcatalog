@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-24x24x1, DIS09Lemma4(n=24))",
+  "lineage_compact": "naive-24x24x1 +p DIS09Lemma4(n=24)",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-24x24x1"},
+    "right": {"op": "Atom", "ref": "DIS09Lemma4(n=24)"}
+  },
+  "n": [24, 24, 25],
+  "m": 7576,
+  "hash": "cd7aa99f01e50728811d710a8bc6f24d03805fa8259bf3971bc6a2377bfa1208",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

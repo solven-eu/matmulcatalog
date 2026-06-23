@@ -1,0 +1,117 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x5x5, perm=\"ABC->CBA\"), allocA=[5, 5, 5, 5, 6], allocB=[6, 6, 6, 6, 5], allocC=[2, 2], leaves=[OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩), Recombination(base=Transpose(2x5x5, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,6,2⟩)]), SumInner(Recombination(base=Transpose(2x5x5, perm=\"ABC->CAB\"), allocA=[5, 5, 5, 6, 5], allocB=[2, 1], allocC=[5, 5, 6, 5, 5], leaves=[naive-5x1x5, Recombination(base=Transpose(2x5x5, perm=\"ABC->CAB\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), naive-5x1x6, OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,2,6⟩), naive-6x1x6, OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,2,6⟩)]), DIS09Lemma4(n=26)))",
+  "lineage_compact": "R[2x5x5^ABC->CBA; 5,5,5,5,6 | 6,6,6,6,5 | 2,2] +p R[2x5x5^ABC->CAB; 5,5,5,6,5 | 2,1 | 5,5,6,5,5] +m DIS09Lemma4(n=26)",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "id": "L0",
+        "perm": "ABC->CBA",
+        "child": {"op": "Atom", "ref": "2x5x5@5e3b69e8989d3ac4c5bd80eb8f6c01e25797d0be4096286bc5fa0f762c281e2f", "id": "L1"}
+      },
+      "allocA": [5, 5, 5, 5, 6],
+      "allocB": [6, 6, 6, 6, 5],
+      "allocC": [2, 2],
+      "leaves": [
+        {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 6,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        },
+        {
+          "op": "Recombination",
+          "base": {"op": "@ref", "id": "L0"},
+          "allocA": [1, 1, 1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1],
+          "allocC": [1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        {
+          "op": "OrientAs",
+          "n": 6,
+          "m": 6,
+          "p": 2,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        }
+      ]
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "id": "L2",
+          "perm": "ABC->CAB",
+          "child": {"op": "@ref", "id": "L1"}
+        },
+        "allocA": [5, 5, 5, 6, 5],
+        "allocB": [2, 1],
+        "allocC": [5, 5, 6, 5, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-5x1x5"},
+          {
+            "op": "Recombination",
+            "base": {"op": "@ref", "id": "L2"},
+            "allocA": [1, 1, 1, 1, 1],
+            "allocB": [1, 1],
+            "allocC": [1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          {"op": "Atom", "ref": "naive-5x1x6"},
+          {
+            "op": "OrientAs",
+            "n": 5,
+            "m": 2,
+            "p": 6,
+            "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+          },
+          {"op": "Atom", "ref": "naive-6x1x6"},
+          {
+            "op": "OrientAs",
+            "n": 6,
+            "m": 2,
+            "p": 6,
+            "child": {
+              "op": "Recombination",
+              "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+              "allocA": [1, 1],
+              "allocB": [1, 1, 1, 1, 1, 1],
+              "allocC": [1, 1, 1, 1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          }
+        ]
+      },
+      "right": {"op": "Atom", "ref": "DIS09Lemma4(n=26)"}
+    }
+  },
+  "n": [26, 29, 30],
+  "m": 12080,
+  "hash": "404d07ce58d789f1ec2019a0766a661f3beefdbfa807e5c18559556558d24d98",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

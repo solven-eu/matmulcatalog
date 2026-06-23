@@ -1,0 +1,25 @@
+{
+  "lineage_str": "SumInner(naive-10x1x32, Serendipitous(5x6x8 ⊗ ⟨2,5,4⟩))",
+  "lineage_compact": "naive-10x1x32 +m 5x6x8 ⊗ˢ⟨2,5,4⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "naive-10x1x32"},
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 5,
+      "p2": 4,
+      "base": {"op": "Atom", "ref": "5x6x8@b476d2a"}
+    }
+  },
+  "n": [10, 31, 32],
+  "m": 5740,
+  "hash": "f0f97e1495407eae23a360b892612aa38061282fb73059f32a7cc031715ecab4",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

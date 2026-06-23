@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-20x20x1, DIS09Lemma4(n=20))",
+  "lineage_compact": "naive-20x20x1 +p DIS09Lemma4(n=20)",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-20x20x1"},
+    "right": {"op": "Atom", "ref": "DIS09Lemma4(n=20)"}
+  },
+  "n": [20, 20, 21],
+  "m": 4740,
+  "hash": "0790fac92fbdc60f438f459ab5d71450f1bc0ea780fe87de67aacde5182a1a64",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

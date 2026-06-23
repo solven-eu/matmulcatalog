@@ -1,0 +1,28 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[14, 16], allocB=[16, 16], allocC=[16, 16], leaves=[KronProduct(4x4x4, 4x4x4), 14x16x16-r2128-perminov_Q-b3523dc])",
+  "lineage_compact": "R[2x2x2; 14,16 | 16,16 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [14, 16],
+    "allocB": [16, 16],
+    "allocC": [16, 16],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "4x4x4@929db4e"},
+        "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+      },
+      {"op": "Atom", "ref": "14x16x16-r2128-perminov_Q-b3523dc"}
+    ]
+  },
+  "n": [30, 32, 32],
+  "m": 15600,
+  "hash": "8e2c73cea3752e2ab9f2821f9fb6b4c09c54746fffb8a0df85bc780bfdbd0262",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

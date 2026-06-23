@@ -1,0 +1,31 @@
+{
+  "lineage_str": "SumInner(OrientAs(2x16x30-r735-hk71-71e666f, ⟨16,2,30⟩), Serendipitous(4x4x10 ⊗ ⟨4,6,3⟩))",
+  "lineage_compact": "2x16x30-r735-hk71-71e666f→⟨16,2,30⟩ +m 4x4x10 ⊗ˢ⟨4,6,3⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 16,
+      "m": 2,
+      "p": 30,
+      "child": {"op": "Atom", "ref": "2x16x30-r735-hk71-71e666f"}
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 4,
+      "m2": 6,
+      "p2": 3,
+      "base": {"op": "Atom", "ref": "4x4x10@022a32b"}
+    }
+  },
+  "n": [16, 26, 30],
+  "m": 6900,
+  "hash": "11d1eb05ee3ed0133406b1e04ec6522857e0a7f6191252248ccec20e51d03339",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

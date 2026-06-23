@@ -1,0 +1,39 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(2x8x10-r125-hk71-ce1a36c, ⟨8,10,2⟩), Serendipitous(OrientAs(2x4x8, ⟨4,2,8⟩) ⊗ ⟨2,5,3⟩))",
+  "lineage_compact": "2x8x10-r125-hk71-ce1a36c→⟨8,10,2⟩ +p 2x4x8→⟨4,2,8⟩ ⊗ˢ⟨2,5,3⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 8,
+      "m": 10,
+      "p": 2,
+      "child": {"op": "Atom", "ref": "2x8x10-r125-hk71-ce1a36c"}
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 5,
+      "p2": 3,
+      "base": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 2,
+        "p": 8,
+        "child": {"op": "Atom", "ref": "2x4x8@4f864e0"}
+      }
+    }
+  },
+  "n": [8, 10, 26],
+  "m": 1328,
+  "hash": "34e1cba148bb8721a26697dcdff483f9068f4f59837334540e422e5fe5ae4d43",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

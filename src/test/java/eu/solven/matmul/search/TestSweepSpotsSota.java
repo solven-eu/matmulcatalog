@@ -2,6 +2,9 @@ package eu.solven.matmul.search;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +15,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
+import eu.solven.matmul.catalog.SchemeIO;
+import eu.solven.matmul.papers.dis2009.PanTrilinearAggregation;
+import tools.jackson.databind.JsonNode;
 
 /**
  * Fast, parameter-specific <em>regression guards</em> on the search/materialise
@@ -50,7 +56,10 @@ public class TestSweepSpotsSota {
 			"3, 7, 8,  126",   // concat ⟨3,7,4⟩ +ₚ ⟨3,7,4⟩ (orientation-aware)
 			"7, 7, 7,  250",   // Strassen-recursion recombination
 			"6, 8, 9,  296",   // serendipitous bud-product (bud-ordering fix)
-			"8, 9, 9,  430",   // serendipitous bud-product (size-3 V-bud)
+			// ⟨8,9,9⟩=430: FILL-mode disk-presence (the derived 430 is on disk, persisted via
+			// MaterialiseSerendipitousWins after the 2026-06-23 σ-base-selection fix). The
+			// COMPUTE path is guarded separately by compute_pipeline_reaches_8x9x9_430.
+			"8, 9, 9,  430",   // serendipitous bud-product (σ-aware V-bud base)
 			"4, 8, 12, 272",   // serendipitous
 			"8, 8, 12, 504",   // serendipitous
 	})
@@ -62,6 +71,105 @@ public class TestSweepSpotsSota {
 				.isLessThanOrEqualTo(sota);
 		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg()))
 				.as("⟨%d,%d,%d⟩ result must verify", n, m, p).isTrue();
+	}
+
+	/**
+	 * COMPUTE-path guard for the 2026-06-23 σ-base-selection fix (distinct from the
+	 * fill-mode {@link #materialise_spots_sota}, which only checks the DISK best). An
+	 * IMPROVE-mode materialiser actually composes ⟨8,9,9⟩ and must reach the
+	 * serendipitous SOTA 430 = (⟨4,3,3⟩=29−3)⊗⟨2,3,3⟩+⟨6,3,3⟩=40. That requires
+	 * {@code trySerendipitous} to feed the size-3 V-bud base (budScore 4) to
+	 * {@code SerendipitousSearch.bestFor}, not just the budScore-MAX sibling (11, a
+	 * U-bud with σ_V=0 here). A regression to the count-based picker returns 432.
+	 */
+	@Test
+	public void compute_pipeline_reaches_8x9x9_430() {
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.defaultPool();
+		RecursiveClosureSota sota = new RecursiveClosureSota(lookup, pool, true, true);
+		// improveExisting=true → composes instead of returning the dense 432 import; no disk write.
+		RecursiveMaterialiser improver =
+				new RecursiveMaterialiser(lookup, pool, sota, null, false, true, true);
+		// Restrict to the serendipitous strategy: it's the one under test, and skipping the
+		// recombination B&B keeps the guard fast (~seconds, not ~25s).
+		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_SERENDIPITOUS));
+		Optional<RecursiveMaterialiser.Result> r = improver.materialise(8, 9, 9);
+		assertThat(r).as("⟨8,9,9⟩ should resolve").isPresent();
+		assertThat(r.get().alg().r)
+				.as("compose() must reach the serendipitous SOTA 430 via the σ-selected size-3 "
+						+ "V-bud base (regression to the budScore picker → 432)")
+				.isLessThanOrEqualTo(430);
+		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg()))
+				.as("⟨8,9,9⟩=430 result must verify").isTrue();
+	}
+
+	/**
+	 * Regression guard for the 2026-06-23 projection-parent orientation-pinning fix
+	 * (project_projection_parent_orientation_not_pinned). ⟨19,19,20⟩ = Project(⟨20,19,20⟩);
+	 * its parent ⟨19,20,20⟩ has two equal 20-axes, and pinning it as an ORIENTED
+	 * {@code 20x19x20@hash} let replay re-{@code orientAs} ambiguously to a worse-projecting
+	 * axis → predict 4154 / build 4237 → fatal {@code assertRebuildNotWorse}. The fix pins the
+	 * NATIVE {@code 19x20x20@hash} + an exact-perm {@code Transpose} (so the lineage is
+	 * {@code Project(Transpose(19x20x20, "ABC->CAB"), …)}), making predict==build. Materialise
+	 * must NOT throw and must reach master's 4154. Projection-only strategy keeps it fast.
+	 */
+	@Test
+	public void projection_parent_orientation_pinned_19x19x20() {
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.defaultPool();
+		RecursiveClosureSota sota = new RecursiveClosureSota(lookup, pool, true, true);
+		// derive-best (last arg) so a TIE with an already-on-disk 4154 still returns the composed
+		// result (improve-mode would return empty on a non-strict-improvement, masking the build).
+		RecursiveMaterialiser improver =
+				new RecursiveMaterialiser(lookup, pool, sota, null, false, false, true, true);
+		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_PROJECTION));
+		Optional<RecursiveMaterialiser.Result> r = improver.materialise(19, 19, 20);
+		assertThat(r).as("⟨19,19,20⟩ must resolve (no projection-divergence throw)").isPresent();
+		assertThat(r.get().alg().r)
+				.as("⟨19,19,20⟩ projection must build at its predicted rank (≤4154 = master), not "
+						+ "diverge to 4237 — the parent orientation must be pinned bit-exactly")
+				.isLessThanOrEqualTo(4154);
+		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg()))
+				.as("⟨19,19,20⟩=4154 result must verify").isTrue();
+	}
+
+	/**
+	 * Fast catalog invariant guarding the 2026-06-22 dis09-cube phantom class: no
+	 * <em>derived</em> ⟨n,n,n⟩ file may duplicate the Pan-TA formula rank
+	 * {@code cubicBound(n)} under a NON-formula lineage. Such a file is the
+	 * {@code CORRUPT_RANK} phantom that was purged: it stamped the right rank
+	 * (4340/5566/7000/8658 == its {@code known/…dis09_Q…} twin) but a bogus
+	 * {@code Project(⟨n,n,n+1⟩)} lineage that only replays to ~4378. With the
+	 * honest twin already pricing {@code findRank} at 4340, the duplicate did not
+	 * change the score — it silently mis-led {@code resolveSubScheme} into BUILDING
+	 * the ⟨n,n,n⟩ block as the worse projection, so the whole ⟨2k,2k,2k+2⟩ family
+	 * diverged (⟨20,20,22⟩ evaluated 4950 / built 4988). The honest cube lives in
+	 * {@code known/…dis09_Q…} as a {@code DIS09Lemma4(n)} atom; any derived cube at
+	 * the same rank with a non-formula lineage is the phantom. Pure file-scan — no
+	 * {@code materialise} (which is unbounded and minutes-to-hours on these shapes)
+	 * — so it stays in milliseconds, per the fast-guard rule.
+	 */
+	@Test
+	public void no_phantom_dis09_cube_duplicates() throws Exception {
+		Path derived = Path.of("src/main/resources/schemes/derived");
+		List<String> offenders = new ArrayList<>();
+		try (var paths = Files.walk(derived)) {
+			for (Path p : (Iterable<Path>) paths.filter(Files::isRegularFile)
+					.filter(f -> f.getFileName().toString().matches("^(\\d+)x\\1x\\1-.*\\.json"))::iterator) {
+				JsonNode d = SchemeIO.parseJson(p.toFile());
+				if (!d.has("m") || !d.has("n")) continue;
+				int n = d.get("n").get(0).asInt();
+				int m = d.get("m").asInt();
+				String lineage = d.has("lineage_str") ? d.get("lineage_str").asText() : "";
+				if (m == PanTrilinearAggregation.cubicBound(n) && !lineage.contains("DIS09Lemma4")) {
+					offenders.add(derived.relativize(p) + "  (m=" + m + "==cubicBound(" + n
+							+ "), lineage='" + lineage + "')");
+				}
+			}
+		}
+		assertThat(offenders)
+				.as("derived ⟨n,n,n⟩ cube(s) claim the Pan-TA rank cubicBound(n) via a non-formula "
+						+ "lineage — the purged CORRUPT_RANK phantom is back (the buildable cube is the "
+						+ "known/…dis09_Q… DIS09Lemma4(n) atom; a derived twin at the same rank is a phantom)")
+				.isEmpty();
 	}
 
 	/**

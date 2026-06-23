@@ -1,0 +1,29 @@
+{
+  "lineage_str": "ConcatCols(6x6x7-r183-perminov_ZT-ee0b97b, KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])))",
+  "lineage_compact": "6x6x7-r183-perminov_ZT-ee0b97b +p 2x2x2 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "6x6x7-r183-perminov_ZT-ee0b97b"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      }
+    }
+  },
+  "n": [6, 6, 19],
+  "m": 463,
+  "hash": "06e4c753caf075a7d3cf6c4924e3c9d1d4eace1359ad229d925b50ea53c9482c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

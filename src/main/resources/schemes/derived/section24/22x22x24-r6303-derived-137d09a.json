@@ -1,0 +1,24 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(2x22x22-r737-hk71-f1c3ec7, ⟨22,22,2⟩), DIS09Lemma4(n=22))",
+  "lineage_compact": "2x22x22-r737-hk71-f1c3ec7→⟨22,22,2⟩ +p DIS09Lemma4(n=22)",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 22,
+      "m": 22,
+      "p": 2,
+      "child": {"op": "Atom", "ref": "2x22x22-r737-hk71-f1c3ec7"}
+    },
+    "right": {"op": "Atom", "ref": "DIS09Lemma4(n=22)"}
+  },
+  "n": [22, 22, 24],
+  "m": 6303,
+  "hash": "137d09afa30cdee99ec0d054a096ac48c266eb01a32491754e9aa266405385d2",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

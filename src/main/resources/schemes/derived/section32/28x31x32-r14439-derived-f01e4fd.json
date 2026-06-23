@@ -1,0 +1,76 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[12, 16], allocB=[16, 15], allocC=[16, 16], leaves=[KronProduct(4x4x4, 4x4x4), 12x16x16-r1815-perminov_Q-1b69229, Recombination(base=2x2x2, allocA=[8, 8], allocB=[8, 7], allocC=[8, 8], leaves=[KronProduct(2x2x2, 4x4x4), Recombination(base=2x2x2, allocA=[4, 4], allocB=[4, 3], allocC=[4, 4], leaves=[Recombination(base=4x4x4, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(3x4x4, perm=\"ABC->CAB\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])])]), 12x15x16-r1725-perminov_Z-337086a])",
+  "lineage_compact": "R[2x2x2; 12,16 | 16,15 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897", "id": "L0"},
+    "allocA": [12, 16],
+    "allocB": [16, 15],
+    "allocC": [16, 16],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "4x4x4@929db4e"},
+        "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+      },
+      {"op": "Atom", "ref": "12x16x16-r1815-perminov_Q-1b69229"},
+      {
+        "op": "Recombination",
+        "base": {"op": "@ref", "id": "L0"},
+        "allocA": [8, 8],
+        "allocB": [8, 7],
+        "allocC": [8, 8],
+        "leaves": [
+          {
+            "op": "KronProduct",
+            "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+            "inner": {"op": "Atom", "ref": "4x4x4@929db4e"}
+          },
+          {
+            "op": "Recombination",
+            "base": {"op": "@ref", "id": "L0"},
+            "allocA": [4, 4],
+            "allocB": [4, 3],
+            "allocC": [4, 4],
+            "leaves": [
+              {
+                "op": "Recombination",
+                "base": {"op": "Atom", "ref": "4x4x4@929db4e407faf85e6ff69a5ab89dbd7c6917d95bdf82e156d5692acc9703527b"},
+                "allocA": [1, 1, 1, 1],
+                "allocB": [1, 1, 1, 1],
+                "allocC": [1, 1, 1, 1],
+                "leaves": [
+                  {"op": "Atom", "ref": "naive-1x1x1"}
+                ]
+              },
+              {
+                "op": "Recombination",
+                "base": {
+                  "op": "Transpose",
+                  "perm": "ABC->CAB",
+                  "child": {"op": "Atom", "ref": "3x4x4@644bd5e392bf1f36813d1789373cc4a6c05b27122dbfbe9149e7345f3fa86c05"}
+                },
+                "allocA": [1, 1, 1, 1],
+                "allocB": [1, 1, 1],
+                "allocC": [1, 1, 1, 1],
+                "leaves": [
+                  {"op": "Atom", "ref": "naive-1x1x1"}
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {"op": "Atom", "ref": "12x15x16-r1725-perminov_Z-337086a"}
+    ]
+  },
+  "n": [28, 31, 32],
+  "m": 14439,
+  "hash": "f01e4fdefa7069322b7e74fb5005fda51a536233af58d9c577d5ded025a666ce",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

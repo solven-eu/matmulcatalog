@@ -1,0 +1,51 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(2x3x3, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), Recombination(base=2x3x3, allocA=[3, 3], allocB=[6, 6, 6], allocC=[4, 3, 3], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])]))",
+  "lineage_compact": "2x3x3 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +p R[2x3x3; 3,3 | 6,6,6 | 4,3,3]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      }
+    },
+    "right": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+      "allocA": [3, 3],
+      "allocB": [6, 6, 6],
+      "allocC": [4, 3, 3],
+      "leaves": [
+        {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 6,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        },
+        {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      ]
+    }
+  },
+  "n": [6, 18, 19],
+  "m": 1284,
+  "hash": "e1cd4df97072eeb1c5ef2bf85181db314d65c839c4e9a8529f84fba1070d668f",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

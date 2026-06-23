@@ -1,0 +1,49 @@
+{
+  "lineage_str": "ConcatCols(SumInner(naive-6x1x12, Serendipitous(OrientAs(2x4x8, ⟨2,8,4⟩) ⊗ ⟨3,3,3⟩)), SumInner(naive-6x1x15, KronProduct(2x4x5, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))))",
+  "lineage_compact": "naive-6x1x12 +m 2x4x8→⟨2,8,4⟩ ⊗ˢ⟨3,3,3⟩ +p naive-6x1x15 +m 2x4x5 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "naive-6x1x12"},
+      "right": {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 3,
+        "base": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 8,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "2x4x8@4f864e0"}
+        }
+      }
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "naive-6x1x15"},
+      "right": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5@6216e15"},
+        "inner": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        }
+      }
+    }
+  },
+  "n": [6, 25, 27],
+  "m": 2471,
+  "hash": "37178333ad4ddf662d86ddb1e85a260c0082e0b73c72161908c906e5926468a4",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

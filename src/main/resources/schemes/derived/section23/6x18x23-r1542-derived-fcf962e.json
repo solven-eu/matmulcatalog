@@ -1,0 +1,35 @@
+{
+  "lineage_str": "ConcatCols(KronProduct(2x3x3, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), Serendipitous(2x3x7 ⊗ ⟨3,6,2⟩))",
+  "lineage_compact": "2x3x3 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +p 2x3x7 ⊗ˢ⟨3,6,2⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "inner": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [1, 2, 3, 4, 5, 6],
+        "keepP": [0, 1, 2],
+        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+      }
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 6,
+      "p2": 2,
+      "base": {"op": "Atom", "ref": "2x3x7@129ebee"}
+    }
+  },
+  "n": [6, 18, 23],
+  "m": 1542,
+  "hash": "fcf962eb1ad73ad1f7aa07472320ab4ff7bb28ce464de6c4021835a659d9c681",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

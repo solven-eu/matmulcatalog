@@ -1,0 +1,68 @@
+{
+  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x5x5, perm=\"ABC->CBA\"), allocA=[5, 5, 5, 6, 5], allocB=[5, 5, 6, 5, 6], allocC=[2, 2], leaves=[Recombination(base=Transpose(2x5x5, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩), OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,6,2⟩)]), SumInner(naive-26x1x26, DIS09Lemma4(n=26)))",
+  "lineage_compact": "R[2x5x5^ABC->CBA; 5,5,5,6,5 | 5,5,6,5,6 | 2,2] +p naive-26x1x26 +m DIS09Lemma4(n=26)",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "Recombination",
+      "base": {
+        "op": "Transpose",
+        "id": "L0",
+        "perm": "ABC->CBA",
+        "child": {"op": "Atom", "ref": "2x5x5@5e3b69e8989d3ac4c5bd80eb8f6c01e25797d0be4096286bc5fa0f762c281e2f"}
+      },
+      "allocA": [5, 5, 5, 6, 5],
+      "allocB": [5, 5, 6, 5, 6],
+      "allocC": [2, 2],
+      "leaves": [
+        {
+          "op": "Recombination",
+          "base": {"op": "@ref", "id": "L0"},
+          "allocA": [1, 1, 1, 1, 1],
+          "allocB": [1, 1, 1, 1, 1],
+          "allocC": [1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 6,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        },
+        {
+          "op": "OrientAs",
+          "n": 6,
+          "m": 6,
+          "p": 2,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        }
+      ]
+    },
+    "right": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "naive-26x1x26"},
+      "right": {"op": "Atom", "ref": "DIS09Lemma4(n=26)"}
+    }
+  },
+  "n": [26, 27, 30],
+  "m": 11145,
+  "hash": "1f5cda425696ce5103e920cfd8d6325b051ea6abf46e31e2f40c248956a2190f",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

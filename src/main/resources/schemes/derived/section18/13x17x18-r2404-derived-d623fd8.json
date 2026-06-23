@@ -1,0 +1,44 @@
+{
+  "lineage_str": "ConcatRows(Recombination(base=2x3x3, allocA=[2, 2], allocB=[6, 6, 5], allocC=[6, 6, 6], leaves=[2x5x6-r47-alphaevolve-7387644, Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), Project(9x17x19, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]))",
+  "lineage_compact": "R[2x3x3; 2,2 | 6,6,5 | 6,6,6] +n 9x17x19 ↓[0,1,2,3,4,5,6,7,8|0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16|1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "Recombination",
+      "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+      "allocA": [2, 2],
+      "allocB": [6, 6, 5],
+      "allocC": [6, 6, 6],
+      "leaves": [
+        {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+        {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+          "allocA": [1, 1],
+          "allocB": [1, 1, 1, 1, 1, 1],
+          "allocC": [1, 1, 1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        }
+      ]
+    },
+    "bottom": {
+      "op": "Project",
+      "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+      "child": {"op": "Atom", "ref": "9x17x19@6bda6f863602c80835738c25785c2e823ea6f9b360e0c0e9b26a2cbfeb3241e3"}
+    }
+  },
+  "n": [13, 17, 18],
+  "m": 2404,
+  "hash": "d623fd8cfc716f5be312cbcf781463cb623a04ab2e8dc52b4910dfce8b685c36",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

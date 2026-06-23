@@ -1,0 +1,35 @@
+{
+  "lineage_str": "SumInner(naive-12x1x30, KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(4x5x6-r90-alphaevolve-8aa8e60, ⟨4,6,5⟩)))",
+  "lineage_compact": "naive-12x1x30 +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 4x5x6-r90-alphaevolve-8aa8e60→⟨4,6,5⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "naive-12x1x30"},
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "4x5x6-r90-alphaevolve-8aa8e60"}
+      }
+    }
+  },
+  "n": [12, 19, 30],
+  "m": 3960,
+  "hash": "6010d38d430f2158e76890752d94369038fdd395d29901c4fdecdaa996b38139",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,35 @@
+{
+  "lineage_str": "ConcatRows(2x18x18-r495-hk71-29cb65b, KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩)))",
+  "lineage_compact": "2x18x18-r495-hk71-29cb65b +n 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x4x6-r54-alphaevolve-c197868→⟨4,6,3⟩",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "2x18x18-r495-hk71-29cb65b"},
+    "bottom": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 3,
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      }
+    }
+  },
+  "n": [14, 18, 18],
+  "m": 2655,
+  "hash": "2cfea97654314b53364b1bff7cbad2e8aa0eda0fb90f015c2189e7658eabfd31",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

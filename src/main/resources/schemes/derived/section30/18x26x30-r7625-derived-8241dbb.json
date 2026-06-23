@@ -1,0 +1,41 @@
+{
+  "lineage_str": "SumInner(OrientAs(2x18x30-r825-hk71-376d0d8, ⟨18,2,30⟩), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(5x6x8-r170-perminov_ZT-b476d2a, ⟨6,8,5⟩)))",
+  "lineage_compact": "2x18x30-r825-hk71-376d0d8→⟨18,2,30⟩ +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 5x6x8-r170-perminov_ZT-b476d2a→⟨6,8,5⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 18,
+      "m": 2,
+      "p": 30,
+      "child": {"op": "Atom", "ref": "2x18x30-r825-hk71-376d0d8"}
+    },
+    "right": {
+      "op": "KronProduct",
+      "outer": {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      "inner": {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 8,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "5x6x8-r170-perminov_ZT-b476d2a"}
+      }
+    }
+  },
+  "n": [18, 26, 30],
+  "m": 7625,
+  "hash": "8241dbb7d32949b97c7a9420f9d9416f433827234703ac73a750e20b60e1a666",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,25 @@
+{
+  "lineage_str": "SumInner(naive-4x1x32, Serendipitous(2x6x8 ⊗ ⟨2,5,4⟩))",
+  "lineage_compact": "naive-4x1x32 +m 2x6x8 ⊗ˢ⟨2,5,4⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "naive-4x1x32"},
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 2,
+      "m2": 5,
+      "p2": 4,
+      "base": {"op": "Atom", "ref": "2x6x8@b661843"}
+    }
+  },
+  "n": [4, 31, 32],
+  "m": 2519,
+  "hash": "1cd3c847e01b817028a537b4b1d7432852e77dc38727e8255253f40c1a6a6660",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

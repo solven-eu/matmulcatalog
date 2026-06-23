@@ -1,0 +1,57 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,9,2⟩), SumInner(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,9,2⟩), OrientAs(2x9x14-r196-hk71-18da616, ⟨9,14,2⟩))), Serendipitous(OrientAs(3x5x8, ⟨3,8,5⟩) ⊗ ⟨3,4,6⟩))",
+  "lineage_compact": "2x9x9-r126-hk71-1e432f3→⟨9,9,2⟩ +m 2x9x9-r126-hk71-1e432f3→⟨9,9,2⟩ +m 2x9x14-r196-hk71-18da616→⟨9,14,2⟩ +p 3x5x8→⟨3,8,5⟩ ⊗ˢ⟨3,4,6⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 9,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 9,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 14,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x9x14-r196-hk71-18da616"}
+        }
+      }
+    },
+    "right": {
+      "op": "SerendipitousProduct",
+      "n2": 3,
+      "m2": 4,
+      "p2": 6,
+      "base": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 8,
+        "p": 5,
+        "child": {"op": "Atom", "ref": "3x5x8@8be898b"}
+      }
+    }
+  },
+  "n": [9, 32, 32],
+  "m": 5302,
+  "hash": "8746de93621d7fbda100484270708b5c3fa56de7a5f52a45c2f12ccba3c6f3cb",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

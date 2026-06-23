@@ -1,0 +1,94 @@
+{
+  "lineage_str": "ConcatCols(SumInner(ConcatRows(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,2,6⟩), ConcatRows(OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,2,6⟩), ConcatRows(OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,2,6⟩), OrientAs(2x6x8-r75-perminov_Z-b661843, ⟨8,2,6⟩)))), Serendipitous(OrientAs(3x5x6, ⟨5,6,3⟩) ⊗ ⟨5,4,2⟩)), Project(25x26x27, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]))",
+  "lineage_compact": "2x5x6-r47-alphaevolve-7387644→⟨5,2,6⟩ +n R[ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL; 1,1 | 1,1,1,1,1,1 | 1,1,1,1,1,1]→⟨6,2,6⟩ +n R[ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL; 1,1 | 1,1,1,1,1,1 | 1,1,1,1,1,1]→⟨6,2,6⟩ +n 2x6x8-r75-perminov_Z-b661843→⟨8,2,6⟩ +m 3x5x6→⟨5,6,3⟩ ⊗ˢ⟨5,4,2⟩ +p 25x26x27 ↓[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24|0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25|1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "ConcatRows",
+        "top": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 2,
+          "p": 6,
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        },
+        "bottom": {
+          "op": "ConcatRows",
+          "top": {
+            "op": "OrientAs",
+            "n": 6,
+            "m": 2,
+            "p": 6,
+            "child": {
+              "op": "Recombination",
+              "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+              "allocA": [1, 1],
+              "allocB": [1, 1, 1, 1, 1, 1],
+              "allocC": [1, 1, 1, 1, 1, 1],
+              "leaves": [
+                {"op": "Atom", "ref": "naive-1x1x1"}
+              ]
+            }
+          },
+          "bottom": {
+            "op": "ConcatRows",
+            "top": {
+              "op": "OrientAs",
+              "n": 6,
+              "m": 2,
+              "p": 6,
+              "child": {
+                "op": "Recombination",
+                "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+                "allocA": [1, 1],
+                "allocB": [1, 1, 1, 1, 1, 1],
+                "allocC": [1, 1, 1, 1, 1, 1],
+                "leaves": [
+                  {"op": "Atom", "ref": "naive-1x1x1"}
+                ]
+              }
+            },
+            "bottom": {
+              "op": "OrientAs",
+              "n": 8,
+              "m": 2,
+              "p": 6,
+              "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"}
+            }
+          }
+        }
+      },
+      "right": {
+        "op": "SerendipitousProduct",
+        "n2": 5,
+        "m2": 4,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 6,
+          "p": 3,
+          "child": {"op": "Atom", "ref": "3x5x6@14be9c3"}
+        }
+      }
+    },
+    "right": {
+      "op": "Project",
+      "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+      "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+      "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+      "child": {"op": "Atom", "ref": "25x26x27@ab8bcd15c1b1f1f73b31f58cfad434fa7dc24f2fda3d55bbdc6b34bab6fe4ace"}
+    }
+  },
+  "n": [25, 26, 32],
+  "m": 10954,
+  "hash": "ace295bdc8cb61185bb61bb77a0e7a82428f545666c5ceeb1f7f832f0f171f3e",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

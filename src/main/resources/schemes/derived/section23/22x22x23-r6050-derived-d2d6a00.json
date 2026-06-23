@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-22x22x1, DIS09Lemma4(n=22))",
+  "lineage_compact": "naive-22x22x1 +p DIS09Lemma4(n=22)",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-22x22x1"},
+    "right": {"op": "Atom", "ref": "DIS09Lemma4(n=22)"}
+  },
+  "n": [22, 22, 23],
+  "m": 6050,
+  "hash": "d2d6a000e2a5c8494723582de04ec583a389dfa97ad024b020bb50b760e5102a",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

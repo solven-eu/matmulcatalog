@@ -1,0 +1,51 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[12, 14], allocB=[15, 16], allocC=[16, 16], leaves=[14x16x16-r2128-perminov_Q-b3523dc, KronProduct(OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨2,5,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,3,4⟩)), 12x15x16-r1725-perminov_Z-337086a, 12x16x16-r1815-perminov_Q-1b69229])",
+  "lineage_compact": "R[2x2x2; 12,14 | 15,16 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [12, 14],
+    "allocB": [15, 16],
+    "allocC": [16, 16],
+    "leaves": [
+      {"op": "Atom", "ref": "14x16x16-r2128-perminov_Q-b3523dc"},
+      {
+        "op": "KronProduct",
+        "outer": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 5,
+          "p": 4,
+          "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+        },
+        "inner": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 3,
+          "p": 4,
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        }
+      },
+      {"op": "Atom", "ref": "12x15x16-r1725-perminov_Z-337086a"},
+      {"op": "Atom", "ref": "12x16x16-r1815-perminov_Q-1b69229"}
+    ]
+  },
+  "n": [26, 31, 32],
+  "m": 13643,
+  "hash": "495bd5281635b06480570d435bad449cb65f85f53165b5c7376d9175995cd1f5",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

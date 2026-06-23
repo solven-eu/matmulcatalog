@@ -1,0 +1,31 @@
+{
+  "lineage_str": "SumInner(KronProduct(2x3x3, 2x3x3), OrientAs(4x9x13-r325-perminov_ZT-b1a732e, ⟨4,13,9⟩))",
+  "lineage_compact": "2x3x3 ⊗ 2x3x3 +m 4x9x13-r325-perminov_ZT-b1a732e→⟨4,13,9⟩",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "KronProduct",
+      "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+      "inner": {"op": "Atom", "ref": "2x3x3@497eea7"}
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 13,
+      "p": 9,
+      "child": {"op": "Atom", "ref": "4x9x13-r325-perminov_ZT-b1a732e"}
+    }
+  },
+  "n": [4, 22, 9],
+  "m": 550,
+  "hash": "e0663d68768a9c51bc2ef3c3e8656288d38b03a79ab6499e8a41413dff55d2ef",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

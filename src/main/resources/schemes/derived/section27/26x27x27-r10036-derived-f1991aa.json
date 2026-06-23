@@ -1,0 +1,22 @@
+{
+  "lineage_str": "ConcatCols(naive-26x27x1, SumInner(naive-26x1x26, DIS09Lemma4(n=26)))",
+  "lineage_compact": "naive-26x27x1 +p naive-26x1x26 +m DIS09Lemma4(n=26)",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-26x27x1"},
+    "right": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "naive-26x1x26"},
+      "right": {"op": "Atom", "ref": "DIS09Lemma4(n=26)"}
+    }
+  },
+  "n": [26, 27, 27],
+  "m": 10036,
+  "hash": "f1991aafa2e55db3807b4ccfba95d42cf2fff26ea37b63b14aa00aaa05225b35",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

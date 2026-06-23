@@ -133,7 +133,14 @@ public class TestSerendipitousBudProduct {
 			v3 |= vFirst.buds().stream().anyMatch(
 					x -> x.type() == SerendipitousBudProduct.BudType.V && x.terms().length == 3);
 		}
-		assertThat(v3).as("some ⟨4,3,3⟩=29 base carries a size-3 V-bud under V-first ordering").isTrue();
+		// PRESENCE-FIRST: the 430 is only reachable if a bud-RICH ⟨4,3,3⟩=29 base is on disk.
+		// Check that explicitly BEFORE the search, so a catalog that lost the bud-rich base
+		// (e.g. a churn that replaced it with an equal-rank, bud-poorer variant) fails HERE
+		// with a clear "base missing" message — not later with a cryptic "rank 432 ≠ 430".
+		assertThat(bases).as("at least one ⟨4,3,3⟩=29 base must be present in the catalog").isNotEmpty();
+		assertThat(v3).as("a ⟨4,3,3⟩=29 base with HIGH bud structure (a size-3 V-bud under V-first "
+				+ "ordering) must be present — without it the serendipitous ⟨8,9,9⟩=430 is unreachable")
+				.isTrue();
 
 		var hit = SerendipitousSearch.bestFor(8, 9, 9, bases, lk, 999);
 		assertThat(hit).isPresent();

@@ -1,0 +1,63 @@
+{
+  "lineage_str": "ConcatRows(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩), ConcatRows(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩), ConcatRows(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩), ConcatRows(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,5,2⟩)))))",
+  "lineage_compact": "2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +n 2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +n 2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +n 2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩ +n 2x5x6-r47-alphaevolve-7387644→⟨6,5,2⟩",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "OrientAs",
+      "n": 6,
+      "m": 5,
+      "p": 2,
+      "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+    },
+    "bottom": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 5,
+        "p": 2,
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      "bottom": {
+        "op": "ConcatRows",
+        "top": {
+          "op": "OrientAs",
+          "n": 6,
+          "m": 5,
+          "p": 2,
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        },
+        "bottom": {
+          "op": "ConcatRows",
+          "top": {
+            "op": "OrientAs",
+            "n": 6,
+            "m": 5,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+          },
+          "bottom": {
+            "op": "OrientAs",
+            "n": 6,
+            "m": 5,
+            "p": 2,
+            "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+          }
+        }
+      }
+    }
+  },
+  "n": [30, 5, 2],
+  "m": 235,
+  "hash": "bcf4c17e18311c10761a4baeae78fd7a67041b9a48cd09e197cf653707e0b427",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

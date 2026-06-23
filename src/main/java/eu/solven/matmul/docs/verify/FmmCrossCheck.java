@@ -37,34 +37,47 @@ public final class FmmCrossCheck {
 
 	private FmmCrossCheck() {}
 
-	private static final java.util.regex.Pattern SHAPE =
-			java.util.regex.Pattern.compile("[_-](\\d+)x(\\d+)x(\\d+)_(?:r|m)(\\d+)");
-
 	/** Best NC characteristic-0 rank per canonical shape from raw on-disk scheme
-	 * files — no derived/PanTA padding. Excludes F2 / complex / commutative. */
+	 * files — no derived/PanTA padding. CONTENT-DRIVEN (2026-06 migration): shape ←
+	 * {@code n}, rank ← {@code m}, field ← {@code fields[]}, commutative ←
+	 * {@code commutative} — NEVER the filename (a pure cosmetic label now). Includes
+	 * only NC-over-Q/R schemes (fields name Q, R or Z): excludes C-only (e.g.
+	 * AlphaEvolve complex), modular-only (F2/F3) and commutative schemes, matching
+	 * the FMM-Lille digest's non-commutative-over-Q scope. */
 	private static Map<String, Integer> rawOnDiskBestCharZeroNC() throws java.io.IOException {
 		Map<String, Integer> best = new java.util.HashMap<>();
 		java.nio.file.Path root = java.nio.file.Path.of("src/main/resources/schemes");
 		try (var walk = java.nio.file.Files.walk(root)) {
 			for (var it = walk.iterator(); it.hasNext();) {
 				java.nio.file.Path pth = it.next();
-				String name = pth.getFileName().toString();
-				if (!name.endsWith(".json")) continue;
-				String low = name.toLowerCase();
-				// Exclude non-char-0-NC: F2, complex, and commutative-only sources.
-				if (low.contains("_f2-") || low.contains("_f2_") || low.contains("atf2")
-						|| low.contains("0.5xc") || low.contains("_c-") || low.contains("complex")
-						|| low.contains("waksman") || low.contains("rosowski") || low.contains("makarov")
-						|| low.contains("islam") || low.contains("commutative")) {
+				if (!pth.getFileName().toString().endsWith(".json")) continue;
+				JsonNode d;
+				try {
+					d = eu.solven.matmul.catalog.SchemeIO.parseJson(pth.toFile());
+				} catch (Exception e) {
 					continue;
 				}
-				java.util.regex.Matcher m = SHAPE.matcher(name);
-				if (!m.find()) continue;
-				int[] d = { Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)),
-						Integer.parseInt(m.group(3)) };
-				java.util.Arrays.sort(d);
-				int rank = Integer.parseInt(m.group(4));
-				best.merge(d[0] + "x" + d[1] + "x" + d[2], rank, Integer::min);
+				if (!d.has("n") || !d.has("m")) continue;
+				// Commutative-only schemes don't lift to NC matmul — exclude.
+				if (d.path("commutative").asBoolean(false)) continue;
+				// char-0 NC over Q/R = fields[] names Q, R or Z (Z⊂Q⊂R). Excludes C-only
+				// and modular-only (F2/F3), matching the FMM digest's NC-over-Q scope.
+				JsonNode fields = d.get("fields");
+				boolean charZeroQ = false;
+				if (fields != null) {
+					for (JsonNode f : fields) {
+						String fn = f.asText();
+						if ("Q".equals(fn) || "R".equals(fn) || "Z".equals(fn)) { charZeroQ = true; break; }
+					}
+				}
+				if (!charZeroQ) continue;
+				JsonNode shp = d.get("n");
+				if (shp == null || !shp.isArray() || shp.size() != 3) continue;
+				int[] dd = { shp.get(0).asInt(), shp.get(1).asInt(), shp.get(2).asInt() };
+				java.util.Arrays.sort(dd);
+				if (dd[2] > MAX_DIM) continue;
+				int rank = d.get("m").asInt();
+				best.merge(dd[0] + "x" + dd[1] + "x" + dd[2], rank, Integer::min);
 			}
 		}
 		return best;
@@ -138,11 +151,14 @@ public final class FmmCrossCheck {
 			long smallWorse = worse.stream().filter(r -> Math.max(r.n, Math.max(r.m, r.p)) <= 12).count();
 			pw.println("**Interpretation.** WORSE at small shapes (max-dim ≤ 12): "
 					+ smallWorse + " — these are the importable/actionable gaps. The remainder "
-					+ "are LARGE shapes (≥ ~25) where our recursive materialisations lag FMM's "
-					+ "disjoint-sum (Drevet 2011 / Schönhage τ-theorem) constructions — the known "
-					+ "structural gap tracked in #159 / #170, not a missing import. MISSING is "
-					+ "dominated by ⟨2,3,k⟩ / ⟨2,b,c⟩ Hopcroft-Kerr-family shapes at large k "
-					+ "(formula-derivable).");
+					+ "are LARGE shapes where our on-disk best is a NOT-YET-RUN projection / "
+					+ "recombination closure, NOT a structural gap: they close by re-running the "
+					+ "projection closure (`projectInto`) + richer recombination bases over 17–32 "
+					+ "— the same finite mechanisms we already have. This is explicitly NOT a "
+					+ "Schönhage τ-theorem / disjoint-sum gap: we never leverage τ and don't need "
+					+ "to — FMM's large 'disjoint-sum'-labelled schemes are recombinations of small "
+					+ "HK71 bases (see project_17x17x17_search_gap / project_fmm_projection_gap_is_global). "
+					+ "MISSING is dominated by ⟨2,3,k⟩ / Hopcroft-Kerr-family shapes (formula-derivable).");
 			pw.println();
 
 			pw.println("## WORSE — we should import / materialise these");
