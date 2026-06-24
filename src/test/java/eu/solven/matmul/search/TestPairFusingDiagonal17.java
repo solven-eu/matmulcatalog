@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
@@ -13,8 +15,8 @@ import org.junit.jupiter.api.Test;
 import eu.solven.matmul.AxisSplitBases;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.PairedSubProducts;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.PairedSubProducts;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.papers.laderman1976.Laderman23;
 

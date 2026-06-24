@@ -1,6 +1,6 @@
 package eu.solven.matmul.docs.explore;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.search.BaseFingerprint;
 import eu.solven.matmul.search.PerAxisFingerprint;

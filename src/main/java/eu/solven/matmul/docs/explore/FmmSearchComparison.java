@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.CitedBound;
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.JsonNode;

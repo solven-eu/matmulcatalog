@@ -15,7 +15,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.Compose;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.catalog.Recombination.AlgorithmLookup;
+import eu.solven.matmul.recombination.Recombination.AlgorithmLookup;
 
 /**
  * Validates {@link Compose#blockSplitCubic} — the constructive procedure

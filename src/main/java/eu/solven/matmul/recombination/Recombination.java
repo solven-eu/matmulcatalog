@@ -1,4 +1,8 @@
-package eu.solven.matmul.catalog;
+package eu.solven.matmul.recombination;
+
+import eu.solven.matmul.catalog.KnownAlgorithmCatalog;
+
+import eu.solven.matmul.catalog.KnownAlgorithm;
 
 import eu.solven.matmul.search.CitedBound;
 
@@ -141,14 +145,14 @@ public final class Recombination {
 	 */
 	/**
 	 * Fast variant of {@link #recombineWithAllocation} that reuses
-	 * pre-extracted {@link eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports}
+	 * pre-extracted {@link eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports}
 	 * instead of re-scanning the U/V/W factor matrices on every call.
 	 *
 	 * <p>Cost per call drops from {@code O(r · 3 · dim²)} (full factor scan)
 	 * to {@code O(r · dim)} (one per-product support lookup + max over
 	 * effective-allocation values). For an outer base with r=93 products
 	 * on a 5×5×5 scheme this is roughly a 15× speedup in the inner loop
-	 * of {@link eu.solven.matmul.search.BlockSplitSearch#findBestMultiBaseSplit}.
+	 * of {@link eu.solven.matmul.recombination.BlockSplitSearch#findBestMultiBaseSplit}.
 	 *
 	 * <p>Caller must extract the supports ONCE per base (outside the alloc
 	 * loops) and pass the same reference on every call. The supports are
@@ -159,7 +163,7 @@ public final class Recombination {
 	 */
 	public static Result recombineWithAllocationFast(
 			NonCubicBilinearAlgorithm base,
-			eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports supports,
+			eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports supports,
 			SotaResolver sota,
 			int[] allocA, int[] allocB, int[] allocC,
 			int[] peelA, int[] peelB, int[] peelC) {
@@ -167,7 +171,7 @@ public final class Recombination {
 		int[] effA = applyPeel(allocA, peelA);
 		int[] effB = applyPeel(allocB, peelB);
 		int[] effC = applyPeel(allocC, peelC);
-		int[][] shapes = eu.solven.matmul.search.AnalyticalMaskSearch.shapesAt(
+		int[][] shapes = eu.solven.matmul.recombination.AnalyticalMaskSearch.shapesAt(
 				supports, effA, effB, effC);
 		long totalRank = 0;
 		for (int r = 0; r < baseRank; r++) {

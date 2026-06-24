@@ -3,7 +3,7 @@ package eu.solven.matmul.research;
 import java.io.File;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.papers.waksman1970.WaksmanBound;
 

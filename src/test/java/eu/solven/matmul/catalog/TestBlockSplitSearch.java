@@ -8,8 +8,8 @@ import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
-import eu.solven.matmul.search.BlockSplitSearch;
-import eu.solven.matmul.search.BlockSplitSearch.SplitCandidate;
+import eu.solven.matmul.recombination.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch.SplitCandidate;
 
 /**
  * Phase 1 search validation. The {@code ⟨7,7,7⟩} target should pick

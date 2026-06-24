@@ -8,9 +8,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.commutative.CommutativeBounds;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.papers.rosowski2019.RosowskiBound;
 import eu.solven.matmul.catalog.SchemeIO;
 

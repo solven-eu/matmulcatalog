@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.AnalyticalMaskSearch;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.search.AnalyticalMaskSearch.MaskCandidate;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch.MaskCandidate;
 
 /**
  * Layer 1 from {@code docs/notes/enumerating-rank-7-2x2x2-schemes.md}:

@@ -19,7 +19,7 @@ import eu.solven.matmul.Verifier;
  * products into a smaller matmul {@code ⟨a,b,c⟩} whose sub-dimension on each
  * axis is the {@code max} of the block sizes that product touches (capped by the
  * {@code min} of the two relevant factor views — exactly
- * {@link eu.solven.matmul.search.AnalyticalMaskSearch#shapesAt}). The
+ * {@link eu.solven.matmul.recombination.AnalyticalMaskSearch#shapesAt}). The
  * <b>multiset of those 7 sub-shapes (with counts)</b> is the object of interest:
  * it is the complete <i>rank</i> invariant of plain additive recombination
  * (see {@code references/MULTISET_FRONTIER.md}), and it depends <b>only on the

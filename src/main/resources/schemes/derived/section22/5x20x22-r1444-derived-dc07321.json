@@ -1,0 +1,60 @@
+{
+  "lineage_str": "Recombination(base=AxisPermute[approximate](2x4x4, permA=[1, 0], permB=[0, 1, 2, 3], permC=[0, 1, 2, 3]), allocA=[2, 3], allocB=[5, 5, 5, 5], allocC=[6, 4, 6, 6], leaves=[2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3, Recombination(base=Transpose(2x4x5, perm=\"ABC->ACB\"), allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(3x4x5, perm=\"ABC->ACB\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_compact": "R[2x4x4^π([1, 0],[0, 1, 2, 3],[0, 1, 2, 3]); 2,3 | 5,5,5,5 | 6,4,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "AxisPermute",
+      "permA": [1, 0],
+      "permB": [0, 1, 2, 3],
+      "permC": [0, 1, 2, 3],
+      "approximate": true,
+      "child": {"op": "Atom", "ref": "2x4x4@a4ed740a036a37c48fd9a3386a354b8827aa1598a3135f17a8332d0d797c1177"}
+    },
+    "allocA": [2, 3],
+    "allocB": [5, 5, 5, 5],
+    "allocC": [6, 4, 6, 6],
+    "leaves": [
+      {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+      {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+      {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->ACB",
+          "child": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"}
+        },
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      {
+        "op": "Recombination",
+        "base": {
+          "op": "Transpose",
+          "perm": "ABC->ACB",
+          "child": {"op": "Atom", "ref": "3x4x5@6bc7fbe6fd386c409ad56effa3a0ce7845ff2bc393482367c9e80c4b2e8861ec"}
+        },
+        "allocA": [1, 1, 1],
+        "allocB": [1, 1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      }
+    ]
+  },
+  "n": [5, 20, 22],
+  "m": 1444,
+  "hash": "dc07321f45601c78da1528babeb667b19189601fd4def59510291e2372e0e0cf",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

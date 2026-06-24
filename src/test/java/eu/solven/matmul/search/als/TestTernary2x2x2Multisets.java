@@ -270,19 +270,19 @@ class TestTernary2x2x2Multisets {
 	@Test
 	@Tag("slow")
 	void debug_strassen_vs_winograd_flips() throws Exception {
-		var sota = eu.solven.matmul.catalog.Recombination.catalogResolver(
+		var sota = eu.solven.matmul.recombination.Recombination.catalogResolver(
 				eu.solven.matmul.algebra.Algebra.nonCommutative(eu.solven.matmul.algebra.Field.R));
 		int[] alloc = { 9, 8 };
 		for (String name : new String[] { "2x2x2-r7-strassen-db11bcc.json", "2x2x2-r7-winograd_1971-511df05.json" }) {
 			NonCubicBilinearAlgorithm alg = SchemeIO.readBilinear(new File(SECTION2, name));
-			var supports = eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports.extract(alg);
+			var supports = eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports.extract(alg);
 			System.out.printf("%n%s at (9,8)³ → ⟨17,17,17⟩, all 8 masks:%n", name);
 			for (int mask = 0; mask < 8; mask++) {
 				int[] aA = ((mask & 1) != 0) ? new int[] { 8, 9 } : alloc;
 				int[] aB = ((mask & 2) != 0) ? new int[] { 8, 9 } : alloc;
 				int[] aC = ((mask & 4) != 0) ? new int[] { 8, 9 } : alloc;
-				int[][] shapes = eu.solven.matmul.search.AnalyticalMaskSearch.shapesAt(supports, aA, aB, aC);
-				long cost = eu.solven.matmul.search.AnalyticalMaskSearch.costOf(shapes, sota);
+				int[][] shapes = eu.solven.matmul.recombination.AnalyticalMaskSearch.shapesAt(supports, aA, aB, aC);
+				long cost = eu.solven.matmul.recombination.AnalyticalMaskSearch.costOf(shapes, sota);
 				System.out.printf("  mask=%d cost=%d  %s%n", mask, cost,
 						Ternary2x2x2Orbit.pretty(sortedKey(shapes)));
 			}

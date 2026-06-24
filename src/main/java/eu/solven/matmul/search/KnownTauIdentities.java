@@ -1,6 +1,6 @@
 package eu.solven.matmul.search;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.util.List;
 
@@ -272,12 +272,12 @@ public final class KnownTauIdentities {
 	 * permutation-invariant). Returned identities are guaranteed to verify
 	 * against the live catalog (their predicted rank arithmetic is valid).
 	 *
-	 * <p>{@link eu.solven.matmul.search.BlockSplitSearch#findBestStrategy}
+	 * <p>{@link eu.solven.matmul.recombination.BlockSplitSearch#findBestStrategy}
 	 * iterates this list at every target shape and offers each as a
 	 * candidate strategy alongside Kron / Concat / recombination.</p>
 	 */
 	public static List<Identity> applicableTo(int n, int m, int p,
-			eu.solven.matmul.catalog.Recombination.SotaResolver sota) {
+			eu.solven.matmul.recombination.Recombination.SotaResolver sota) {
 		int[] sorted = { n, m, p };
 		java.util.Arrays.sort(sorted);
 		List<Identity> out = new java.util.ArrayList<>();
@@ -298,7 +298,7 @@ public final class KnownTauIdentities {
 	 * {@code -1} if any sub-shape can't be resolved.
 	 */
 	public static long predictedRankAgainstSota(Identity id,
-			eu.solven.matmul.catalog.Recombination.SotaResolver sota) {
+			eu.solven.matmul.recombination.Recombination.SotaResolver sota) {
 		if (id instanceof DisjointSum ds) {
 			long total = 0;
 			for (SubTerm t : ds.terms) {

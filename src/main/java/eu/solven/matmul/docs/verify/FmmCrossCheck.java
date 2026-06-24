@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;

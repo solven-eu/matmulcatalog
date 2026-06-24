@@ -16,7 +16,7 @@ import tools.jackson.databind.json.JsonMapper;
 
 import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.CitedBound;
 import eu.solven.matmul.search.PoolConfig;
 import lombok.extern.slf4j.Slf4j;

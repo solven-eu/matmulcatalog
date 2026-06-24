@@ -1,6 +1,6 @@
 package eu.solven.matmul.search.als;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -18,7 +18,7 @@ import eu.solven.matmul.Verifier;
 import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.search.RecombinationMultisetOrbit;
+import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
 
 /**
  * Parameterised report: <em>given a target shape and a base shape</em>, tabulate

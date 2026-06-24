@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.Recombination.AlgorithmLookup;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.AlgorithmLookup;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * Unit Kronecker factors: ⟨3,3,18⟩ = ⟨1,1,3⟩⊗⟨3,3,6⟩ = 3·40 = 120. Before the

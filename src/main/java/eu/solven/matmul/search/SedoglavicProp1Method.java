@@ -2,7 +2,7 @@ package eu.solven.matmul.search;
 
 import java.util.Optional;
 
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.papers.sedoglavic2017.SedoglavicProp1;
 
 /**

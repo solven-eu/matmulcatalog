@@ -15,7 +15,7 @@ import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
 import eu.solven.matmul.catalog.MatrixJsonFormatter;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.search.CitedBound;
 import eu.solven.matmul.search.LineageReplayer;

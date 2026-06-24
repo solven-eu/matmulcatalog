@@ -14,8 +14,8 @@ import eu.solven.matmul.papers.strassen1969.Strassen7;
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.Compose;
 import eu.solven.matmul.catalog.Compositions;
-import eu.solven.matmul.catalog.Recombination;
-import eu.solven.matmul.catalog.Recombination.AlgorithmLookup;
+import eu.solven.matmul.recombination.Recombination;
+import eu.solven.matmul.recombination.Recombination.AlgorithmLookup;
 
 /**
  * Validates the constructive recombination: given a base algorithm + a lookup

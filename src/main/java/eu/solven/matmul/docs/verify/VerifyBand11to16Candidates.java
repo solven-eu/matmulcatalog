@@ -1,6 +1,6 @@
 package eu.solven.matmul.docs.verify;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.Optional;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
-import eu.solven.matmul.search.BlockSplitSearch;
-import eu.solven.matmul.search.BlockSplitSearch.NamedBase;
-import eu.solven.matmul.search.BlockSplitSearch.NonCubicStrategy;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch.NamedBase;
+import eu.solven.matmul.recombination.BlockSplitSearch.NonCubicStrategy;
 import eu.solven.matmul.search.PoolConfig;
 import eu.solven.matmul.search.RecursiveClosureSota;
 import eu.solven.matmul.search.RecursiveMaterialiser;

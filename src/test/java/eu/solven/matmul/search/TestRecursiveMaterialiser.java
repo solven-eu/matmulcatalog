@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
@@ -11,7 +13,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 public class TestRecursiveMaterialiser {
 

@@ -1,5 +1,7 @@
 package eu.solven.matmul.catalog;
 
+import eu.solven.matmul.recombination.Recombination;
+
 import eu.solven.matmul.search.ConcatSplitSearch;
 
 import static org.assertj.core.api.Assertions.assertThat;

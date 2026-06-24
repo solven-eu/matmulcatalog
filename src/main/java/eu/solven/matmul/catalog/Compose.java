@@ -538,7 +538,7 @@ public final class Compose {
 	 *                               from {@code lookup}.
 	 */
 	public static NonCubicBilinearAlgorithm blockSplitCubic(int n, int u, int v,
-			eu.solven.matmul.catalog.Recombination.AlgorithmLookup lookup) {
+			eu.solven.matmul.recombination.Recombination.AlgorithmLookup lookup) {
 		if (u + v != n || u < 1 || v < 1) {
 			throw new IllegalArgumentException("require u + v = n, both ≥ 1; got u=" + u + ", v=" + v + ", n=" + n);
 		}

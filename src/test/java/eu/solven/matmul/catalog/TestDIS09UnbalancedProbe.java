@@ -16,8 +16,8 @@ import eu.solven.matmul.AxisSplitBases;
 import eu.solven.matmul.papers.laderman1976.Laderman23;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.SymmetryTransforms;
-import eu.solven.matmul.search.BlockSplitSearch;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.BlockSplitSearch;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 
 /**

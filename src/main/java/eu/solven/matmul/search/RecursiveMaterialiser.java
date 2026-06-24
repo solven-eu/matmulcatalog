@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -15,7 +17,7 @@ import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.Compose;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 import lombok.extern.slf4j.Slf4j;
 

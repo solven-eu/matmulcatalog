@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import eu.solven.matmul.papers.rosowski2019.RosowskiBound;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.io.IOException;
 import java.nio.file.Files;

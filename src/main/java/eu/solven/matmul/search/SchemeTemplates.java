@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 /**
  * Cache of per-scheme "symbolic templates" — the per-product block-support

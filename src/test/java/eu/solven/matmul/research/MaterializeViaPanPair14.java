@@ -10,7 +10,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
-import eu.solven.matmul.catalog.RecombinationWithPair;
+import eu.solven.matmul.recombination.RecombinationWithPair;
 import eu.solven.matmul.catalog.SchemeIO;
 
 /**

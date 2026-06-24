@@ -1,4 +1,4 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.recombination;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -266,21 +266,27 @@ public final class RecombinationMultisetOrbit {
 		int[][][] V = reshape(seed.denseV(), r, m, p); // V[k] is m×p
 		int[][][] W = reshape(seed.denseW(), r, n, p); // W[k] is n×p
 
-		Set<int[]> nPat = axisPatterns(n, r, dirBound, (X, adjX, k) -> {
+		// The three axes are independent (each sub-dimension depends on only one of
+		// X,Y,Z — see class javadoc), so enumerate them concurrently. Each axis sweep
+		// is itself internally parallel over the leading odometer entry.
+		var fNPat = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisPatterns(n, r, dirBound, (X, adjX, k) -> {
 			int uMin = minRowNonZero_leftCols(X, U[k]); // rows of XᵀU_k
 			int wMin = minRowNonZero_dualRows(adjX, W[k]); // rows of X⁻¹W_k
 			return Math.max(uMin, wMin);
-		});
-		Set<int[]> mPat = axisPatterns(m, r, dirBound, (Y, adjY, k) -> {
+		}));
+		var fMPat = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisPatterns(m, r, dirBound, (Y, adjY, k) -> {
 			int uMin = minColNonZero_rightRows(U[k], Y); // cols of XᵀU_kYᵀ ← U_k·(rows of Y)
 			int vMin = minRowNonZero_dualColsLeft(adjY, V[k]); // rows of Y⁻ᵀV_k
 			return Math.max(uMin, vMin);
-		});
-		Set<int[]> pPat = axisPatterns(p, r, dirBound, (Z, adjZ, k) -> {
+		}));
+		var fPPat = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisPatterns(p, r, dirBound, (Z, adjZ, k) -> {
 			int vMin = minColNonZero_rightRows(V[k], Z); // cols of …V_kZᵀ ← V_k·(rows of Z)
 			int wMin = minColNonZero_dualCols(W[k], adjZ); // cols of …W_kZ⁻¹ ← W_k·(cols of adjZ)
 			return Math.max(vMin, wMin);
-		});
+		}));
+		Set<int[]> nPat = fNPat.join();
+		Set<int[]> mPat = fMPat.join();
+		Set<int[]> pPat = fPPat.join();
 
 		int[][] stabilizer = shapeStabilizer(n, m, p);
 
@@ -306,6 +312,302 @@ public final class RecombinationMultisetOrbit {
 		return res;
 	}
 
+	/**
+	 * <b>Structural (GL-free) enumeration.</b> Same {@link Result} as {@link #enumerate},
+	 * but instead of an integer odometer over all of {@code GL(d)} it sweeps only flags
+	 * whose columns are drawn from a finite <i>candidate-direction</i> set derived from the
+	 * base's own factors: the footprint columns/rows that the index functions test against,
+	 * plus the coordinate axes and small generic directions (for the "avoid the footprint"
+	 * cells). The index pattern is piecewise-constant and jumps only when a flag step crosses
+	 * a footprint subspace, so a representative flag per arrangement cell suffices.
+	 *
+	 * <p>Cost is {@code C·(C−1)···(C−d+1)} flags (C = #candidates ≈ O(r·d)) instead of
+	 * {@code (2·bound+1)^(d²)} — e.g. ⟨2,4,4⟩ drops from {@code 9^16≈2e15} to ~1e8.
+	 *
+	 * <p><b>Optimality tier.</b> Provably complete for {@code d≤2} (footprint lines + one
+	 * generic are the only critical directions). For {@code d≥3} it is
+	 * <i>candidate-complete, not proven exhaustive</i> — treat as a <b>bound</b> until
+	 * {@link #structuralMatchesGl} certifies it against the GL oracle for that base. The
+	 * caller (and the test) cross-check the two on every shape where {@link #enumerate} is
+	 * still tractable (⟨2,2,2⟩, ⟨2,2,3⟩, ⟨2,3,3⟩); a match there licenses trusting it where
+	 * the odometer cannot run (⟨2,4,4⟩+).
+	 */
+	public static Result enumerateStructural(NonCubicBilinearAlgorithm seed, int genericBound) {
+		int n = seed.n, m = seed.m, p = seed.p, r = seed.r;
+		int[][][] U = reshape(seed.denseU(), r, n, m); // U[k] is n×m
+		int[][][] V = reshape(seed.denseV(), r, m, p); // V[k] is m×p
+		int[][][] W = reshape(seed.denseW(), r, n, p); // W[k] is n×p
+
+		AxisCands cand = buildAxisCandidates(U, V, W, r, n, m, p, genericBound);
+
+		// Flag orientation: the n-axis index reads COLUMNS of X (col_i = flag vector); the m/p
+		// axes read ROWS of Y/Z (row_j = flag vector). So candidates are placed as columns for
+		// n, as rows for m/p — otherwise the swept flag vectors are not the candidate directions.
+		var fNPat = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisPatternsStructural(n, r, cand.n, false, (X, adjX, k) ->
+				Math.max(minRowNonZero_leftCols(X, U[k]), minRowNonZero_dualRows(adjX, W[k]))));
+		var fMPat = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisPatternsStructural(m, r, cand.m, true, (Y, adjY, k) ->
+				Math.max(minColNonZero_rightRows(U[k], Y), minRowNonZero_dualColsLeft(adjY, V[k]))));
+		var fPPat = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisPatternsStructural(p, r, cand.p, true, (Z, adjZ, k) ->
+				Math.max(minColNonZero_rightRows(V[k], Z), minColNonZero_dualCols(W[k], adjZ))));
+		Set<int[]> nPat = fNPat.join();
+		Set<int[]> mPat = fMPat.join();
+		Set<int[]> pPat = fPPat.join();
+
+		int[][] stabilizer = shapeStabilizer(n, m, p);
+		Result res = new Result();
+		res.n = n; res.m = m; res.p = p; res.dirBound = genericBound;
+		res.perAxisPatternCounts = new int[] { nPat.size(), mPat.size(), pPat.size() };
+		for (int[] np : nPat)
+			for (int[] mp : mPat)
+				for (int[] pp : pPat) {
+					res.combinations++;
+					int[][] shapes = new int[r][3];
+					for (int k = 0; k < r; k++) { shapes[k][0] = np[k]; shapes[k][1] = mp[k]; shapes[k][2] = pp[k]; }
+					String key = canonicalKey(shapes, stabilizer);
+					if (res.canonicalMultisets.add(key)) res.representativeShapes.put(key, shapes);
+				}
+		return res;
+	}
+
+	/** True iff structural and GL enumeration yield the same canonical multiset set (the oracle check). */
+	public static boolean structuralMatchesGl(NonCubicBilinearAlgorithm seed, int glBound, int genericBound) {
+		return enumerate(seed, glBound).canonicalMultisets
+				.equals(enumerateStructural(seed, genericBound).canonicalMultisets);
+	}
+
+	/**
+	 * <b>Frontier-only structural enumeration — the {@code d=4}-capable path.</b> Prunes each
+	 * axis to its pointwise-maximal antichain ({@link #axisFrontierStructural}) before combining,
+	 * so the intractable full canonical set (the {@code |nPat|·|mPat|·|pPat|} triple product that
+	 * OOMs at {@code d=4}) is never materialised. Returns the {@link Result#dominanceFrontier()}
+	 * of the combined per-axis frontiers — identical to {@code enumerate(...).dominanceFrontier()}
+	 * wherever the GL oracle is tractable (validated on ⟨2,2,2⟩, ⟨2,2,3⟩, ⟨2,3,3⟩).
+	 *
+	 * <p>The returned {@link Result#canonicalMultisets} holds the combined per-axis-frontier
+	 * candidates (a frontier superset), NOT the full canonical set — read {@link Result#dominanceFrontier()}.
+	 */
+	public static Result enumerateStructuralFrontier(NonCubicBilinearAlgorithm seed, int genericBound) {
+		int n = seed.n, m = seed.m, p = seed.p, r = seed.r;
+		int[][][] U = reshape(seed.denseU(), r, n, m);
+		int[][][] V = reshape(seed.denseV(), r, m, p);
+		int[][][] W = reshape(seed.denseW(), r, n, p);
+
+		AxisCands cand = buildAxisCandidates(U, V, W, r, n, m, p, genericBound);
+
+		var fN = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisFrontierStructural(n, r, cand.n, false, (X, adjX, k) ->
+				Math.max(minRowNonZero_leftCols(X, U[k]), minRowNonZero_dualRows(adjX, W[k]))));
+		var fM = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisFrontierStructural(m, r, cand.m, true, (Y, adjY, k) ->
+				Math.max(minColNonZero_rightRows(U[k], Y), minRowNonZero_dualColsLeft(adjY, V[k]))));
+		var fP = java.util.concurrent.CompletableFuture.supplyAsync(() -> axisFrontierStructural(p, r, cand.p, true, (Z, adjZ, k) ->
+				Math.max(minColNonZero_rightRows(V[k], Z), minColNonZero_dualCols(W[k], adjZ))));
+		List<int[]> nPat = fN.join(), mPat = fM.join(), pPat = fP.join();
+
+		int[][] stabilizer = shapeStabilizer(n, m, p);
+		Result res = new Result();
+		res.n = n; res.m = m; res.p = p; res.dirBound = genericBound;
+		res.perAxisPatternCounts = new int[] { nPat.size(), mPat.size(), pPat.size() };
+		for (int[] np : nPat)
+			for (int[] mp : mPat)
+				for (int[] pp : pPat) {
+					res.combinations++;
+					int[][] shapes = new int[r][3];
+					for (int k = 0; k < r; k++) { shapes[k][0] = np[k]; shapes[k][1] = mp[k]; shapes[k][2] = pp[k]; }
+					String key = canonicalKey(shapes, stabilizer);
+					if (res.canonicalMultisets.add(key)) res.representativeShapes.put(key, shapes);
+				}
+		return res;
+	}
+
+	/** Column {@code c} of an {@code rows×cols} integer matrix, as a length-{@code rows} vector. */
+	private static int[] col(int[][] M, int c, int rows) {
+		int[] v = new int[rows];
+		for (int i = 0; i < rows; i++) v[i] = M[i][c];
+		return v;
+	}
+
+	/**
+	 * Finite candidate flag-direction set for one axis: the footprint directions (deduped
+	 * by ray), the coordinate axes, and every nonzero {@code {−g..g}^dim} generic (deduped
+	 * by ray). Zero and parallel duplicates are dropped — only the ray matters to a flag.
+	 */
+	/** The three per-axis candidate-direction lists for a base. */
+	private static final class AxisCands { List<int[]> n, m, p; }
+
+	/** Build per-axis candidate flag directions (arrangement-aware) for both structural entry points. */
+	private static AxisCands buildAxisCandidates(int[][][] U, int[][][] V, int[][][] W, int r, int n, int m, int p, int gen) {
+		// Per axis, per product: the A-constraint set (its span's COMPLEMENT is the uMin subspace
+		// A_k) and the S-constraint set (its SPAN is the wMin subspace S_k). See the axis table in
+		// enumerate(): n-axis ← cols(U),cols(W); m-axis ← rows(U),cols(V); p-axis ← rows(V),rows(W).
+		List<List<int[]>> nA = new ArrayList<>(), nS = new ArrayList<>();
+		List<List<int[]>> mA = new ArrayList<>(), mS = new ArrayList<>();
+		List<List<int[]>> pA = new ArrayList<>(), pS = new ArrayList<>();
+		for (int k = 0; k < r; k++) {
+			List<int[]> nAc = new ArrayList<>(), nSc = new ArrayList<>();
+			for (int c = 0; c < m; c++) nAc.add(col(U[k], c, n)); // cols of U_k
+			for (int c = 0; c < p; c++) nSc.add(col(W[k], c, n)); // cols of W_k
+			nA.add(nAc); nS.add(nSc);
+
+			List<int[]> mAc = new ArrayList<>(), mSc = new ArrayList<>();
+			for (int i = 0; i < n; i++) mAc.add(U[k][i].clone()); // rows of U_k
+			for (int c = 0; c < p; c++) mSc.add(col(V[k], c, m)); // cols of V_k
+			mA.add(mAc); mS.add(mSc);
+
+			List<int[]> pAc = new ArrayList<>(), pSc = new ArrayList<>();
+			for (int l = 0; l < m; l++) pAc.add(V[k][l].clone()); // rows of V_k
+			for (int i = 0; i < n; i++) pSc.add(W[k][i].clone()); // rows of W_k
+			pA.add(pAc); pS.add(pSc);
+		}
+		AxisCands c = new AxisCands();
+		c.n = candidateFlagDirections(n, gen, nA, nS);
+		c.m = candidateFlagDirections(m, gen, mA, mS);
+		c.p = candidateFlagDirections(p, gen, pA, pS);
+		return c;
+	}
+
+	/**
+	 * Candidate flag directions for one axis. Includes: the footprint columns themselves (land-ON
+	 * cells), the coordinate axes, provably-generic Vandermonde directions (avoid every footprint),
+	 * and — the part a dense cube only approximated — a generic basis of every member of the
+	 * footprint <b>arrangement lattice</b>: the {@code A_k = constraintᗮ} closed under intersection
+	 * (so a flag prefix can sit inside any ∩A_k, raising {@code uMin}) and the {@code S_k = span}
+	 * closed under sum (so a flag tail can contain any ΣS_k, raising {@code wMin}).
+	 */
+	private static List<int[]> candidateFlagDirections(int dim, int genericBound,
+			List<List<int[]>> aConstraints, List<List<int[]>> sConstraints) {
+		Map<String, int[]> byRay = new LinkedHashMap<>();
+		int maxCoef = 1;
+		for (List<int[]> set : aConstraints) for (int[] v : set) { addRay(byRay, v); for (int x : v) maxCoef = Math.max(maxCoef, Math.abs(x)); }
+		for (List<int[]> set : sConstraints) for (int[] v : set) { addRay(byRay, v); for (int x : v) maxCoef = Math.max(maxCoef, Math.abs(x)); }
+		for (int i = 0; i < dim; i++) { int[] e = new int[dim]; e[i] = 1; addRay(byRay, e); }
+		int t = maxCoef + 1 + Math.max(0, genericBound - 1);
+
+		// A-side lattice: complements closed under intersection (raise uMin). Generic basis of each
+		// member so a flag prefix can sit generically inside it. (A joint ∩+ closure of both sides
+		// would capture the residual mixed cells too, but it ballooned the candidate set and
+		// regressed even d=3 — reverted; per-side is fast and frontier-exact for AT-Z ⟨2,2,3⟩.)
+		List<List<int[]>> aSubs = new ArrayList<>();
+		for (List<int[]> set : aConstraints) { List<int[]> nul = SubspaceArrangement.nullspace(set, dim); if (!nul.isEmpty()) aSubs.add(nul); }
+		addLatticeGenerics(byRay, SubspaceArrangement.closure(aSubs, dim, true), dim, t);
+		// S-side lattice: spans closed under sum (raise wMin). Generic basis of each member for the tail.
+		List<List<int[]>> sSubs = new ArrayList<>();
+		for (List<int[]> set : sConstraints) { List<int[]> b = SubspaceArrangement.basisOf(set, dim); if (!b.isEmpty()) sSubs.add(b); }
+		addLatticeGenerics(byRay, SubspaceArrangement.closure(sSubs, dim, false), dim, t);
+
+		// Full-space Vandermonde generics (forward + reversed nodes) for the generic-position cells.
+		for (int s = 0; s < 2 * dim + 2; s++) {
+			int tt = t + s;
+			int[] vandF = new int[dim], vandR = new int[dim];
+			long pw = 1;
+			for (int i = 0; i < dim; i++) { vandF[i] = (int) pw; vandR[dim - 1 - i] = (int) pw; pw *= tt; }
+			addRay(byRay, vandF); addRay(byRay, vandR);
+		}
+		return new ArrayList<>(byRay.values());
+	}
+
+	/** For each lattice subspace add a generic basis (dim(member) independent generic-in vectors). */
+	private static void addLatticeGenerics(Map<String, int[]> byRay, List<List<int[]>> members, int dim, int t) {
+		for (List<int[]> sub : members) {
+			if (sub.isEmpty()) continue;
+			for (int[] b : sub) addRay(byRay, b); // the canonical basis vectors (land-on directions)
+			for (int s = 0; s <= sub.size(); s++) addRay(byRay, SubspaceArrangement.genericIn(sub, dim, t + s)); // generic basis within
+		}
+	}
+
+	/** Add a vector to the ray-map under its canonical (sign- and gcd-normalised) key; skip zero. */
+	private static void addRay(Map<String, int[]> byRay, int[] v) {
+		if (v == null) return;
+		int gg = 0, firstSign = 0;
+		for (int x : v) { gg = gcd(gg, Math.abs(x)); if (firstSign == 0 && x != 0) firstSign = x > 0 ? 1 : -1; }
+		if (gg == 0) return; // zero vector
+		int[] red = new int[v.length];
+		for (int i = 0; i < v.length; i++) red[i] = firstSign * v[i] / gg;
+		byRay.putIfAbsent(Arrays.toString(red), red);
+	}
+
+	private static int gcd(int a, int b) { while (b != 0) { int t = a % b; a = b; b = t; } return Math.abs(a); }
+
+	/**
+	 * Structural per-axis sweep: enumerate distinct index patterns over all ordered,
+	 * independent {@code dim}-tuples of {@code candidates} (used as the columns of the
+	 * change-of-basis M). No integer odometer over GL.
+	 */
+	private static Set<int[]> axisPatternsStructural(int dim, int r, List<int[]> candidates, boolean asRows, AxisIndex fn) {
+		Map<String, int[]> patterns = new LinkedHashMap<>();
+		int[][] cols = new int[dim][];
+		structuralRec(0, dim, r, candidates, cols, asRows, fn, patterns, null);
+		return new LinkedHashSet<>(patterns.values());
+	}
+
+	/**
+	 * Like {@link #axisPatternsStructural} but stores ONLY the pointwise-maximal antichain of
+	 * index patterns ({@code A} kept iff no other {@code B} has {@code B[k] ≥ A[k] ∀k} — a
+	 * larger index is a smaller, cheaper block). Sound for the combined frontier: a multiset
+	 * using a per-axis-dominated pattern is itself dominated (swap in the dominating axis pattern
+	 * — identity matching makes it cheaper on this axis, equal on the others). This keeps memory
+	 * bounded at {@code d=4}, where the full per-axis set is intractable to store.
+	 */
+	private static List<int[]> axisFrontierStructural(int dim, int r, List<int[]> candidates, boolean asRows, AxisIndex fn) {
+		List<int[]> antichain = new ArrayList<>();
+		int[][] cols = new int[dim][];
+		structuralRec(0, dim, r, candidates, cols, asRows, fn, null, antichain);
+		return antichain;
+	}
+
+	private static void structuralRec(int depth, int dim, int r, List<int[]> cand, int[][] cols, boolean asRows,
+			AxisIndex fn, Map<String, int[]> patterns, List<int[]> antichain) {
+		if (depth == dim) {
+			int[][] M = new int[dim][dim];
+			// cols[j] is the j-th chosen flag vector. Placed as columns (n-axis: index reads
+			// col_i(M)) or as rows (m/p-axes: index reads row_j(M)).
+			for (int j = 0; j < dim; j++) for (int i = 0; i < dim; i++) {
+				if (asRows) M[j][i] = cols[j][i]; else M[i][j] = cols[j][i];
+			}
+			if (determinant(M) == 0) return;
+			int[][] adjM = adjugate(M);
+			int[] pat = new int[r];
+			for (int k = 0; k < r; k++) pat[k] = fn.idx(M, adjM, k);
+			if (patterns != null) {
+				patterns.putIfAbsent(Arrays.toString(pat), pat);
+			} else {
+				insertMaximal(antichain, pat); // keep only the pointwise-maximal antichain
+			}
+			return;
+		}
+		for (int[] c : cand) {
+			cols[depth] = c;
+			if (independentPrefix(cols, depth + 1, dim)) structuralRec(depth + 1, dim, r, cand, cols, asRows, fn, patterns, antichain);
+		}
+	}
+
+	/** Insert {@code p} into a pointwise-maximal antichain: skip if dominated, else drop those it dominates. */
+	private static void insertMaximal(List<int[]> antichain, int[] p) {
+		for (int[] q : antichain) if (dominatesPointwise(q, p)) return; // q ⪰ p → p not maximal
+		antichain.removeIf(q -> dominatesPointwise(p, q)); // p ⪰ q → q no longer maximal
+		antichain.add(p.clone());
+	}
+
+	/** True iff {@code a[k] ≥ b[k]} for all k (a is pointwise no-more-expensive than b). */
+	private static boolean dominatesPointwise(int[] a, int[] b) {
+		for (int k = 0; k < a.length; k++) if (a[k] < b[k]) return false;
+		return true;
+	}
+
+	/** True iff the first {@code len} chosen columns are linearly independent (rational rank == len). */
+	private static boolean independentPrefix(int[][] cols, int len, int dim) {
+		double[][] A = new double[dim][len];
+		for (int j = 0; j < len; j++) for (int i = 0; i < dim; i++) A[i][j] = cols[j][i];
+		int rank = 0;
+		for (int j = 0; j < len; j++) {
+			int piv = -1;
+			for (int i = rank; i < dim; i++) if (Math.abs(A[i][j]) > 1e-9) { piv = i; break; }
+			if (piv < 0) return false; // column j dependent on earlier ones
+			double[] tmp = A[piv]; A[piv] = A[rank]; A[rank] = tmp;
+			for (int i = 0; i < dim; i++) if (i != rank) { double f = A[i][j] / A[rank][j]; for (int c = j; c < len; c++) A[i][c] -= f * A[rank][c]; }
+			rank++;
+		}
+		return rank == len;
+	}
+
 	/** True iff {@code enumerate} yields the same multiset set at {@code dirBound} and {@code dirBound+1}. */
 	public static boolean isStable(NonCubicBilinearAlgorithm seed, int dirBound) {
 		return enumerate(seed, dirBound).canonicalMultisets
@@ -319,19 +621,38 @@ public final class RecombinationMultisetOrbit {
 		int idx(int[][] M, int[][] adjM, int k);
 	}
 
-	/** Distinct block-index patterns (one {@code int[r]} per realisable pattern) over invertible M. */
+	/**
+	 * Distinct block-index patterns (one {@code int[r]} per realisable pattern) over
+	 * invertible M. The odometer over every {@code dim×dim} integer matrix is
+	 * {@code (2·bound+1)^(dim²)} — embarrassingly parallel, so we split on the leading
+	 * entry {@code M[0][0]} and sweep the rest in {@code (2·bound+1)} concurrent branches,
+	 * each with a thread-local dedup map, merged at the end. (Constant — core-count —
+	 * speedup only; it does <i>not</i> beat the {@code dim²} exponent: a dim-4 axis at
+	 * bound 4 is {@code 9^16≈2e15} regardless. That needs critical-direction enumeration,
+	 * not more threads.)
+	 */
 	private static Set<int[]> axisPatterns(int dim, int r, int bound, AxisIndex fn) {
-		Set<String> seenKeys = new java.util.HashSet<>();
-		Set<int[]> patterns = new LinkedHashSet<>();
-		int[][] M = new int[dim][dim];
-		sweep(M, 0, 0, bound, () -> {
-			if (determinant(M) == 0) return;
-			int[][] adjM = adjugate(M);
-			int[] pat = new int[r];
-			for (int k = 0; k < r; k++) pat[k] = fn.idx(M, adjM, k);
-			if (seenKeys.add(Arrays.toString(pat))) patterns.add(pat);
-		});
-		return patterns;
+		Map<String, int[]> merged = java.util.stream.IntStream.rangeClosed(-bound, bound).parallel()
+				.mapToObj(v0 -> {
+					int[][] M = new int[dim][dim];
+					M[0][0] = v0;
+					Map<String, int[]> local = new java.util.HashMap<>();
+					Sink eval = () -> {
+						if (determinant(M) == 0) return;
+						int[][] adjM = adjugate(M);
+						int[] pat = new int[r];
+						for (int k = 0; k < r; k++) pat[k] = fn.idx(M, adjM, k);
+						local.putIfAbsent(Arrays.toString(pat), pat);
+					};
+					if (dim == 1) {
+						eval.accept(); // 1×1: the single entry is already pinned
+					} else {
+						sweep(M, 0, 1, bound, eval); // continue the odometer past the pinned M[0][0]
+					}
+					return local;
+				})
+				.collect(java.util.HashMap::new, Map::putAll, Map::putAll);
+		return new LinkedHashSet<>(merged.values());
 	}
 
 	private interface Sink { void accept(); }

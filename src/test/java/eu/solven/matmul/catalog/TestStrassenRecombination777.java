@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.Verifier;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.catalog.Recombination.AlgorithmLookup;
+import eu.solven.matmul.recombination.Recombination.AlgorithmLookup;
 
 /**
  * Probes whether {@link Recombination#construct} on Strassen ⟨2,2,2⟩ base

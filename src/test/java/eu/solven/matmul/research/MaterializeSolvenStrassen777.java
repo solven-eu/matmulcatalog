@@ -7,7 +7,7 @@ import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
 import eu.solven.matmul.catalog.LineageTrackingLookup;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 
 /** Cascade-materialise small cubics that benefit from FMM ⟨4,4,4⟩=48 leaf. */

@@ -1,11 +1,13 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.recombination;
+
+import eu.solven.matmul.search.SearchBudget;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
-import eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 
 /**
  * Finds the allocation (block-split of a target ⟨N,M,P⟩ along a base scheme
@@ -84,6 +86,18 @@ public final class AllocationOptimizer {
 	 */
 	public static Result optimize(NonCubicBilinearAlgorithm base, SotaResolver rawSota,
 			int N, int M, int P, SearchBudget budget, IncumbentTrace trace) {
+		return optimize(SchemeSupports.extract(base), rawSota, N, M, P, budget, trace);
+	}
+
+	/**
+	 * Optimise the allocation for an explicit {@link SchemeSupports} — the seam that lets a
+	 * recombination-multiset (from {@link RecombinationMultisetOrbit}, via
+	 * {@link SchemeSupports#fromResolvedIndices}) be costed and allocation-minimised without an
+	 * actual scheme, so a caller can sweep the whole GL-orbit dominance FRONTIER of supports
+	 * (not just a base's native one) and keep the cheapest.
+	 */
+	public static Result optimize(SchemeSupports sup, SotaResolver rawSota,
+			int N, int M, int P, SearchBudget budget, IncumbentTrace trace) {
 		long upperBound = budget.upperBound();
 		long maxNodes = budget.maxNodes();
 		long maxNodesWithoutImprovement = budget.maxNodesWithoutImprovement();
@@ -101,8 +115,7 @@ public final class AllocationOptimizer {
 			rankMemo.put(key, rr);
 			return rr;
 		};
-		SchemeSupports sup = SchemeSupports.extract(base);
-		int bn = base.n, bm = base.m, bp = base.p, r = base.r;
+		int bn = sup.n, bm = sup.m, bp = sup.p, r = sup.r;
 
 		// Per-product "touches every block on this axis" flags (drives the LB):
 		// a free axis dim is forced ≥ ⌈T/b⌉ only when BOTH relevant supports are full.

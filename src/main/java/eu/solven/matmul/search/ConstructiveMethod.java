@@ -3,7 +3,7 @@ package eu.solven.matmul.search;
 import java.util.Optional;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * Unified interface for every closed-form / formula-driven matmul
@@ -77,7 +77,7 @@ public interface ConstructiveMethod {
 	 * @return the algorithm, or empty
 	 */
 	default Optional<NonCubicBilinearAlgorithm> construct(int n, int m, int p,
-			eu.solven.matmul.catalog.Recombination.AlgorithmLookup atoms) {
+			eu.solven.matmul.recombination.Recombination.AlgorithmLookup atoms) {
 		return Optional.empty();
 	}
 

@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -15,7 +17,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.Compose;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.JsonNode;
@@ -205,7 +207,7 @@ public final class LineageReplayer {
 	}
 
 	/** Replay a {@link Lineage.RecombinationTaN}: rebuild via {@link
-	 *  eu.solven.matmul.catalog.Recombination#constructWithTaFusion} on the replayed
+	 *  eu.solven.matmul.recombination.Recombination#constructWithTaFusion} on the replayed
 	 *  naïve-grid base, resolving each unpaired leaf from the stored NC-pinned nodes by
 	 *  sorted-shape key (re-oriented), and re-deriving the fused pairs deterministically. */
 	private NonCubicBilinearAlgorithm replayRecombinationTa(Lineage.RecombinationTaN r,
@@ -218,7 +220,7 @@ public final class LineageReplayer {
 			java.util.Arrays.sort(s);
 			leafByShape.put(s[0] + "x" + s[1] + "x" + s[2], la);
 		}
-		eu.solven.matmul.catalog.Recombination.SubResolver resolveSub = (sz) -> {
+		eu.solven.matmul.recombination.Recombination.SubResolver resolveSub = (sz) -> {
 			int[] k = { sz[0], sz[1], sz[2] };
 			java.util.Arrays.sort(k);
 			NonCubicBilinearAlgorithm la = leafByShape.get(k[0] + "x" + k[1] + "x" + k[2]);
@@ -227,8 +229,8 @@ public final class LineageReplayer {
 			}
 			return la.orientAs(sz[0], sz[1], sz[2]).orElse(la);
 		};
-		eu.solven.matmul.catalog.Recombination.SotaResolver sota = (a, b, c) -> lookup.findRank(a, b, c);
-		return eu.solven.matmul.catalog.Recombination.constructWithTaFusion(
+		eu.solven.matmul.recombination.Recombination.SotaResolver sota = (a, b, c) -> lookup.findRank(a, b, c);
+		return eu.solven.matmul.recombination.Recombination.constructWithTaFusion(
 				baseAlg, resolveSub, sota, r.allocA(), r.allocB(), r.allocC()).alg();
 	}
 

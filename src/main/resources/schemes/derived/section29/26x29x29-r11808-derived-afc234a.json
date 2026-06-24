@@ -1,0 +1,24 @@
+{
+  "lineage_str": "ConcatCols(naive-26x29x1, OrientAs(26x28x29, ⟨26,29,28⟩))",
+  "lineage_compact": "naive-26x29x1 +p 26x28x29→⟨26,29,28⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-26x29x1"},
+    "right": {
+      "op": "OrientAs",
+      "n": 26,
+      "m": 29,
+      "p": 28,
+      "child": {"op": "Atom", "ref": "26x28x29@44f86418bc4bf3a869c80cc1a0a64fa9ca14e0390e09c7830773497c9734cc82"}
+    }
+  },
+  "n": [26, 29, 29],
+  "m": 11808,
+  "hash": "afc234a3800cbe6c8b9be180ac94480c5e0d72d362a0054a2065a5602ce55ddd",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

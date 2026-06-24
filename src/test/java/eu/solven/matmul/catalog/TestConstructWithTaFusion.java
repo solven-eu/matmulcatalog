@@ -1,5 +1,7 @@
 package eu.solven.matmul.catalog;
 
+import eu.solven.matmul.recombination.Recombination;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;

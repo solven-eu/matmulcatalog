@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
-import eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 
 /**
  * The "support-pattern histogram" of a base scheme — the generic-formula

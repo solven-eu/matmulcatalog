@@ -1,4 +1,4 @@
-package eu.solven.matmul.catalog;
+package eu.solven.matmul.recombination;
 
 import eu.solven.matmul.papers.pan1978.PanPairProduct;
 

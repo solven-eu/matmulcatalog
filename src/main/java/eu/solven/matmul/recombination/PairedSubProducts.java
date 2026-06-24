@@ -1,4 +1,4 @@
-package eu.solven.matmul.catalog;
+package eu.solven.matmul.recombination;
 
 import java.util.Arrays;
 

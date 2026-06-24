@@ -5,8 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
-import eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 
 /**
  * Per-axis support fingerprint — the granularity that actually compresses

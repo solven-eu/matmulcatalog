@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * Exact single-base allocation optimiser organised as <b>partition + assignment</b>

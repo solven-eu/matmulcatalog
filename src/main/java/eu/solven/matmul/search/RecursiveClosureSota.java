@@ -1,8 +1,10 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.util.HashMap;
 import java.util.List;

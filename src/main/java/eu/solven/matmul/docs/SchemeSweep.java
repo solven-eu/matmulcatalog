@@ -27,9 +27,9 @@ import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.CatalogLimits;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.ConcatSplitSearch;
 import eu.solven.matmul.search.CitedBound;
 import eu.solven.matmul.search.PoolConfig;
@@ -1083,21 +1083,21 @@ public final class SchemeSweep {
 				case "optimizer" -> {
 					// flat (default) = AllocationOptimizer; assignment = partition+assignment B&B.
 					switch (value.toLowerCase(java.util.Locale.ROOT)) {
-						case "flat", "allocation" -> eu.solven.matmul.search.BlockSplitSearch.USE_ASSIGNMENT_OPTIMIZER = false;
-						case "assignment", "partition" -> eu.solven.matmul.search.BlockSplitSearch.USE_ASSIGNMENT_OPTIMIZER = true;
+						case "flat", "allocation" -> eu.solven.matmul.recombination.BlockSplitSearch.USE_ASSIGNMENT_OPTIMIZER = false;
+						case "assignment", "partition" -> eu.solven.matmul.recombination.BlockSplitSearch.USE_ASSIGNMENT_OPTIMIZER = true;
 						default -> throw new IllegalArgumentException(
 								"--optimizer must be 'flat' or 'assignment', got '" + value + "'");
 					}
 				}
 				case "assignmentMaxNodes" ->
-						eu.solven.matmul.search.BlockSplitSearch.ASSIGNMENT_MAX_NODES = Long.parseLong(value);
+						eu.solven.matmul.recombination.BlockSplitSearch.ASSIGNMENT_MAX_NODES = Long.parseLong(value);
 				// Anytime budgets for the default flat AllocationOptimizer path. Make
 				// large-base bands (≥11) terminate fast at a near-optimal rank instead
 				// of paying the unbounded exact proof.
 				case "maxNodes" ->
-						eu.solven.matmul.search.BlockSplitSearch.ALLOC_MAX_NODES = Long.parseLong(value);
+						eu.solven.matmul.recombination.BlockSplitSearch.ALLOC_MAX_NODES = Long.parseLong(value);
 				case "stagnation" ->
-						eu.solven.matmul.search.BlockSplitSearch.ALLOC_STAGNATION = Long.parseLong(value);
+						eu.solven.matmul.recombination.BlockSplitSearch.ALLOC_STAGNATION = Long.parseLong(value);
 				// Write-gate for materialize (a TOP-LEVEL decision only — it does NOT
 				// affect how sub-blocks are resolved inside a composition; see
 				// RecursiveMaterialiser.resolveSubScheme). Two equivalent spellings:

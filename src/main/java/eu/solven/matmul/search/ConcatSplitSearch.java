@@ -2,7 +2,7 @@ package eu.solven.matmul.search;
 
 import eu.solven.matmul.catalog.Compose;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.util.List;
 import java.util.Optional;

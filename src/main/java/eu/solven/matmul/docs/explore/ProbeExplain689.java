@@ -1,6 +1,6 @@
 package eu.solven.matmul.docs.explore;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.util.Arrays;
 

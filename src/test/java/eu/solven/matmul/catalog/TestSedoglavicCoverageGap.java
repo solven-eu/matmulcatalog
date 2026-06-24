@@ -10,8 +10,8 @@ import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
-import eu.solven.matmul.search.BlockSplitSearch;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.BlockSplitSearch;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 
 /**

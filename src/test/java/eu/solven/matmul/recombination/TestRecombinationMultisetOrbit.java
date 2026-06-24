@@ -1,4 +1,5 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.recombination;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 

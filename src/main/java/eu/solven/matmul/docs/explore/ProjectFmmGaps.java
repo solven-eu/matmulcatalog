@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.RecursiveClosureSota;
 import eu.solven.matmul.search.RecursiveMaterialiser;
 import eu.solven.matmul.util.ProgressMonitor;

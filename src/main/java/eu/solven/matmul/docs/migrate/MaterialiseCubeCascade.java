@@ -1,6 +1,6 @@
 package eu.solven.matmul.docs.migrate;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.io.File;
 import java.util.ArrayList;

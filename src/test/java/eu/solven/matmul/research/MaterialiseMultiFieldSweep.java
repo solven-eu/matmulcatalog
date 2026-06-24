@@ -9,7 +9,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.CatalogLimits;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.RecursiveClosureSota;
 import eu.solven.matmul.search.RecursiveMaterialiser;
 

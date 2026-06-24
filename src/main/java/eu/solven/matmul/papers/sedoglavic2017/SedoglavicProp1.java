@@ -1,10 +1,10 @@
 package eu.solven.matmul.papers.sedoglavic2017;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.util.Optional;
 
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * <strong>Sedoglavic 2017 Proposition 1</strong> — the closed-form

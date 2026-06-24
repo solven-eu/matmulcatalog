@@ -1,4 +1,4 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.recombination;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * Fast analytical scoring of axis-flip mask variants for an outer scheme at a
@@ -21,7 +21,7 @@ import eu.solven.matmul.catalog.Recombination.SotaResolver;
  * The block-support structure is fixed; only the allocation labels change.
  *
  * <p>So instead of calling
- * {@link eu.solven.matmul.catalog.Recombination#recombineWithAllocation} eight
+ * {@link eu.solven.matmul.recombination.Recombination#recombineWithAllocation} eight
  * times (one per mask) and re-scanning U/V/W each time, we extract per-product
  * block supports ONCE from the canonical scheme then re-score the 8 mask-
  * permuted allocations in O(r) each.
@@ -86,6 +86,27 @@ public final class AnalyticalMaskSearch {
 			return new SchemeSupports(n, m, p, r, uR, uC, vR, vC, wR, wC);
 		}
 
+		/**
+		 * Build supports that reproduce a RESOLVED recombination multiset (one block-index per
+		 * product per axis, e.g. from {@link RecombinationMultisetOrbit}'s frontier) — each product
+		 * is pinned to a single block on each axis, so {@link #shapesAt} returns exactly
+		 * {@code (allocA[idx_n], allocB[idx_m], allocC[idx_p])}. This lets the allocation optimiser
+		 * cost a GL-orbit support that no on-disk scheme carries natively.
+		 *
+		 * @param multiset {@code [r][3]} of block indices (0 = largest block) per axis.
+		 */
+		public static SchemeSupports fromResolvedIndices(int n, int m, int p, int[][] multiset) {
+			int r = multiset.length;
+			int[][] uR = new int[r][], uC = new int[r][], vR = new int[r][], vC = new int[r][], wR = new int[r][], wC = new int[r][];
+			for (int k = 0; k < r; k++) {
+				int in = multiset[k][0], im = multiset[k][1], ip = multiset[k][2];
+				uR[k] = new int[] { in }; wR[k] = new int[] { in }; // n-axis ← min(U,W) both pinned to in
+				uC[k] = new int[] { im }; vR[k] = new int[] { im }; // m-axis ← min(U,V)
+				vC[k] = new int[] { ip }; wC[k] = new int[] { ip }; // p-axis ← min(V,W)
+			}
+			return new SchemeSupports(n, m, p, r, uR, uC, vR, vC, wR, wC);
+		}
+
 		private static int[] supportRows(double[][] factor, int rank, int rows, int cols) {
 			boolean[] hit = new boolean[rows];
 			int count = 0;
@@ -124,7 +145,7 @@ public final class AnalyticalMaskSearch {
 	/**
 	 * Compute the per-product sub-shape array for {@code supports} at the
 	 * given allocation. Matches the semantics of
-	 * {@link eu.solven.matmul.catalog.Recombination#recombineWithAllocation}
+	 * {@link eu.solven.matmul.recombination.Recombination#recombineWithAllocation}
 	 * with {@code peel = null}: each sub-dim is the {@code min} of the two
 	 * relevant {@code max-over-support} views (U vs W for A, U vs V for B,
 	 * V vs W for C).

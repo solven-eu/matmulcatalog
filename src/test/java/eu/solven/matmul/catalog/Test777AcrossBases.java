@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * Diagnostic — for the {@code ⟨7,7,7⟩} target, evaluate the formula-derived

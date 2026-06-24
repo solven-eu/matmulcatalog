@@ -1,6 +1,6 @@
 package eu.solven.matmul;
 
-import eu.solven.matmul.search.BlockSplitSearch;
+import eu.solven.matmul.recombination.BlockSplitSearch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * generate equivalent algorithms with different U/V/W column-support
  * distributions per axis. When such a variant is used as an outer base in
  * a recursive composition with min-reduction over sub-product shapes
- * (e.g. {@link eu.solven.matmul.search.BlockSplitSearch#findBestMultiBaseSplit}),
+ * (e.g. {@link eu.solven.matmul.recombination.BlockSplitSearch#findBestMultiBaseSplit}),
  * each variant can yield a different total rank — the framework picks the
  * best.</p>
  */
@@ -443,7 +443,7 @@ public final class SymmetryTransforms {
 	 * Apply axis-flip mask {@code (mask&1, mask&2, mask&4)} = (swapA, swapB, swapC)
 	 * to {@code alg}. Mask=0 returns the canonical (no flips); mask=7 flips all
 	 * three axes. Use this when a caller has chosen a mask analytically (e.g.
-	 * via {@link eu.solven.matmul.search.AnalyticalMaskSearch}) and now needs
+	 * via {@link eu.solven.matmul.recombination.AnalyticalMaskSearch}) and now needs
 	 * the actual scheme to materialise.
 	 */
 	public static NonCubicBilinearAlgorithm applyAxisFlipMask(NonCubicBilinearAlgorithm alg, int mask) {
@@ -459,7 +459,7 @@ public final class SymmetryTransforms {
 	 * axis-flip variants of each other have the same canonical form.
 	 *
 	 * <p>Use case: dedup pool entries that are axis-flip-equivalent. With
-	 * {@link eu.solven.matmul.search.AnalyticalMaskSearch} at search time,
+	 * {@link eu.solven.matmul.recombination.AnalyticalMaskSearch} at search time,
 	 * keeping only the canonical avoids redundancy (the search re-derives
 	 * the 8 axis-flip variants analytically per allocation).
 	 */

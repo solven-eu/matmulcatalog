@@ -1,6 +1,6 @@
 package eu.solven.matmul.search;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import eu.solven.matmul.papers.hopcroftkerr1971.HopcroftKerrBound;
 

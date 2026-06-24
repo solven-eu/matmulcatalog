@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-import eu.solven.matmul.catalog.PairedSubProducts;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.PairedSubProducts;
+import eu.solven.matmul.recombination.Recombination;
 
 public class TestPairedSubProducts {
 

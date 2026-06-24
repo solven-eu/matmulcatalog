@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;

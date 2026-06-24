@@ -1,12 +1,14 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.AnalyticalMaskSearch;
+
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 /**
  * Caches per-(scheme, allocation, peel) shape multisets for use by

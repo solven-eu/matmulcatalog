@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.AnalyticalMaskSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
@@ -11,11 +13,11 @@ import org.junit.jupiter.api.Test;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.SymmetryTransforms;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.Recombination;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.search.AnalyticalMaskSearch.MaskCandidate;
-import eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch.MaskCandidate;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 
 /**
  * Tests that {@link AnalyticalMaskSearch} matches brute-force

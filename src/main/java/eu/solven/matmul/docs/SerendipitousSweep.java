@@ -1,6 +1,6 @@
 package eu.solven.matmul.docs;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.io.File;
 import java.nio.file.Files;

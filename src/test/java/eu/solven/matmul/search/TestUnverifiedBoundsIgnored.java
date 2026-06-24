@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -8,9 +10,9 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
-import eu.solven.matmul.search.BlockSplitSearch.NamedBase;
-import eu.solven.matmul.search.BlockSplitSearch.NonCubicStrategy;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.BlockSplitSearch.NamedBase;
+import eu.solven.matmul.recombination.BlockSplitSearch.NonCubicStrategy;
 
 /**
  * The search must not rely on UNVERIFIED (theoretical / formula-only) bounds.

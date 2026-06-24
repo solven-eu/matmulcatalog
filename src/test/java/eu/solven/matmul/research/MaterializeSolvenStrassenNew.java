@@ -11,7 +11,7 @@ import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
 import eu.solven.matmul.catalog.LineageTrackingLookup;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 
 /**
@@ -52,7 +52,7 @@ public final class MaterializeSolvenStrassenNew {
 		// Search uses formula-aware bounds (Pan TA + Hopcroft-Kerr) on top of the
 		// catalog so unmatched leaves get a tighter estimate. Materialisation
 		// still uses `lookup` to find real schemes.
-		eu.solven.matmul.catalog.Recombination.SotaResolver sota =
+		eu.solven.matmul.recombination.Recombination.SotaResolver sota =
 				new eu.solven.matmul.search.CitedBound(lookup, false);
 
 		for (Bound b : bounds) {

@@ -11,9 +11,9 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.papers.strassen1969.Strassen7;
 import eu.solven.matmul.algebra.Algebra;
 import eu.solven.matmul.algebra.Field;
-import eu.solven.matmul.catalog.Recombination;
-import eu.solven.matmul.catalog.Recombination.Result;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination;
+import eu.solven.matmul.recombination.Recombination.Result;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * Tests for the Java port of AlphaTensor's recombination algorithm.

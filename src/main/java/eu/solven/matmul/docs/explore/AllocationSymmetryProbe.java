@@ -1,6 +1,6 @@
 package eu.solven.matmul.docs.explore;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import java.util.TreeMap;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.search.AnalyticalMaskSearch;
-import eu.solven.matmul.search.AnalyticalMaskSearch.SchemeSupports;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch;
+import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 
 /**
  * Anti-symmetry illustration (2026-06-04): does the recombination cost depend on

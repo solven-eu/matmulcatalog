@@ -1,5 +1,7 @@
 package eu.solven.matmul.catalog;
 
+import eu.solven.matmul.recombination.Recombination;
+
 /**
  * CERTIFIED ceiling on the serendipitous saving achievable by single-type
  * bud structure — the "how far are we from optimal" bracket (user 2026-06-11).

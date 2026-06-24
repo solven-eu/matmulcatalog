@@ -3,7 +3,7 @@ package eu.solven.matmul.search;
 import java.util.List;
 import java.util.Optional;
 
-import eu.solven.matmul.catalog.Recombination.SotaResolver;
+import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
  * Parallel registry of {@link ConstructiveMethod} implementations that

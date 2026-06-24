@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ import eu.solven.matmul.SymmetryTransforms;
  * {@link BlockSplitSearch#rootPool} must be in axis-flip canonical form (the
  * lex-min representative of its axis-flip orbit). Axis-flip variants are
  * expanded at search time via {@link BlockSplitSearch#defaultPool} or via
- * {@link eu.solven.matmul.search.AnalyticalMaskSearch}; keeping them in
+ * {@link eu.solven.matmul.recombination.AnalyticalMaskSearch}; keeping them in
  * rootPool would be cost-redundant.
  *
  * <p>Also verifies {@link BlockSplitSearch#defaultPool} restores the

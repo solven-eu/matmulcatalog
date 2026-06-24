@@ -6,8 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import eu.solven.matmul.catalog.PairedSubProducts;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.PairedSubProducts;
+import eu.solven.matmul.recombination.Recombination;
 
 /**
  * τ-theorem-style disjoint-MM-sum decomposition search (Pan 1980 /

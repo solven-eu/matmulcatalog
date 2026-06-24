@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -13,14 +15,14 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 /**
  * Regression guard for rectangular Pan trilinear-aggregation (TA) <em>within</em>
  * decomposition. TA is not a top-level strategy: the two off-diagonal cross-blocks
  * of a symmetric ⟨1,2,2⟩ peel of ⟨N,N+s,N+s⟩ are cyclic rotations and fuse at
  * {@code fusedRank=N·s·N+N·N+N·s+s·N} (= {@link
- * eu.solven.matmul.catalog.PairedSubProducts#pairCost}) instead of the two leaves'
+ * eu.solven.matmul.recombination.PairedSubProducts#pairCost}) instead of the two leaves'
  * summed rank. The canonical case is ⟨26,29,29⟩ = ⟨26,26,26⟩ 8658 + TA(⟨26,3,26⟩,
  * ⟨26,26,3⟩) 2860 + ⟨26,3,3⟩ 175 = <b>11693</b> (FMM parity; our prior best 11808).
  *

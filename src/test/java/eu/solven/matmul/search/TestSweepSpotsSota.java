@@ -1,5 +1,7 @@
 package eu.solven.matmul.search;
 
+import eu.solven.matmul.recombination.BlockSplitSearch;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Files;
@@ -196,6 +198,28 @@ public class TestSweepSpotsSota {
 	 * silently returned an empty pool after the known/derived/curated split,
 	 * crippling the search; this guards against that regression.
 	 */
+	/**
+	 * Recombination pool must keep CONTENT-distinct bases at the same (shape, rank), not
+	 * dedup to one. Two different ⟨2,4,4⟩=26 schemes (hk71 vs alphatensor_Z) tile a target
+	 * DIFFERENTLY — ⟨5,20,26⟩ reaches 1700 via the alphatensor_Z one but only 1716 via hk71.
+	 * The 2026-06-23 fix changed `extendedPool`/`buildPool` dedup from `shape:r` to
+	 * `shape:r:contentHash`; a regression to shape:r dedup loses the better base and reopens
+	 * the residual large-unbalanced master-regressions. Guards ≥2 distinct ⟨2,4,4⟩=26 schemes.
+	 */
+	@Test
+	public void pool_keeps_content_distinct_244_bases() {
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.includeDerived(), "Q");
+		long distinct244 = pool.stream()
+				.map(BlockSplitSearch.NamedBase::base)
+				.filter(b -> b.n == 2 && b.m == 4 && b.p == 4 && b.r == 26)
+				.map(b -> eu.solven.matmul.catalog.SchemeIO.contentHash(b))
+				.distinct().count();
+		assertThat(distinct244)
+				.as("pool must keep ≥2 content-distinct ⟨2,4,4⟩=26 bases (they recombine "
+						+ "differently); shape:r dedup would collapse to 1 and lose the better base")
+				.isGreaterThanOrEqualTo(2);
+	}
+
 	@Test
 	public void extended_pool_is_not_empty() {
 		assertThat(BlockSplitSearch.extendedPool(8))

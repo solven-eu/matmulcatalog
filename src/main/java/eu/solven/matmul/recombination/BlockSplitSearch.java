@@ -1,16 +1,29 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.recombination;
+
+import eu.solven.matmul.search.MethodCatalog;
+import eu.solven.matmul.search.SearchHeuristics;
+
+import eu.solven.matmul.search.AssignmentOptimizer;
+import eu.solven.matmul.search.SearchBudget;
+
+import eu.solven.matmul.search.ConcatSplitSearch;
+import eu.solven.matmul.search.ConstructiveMethod;
+import eu.solven.matmul.search.KnownTauIdentities;
+import eu.solven.matmul.search.KroneckerSplitSearch;
+import eu.solven.matmul.search.PairFusedRecombination;
+import eu.solven.matmul.search.PoolConfig;
 
 import lombok.extern.slf4j.Slf4j;
 
 import eu.solven.matmul.catalog.CatalogLimits;
 
-import eu.solven.matmul.catalog.PairedSubProducts;
+import eu.solven.matmul.recombination.PairedSubProducts;
 
 import eu.solven.matmul.catalog.Compose;
 
 import eu.solven.matmul.catalog.SchemeIO;
 
-import eu.solven.matmul.catalog.Recombination;
+import eu.solven.matmul.recombination.Recombination;
 
 import eu.solven.matmul.papers.dis2009.PanTrilinearAggregation;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
@@ -199,11 +212,17 @@ public class BlockSplitSearch {
 		if (!config.rootsOnly()) {
 			// Append every Leaf-lineage NC catalog scheme valid over the field, up to
 			// maxBaseDim. extendedPool already inlines rootPool, so we dedup-merge.
+			// Dedup by CONTENT, not just (shape, rank): two DISTINCT schemes at the same
+			// ⟨n,m,p⟩=r recombine DIFFERENTLY (different product supports → different
+			// per-block effective dims), so dropping one as a "duplicate" silently loses the
+			// better recombination. ⟨5,20,26⟩ via the alphatensor_Z ⟨2,4,4⟩=26 base reaches
+			// 1702, but the hk71 ⟨2,4,4⟩=26 only 1716 — keying on "2x4x4:r=26" kept whichever
+			// came first and lost master's 1702 (the residual large-unbalanced regressions —
+			// the missing base, NOT the optimizer's cost model, which is exact).
 			java.util.Set<String> have = new java.util.HashSet<>();
-			for (NamedBase nb : raw) have.add(nb.base().n + "x" + nb.base().m + "x" + nb.base().p + ":r=" + nb.base().r);
+			for (NamedBase nb : raw) have.add(poolContentKey(nb.base()));
 			for (NamedBase nb : extendedPool(config.maxBaseDim(), fieldTag)) {
-				String key = nb.base().n + "x" + nb.base().m + "x" + nb.base().p + ":r=" + nb.base().r;
-				if (have.add(key)) raw.add(nb);
+				if (have.add(poolContentKey(nb.base()))) raw.add(nb);
 			}
 		}
 		List<NamedBase> out = new ArrayList<>();
@@ -242,6 +261,34 @@ public class BlockSplitSearch {
 		int[] p = new int[n];
 		for (int i = 0; i < n; i++) p[i] = i;
 		return p;
+	}
+
+	/** Pool dedup key = (shape, rank) + the CANONICAL MULTISET of per-product SUPPORTS.
+	 *  The recombination cost {@code Σ R(per-product effective dims)} depends ONLY on which
+	 *  blocks each product touches on each axis — NOT on the coefficient values. So two schemes
+	 *  with the same support multiset tile EVERY target identically (dedup), while two with
+	 *  different supports recombine differently and must BOTH be kept (the hk71 vs alphatensor_Z
+	 *  ⟨2,4,4⟩=26 case: 1716 vs 1700 on ⟨5,20,26⟩). This is coarser than a content hash (which
+	 *  over-splits on gauge/coefficient differences that don't affect tiling) and far finer than
+	 *  the old {@code shape:r} key (which merged recombination-distinct bases — the bug). The
+	 *  per-product tuple is sorted within each axis-support and the products are sorted, so the
+	 *  key is invariant to product reordering. [[project_optimizer_pairing_blind]] */
+	private static String poolContentKey(NonCubicBilinearAlgorithm b) {
+		AnalyticalMaskSearch.SchemeSupports sup = AnalyticalMaskSearch.SchemeSupports.extract(b);
+		java.util.List<String> products = new java.util.ArrayList<>(b.r);
+		for (int k = 0; k < b.r; k++) {
+			products.add(sortedSig(sup.uRowSupport[k]) + "/" + sortedSig(sup.uColSupport[k]) + "/"
+					+ sortedSig(sup.vRowSupport[k]) + "/" + sortedSig(sup.vColSupport[k]) + "/"
+					+ sortedSig(sup.wRowSupport[k]) + "/" + sortedSig(sup.wColSupport[k]));
+		}
+		java.util.Collections.sort(products);
+		return b.n + "x" + b.m + "x" + b.p + ":r=" + b.r + ":" + String.join(";", products);
+	}
+
+	private static String sortedSig(int[] support) {
+		int[] s = support.clone();
+		java.util.Arrays.sort(s);
+		return java.util.Arrays.toString(s);
 	}
 
 	private static String sigOf(NonCubicBilinearAlgorithm a) {
@@ -352,7 +399,7 @@ public class BlockSplitSearch {
 		for (NamedBase nb : rootPool()) {
 			NonCubicBilinearAlgorithm a = nb.base();
 			if (Math.max(a.n, Math.max(a.m, a.p)) > maxBaseDim) continue;
-			seenShape.add(a.n + "x" + a.m + "x" + a.p);
+			seenShape.add(poolContentKey(a));
 			pool.add(nb);
 		}
 		// Walk the WHOLE schemes tree, not just top-level sectionN: the 2026-06-09
@@ -397,7 +444,7 @@ public class BlockSplitSearch {
 				for (SymmetryTransforms.S3Variant v : byShape.values()) {
 					NonCubicBilinearAlgorithm a = v.alg();
 					if (Math.max(a.n, Math.max(a.m, a.p)) > maxBaseDim) continue;
-					String key = a.n + "x" + a.m + "x" + a.p + ":r=" + a.r;
+					String key = poolContentKey(a);
 					if (seenShape.add(key)) {
 						String suffix = byShape.size() == 1
 								? ""
@@ -742,7 +789,7 @@ public class BlockSplitSearch {
 			// rather than exploding.
 			recomb = opt;
 			List<NamedBase> grids = basePool.stream()
-					.filter(nb -> eu.solven.matmul.catalog.Recombination.isNaiveGrid(nb.base()))
+					.filter(nb -> eu.solven.matmul.recombination.Recombination.isNaiveGrid(nb.base()))
 					.toList();
 			if (!grids.isEmpty()) {
 				Optional<MultiBaseSplitCandidate> paired = findBestMultiBaseSplit(
