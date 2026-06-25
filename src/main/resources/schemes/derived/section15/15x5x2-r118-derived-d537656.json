@@ -17,14 +17,16 @@
         "leaves": [
           {"op": "Atom", "ref": "naive-1x1x1"}
         ]
-      }
+      },
+      "axisMap": "pmn"
     },
     "bottom": {
       "op": "OrientAs",
       "n": 8,
       "m": 5,
       "p": 2,
-      "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+      "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"},
+      "axisMap": "pmn"
     }
   },
   "n": [15, 5, 2],

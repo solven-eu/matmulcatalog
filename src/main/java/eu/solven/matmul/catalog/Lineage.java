@@ -149,14 +149,56 @@ public final class Lineage {
 
 	/**
 	 * Orient the child scheme to the exact shape {@code ⟨n,m,p⟩} (an S₃ axis
-	 * permutation of the matmul tensor). Unlike {@link Transpose}'s string perm,
-	 * this records the <em>target dims directly</em>, so replay is unambiguous even
-	 * when dims repeat: {@code replay(child).orientAs(n,m,p)}. Emitted by the
-	 * materialiser whenever it reuses a sub-scheme in a different orientation than
-	 * its stored/native one, so {@code replay(lineage)} reproduces the EXACT
-	 * orientation of the returned algorithm (the replayable-lineage invariant).
+	 * permutation of the matmul tensor). Emitted by the materialiser whenever it
+	 * reuses a sub-scheme in a different orientation than its stored/native one.
+	 *
+	 * <p>{@code axisMap} is the EXPLICIT axis-role permutation {@code perm[targetAxis] = sourceAxis}
+	 * (one of {@link NonCubicBilinearAlgorithm#ORIENT_PERMS}); replay applies it via
+	 * {@code child.orientByPerm(axisMap)} — deterministic, NO shape search. This is required because
+	 * the target dims alone are NOT unambiguous when dims repeat (e.g. ⟨3,3,7⟩→⟨7,3,3⟩ has two valid
+	 * orientations differing in which 3-axis goes where); the legacy {@code orientAs(n,m,p)} merely
+	 * picked the first match, which could silently change. {@code axisMap == null} = legacy/infer
+	 * (backward compatible; migrated away by {@code AugmentOrientAsAxisMaps}). The {@code "pnm"}-style
+	 * letter string ({@link #axisMapToStr}) is the on-disk form. </p>
 	 */
-	public record OrientAs(Node child, int n, int m, int p) implements Node {}
+	public record OrientAs(Node child, int n, int m, int p, int[] axisMap) implements Node {
+		/** Legacy/infer form (no explicit map) — replay falls back to {@code orientAs(n,m,p)}. */
+		public OrientAs(Node child, int n, int m, int p) {
+			this(child, n, m, p, null);
+		}
+	}
+
+	/** Build an {@code OrientAs} that re-orients {@code child} (native shape {@code sn,sm,sp}) to
+	 *  {@code (tn,tm,tp)}, stamping the EXPLICIT axis-role map so replay never re-infers it. Falls back
+	 *  to the legacy (null-map) form if the shapes aren't S₃-related (replay will then use {@code orientAs}). */
+	public static Node orientAs(Node child, int sn, int sm, int sp, int tn, int tm, int tp) {
+		int[] perm = eu.solven.matmul.NonCubicBilinearAlgorithm.orientPermForShapes(sn, sm, sp, tn, tm, tp).orElse(null);
+		return new OrientAs(child, tn, tm, tp, perm);
+	}
+
+	/** Axis-role perm {@code [2,0,1]} → readable source-axis letters {@code "pnm"} (n=0,m=1,p=2). */
+	public static String axisMapToStr(int[] perm) {
+		char[] L = { 'n', 'm', 'p' };
+		StringBuilder sb = new StringBuilder(3);
+		for (int s : perm) {
+			sb.append(L[s]);
+		}
+		return sb.toString();
+	}
+
+	/** Readable letters {@code "pnm"} → axis-role perm {@code [2,0,1]}. */
+	public static int[] axisMapFromStr(String s) {
+		int[] perm = new int[s.length()];
+		for (int i = 0; i < s.length(); i++) {
+			perm[i] = switch (s.charAt(i)) {
+				case 'n' -> 0;
+				case 'm' -> 1;
+				case 'p' -> 2;
+				default -> throw new IllegalArgumentException("bad axisMap letter: " + s);
+			};
+		}
+		return perm;
+	}
 
 	/**
 	 * Axis-flip orbit transform: {@code child} is the canonical scheme;
@@ -693,7 +735,11 @@ public final class Lineage {
 			case OrientAs o -> {
 				sb.append("{\"op\":\"OrientAs\"").append(idBinding)
 						.append(",\"n\":").append(o.n).append(",\"m\":").append(o.m)
-						.append(",\"p\":").append(o.p).append(",\"child\":");
+						.append(",\"p\":").append(o.p);
+				if (o.axisMap != null) {
+					sb.append(",\"axisMap\":\"").append(axisMapToStr(o.axisMap)).append("\"");
+				}
+				sb.append(",\"child\":");
 				renderJson(o.child, sb, seen, sameIds, nextId);
 				sb.append("}");
 			}

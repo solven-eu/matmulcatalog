@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[5, 6], allocB=[15, 16], allocC=[16, 15], leaves=[6x16x16-r972-perminov_ZT-5fc1469, Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 5, 5], allocC=[6, 5, 5], leaves=[2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3, 3x5x5-r58-alphatensor_Z-263818a, 2x5x5-r40-alphatensor_Z-67f5fb7]), Recombination(base=2x3x3, allocA=[3, 2], allocB=[6, 5, 5], allocC=[6, 5, 5], leaves=[2x5x6-r47-alphaevolve-7387644, ConcatCols(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩), 3x5x5-r58-alphatensor_Z-263818a, 2x5x5-r40-alphatensor_Z-67f5fb7, Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x15x15-r859-perminov_Q-06c1f02])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[5, 6], allocB=[15, 16], allocC=[16, 15], leaves=[6x16x16-r972-perminov_ZT-5fc1469, Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 5, 5], allocC=[6, 5, 5], leaves=[2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3, 3x5x5-r58-alphatensor_Z-263818a, 2x5x5-r40-alphatensor_Z-67f5fb7]), Recombination(base=2x3x3, allocA=[3, 2], allocB=[6, 5, 5], allocC=[6, 5, 5], leaves=[2x5x6-r47-alphaevolve-7387644, ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩), 3x5x5-r58-alphatensor_Z-263818a, 2x5x5-r40-alphatensor_Z-67f5fb7, Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x15x15-r859-perminov_Q-06c1f02])",
   "lineage_compact": "R[2x2x2; 5,6 | 15,16 | 16,15]",
   "lineage": {
     "op": "Recombination",
@@ -37,14 +37,28 @@
               "keepN": [0, 1, 2],
               "keepM": [1, 2, 3, 4, 5, 6],
               "keepP": [0, 1, 2],
-              "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+              "child": {
+                "op": "OrientAs",
+                "n": 3,
+                "m": 7,
+                "p": 3,
+                "axisMap": "mpn",
+                "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+              }
             },
             "right": {
               "op": "Project",
               "keepN": [0, 1, 2],
               "keepM": [1, 2, 3, 4, 5, 6],
               "keepP": [0, 1, 2],
-              "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+              "child": {
+                "op": "OrientAs",
+                "n": 3,
+                "m": 7,
+                "p": 3,
+                "axisMap": "mpn",
+                "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+              }
             }
           },
           {
@@ -52,7 +66,8 @@
             "n": 3,
             "m": 6,
             "p": 5,
-            "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+            "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+            "axisMap": "npm"
           },
           {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"},
           {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},

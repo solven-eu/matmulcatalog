@@ -24,14 +24,16 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "mpn"
         },
         "right": {
           "op": "OrientAs",
           "n": 5,
           "m": 7,
           "p": 6,
-          "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+          "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
+          "axisMap": "npm"
         }
       },
       {"op": "Atom", "ref": "6x7x9-r264-perminov_ZT-d42e06b"}

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[6, 8], allocC=[10, 12], leaves=[7x8x12-r452-perminov_Z-52d4f1a, Recombination(base=2x2x2, allocA=[3, 4], allocB=[3, 3], allocC=[4, 6], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Recombination(base=Transpose(3x4x4, perm=\"ABC->CAB\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x3x4, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), Recombination(base=2x2x2, allocA=[4, 3], allocB=[4, 4], allocC=[5, 5], leaves=[Recombination(base=4x4x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, 3x4x6-r54-alphaevolve-c197868), Recombination(base=2x2x2, allocA=[4, 3], allocB=[3, 3], allocC=[6, 6], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), 6x8x10-r327-perminov_ZT-d052dd5])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[6, 8], allocC=[10, 12], leaves=[7x8x12-r452-perminov_Z-52d4f1a, Recombination(base=, allocA=[3, 4], allocB=[3, 3], allocC=[4, 6], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Recombination(base=Transpose(3x4x4, perm=\"ABC->CAB\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x3x4, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), Recombination(base=, allocA=[4, 3], allocB=[4, 4], allocC=[5, 5], leaves=[Recombination(base=4x4x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, 3x4x6-r54-alphaevolve-c197868), Recombination(base=, allocA=[4, 3], allocB=[3, 3], allocC=[6, 6], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), 6x8x10-r327-perminov_ZT-d052dd5])",
   "lineage_compact": "R[2x2x2; 6,7 | 6,8 | 10,12]",
   "lineage": {
     "op": "Recombination",
@@ -21,7 +21,8 @@
             "n": 4,
             "m": 3,
             "p": 6,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "mnp"
           },
           {
             "op": "Recombination",
@@ -113,7 +114,8 @@
             "n": 4,
             "m": 3,
             "p": 6,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "mnp"
           },
           {
             "op": "Project",

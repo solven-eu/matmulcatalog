@@ -1,6 +1,6 @@
 {
-  "lineage_str": "ConcatCols(KronProduct(naive-1x1x3, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), ConcatCols(Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,3,4⟩)))))",
-  "lineage_compact": "naive-1x1x3 ⊗ 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 3x4x6-r54-alphaevolve-c197868→⟨6,3,4⟩",
+  "lineage_str": "ConcatCols(KronProduct(naive-1x1x3, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), ConcatCols(Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), ConcatCols(Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), ConcatCols(Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,3,4⟩)))))",
+  "lineage_compact": "naive-1x1x3 ⊗ 3x3x7→⟨7,3,3⟩ ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 3x3x7→⟨7,3,3⟩ ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 3x3x7→⟨7,3,3⟩ ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 3x3x7→⟨7,3,3⟩ ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p 3x4x6-r54-alphaevolve-c197868→⟨6,3,4⟩",
   "lineage": {
     "op": "ConcatCols",
     "left": {
@@ -11,7 +11,14 @@
         "keepN": [1, 2, 3, 4, 5, 6],
         "keepM": [0, 1, 2],
         "keepP": [0, 1, 2],
-        "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        "child": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 3,
+          "p": 3,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
       }
     },
     "right": {
@@ -21,7 +28,14 @@
         "keepN": [1, 2, 3, 4, 5, 6],
         "keepM": [0, 1, 2],
         "keepP": [0, 1, 2],
-        "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        "child": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 3,
+          "p": 3,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
       },
       "right": {
         "op": "ConcatCols",
@@ -30,7 +44,14 @@
           "keepN": [1, 2, 3, 4, 5, 6],
           "keepM": [0, 1, 2],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         },
         "right": {
           "op": "ConcatCols",
@@ -39,14 +60,22 @@
             "keepN": [1, 2, 3, 4, 5, 6],
             "keepM": [0, 1, 2],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           "right": {
             "op": "OrientAs",
             "n": 6,
             "m": 3,
             "p": 4,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "pnm"
           }
         }
       }

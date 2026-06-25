@@ -1,6 +1,6 @@
 {
-  "lineage_str": "ConcatCols(ConcatRows(SumInner(KronProduct(2x3x3, 2x3x3), OrientAs(4x9x13-r325-perminov_ZT-b1a732e, ⟨4,13,9⟩)), SumInner(ConcatRows(KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]))), KronProduct(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])))), DIS09Lemma4(n=22))",
-  "lineage_compact": "2x3x3 ⊗ 2x3x3 +m 4x9x13-r325-perminov_ZT-b1a732e→⟨4,13,9⟩ +n R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] ⊗ R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] +n R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] ⊗ R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] +m 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ 7x3x3 ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p DIS09Lemma4(n=22)",
+  "lineage_str": "ConcatCols(ConcatRows(SumInner(KronProduct(2x3x3, 2x3x3), OrientAs(4x9x13-r325-perminov_ZT-b1a732e, ⟨4,13,9⟩)), SumInner(ConcatRows(KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]))), KronProduct(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])))), DIS09Lemma4(n=22))",
+  "lineage_compact": "2x3x3 ⊗ 2x3x3 +m 4x9x13-r325-perminov_ZT-b1a732e→⟨4,13,9⟩ +n R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] ⊗ R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] +n R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] ⊗ R[2x3x3^ABC->CAB; 1,1,1 | 1,1 | 1,1,1] +m 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ 3x3x7→⟨7,3,3⟩ ↓[1,2,3,4,5,6|0,1,2|0,1,2] +p DIS09Lemma4(n=22)",
   "lineage": {
     "op": "ConcatCols",
     "left": {
@@ -17,7 +17,8 @@
           "n": 4,
           "m": 13,
           "p": 9,
-          "child": {"op": "Atom", "ref": "4x9x13-r325-perminov_ZT-b1a732e"}
+          "child": {"op": "Atom", "ref": "4x9x13-r325-perminov_ZT-b1a732e"},
+          "axisMap": "npm"
         }
       },
       "bottom": {
@@ -83,14 +84,28 @@
             "keepN": [0, 1, 2],
             "keepM": [1, 2, 3, 4, 5, 6],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 3,
+              "m": 7,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           "inner": {
             "op": "Project",
             "keepN": [1, 2, 3, 4, 5, 6],
             "keepM": [0, 1, 2],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           }
         }
       }

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 10], allocB=[9, 12], allocC=[9, 12], leaves=[11x12x12-r968-perminov_Q-501db78, Recombination(base=2x3x3, allocA=[6, 5], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Recombination(base=Transpose(3x3x5, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])]), OrientAs(9x11x12-r738-perminov_Q-435e5a3, ⟨11,12,9⟩), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 10], allocB=[9, 12], allocC=[9, 12], leaves=[11x12x12-r968-perminov_Q-501db78, Recombination(base=2x3x3, allocA=[6, 5], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Recombination(base=Transpose(3x3x5, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])]), OrientAs(9x11x12-r738-perminov_Q-435e5a3, ⟨11,12,9⟩), Project(OrientAs(9x10x13, ⟨10,9,13⟩), keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])])",
   "lineage_compact": "R[2x2x2; 11,10 | 9,12 | 9,12]",
   "lineage": {
     "op": "Recombination",
@@ -35,7 +35,14 @@
             "keepN": [1, 2, 3, 4, 5, 6],
             "keepM": [0, 1, 2],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           }
         ]
       },
@@ -44,14 +51,22 @@
         "n": 11,
         "m": 12,
         "p": 9,
-        "child": {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"}
+        "child": {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"},
+        "axisMap": "mpn"
       },
       {
         "op": "Project",
         "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
         "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        "child": {"op": "Atom", "ref": "10x9x13@16f3df1"}
+        "child": {
+          "op": "OrientAs",
+          "n": 10,
+          "m": 9,
+          "p": 13,
+          "axisMap": "mnp",
+          "child": {"op": "Atom", "ref": "9x10x13@16f3df1"}
+        }
       }
     ]
   },

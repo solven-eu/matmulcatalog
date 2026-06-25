@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[9, 10], allocC=[13, 14], leaves=[8x10x14-r726-perminov_ZT-df53451, 8x9x13-r615-perminov_ZT-f83b28d, Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨3,3,2⟩), Recombination(base=2x2x2, allocA=[4, 4], allocB=[5, 5], allocC=[7, 6], leaves=[4x5x7-r104-perminov_ZT-4a1b410, 4x5x6-r90-alphaevolve-8aa8e60]), KronProduct(2x2x2, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])), Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,3,2⟩), Recombination(base=2x2x2, allocA=[3, 3], allocB=[5, 5], allocC=[7, 6], leaves=[Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x5x6-r68-alphaevolve-14be9c3])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[9, 10], allocC=[13, 14], leaves=[8x10x14-r726-perminov_ZT-df53451, 8x9x13-r615-perminov_ZT-f83b28d, Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨3,3,2⟩), Recombination(base=, allocA=[4, 4], allocB=[5, 5], allocC=[7, 6], leaves=[4x5x7-r104-perminov_ZT-4a1b410, 4x5x6-r90-alphaevolve-8aa8e60]), KronProduct(2x2x2, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])), Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨4,3,2⟩), Recombination(base=, allocA=[3, 3], allocB=[5, 5], allocC=[7, 6], leaves=[Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x5x6-r68-alphaevolve-14be9c3])])",
   "lineage_compact": "R[2x2x2; 6,8 | 9,10 | 13,14]",
   "lineage": {
     "op": "Recombination",
@@ -20,7 +20,8 @@
           "n": 2,
           "m": 3,
           "p": 7,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mpn"
         }
       },
       {
@@ -58,7 +59,8 @@
           "n": 2,
           "m": 3,
           "p": 7,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mpn"
         }
       },
       {

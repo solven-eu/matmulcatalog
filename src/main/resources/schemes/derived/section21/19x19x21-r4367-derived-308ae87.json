@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[9, 10], allocC=[9, 12], leaves=[10x10x12-r766-perminov_ZT-a1e93e9, Recombination(base=2x3x3, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), OrientAs(9x10x10-r597-perminov_ZT-59288a1, ⟨10,10,9⟩), Project(9x10x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[9, 10], allocC=[9, 12], leaves=[10x10x12-r766-perminov_ZT-a1e93e9, Recombination(base=2x3x3, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), OrientAs(9x10x10-r597-perminov_ZT-59288a1, ⟨10,10,9⟩), Project(9x10x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])])",
   "lineage_compact": "R[2x2x2; 9,10 | 9,10 | 9,12]",
   "lineage": {
     "op": "Recombination",
@@ -21,7 +21,14 @@
             "keepN": [1, 2, 3, 4, 5, 6],
             "keepM": [0, 1, 2],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           {
             "op": "Recombination",
@@ -68,7 +75,8 @@
         "n": 10,
         "m": 10,
         "p": 9,
-        "child": {"op": "Atom", "ref": "9x10x10-r597-perminov_ZT-59288a1"}
+        "child": {"op": "Atom", "ref": "9x10x10-r597-perminov_ZT-59288a1"},
+        "axisMap": "mpn"
       },
       {
         "op": "Project",

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[8, 9], allocC=[12, 13], leaves=[8x9x13-r615-perminov_ZT-f83b28d, Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨4,2,4⟩), Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 4], allocC=[7, 6], leaves=[Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x4x6-r54-alphaevolve-c197868]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 2], allocB=[3, 3, 3], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x3x3, 2x3x3)]), 6x9x13-r468-perminov_Q-9f65e87, Recombination(base=2x2x2, allocA=[4, 4], allocB=[4, 4], allocC=[7, 6], leaves=[4x4x7-r85-alphaevolve-d4e8670, 4x4x6-r73-perminov_ZT-5bb1a46]), 6x9x12-r429-perminov_Q-45a8a82])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[8, 9], allocC=[12, 13], leaves=[8x9x13-r615-perminov_ZT-f83b28d, Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨4,2,4⟩), Recombination(base=, allocA=[3, 3], allocB=[4, 4], allocC=[7, 6], leaves=[Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x4x6-r54-alphaevolve-c197868]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 2], allocB=[3, 3, 3], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x3x3, 2x3x3)]), 6x9x13-r468-perminov_Q-9f65e87, Recombination(base=, allocA=[4, 4], allocB=[4, 4], allocC=[7, 6], leaves=[4x4x7-r85-alphaevolve-d4e8670, 4x4x6-r73-perminov_ZT-5bb1a46]), 6x9x12-r429-perminov_Q-45a8a82])",
   "lineage_compact": "R[2x2x2; 6,8 | 8,9 | 12,13]",
   "lineage": {
     "op": "Recombination",
@@ -19,7 +19,8 @@
           "n": 2,
           "m": 4,
           "p": 3,
-          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"},
+          "axisMap": "npm"
         }
       },
       {

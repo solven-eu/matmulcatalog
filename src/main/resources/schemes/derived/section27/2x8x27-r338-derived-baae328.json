@@ -8,7 +8,8 @@
       "n": 2,
       "m": 8,
       "p": 5,
-      "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+      "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"},
+      "axisMap": "npm"
     },
     "right": {
       "op": "ConcatCols",
@@ -17,7 +18,8 @@
         "n": 2,
         "m": 8,
         "p": 6,
-        "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"}
+        "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"},
+        "axisMap": "npm"
       },
       "right": {
         "op": "ConcatCols",
@@ -26,7 +28,8 @@
           "n": 2,
           "m": 8,
           "p": 6,
-          "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"}
+          "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"},
+          "axisMap": "npm"
         },
         "right": {"op": "Atom", "ref": "2x8x10-r125-hk71-ce1a36c"}
       }

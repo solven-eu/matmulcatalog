@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 6], allocB=[14, 14], allocC=[16, 15], leaves=[Recombination(base=2x2x2, allocA=[4, 3], allocB=[7, 7], allocC=[8, 8], leaves=[Recombination(base=ext[4x7x8-r161-perminov_ZT-281318d.json] / <4,7,8>=161 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩))]), 6x14x16-r864-perminov_ZT-d51381b, 7x14x15-r952-perminov_Z-504ea1e, Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 6], allocB=[14, 14], allocC=[16, 15], leaves=[Recombination(base=, allocA=[4, 3], allocB=[7, 7], allocC=[8, 8], leaves=[Recombination(base=ext[4x7x8-r161-perminov_ZT-281318d.json] / <4,7,8>=161 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩))]), 6x14x16-r864-perminov_ZT-d51381b, 7x14x15-r952-perminov_Z-504ea1e, Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩)])",
   "lineage_compact": "R[2x2x2; 7,6 | 14,14 | 16,15]",
   "lineage": {
     "op": "Recombination",
@@ -41,7 +41,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "npm"
             },
             "right": {
               "op": "OrientAs",
@@ -57,7 +58,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "npm"
             }
           }
         ]
@@ -74,7 +76,8 @@
           "n": 2,
           "m": 7,
           "p": 3,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mnp"
         }
       }
     ]

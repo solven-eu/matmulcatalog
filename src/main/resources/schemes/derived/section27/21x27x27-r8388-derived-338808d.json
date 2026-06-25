@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x3x3, allocA=[11, 10], allocB=[9, 9, 9], allocC=[9, 9, 9], leaves=[Recombination(base=2x3x3, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), Recombination(base=2x3x3, allocA=[6, 5], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨5,3,3⟩), Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])])])",
+  "lineage_str": "Recombination(base=2x3x3, allocA=[11, 10], allocB=[9, 9, 9], allocC=[9, 9, 9], leaves=[Recombination(base=, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), Recombination(base=, allocA=[6, 5], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨5,3,3⟩), Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])])])",
   "lineage_compact": "R[2x3x3; 11,10 | 9,9,9 | 9,9,9]",
   "lineage": {
     "op": "Recombination",
@@ -20,7 +20,14 @@
             "keepN": [1, 2, 3, 4, 5, 6],
             "keepM": [0, 1, 2],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           {
             "op": "Recombination",
@@ -50,14 +57,22 @@
             "n": 5,
             "m": 3,
             "p": 3,
-            "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"}
+            "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"},
+            "axisMap": "pnm"
           },
           {
             "op": "Project",
             "keepN": [1, 2, 3, 4, 5, 6],
             "keepM": [0, 1, 2],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           }
         ]
       }

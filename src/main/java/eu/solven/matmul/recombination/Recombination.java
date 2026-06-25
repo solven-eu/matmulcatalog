@@ -1,6 +1,7 @@
 package eu.solven.matmul.recombination;
 
 import eu.solven.matmul.catalog.KnownAlgorithmCatalog;
+import eu.solven.matmul.catalog.FieldAwareLookup;
 
 import eu.solven.matmul.catalog.KnownAlgorithm;
 
@@ -60,11 +61,33 @@ public final class Recombination {
 	}
 
 	/** Catalog-backed resolver; falls back to the naive {@code a·b·c} bound if no entry exists. */
+	/**
+	 * SOTA sub-rank oracle for recombination costing. For NON-commutative algebras this consults the
+	 * FULL on-disk catalog ({@link FieldAwareLookup#findRank}), memoised — NOT the small curated
+	 * {@link KnownAlgorithmCatalog}, which only carries a hand-picked starting set and so returned the
+	 * CUBIC product {@code a·b·c} for any shape it lacked (e.g. ⟨9,9,9⟩→729 instead of the catalog's
+	 * 486). That cubic fallback silently inflated every recombination cost and quietly broke
+	 * frontier/allocation experiments. Commutative algebras stay on the curated set, since
+	 * {@code FieldAwareLookup} is non-commutative-oriented and would mis-serve them.
+	 */
 	public static SotaResolver catalogResolver(eu.solven.matmul.algebra.Algebra algebra) {
+		if (algebra.commutative()) {
+			return (a, b, c) -> {
+				if (a == 0 || b == 0 || c == 0) return 0;
+				return KnownAlgorithmCatalog.bestKnown(a, b, c, algebra).map(k -> k.rank).orElse(a * b * c);
+			};
+		}
+		FieldAwareLookup lookup = new FieldAwareLookup(algebra.field());
+		java.util.Map<Long, Integer> memo = new java.util.concurrent.ConcurrentHashMap<>();
 		return (a, b, c) -> {
 			if (a == 0 || b == 0 || c == 0) return 0;
-			Optional<KnownAlgorithm> best = KnownAlgorithmCatalog.bestKnown(a, b, c, algebra);
-			return best.map(k -> k.rank).orElse(a * b * c);
+			if (a == 1) return b * c;
+			if (b == 1) return a * c;
+			if (c == 1) return a * b;
+			return memo.computeIfAbsent((long) a * 1_000_000L + b * 1_000L + c, k -> {
+				int v = lookup.findRank(a, b, c);
+				return v >= SotaResolver.UNKNOWN_RANK ? a * b * c : v;
+			});
 		};
 	}
 

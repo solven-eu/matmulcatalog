@@ -1,6 +1,6 @@
 {
-  "lineage_str": "ConcatCols(Project(10x13x9, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8]), OrientAs(10x10x12-r766-perminov_ZT-a1e93e9, ⟨10,12,10⟩))",
-  "lineage_compact": "10x13x9 ↓[0,1,2,3,4,5,6,7,8,9|1,2,3,4,5,6,7,8,9,10,11,12|0,1,2,3,4,5,6,7,8] +p 10x10x12-r766-perminov_ZT-a1e93e9→⟨10,12,10⟩",
+  "lineage_str": "ConcatCols(Project(OrientAs(10x9x13, ⟨10,13,9⟩), keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8]), OrientAs(10x10x12-r766-perminov_ZT-a1e93e9, ⟨10,12,10⟩))",
+  "lineage_compact": "10x9x13→⟨10,13,9⟩ ↓[0,1,2,3,4,5,6,7,8,9|1,2,3,4,5,6,7,8,9,10,11,12|0,1,2,3,4,5,6,7,8] +p 10x10x12-r766-perminov_ZT-a1e93e9→⟨10,12,10⟩",
   "lineage": {
     "op": "ConcatCols",
     "left": {
@@ -8,14 +8,22 @@
       "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       "keepM": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8],
-      "child": {"op": "Atom", "ref": "10x13x9@8c62898"}
+      "child": {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 13,
+        "p": 9,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+      }
     },
     "right": {
       "op": "OrientAs",
       "n": 10,
       "m": 12,
       "p": 10,
-      "child": {"op": "Atom", "ref": "10x10x12-r766-perminov_ZT-a1e93e9"}
+      "child": {"op": "Atom", "ref": "10x10x12-r766-perminov_ZT-a1e93e9"},
+      "axisMap": "mpn"
     }
   },
   "n": [10, 12, 19],

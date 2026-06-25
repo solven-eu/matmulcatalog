@@ -270,4 +270,69 @@ public class NonCubicBilinearAlgorithm {
 		}
 		return java.util.Optional.empty();
 	}
+
+	/**
+	 * The 6 S₃ axis-role orientations, in {@link #orientAs} search order, each as the permutation
+	 * {@code perm[targetAxis] = sourceAxis}. Row k is reachable by {@link #applyOrientation}(k):
+	 * codes 0–2 are {@code cyclicShift^k} of {@code this}; codes 3–5 are {@code transpose()} then
+	 * {@code cyclicShift^(k-3)}. ({@code cyclicShift}: (n,m,p)→(m,p,n); {@code transpose}: (n,m,p)→(p,m,n).)
+	 */
+	public static final int[][] ORIENT_PERMS = {
+			{ 0, 1, 2 }, { 1, 2, 0 }, { 2, 0, 1 }, // id, cyc, cyc²
+			{ 2, 1, 0 }, { 1, 0, 2 }, { 0, 2, 1 } // T, T·cyc, T·cyc²
+	};
+
+	/** Apply the {@code code}-th S₃ orientation (see {@link #ORIENT_PERMS}). */
+	public NonCubicBilinearAlgorithm applyOrientation(int code) {
+		NonCubicBilinearAlgorithm a = (code < 3) ? this : this.transpose();
+		for (int i = 0; i < code % 3; i++) {
+			a = a.cyclicShift();
+		}
+		return a;
+	}
+
+	/**
+	 * The EXPLICIT axis-role permutation {@code perm[targetAxis] = sourceAxis} that {@link #orientAs}
+	 * would pick to reach {@code (newN,newM,newP)} — i.e. the first of {@link #ORIENT_PERMS} whose
+	 * orientation matches the requested shape. Empty if unreachable. Used to make an {@code OrientAs}
+	 * lineage op UNAMBIGUOUS (record this perm instead of re-inferring it at replay, where a future
+	 * {@code orientAs} change could silently pick a different valid orientation when dims repeat).
+	 */
+	public java.util.Optional<int[]> orientPermFor(int newN, int newM, int newP) {
+		for (int code = 0; code < 6; code++) {
+			NonCubicBilinearAlgorithm o = applyOrientation(code);
+			if (o.n == newN && o.m == newM && o.p == newP) {
+				return java.util.Optional.of(ORIENT_PERMS[code].clone());
+			}
+		}
+		return java.util.Optional.empty();
+	}
+
+	/**
+	 * Shape-only variant of {@link #orientPermFor}: the axis-role perm {@code [targetAxis]=sourceAxis}
+	 * that orients {@code (sn,sm,sp)} to {@code (tn,tm,tp)} (the first matching {@link #ORIENT_PERMS}).
+	 * Depends only on the shapes (the oriented shape is {@code (src[perm[0]],src[perm[1]],src[perm[2]])}),
+	 * so a constructor can stamp it without holding the alg. Empty if the shapes aren't S₃-related.
+	 */
+	public static java.util.Optional<int[]> orientPermForShapes(int sn, int sm, int sp, int tn, int tm, int tp) {
+		int[] src = { sn, sm, sp };
+		for (int[] perm : ORIENT_PERMS) {
+			if (src[perm[0]] == tn && src[perm[1]] == tm && src[perm[2]] == tp) {
+				return java.util.Optional.of(perm.clone());
+			}
+		}
+		return java.util.Optional.empty();
+	}
+
+	/** Re-orient by an EXPLICIT axis-role permutation {@code perm[targetAxis] = sourceAxis} (one of
+	 *  {@link #ORIENT_PERMS}) — deterministic, no shape search. Throws if {@code perm} is not a known
+	 *  S₃ orientation. */
+	public NonCubicBilinearAlgorithm orientByPerm(int[] perm) {
+		for (int code = 0; code < 6; code++) {
+			if (java.util.Arrays.equals(ORIENT_PERMS[code], perm)) {
+				return applyOrientation(code);
+			}
+		}
+		throw new IllegalArgumentException("not an S₃ orientation perm: " + java.util.Arrays.toString(perm));
+	}
 }

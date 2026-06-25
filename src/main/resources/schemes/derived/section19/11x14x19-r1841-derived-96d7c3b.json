@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x3x3, allocA=[6, 5], allocB=[5, 5, 4], allocC=[7, 6, 6], leaves=[OrientAs(4x5x7-r104-perminov_ZT-4a1b410, ⟨5,4,7⟩), OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨6,5,7⟩), OrientAs(5x6x6-r130-perminov_ZT-653ce4e, ⟨6,5,6⟩), KronProduct(Recombination(base=2x2x2, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])), OrientAs(Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,4,7⟩), 5x5x6-r110-perminov_ZT-3420f61, 5x5x7-r127-perminov_ZT-9d68374])",
+  "lineage_str": "Recombination(base=2x3x3, allocA=[6, 5], allocB=[5, 5, 4], allocC=[7, 6, 6], leaves=[OrientAs(4x5x7-r104-perminov_ZT-4a1b410, ⟨5,4,7⟩), OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨6,5,7⟩), OrientAs(5x6x6-r130-perminov_ZT-653ce4e, ⟨6,5,6⟩), KronProduct(Recombination(base=2x2x2, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])), OrientAs(Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,4,7⟩), 5x5x6-r110-perminov_ZT-3420f61, 5x5x7-r127-perminov_ZT-9d68374])",
   "lineage_compact": "R[2x3x3; 6,5 | 5,5,4 | 7,6,6]",
   "lineage": {
     "op": "Recombination",
@@ -13,21 +13,24 @@
         "n": 5,
         "m": 4,
         "p": 7,
-        "child": {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"}
+        "child": {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"},
+        "axisMap": "mnp"
       },
       {
         "op": "OrientAs",
         "n": 6,
         "m": 5,
         "p": 7,
-        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
+        "axisMap": "mnp"
       },
       {
         "op": "OrientAs",
         "n": 6,
         "m": 5,
         "p": 6,
-        "child": {"op": "Atom", "ref": "5x6x6-r130-perminov_ZT-653ce4e"}
+        "child": {"op": "Atom", "ref": "5x6x6-r130-perminov_ZT-653ce4e"},
+        "axisMap": "pnm"
       },
       {
         "op": "KronProduct",
@@ -70,7 +73,8 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        }
+        },
+        "axisMap": "mnp"
       },
       {"op": "Atom", "ref": "5x5x6-r110-perminov_ZT-3420f61"},
       {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"}

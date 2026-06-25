@@ -19,14 +19,16 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        }
+        },
+        "axisMap": "pnm"
       },
       "right": {
         "op": "OrientAs",
         "n": 6,
         "m": 2,
         "p": 8,
-        "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"}
+        "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"},
+        "axisMap": "mnp"
       }
     },
     "right": {
@@ -34,7 +36,8 @@
       "n": 6,
       "m": 24,
       "p": 14,
-      "child": {"op": "Atom", "ref": "6x14x24@776e54d5357172358e1251f6716ba3a4c522f5f2e673cb0ed68f9d5017630fed"}
+      "child": {"op": "Atom", "ref": "6x14x24@776e54d5357172358e1251f6716ba3a4c522f5f2e673cb0ed68f9d5017630fed"},
+      "axisMap": "npm"
     }
   },
   "n": [6, 26, 14],

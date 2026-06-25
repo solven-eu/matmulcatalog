@@ -1,5 +1,5 @@
 {
-  "lineage_str": "ConcatCols(SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,2,5⟩), Recombination(base=2x2x2, allocA=[3, 3], allocB=[6, 6], allocC=[3, 2], leaves=[Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]))])), Project(6x14x25, keepN=[0, 1, 2, 3, 4, 5], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]))",
+  "lineage_str": "ConcatCols(SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨6,2,5⟩), Recombination(base=2x2x2, allocA=[3, 3], allocB=[6, 6], allocC=[3, 2], leaves=[Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]))])), Project(6x14x25, keepN=[0, 1, 2, 3, 4, 5], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]))",
   "lineage_compact": "2x5x6-r47-alphaevolve-7387644→⟨6,2,5⟩ +m R[2x2x2; 3,3 | 6,6 | 3,2] +p 6x14x25 ↓[0,1,2,3,4,5|0,1,2,3,4,5,6,7,8,9,10,11,12,13|1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]",
   "lineage": {
     "op": "ConcatCols",
@@ -10,7 +10,8 @@
         "n": 6,
         "m": 2,
         "p": 5,
-        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+        "axisMap": "pnm"
       },
       "right": {
         "op": "Recombination",
@@ -24,7 +25,14 @@
             "keepN": [0, 1, 2],
             "keepM": [1, 2, 3, 4, 5, 6],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 3,
+              "m": 7,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           {
             "op": "SumInner",

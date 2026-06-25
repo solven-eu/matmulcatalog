@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[14, 15], allocC=[15, 14], leaves=[KronProduct(2x5x5, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Serendipitous(OrientAs(3x5x7, ⟨3,7,5⟩) ⊗ ⟨3,2,3⟩), Serendipitous(3x5x5 ⊗ ⟨3,3,3⟩), Serendipitous(OrientAs(2x4x7, ⟨4,2,7⟩) ⊗ ⟨3,7,2⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[14, 15], allocC=[15, 14], leaves=[KronProduct(2x5x5, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Serendipitous(OrientAs(3x5x7, ⟨3,7,5⟩) ⊗ ⟨3,2,3⟩), Serendipitous(3x5x5 ⊗ ⟨3,3,3⟩), Serendipitous(OrientAs(2x4x7, ⟨4,2,7⟩) ⊗ ⟨3,7,2⟩)])",
   "lineage_compact": "R[2x2x2; 9,12 | 14,15 | 15,14]",
   "lineage": {
     "op": "Recombination",
@@ -16,7 +16,14 @@
           "keepN": [1, 2, 3, 4, 5, 6],
           "keepM": [0, 1, 2],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       },
       {
@@ -29,7 +36,8 @@
           "n": 3,
           "m": 7,
           "p": 5,
-          "child": {"op": "Atom", "ref": "3x5x7@9953f57"}
+          "child": {"op": "Atom", "ref": "3x5x7@9953f57"},
+          "axisMap": "npm"
         }
       },
       {
@@ -49,7 +57,8 @@
           "n": 4,
           "m": 2,
           "p": 7,
-          "child": {"op": "Atom", "ref": "2x4x7@b97b60c"}
+          "child": {"op": "Atom", "ref": "2x4x7@b97b60c"},
+          "axisMap": "mnp"
         }
       }
     ]

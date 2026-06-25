@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[12, 13], allocC=[12, 14], leaves=[12x13x14-r1370-perminov_Q-3bedd68, KronProduct(2x4x4, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 9x12x14-r940-perminov_Q-ffecb1f, OrientAs(12x12x13-r1144-perminov_Q-751608b, ⟨12,13,12⟩), 9x13x14-r1024-perminov_Q-3386a90, 12x12x14-r1234-perminov_Q-7f09f61, OrientAs(9x12x13-r878-perminov_Q-3187d5e, ⟨9,13,12⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[12, 13], allocC=[12, 14], leaves=[12x13x14-r1370-perminov_Q-3bedd68, KronProduct(2x4x4, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 9x12x14-r940-perminov_Q-ffecb1f, OrientAs(12x12x13-r1144-perminov_Q-751608b, ⟨12,13,12⟩), 9x13x14-r1024-perminov_Q-3386a90, 12x12x14-r1234-perminov_Q-7f09f61, OrientAs(9x12x13-r878-perminov_Q-3187d5e, ⟨9,13,12⟩)])",
   "lineage_compact": "R[2x2x2; 9,12 | 12,13 | 12,14]",
   "lineage": {
     "op": "Recombination",
@@ -17,7 +17,14 @@
           "keepN": [1, 2, 3, 4, 5, 6],
           "keepM": [0, 1, 2],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       },
       {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
@@ -26,7 +33,8 @@
         "n": 12,
         "m": 13,
         "p": 12,
-        "child": {"op": "Atom", "ref": "12x12x13-r1144-perminov_Q-751608b"}
+        "child": {"op": "Atom", "ref": "12x12x13-r1144-perminov_Q-751608b"},
+        "axisMap": "mpn"
       },
       {"op": "Atom", "ref": "9x13x14-r1024-perminov_Q-3386a90"},
       {"op": "Atom", "ref": "12x12x14-r1234-perminov_Q-7f09f61"},
@@ -35,7 +43,8 @@
         "n": 9,
         "m": 13,
         "p": 12,
-        "child": {"op": "Atom", "ref": "9x12x13-r878-perminov_Q-3187d5e"}
+        "child": {"op": "Atom", "ref": "9x12x13-r878-perminov_Q-3187d5e"},
+        "axisMap": "npm"
       }
     ]
   },

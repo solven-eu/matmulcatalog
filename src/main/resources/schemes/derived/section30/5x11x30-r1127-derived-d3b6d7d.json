@@ -1,5 +1,5 @@
 {
-  "lineage_str": "ConcatCols(Recombination(base=2x2x2, allocA=[2, 3], allocB=[6, 5], allocC=[3, 3], leaves=[Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), SumInner(2x3x3, 2x3x3), OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨3,5,3⟩), OrientAs(2x3x5-r25-alphatensor_Z-31f79a7, ⟨2,5,3⟩)]), Recombination(base=2x4x4, allocA=[3, 2], allocB=[3, 3, 3, 2], allocC=[6, 6, 6, 6], leaves=[ConcatCols(2x3x3, 2x3x3), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x2x2, ConcatCols(2x2x2, 2x2x2))]))",
+  "lineage_str": "ConcatCols(Recombination(base=2x2x2, allocA=[2, 3], allocB=[6, 5], allocC=[3, 3], leaves=[Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), SumInner(2x3x3, 2x3x3), OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨3,5,3⟩), OrientAs(2x3x5-r25-alphatensor_Z-31f79a7, ⟨2,5,3⟩)]), Recombination(base=2x4x4, allocA=[3, 2], allocB=[3, 3, 3, 2], allocC=[6, 6, 6, 6], leaves=[ConcatCols(2x3x3, 2x3x3), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x2x2, ConcatCols(2x2x2, 2x2x2))]))",
   "lineage_compact": "R[2x2x2; 2,3 | 6,5 | 3,3] +p R[2x4x4; 3,2 | 3,3,3,2 | 6,6,6,6]",
   "lineage": {
     "op": "ConcatCols",
@@ -15,7 +15,14 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         },
         {
           "op": "SumInner",
@@ -27,14 +34,16 @@
           "n": 3,
           "m": 5,
           "p": 3,
-          "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"}
+          "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"},
+          "axisMap": "mpn"
         },
         {
           "op": "OrientAs",
           "n": 2,
           "m": 5,
           "p": 3,
-          "child": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"}
+          "child": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"},
+          "axisMap": "npm"
         }
       ]
     },

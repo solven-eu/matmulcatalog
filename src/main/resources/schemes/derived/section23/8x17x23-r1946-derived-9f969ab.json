@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 4], allocB=[9, 8], allocC=[12, 11], leaves=[KronProduct(2x3x3, 2x3x4), 4x9x11-r275-perminov_ZT-58d6c5a, Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨2,2,4⟩), Recombination(base=2x2x2, allocA=[2, 2], allocB=[4, 4], allocC=[6, 5], leaves=[Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=2x4x5, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 4], allocB=[9, 8], allocC=[12, 11], leaves=[KronProduct(2x3x3, 2x3x4), 4x9x11-r275-perminov_ZT-58d6c5a, Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨2,2,4⟩), Recombination(base=, allocA=[2, 2], allocB=[4, 4], allocC=[6, 5], leaves=[Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=2x4x5, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
   "lineage_compact": "R[2x2x2; 4,4 | 9,8 | 12,11]",
   "lineage": {
     "op": "Recombination",
@@ -24,7 +24,8 @@
           "n": 2,
           "m": 4,
           "p": 3,
-          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"},
+          "axisMap": "npm"
         }
       },
       {

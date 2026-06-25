@@ -10,7 +10,8 @@
         "n": 6,
         "m": 2,
         "p": 5,
-        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+        "axisMap": "pnm"
       },
       "right": {
         "op": "ConcatCols",
@@ -28,7 +29,8 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "pnm"
         },
         "right": {
           "op": "ConcatCols",
@@ -46,7 +48,8 @@
               "leaves": [
                 {"op": "Atom", "ref": "naive-1x1x1"}
               ]
-            }
+            },
+            "axisMap": "pnm"
           },
           "right": {
             "op": "ConcatCols",
@@ -64,14 +67,16 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "pnm"
             },
             "right": {
               "op": "OrientAs",
               "n": 6,
               "m": 2,
               "p": 8,
-              "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"}
+              "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"},
+              "axisMap": "mnp"
             }
           }
         }
@@ -87,7 +92,8 @@
           "n": 2,
           "m": 8,
           "p": 5,
-          "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+          "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"},
+          "axisMap": "npm"
         },
         "inner": {
           "op": "Project",

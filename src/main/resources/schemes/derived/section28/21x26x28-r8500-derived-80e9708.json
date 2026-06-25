@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[12, 14], allocC=[12, 16], leaves=[Serendipitous(OrientAs(2x4x4, ⟨4,2,4⟩) ⊗ ⟨3,7,4⟩), KronProduct(2x4x4, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Project(9x13x16, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), OrientAs(12x12x14-r1234-perminov_Q-7f09f61, ⟨12,14,12⟩), Serendipitous(OrientAs(2x3x8, ⟨3,2,8⟩) ⊗ ⟨3,7,2⟩), 12x12x16-r1380-perminov_Z-d48e4cc, OrientAs(9x12x14-r940-perminov_Q-ffecb1f, ⟨9,14,12⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[12, 14], allocC=[12, 16], leaves=[Serendipitous(OrientAs(2x4x4, ⟨4,2,4⟩) ⊗ ⟨3,7,4⟩), KronProduct(2x4x4, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Project(9x13x16, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), OrientAs(12x12x14-r1234-perminov_Q-7f09f61, ⟨12,14,12⟩), Serendipitous(OrientAs(2x3x8, ⟨3,2,8⟩) ⊗ ⟨3,7,2⟩), 12x12x16-r1380-perminov_Z-d48e4cc, OrientAs(9x12x14-r940-perminov_Q-ffecb1f, ⟨9,14,12⟩)])",
   "lineage_compact": "R[2x2x2; 9,12 | 12,14 | 12,16]",
   "lineage": {
     "op": "Recombination",
@@ -18,7 +18,8 @@
           "n": 4,
           "m": 2,
           "p": 4,
-          "child": {"op": "Atom", "ref": "2x4x4@a4ed740"}
+          "child": {"op": "Atom", "ref": "2x4x4@a4ed740"},
+          "axisMap": "pnm"
         }
       },
       {
@@ -29,7 +30,14 @@
           "keepN": [1, 2, 3, 4, 5, 6],
           "keepM": [0, 1, 2],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       },
       {
@@ -44,7 +52,8 @@
         "n": 12,
         "m": 14,
         "p": 12,
-        "child": {"op": "Atom", "ref": "12x12x14-r1234-perminov_Q-7f09f61"}
+        "child": {"op": "Atom", "ref": "12x12x14-r1234-perminov_Q-7f09f61"},
+        "axisMap": "mpn"
       },
       {
         "op": "SerendipitousProduct",
@@ -56,7 +65,8 @@
           "n": 3,
           "m": 2,
           "p": 8,
-          "child": {"op": "Atom", "ref": "2x3x8@68085a4"}
+          "child": {"op": "Atom", "ref": "2x3x8@68085a4"},
+          "axisMap": "mnp"
         }
       },
       {"op": "Atom", "ref": "12x12x16-r1380-perminov_Z-d48e4cc"},
@@ -65,7 +75,8 @@
         "n": 9,
         "m": 14,
         "p": 12,
-        "child": {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"}
+        "child": {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+        "axisMap": "npm"
       }
     ]
   },

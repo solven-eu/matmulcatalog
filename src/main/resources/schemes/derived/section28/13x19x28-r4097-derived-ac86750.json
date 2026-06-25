@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[10, 9], allocC=[14, 14], leaves=[Recombination(base=2x2x2, allocA=[4, 3], allocB=[5, 5], allocC=[7, 7], leaves=[4x5x7-r104-perminov_ZT-4a1b410, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])), Recombination(base=2x3x3, allocA=[3, 4], allocB=[3, 3, 3], allocC=[4, 4, 6], leaves=[Recombination(base=Transpose(3x4x4, perm=\"ABC->CAB\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x3x4, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨3,3,2⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[10, 9], allocC=[14, 14], leaves=[Recombination(base=, allocA=[4, 3], allocB=[5, 5], allocC=[7, 7], leaves=[4x5x7-r104-perminov_ZT-4a1b410, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])), Recombination(base=2x3x3, allocA=[3, 4], allocB=[3, 3, 3], allocC=[4, 4, 6], leaves=[Recombination(base=Transpose(3x4x4, perm=\"ABC->CAB\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x3x4, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), Serendipitous(OrientAs(7x2x3, ⟨2,3,7⟩) ⊗ ⟨3,3,2⟩)])",
   "lineage_compact": "R[2x2x2; 6,7 | 10,9 | 14,14]",
   "lineage": {
     "op": "Recombination",
@@ -68,7 +68,8 @@
             "n": 4,
             "m": 3,
             "p": 6,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "mnp"
           },
           {
             "op": "Project",
@@ -99,7 +100,8 @@
           "n": 2,
           "m": 3,
           "p": 7,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mpn"
         }
       }
     ]

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 12], allocB=[15, 14], allocC=[16, 15], leaves=[12x15x16-r1725-perminov_Z-337086a, 11x15x16-r1605-perminov_Q-52ee511, 11x14x16-r1520-perminov_Q-ac0392d, KronProduct(2x5x5-r40-alphatensor_Z-67f5fb7, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 11x14x15-r1432-perminov_Z-62774f8, 12x14x16-r1617-perminov_Q-1500a76])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 12], allocB=[15, 14], allocC=[16, 15], leaves=[12x15x16-r1725-perminov_Z-337086a, 11x15x16-r1605-perminov_Q-52ee511, 11x14x16-r1520-perminov_Q-ac0392d, KronProduct(2x5x5-r40-alphatensor_Z-67f5fb7, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 11x14x15-r1432-perminov_Z-62774f8, 12x14x16-r1617-perminov_Q-1500a76])",
   "lineage_compact": "R[2x2x2; 11,12 | 15,14 | 16,15]",
   "lineage": {
     "op": "Recombination",
@@ -19,7 +19,14 @@
           "keepN": [1, 2, 3, 4, 5, 6],
           "keepM": [0, 1, 2],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       },
       {"op": "Atom", "ref": "11x14x15-r1432-perminov_Z-62774f8"},

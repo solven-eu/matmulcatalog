@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[6, 8], allocC=[11, 12], leaves=[Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨4,2,4⟩), Recombination(base=2x2x2, allocA=[4, 4], allocB=[3, 3], allocC=[6, 5], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Recombination(base=Transpose(3x4x5, perm=\"ABC->BAC\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), Recombination(base=2x2x2, allocA=[4, 4], allocB=[4, 4], allocC=[6, 5], leaves=[4x4x6-r73-perminov_ZT-5bb1a46, Recombination(base=4x4x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, 3x4x6-r54-alphaevolve-c197868)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 8], allocB=[6, 8], allocC=[11, 12], leaves=[Serendipitous(OrientAs(2x3x4, ⟨2,4,3⟩) ⊗ ⟨4,2,4⟩), Recombination(base=, allocA=[4, 4], allocB=[3, 3], allocC=[6, 5], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Recombination(base=Transpose(3x4x5, perm=\"ABC->BAC\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), Recombination(base=, allocA=[4, 4], allocB=[4, 4], allocC=[6, 5], leaves=[4x4x6-r73-perminov_ZT-5bb1a46, Recombination(base=4x4x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, 3x4x6-r54-alphaevolve-c197868)])",
   "lineage_compact": "R[2x2x2; 6,8 | 6,8 | 11,12]",
   "lineage": {
     "op": "Recombination",
@@ -18,7 +18,8 @@
           "n": 2,
           "m": 4,
           "p": 3,
-          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"},
+          "axisMap": "npm"
         }
       },
       {
@@ -33,7 +34,8 @@
             "n": 4,
             "m": 3,
             "p": 6,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "mnp"
           },
           {
             "op": "Recombination",

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 9], allocB=[9, 12], allocC=[11, 12], leaves=[KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->BAC\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), 4x9x11-r275-perminov_ZT-58d6c5a, OrientAs(4x11x12-r362-perminov_Q-b4c8311, ⟨4,12,11⟩), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), Serendipitous(2x4x4 ⊗ ⟨2,3,3⟩), OrientAs(9x11x12-r738-perminov_Q-435e5a3, ⟨9,12,11⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 9], allocB=[9, 12], allocC=[11, 12], leaves=[KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->BAC\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), 4x9x11-r275-perminov_ZT-58d6c5a, OrientAs(4x11x12-r362-perminov_Q-b4c8311, ⟨4,12,11⟩), KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])), Serendipitous(2x4x4 ⊗ ⟨2,3,3⟩), OrientAs(9x11x12-r738-perminov_Q-435e5a3, ⟨9,12,11⟩)])",
   "lineage_compact": "R[2x2x2; 4,9 | 9,12 | 11,12]",
   "lineage": {
     "op": "Recombination",
@@ -29,7 +29,14 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       },
       {"op": "Atom", "ref": "4x9x11-r275-perminov_ZT-58d6c5a"},
@@ -38,7 +45,8 @@
         "n": 4,
         "m": 12,
         "p": 11,
-        "child": {"op": "Atom", "ref": "4x11x12-r362-perminov_Q-b4c8311"}
+        "child": {"op": "Atom", "ref": "4x11x12-r362-perminov_Q-b4c8311"},
+        "axisMap": "npm"
       },
       {
         "op": "KronProduct",
@@ -76,7 +84,8 @@
         "n": 9,
         "m": 12,
         "p": 11,
-        "child": {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"}
+        "child": {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"},
+        "axisMap": "npm"
       }
     ]
   },

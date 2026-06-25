@@ -10,7 +10,8 @@
         "n": 3,
         "m": 6,
         "p": 5,
-        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+        "axisMap": "npm"
       },
       "right": {
         "op": "SumInner",
@@ -19,7 +20,8 @@
           "n": 3,
           "m": 6,
           "p": 5,
-          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+          "axisMap": "npm"
         },
         "right": {
           "op": "OrientAs",
@@ -35,7 +37,8 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "npm"
         }
       }
     },

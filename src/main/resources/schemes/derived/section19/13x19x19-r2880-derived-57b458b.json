@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 6], allocB=[10, 9], allocC=[10, 9], leaves=[Recombination(base=2x2x2, allocA=[4, 3], allocB=[5, 5], allocC=[5, 5], leaves=[Recombination(base=4x5x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(Recombination(base=2x2x2, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])), OrientAs(7x9x10-r433-perminov_Z-08ee9fa, ⟨7,10,9⟩), 6x9x10-r367-perminov_Q-ceb0594, 7x9x9-r396-perminov_ZT-c326e22])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 6], allocB=[10, 9], allocC=[10, 9], leaves=[Recombination(base=, allocA=[4, 3], allocB=[5, 5], allocC=[5, 5], leaves=[Recombination(base=4x5x5, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(Recombination(base=, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])), OrientAs(7x9x10-r433-perminov_Z-08ee9fa, ⟨7,10,9⟩), 6x9x10-r367-perminov_Q-ceb0594, 7x9x9-r396-perminov_ZT-c326e22])",
   "lineage_compact": "R[2x2x2; 7,6 | 10,9 | 10,9]",
   "lineage": {
     "op": "Recombination",
@@ -65,7 +65,8 @@
         "n": 7,
         "m": 10,
         "p": 9,
-        "child": {"op": "Atom", "ref": "7x9x10-r433-perminov_Z-08ee9fa"}
+        "child": {"op": "Atom", "ref": "7x9x10-r433-perminov_Z-08ee9fa"},
+        "axisMap": "npm"
       },
       {"op": "Atom", "ref": "6x9x10-r367-perminov_Q-ceb0594"},
       {"op": "Atom", "ref": "7x9x9-r396-perminov_ZT-c326e22"}

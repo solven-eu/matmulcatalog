@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[10, 12], allocC=[14, 15], leaves=[7x12x15-r815-perminov_Z-110f0ab, Recombination(base=2x2x2, allocA=[4, 3], allocB=[5, 5], allocC=[7, 7], leaves=[4x5x7-r104-perminov_ZT-4a1b410, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x10x15-r594-perminov_ZT-183864a, Recombination(base=2x2x2, allocA=[4, 3], allocB=[6, 6], allocC=[7, 7], leaves=[Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩))]), 6x12x15-r686-perminov_Q-a06dc94, 7x10x15-r694-perminov_Z-8331cd6, Serendipitous(2x4x7 ⊗ ⟨3,3,2⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[10, 12], allocC=[14, 15], leaves=[7x12x15-r815-perminov_Z-110f0ab, Recombination(base=, allocA=[4, 3], allocB=[5, 5], allocC=[7, 7], leaves=[4x5x7-r104-perminov_ZT-4a1b410, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x10x15-r594-perminov_ZT-183864a, Recombination(base=, allocA=[4, 3], allocB=[6, 6], allocC=[7, 7], leaves=[Recombination(base=ext[4x6x7-r123-perminov_ZT-436f709.json] / <4,6,7>=123 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩))]), 6x12x15-r686-perminov_Q-a06dc94, 7x10x15-r694-perminov_Z-8331cd6, Serendipitous(2x4x7 ⊗ ⟨3,3,2⟩)])",
   "lineage_compact": "R[2x2x2; 6,7 | 10,12 | 14,15]",
   "lineage": {
     "op": "Recombination",
@@ -54,14 +54,22 @@
               "keepN": [0, 1, 2],
               "keepM": [1, 2, 3, 4, 5, 6],
               "keepP": [0, 1, 2],
-              "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+              "child": {
+                "op": "OrientAs",
+                "n": 3,
+                "m": 7,
+                "p": 3,
+                "axisMap": "mpn",
+                "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+              }
             },
             "right": {
               "op": "OrientAs",
               "n": 3,
               "m": 6,
               "p": 4,
-              "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+              "axisMap": "npm"
             }
           }
         ]

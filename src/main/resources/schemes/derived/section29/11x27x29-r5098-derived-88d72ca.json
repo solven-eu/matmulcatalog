@@ -23,7 +23,8 @@
           "n": 5,
           "m": 12,
           "p": 5,
-          "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+          "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
+          "axisMap": "mpn"
         },
         "right": {
           "op": "ConcatCols",
@@ -32,14 +33,16 @@
             "n": 5,
             "m": 12,
             "p": 5,
-            "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+            "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
+            "axisMap": "mpn"
           },
           "right": {
             "op": "OrientAs",
             "n": 5,
             "m": 12,
             "p": 5,
-            "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+            "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
+            "axisMap": "mpn"
           }
         }
       },
@@ -53,7 +56,8 @@
           "n": 2,
           "m": 3,
           "p": 7,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mpn"
         }
       },
       {"op": "Atom", "ref": "5x15x15-r761-perminov_ZT-2547c0d"},
@@ -72,14 +76,16 @@
             "n": 3,
             "m": 5,
             "p": 4,
-            "child": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"}
+            "child": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"},
+            "axisMap": "npm"
           },
           {
             "op": "OrientAs",
             "n": 2,
             "m": 5,
             "p": 4,
-            "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+            "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+            "axisMap": "npm"
           }
         ]
       }

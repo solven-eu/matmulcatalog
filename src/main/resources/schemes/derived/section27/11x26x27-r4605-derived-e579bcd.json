@@ -24,14 +24,16 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "mpn"
         },
         "right": {
           "op": "OrientAs",
           "n": 5,
           "m": 8,
           "p": 6,
-          "child": {"op": "Atom", "ref": "5x6x8-r170-perminov_ZT-b476d2a"}
+          "child": {"op": "Atom", "ref": "5x6x8-r170-perminov_ZT-b476d2a"},
+          "axisMap": "npm"
         }
       },
       {"op": "Atom", "ref": "6x9x9-r332-perminov_Q-1d3cee7"},
@@ -45,7 +47,8 @@
           "n": 2,
           "m": 4,
           "p": 3,
-          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+          "child": {"op": "Atom", "ref": "2x3x4@91c6b69"},
+          "axisMap": "npm"
         }
       },
       {
@@ -55,14 +58,16 @@
           "n": 5,
           "m": 9,
           "p": 4,
-          "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"}
+          "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"},
+          "axisMap": "mpn"
         },
         "right": {
           "op": "OrientAs",
           "n": 5,
           "m": 9,
           "p": 5,
-          "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"}
+          "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"},
+          "axisMap": "mpn"
         }
       }
     ]

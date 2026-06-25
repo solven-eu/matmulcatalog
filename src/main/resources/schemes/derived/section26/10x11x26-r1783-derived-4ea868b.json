@@ -1,5 +1,5 @@
 {
-  "lineage_str": "ConcatCols(OrientAs(2x10x11-r171-hk71-e6d04d6, ⟨10,11,2⟩), Recombination(base=2x2x2, allocA=[5, 5], allocB=[6, 5], allocC=[12, 12], leaves=[Recombination(base=2x2x2, allocA=[3, 2], allocB=[3, 3], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x3x3, 2x3x3)]), 5x5x12-r204-perminov_ZT-61a6cb7]))",
+  "lineage_str": "ConcatCols(OrientAs(2x10x11-r171-hk71-e6d04d6, ⟨10,11,2⟩), Recombination(base=2x2x2, allocA=[5, 5], allocB=[6, 5], allocC=[12, 12], leaves=[Recombination(base=, allocA=[3, 2], allocB=[3, 3], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(2x3x3, 2x3x3)]), 5x5x12-r204-perminov_ZT-61a6cb7]))",
   "lineage_compact": "2x10x11-r171-hk71-e6d04d6→⟨10,11,2⟩ +p R[2x2x2; 5,5 | 6,5 | 12,12]",
   "lineage": {
     "op": "ConcatCols",
@@ -8,7 +8,8 @@
       "n": 10,
       "m": 11,
       "p": 2,
-      "child": {"op": "Atom", "ref": "2x10x11-r171-hk71-e6d04d6"}
+      "child": {"op": "Atom", "ref": "2x10x11-r171-hk71-e6d04d6"},
+      "axisMap": "mpn"
     },
     "right": {
       "op": "Recombination",

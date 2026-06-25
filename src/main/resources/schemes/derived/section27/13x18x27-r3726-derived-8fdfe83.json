@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x3x3, allocA=[7, 6], allocB=[6, 6, 6], allocC=[9, 9, 9], leaves=[KronProduct(2x3x3, Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])), OrientAs(6x7x9-r264-perminov_ZT-d42e06b, ⟨7,6,9⟩)])",
+  "lineage_str": "Recombination(base=2x3x3, allocA=[7, 6], allocB=[6, 6, 6], allocC=[9, 9, 9], leaves=[KronProduct(2x3x3, Recombination(base=Transpose(, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])), OrientAs(6x7x9-r264-perminov_ZT-d42e06b, ⟨7,6,9⟩)])",
   "lineage_compact": "R[2x3x3; 7,6 | 6,6,6 | 9,9,9]",
   "lineage": {
     "op": "Recombination",
@@ -31,7 +31,8 @@
         "n": 7,
         "m": 6,
         "p": 9,
-        "child": {"op": "Atom", "ref": "6x7x9-r264-perminov_ZT-d42e06b"}
+        "child": {"op": "Atom", "ref": "6x7x9-r264-perminov_ZT-d42e06b"},
+        "axisMap": "mnp"
       }
     ]
   },

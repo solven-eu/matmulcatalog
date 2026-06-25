@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=Transpose(2x5x5, perm=\"ABC->CBA\"), allocA=[5, 5, 5, 6, 5], allocB=[5, 5, 6, 5, 6], allocC=[2, 2], leaves=[Recombination(base=Transpose(2x5x5, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩), OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,6,2⟩)])",
+  "lineage_str": "Recombination(base=Transpose(2x5x5, perm=\"ABC->CBA\"), allocA=[5, 5, 5, 6, 5], allocB=[5, 5, 6, 5, 6], allocC=[2, 2], leaves=[Recombination(base=, allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩), OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,6,2⟩)])",
   "lineage_compact": "R[2x5x5^ABC->CBA; 5,5,5,6,5 | 5,5,6,5,6 | 2,2]",
   "lineage": {
     "op": "Recombination",
@@ -28,7 +28,8 @@
         "n": 5,
         "m": 6,
         "p": 2,
-        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+        "axisMap": "mpn"
       },
       {
         "op": "OrientAs",
@@ -44,7 +45,8 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        }
+        },
+        "axisMap": "mpn"
       }
     ]
   },

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 6], allocB=[10, 9], allocC=[10, 9], leaves=[KronProduct(Recombination(base=2x2x2, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])), OrientAs(6x9x10-r367-perminov_Q-ceb0594, ⟨6,10,9⟩), 6x9x9-r332-perminov_Q-1d3cee7])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 6], allocB=[10, 9], allocC=[10, 9], leaves=[KronProduct(Recombination(base=, allocA=[1, 1], allocB=[1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])), OrientAs(6x9x10-r367-perminov_Q-ceb0594, ⟨6,10,9⟩), 6x9x9-r332-perminov_Q-1d3cee7])",
   "lineage_compact": "R[2x2x2; 6,6 | 10,9 | 10,9]",
   "lineage": {
     "op": "Recombination",
@@ -36,7 +36,8 @@
         "n": 6,
         "m": 10,
         "p": 9,
-        "child": {"op": "Atom", "ref": "6x9x10-r367-perminov_Q-ceb0594"}
+        "child": {"op": "Atom", "ref": "6x9x10-r367-perminov_Q-ceb0594"},
+        "axisMap": "npm"
       },
       {"op": "Atom", "ref": "6x9x9-r332-perminov_Q-1d3cee7"}
     ]

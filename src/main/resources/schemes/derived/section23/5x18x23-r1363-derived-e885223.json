@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x3x4, allocA=[3, 2], allocB=[6, 6, 6], allocC=[6, 6, 6, 5], leaves=[Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩)])",
+  "lineage_str": "Recombination(base=2x3x4, allocA=[3, 2], allocB=[6, 6, 6], allocC=[6, 6, 6, 5], leaves=[Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩)])",
   "lineage_compact": "R[2x3x4; 3,2 | 6,6,6 | 6,6,6,5]",
   "lineage": {
     "op": "Recombination",
@@ -25,14 +25,28 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         },
         "right": {
           "op": "Project",
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       },
       {
@@ -40,14 +54,16 @@
         "n": 2,
         "m": 6,
         "p": 5,
-        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+        "axisMap": "npm"
       },
       {
         "op": "OrientAs",
         "n": 3,
         "m": 6,
         "p": 5,
-        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+        "axisMap": "npm"
       }
     ]
   },

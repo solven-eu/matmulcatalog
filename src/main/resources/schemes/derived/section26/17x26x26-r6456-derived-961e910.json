@@ -14,14 +14,16 @@
         "n": 8,
         "m": 13,
         "p": 12,
-        "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+        "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"},
+        "axisMap": "npm"
       },
       {
         "op": "OrientAs",
         "n": 9,
         "m": 13,
         "p": 12,
-        "child": {"op": "Atom", "ref": "9x12x13-r878-perminov_Q-3187d5e"}
+        "child": {"op": "Atom", "ref": "9x12x13-r878-perminov_Q-3187d5e"},
+        "axisMap": "npm"
       },
       {
         "op": "ConcatCols",
@@ -32,14 +34,16 @@
             "n": 8,
             "m": 5,
             "p": 2,
-            "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+            "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"},
+            "axisMap": "pmn"
           },
           "right": {
             "op": "OrientAs",
             "n": 8,
             "m": 8,
             "p": 2,
-            "child": {"op": "Atom", "ref": "2x8x8-r100-hk71-1fe5b7a"}
+            "child": {"op": "Atom", "ref": "2x8x8-r100-hk71-1fe5b7a"},
+            "axisMap": "mpn"
           }
         },
         "right": {
@@ -47,7 +51,8 @@
           "n": 8,
           "m": 13,
           "p": 12,
-          "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+          "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"},
+          "axisMap": "npm"
         }
       }
     ]

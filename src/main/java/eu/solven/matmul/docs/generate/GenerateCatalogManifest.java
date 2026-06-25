@@ -723,6 +723,11 @@ public class GenerateCatalogManifest {
 				|| s.contains("closure") || s.contains("recursive");
 	}
 
+	/** A real pinned base ref: {@code NxMxP@hash}. (An internal {@code @ref?:L0} lineage-id
+	 *  fallback is NOT a catalog base — excluding it avoids a false dangling.) */
+	private static final java.util.regex.Pattern PINNED_REF =
+			java.util.regex.Pattern.compile("\\d+x\\d+x\\d+@[0-9a-fA-F]{4,}");
+
 	/** Collect every pinned Atom ref ("{shape}@{hash}") anywhere in a lineage DAG. */
 	private static void collectPinnedRefs(JsonNode node, List<String> out) {
 		if (node == null) {
@@ -730,7 +735,10 @@ public class GenerateCatalogManifest {
 		}
 		if (node.isObject()) {
 			JsonNode ref = node.get("ref");
-			if (ref != null && ref.isString() && ref.asString().indexOf('@') >= 0) {
+			// A pinned BASE ref is "{shape}@{hash}". Skip internal lineage-id references
+			// ("@ref?:L0" — a dedup/cycle fallback that points at a lineage node, not a catalog
+			// scheme); counting those as missing bases is a false dangling.
+			if (ref != null && ref.isString() && PINNED_REF.matcher(ref.asString()).find()) {
 				out.add(ref.asString());
 			}
 			node.properties().forEach(e -> collectPinnedRefs(e.getValue(), out));

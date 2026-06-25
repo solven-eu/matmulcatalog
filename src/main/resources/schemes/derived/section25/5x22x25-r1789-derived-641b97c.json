@@ -21,7 +21,8 @@
             "keepM": [0, 1, 2],
             "keepP": [1, 2, 3, 4, 5, 6],
             "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
-          }
+          },
+          "axisMap": "mpn"
         },
         "right": {
           "op": "OrientAs",
@@ -34,7 +35,8 @@
             "keepM": [0, 1, 2],
             "keepP": [1, 2, 3, 4, 5, 6],
             "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
-          }
+          },
+          "axisMap": "mpn"
         }
       },
       {
@@ -60,14 +62,16 @@
             "keepM": [0, 1, 2],
             "keepP": [1, 2, 3, 4, 5, 6],
             "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
-          }
+          },
+          "axisMap": "mpn"
         },
         "right": {
           "op": "OrientAs",
           "n": 3,
           "m": 6,
           "p": 4,
-          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          "axisMap": "npm"
         }
       },
       {

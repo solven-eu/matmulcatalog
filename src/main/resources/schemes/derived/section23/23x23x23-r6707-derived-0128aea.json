@@ -22,7 +22,8 @@
             "keepM": [0, 1, 2],
             "keepP": [1, 2, 3, 4, 5, 6],
             "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
-          }
+          },
+          "axisMap": "pnm"
         }
       },
       {
@@ -59,7 +60,8 @@
               "keepM": [0, 1, 2],
               "keepP": [1, 2, 3, 4, 5, 6],
               "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
-            }
+            },
+            "axisMap": "mpn"
           },
           {
             "op": "SumInner",
@@ -105,7 +107,8 @@
         "n": 12,
         "m": 11,
         "p": 12,
-        "child": {"op": "Atom", "ref": "11x12x12-r968-perminov_Q-501db78"}
+        "child": {"op": "Atom", "ref": "11x12x12-r968-perminov_Q-501db78"},
+        "axisMap": "pnm"
       }
     ]
   },

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 7], allocB=[6, 8], allocC=[8, 8], leaves=[Recombination(base=2x2x2, allocA=[4, 3], allocB=[4, 4], allocC=[4, 4], leaves=[Recombination(base=4x4x4, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x4x4, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), OrientAs(6x7x8-r238-perminov_ZT-186f4c6, ⟨7,6,8⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 7], allocB=[6, 8], allocC=[8, 8], leaves=[Recombination(base=, allocA=[4, 3], allocB=[4, 4], allocC=[4, 4], leaves=[Recombination(base=4x4x4, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x4x4, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1])]), OrientAs(6x7x8-r238-perminov_ZT-186f4c6, ⟨7,6,8⟩)])",
   "lineage_compact": "R[2x2x2; 7,7 | 6,8 | 8,8]",
   "lineage": {
     "op": "Recombination",
@@ -42,7 +42,8 @@
         "n": 7,
         "m": 6,
         "p": 8,
-        "child": {"op": "Atom", "ref": "6x7x8-r238-perminov_ZT-186f4c6"}
+        "child": {"op": "Atom", "ref": "6x7x8-r238-perminov_ZT-186f4c6"},
+        "axisMap": "mnp"
       }
     ]
   },

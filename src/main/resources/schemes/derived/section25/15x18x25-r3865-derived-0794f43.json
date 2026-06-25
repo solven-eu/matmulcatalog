@@ -1,6 +1,6 @@
 {
-  "lineage_str": "ConcatCols(KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩)), KronProduct(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,3,7⟩)))",
-  "lineage_compact": "R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] ⊗ 2x5x6-r47-alphaevolve-7387644→⟨5,6,2⟩ +p 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ R[ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL; 1,1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1]→⟨5,3,7⟩",
+  "lineage_str": "ConcatCols(KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨5,6,2⟩)), KronProduct(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,3,7⟩)))",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 1,1,1 | 1,1,1 | 1,1] ⊗ 2x5x6-r47-alphaevolve-7387644→⟨5,6,2⟩ +p 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ R[ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL; 1,1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1]→⟨5,3,7⟩",
   "lineage": {
     "op": "ConcatCols",
     "left": {
@@ -24,7 +24,8 @@
         "n": 5,
         "m": 6,
         "p": 2,
-        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+        "axisMap": "mpn"
       }
     },
     "right": {
@@ -34,7 +35,14 @@
         "keepN": [0, 1, 2],
         "keepM": [1, 2, 3, 4, 5, 6],
         "keepP": [0, 1, 2],
-        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        "child": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 7,
+          "p": 3,
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
       },
       "inner": {
         "op": "OrientAs",
@@ -50,7 +58,8 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        }
+        },
+        "axisMap": "mnp"
       }
     }
   },

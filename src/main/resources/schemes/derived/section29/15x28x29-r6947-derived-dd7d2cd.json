@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 7], allocB=[14, 14], allocC=[15, 14], leaves=[Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨4,2,5⟩), 7x14x15-r952-perminov_Z-504ea1e, 8x14x14-r1004-perminov_Q-e13a227, Recombination(base=2x2x2, allocA=[4, 3], allocB=[7, 7], allocC=[7, 7], leaves=[4x7x7-r144-perminov_ZT-b57b3ce, 3x7x7-r111-perminov_Z-1e6a476])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 7], allocB=[14, 14], allocC=[15, 14], leaves=[Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨4,2,5⟩), 7x14x15-r952-perminov_Z-504ea1e, 8x14x14-r1004-perminov_Q-e13a227, Recombination(base=, allocA=[4, 3], allocB=[7, 7], allocC=[7, 7], leaves=[4x7x7-r144-perminov_ZT-b57b3ce, 3x7x7-r111-perminov_Z-1e6a476])])",
   "lineage_compact": "R[2x2x2; 8,7 | 14,14 | 15,14]",
   "lineage": {
     "op": "Recombination",
@@ -18,7 +18,8 @@
           "n": 2,
           "m": 7,
           "p": 3,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mnp"
         }
       },
       {"op": "Atom", "ref": "7x14x15-r952-perminov_Z-504ea1e"},

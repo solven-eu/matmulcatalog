@@ -8,7 +8,8 @@
       "n": 10,
       "m": 2,
       "p": 10,
-      "child": {"op": "Atom", "ref": "2x10x10-r155-hk71-177ef8b"}
+      "child": {"op": "Atom", "ref": "2x10x10-r155-hk71-177ef8b"},
+      "axisMap": "pnm"
     },
     "right": {
       "op": "ConcatCols",
@@ -17,14 +18,16 @@
         "n": 10,
         "m": 2,
         "p": 10,
-        "child": {"op": "Atom", "ref": "2x10x10-r155-hk71-177ef8b"}
+        "child": {"op": "Atom", "ref": "2x10x10-r155-hk71-177ef8b"},
+        "axisMap": "pnm"
       },
       "right": {
         "op": "OrientAs",
         "n": 10,
         "m": 2,
         "p": 12,
-        "child": {"op": "Atom", "ref": "2x10x12-r186-hk71-8fc229b"}
+        "child": {"op": "Atom", "ref": "2x10x12-r186-hk71-8fc229b"},
+        "axisMap": "mnp"
       }
     }
   },

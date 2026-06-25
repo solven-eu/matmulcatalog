@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x3x3, allocA=[12, 12], allocB=[10, 9, 9], allocC=[10, 10, 10], leaves=[Project(13x9x10, keepN=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), OrientAs(10x10x12-r766-perminov_ZT-a1e93e9, ⟨12,10,10⟩)])",
+  "lineage_str": "Recombination(base=2x3x3, allocA=[12, 12], allocB=[10, 9, 9], allocC=[10, 10, 10], leaves=[Project(OrientAs(10x9x13, ⟨13,9,10⟩), keepN=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), OrientAs(10x10x12-r766-perminov_ZT-a1e93e9, ⟨12,10,10⟩)])",
   "lineage_compact": "R[2x3x3; 12,12 | 10,9,9 | 10,10,10]",
   "lineage": {
     "op": "Recombination",
@@ -13,14 +13,22 @@
         "keepN": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
         "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-        "child": {"op": "Atom", "ref": "13x9x10@8c62898"}
+        "child": {
+          "op": "OrientAs",
+          "n": 13,
+          "m": 9,
+          "p": 10,
+          "axisMap": "pmn",
+          "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+        }
       },
       {
         "op": "OrientAs",
         "n": 12,
         "m": 10,
         "p": 10,
-        "child": {"op": "Atom", "ref": "10x10x12-r766-perminov_ZT-a1e93e9"}
+        "child": {"op": "Atom", "ref": "10x10x12-r766-perminov_ZT-a1e93e9"},
+        "axisMap": "pnm"
       }
     ]
   },

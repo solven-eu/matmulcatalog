@@ -1,5 +1,5 @@
 {
-  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[6, 6, 8], allocC=[2, 3], leaves=[SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1])), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x3x5-r25-alphatensor_Z-31f79a7, ⟨3,5,2⟩)), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])]), SumInner(ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), OrientAs(2x9x15-r210-hk71-51da406, ⟨9,2,15⟩)), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩))))",
+  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[6, 6, 8], allocC=[2, 3], leaves=[SumInner(Recombination(base=Transpose(, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), SumInner(Recombination(base=, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1])), SumInner(Recombination(base=, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), OrientAs(2x3x5-r25-alphatensor_Z-31f79a7, ⟨3,5,2⟩)), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])]), SumInner(ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), OrientAs(2x9x15-r210-hk71-51da406, ⟨9,2,15⟩)), KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩))))",
   "lineage_compact": "R[2x3x3^ABC->CBA; 3,3,3 | 6,6,8 | 2,3] +p 2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +p 2x9x15-r210-hk71-51da406→⟨9,2,15⟩ +m 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩",
   "lineage": {
     "op": "ConcatCols",
@@ -36,7 +36,14 @@
             "keepN": [0, 1, 2],
             "keepM": [1, 2, 3, 4, 5, 6],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 3,
+              "m": 7,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           }
         },
         {
@@ -79,7 +86,8 @@
             "n": 3,
             "m": 5,
             "p": 2,
-            "child": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"}
+            "child": {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"},
+            "axisMap": "mpn"
           }
         },
         {
@@ -87,7 +95,14 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       ]
     },
@@ -100,14 +115,16 @@
           "n": 9,
           "m": 2,
           "p": 9,
-          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"},
+          "axisMap": "pnm"
         },
         "right": {
           "op": "OrientAs",
           "n": 9,
           "m": 2,
           "p": 15,
-          "child": {"op": "Atom", "ref": "2x9x15-r210-hk71-51da406"}
+          "child": {"op": "Atom", "ref": "2x9x15-r210-hk71-51da406"},
+          "axisMap": "mnp"
         }
       },
       "right": {
@@ -124,7 +141,8 @@
           "n": 3,
           "m": 6,
           "p": 4,
-          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          "axisMap": "npm"
         }
       }
     }

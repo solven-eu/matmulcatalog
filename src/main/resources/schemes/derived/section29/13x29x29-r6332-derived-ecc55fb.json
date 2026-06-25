@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 6], allocB=[15, 14], allocC=[15, 14], leaves=[Recombination(base=2x3x3, allocA=[4, 3], allocB=[5, 5, 5], allocC=[5, 5, 5], leaves=[3x5x5-r58-alphatensor_Z-263818a, 4x5x5-r76-alphatensor_Z-54f4614]), 6x15x15-r859-perminov_Q-06c1f02, OrientAs(7x14x15-r952-perminov_Z-504ea1e, ⟨7,15,14⟩), Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩), Recombination(base=2x2x2, allocA=[4, 3], allocB=[7, 7], allocC=[7, 7], leaves=[4x7x7-r144-perminov_ZT-b57b3ce, 3x7x7-r111-perminov_Z-1e6a476])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 6], allocB=[15, 14], allocC=[15, 14], leaves=[Recombination(base=2x3x3, allocA=[4, 3], allocB=[5, 5, 5], allocC=[5, 5, 5], leaves=[3x5x5-r58-alphatensor_Z-263818a, 4x5x5-r76-alphatensor_Z-54f4614]), 6x15x15-r859-perminov_Q-06c1f02, OrientAs(7x14x15-r952-perminov_Z-504ea1e, ⟨7,15,14⟩), Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩), Recombination(base=, allocA=[4, 3], allocB=[7, 7], allocC=[7, 7], leaves=[4x7x7-r144-perminov_ZT-b57b3ce, 3x7x7-r111-perminov_Z-1e6a476])])",
   "lineage_compact": "R[2x2x2; 7,6 | 15,14 | 15,14]",
   "lineage": {
     "op": "Recombination",
@@ -25,7 +25,8 @@
         "n": 7,
         "m": 15,
         "p": 14,
-        "child": {"op": "Atom", "ref": "7x14x15-r952-perminov_Z-504ea1e"}
+        "child": {"op": "Atom", "ref": "7x14x15-r952-perminov_Z-504ea1e"},
+        "axisMap": "npm"
       },
       {
         "op": "SerendipitousProduct",
@@ -37,7 +38,8 @@
           "n": 2,
           "m": 7,
           "p": 3,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mnp"
         }
       },
       {

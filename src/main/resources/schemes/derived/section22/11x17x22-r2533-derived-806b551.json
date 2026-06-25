@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[5, 6], allocB=[8, 9], allocC=[10, 12], leaves=[6x9x12-r429-perminov_Q-45a8a82, 6x8x10-r327-perminov_ZT-d052dd5, Recombination(base=2x2x2, allocA=[3, 2], allocB=[4, 4], allocC=[6, 6], leaves=[3x4x6-r54-alphaevolve-c197868, Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x9x10-r367-perminov_Q-ceb0594, Recombination(base=2x2x2, allocA=[3, 2], allocB=[5, 4], allocC=[6, 6], leaves=[3x5x6-r68-alphaevolve-14be9c3, 2x5x6-r47-alphaevolve-7387644, Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x4x6-r54-alphaevolve-c197868]), KronProduct(2x2x2, 3x4x6-r54-alphaevolve-c197868), ConcatCols(OrientAs(5x5x9-r161-perminov_ZT-0972b0d, ⟨5,9,5⟩), OrientAs(5x5x9-r161-perminov_ZT-0972b0d, ⟨5,9,5⟩))])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[5, 6], allocB=[8, 9], allocC=[10, 12], leaves=[6x9x12-r429-perminov_Q-45a8a82, 6x8x10-r327-perminov_ZT-d052dd5, Recombination(base=, allocA=[3, 2], allocB=[4, 4], allocC=[6, 6], leaves=[3x4x6-r54-alphaevolve-c197868, Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x9x10-r367-perminov_Q-ceb0594, Recombination(base=, allocA=[3, 2], allocB=[5, 4], allocC=[6, 6], leaves=[3x5x6-r68-alphaevolve-14be9c3, 2x5x6-r47-alphaevolve-7387644, Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x4x6-r54-alphaevolve-c197868]), KronProduct(2x2x2, 3x4x6-r54-alphaevolve-c197868), ConcatCols(OrientAs(5x5x9-r161-perminov_ZT-0972b0d, ⟨5,9,5⟩), OrientAs(5x5x9-r161-perminov_ZT-0972b0d, ⟨5,9,5⟩))])",
   "lineage_compact": "R[2x2x2; 5,6 | 8,9 | 10,12]",
   "lineage": {
     "op": "Recombination",
@@ -65,14 +65,16 @@
           "n": 5,
           "m": 9,
           "p": 5,
-          "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"}
+          "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"},
+          "axisMap": "mpn"
         },
         "right": {
           "op": "OrientAs",
           "n": 5,
           "m": 9,
           "p": 5,
-          "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"}
+          "child": {"op": "Atom", "ref": "5x5x9-r161-perminov_ZT-0972b0d"},
+          "axisMap": "mpn"
         }
       }
     ]

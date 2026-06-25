@@ -13,7 +13,8 @@
           "n": 4,
           "m": 2,
           "p": 8,
-          "child": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"}
+          "child": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"},
+          "axisMap": "mnp"
         },
         "right": {
           "op": "ConcatCols",
@@ -22,14 +23,16 @@
             "n": 4,
             "m": 2,
             "p": 11,
-            "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+            "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"},
+            "axisMap": "mnp"
           },
           "right": {
             "op": "OrientAs",
             "n": 4,
             "m": 2,
             "p": 11,
-            "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+            "child": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"},
+            "axisMap": "mnp"
           }
         }
       },
@@ -43,7 +46,8 @@
           "n": 2,
           "m": 12,
           "p": 6,
-          "child": {"op": "Atom", "ref": "12x2x6@4ddc639"}
+          "child": {"op": "Atom", "ref": "12x2x6@4ddc639"},
+          "axisMap": "mnp"
         }
       }
     }

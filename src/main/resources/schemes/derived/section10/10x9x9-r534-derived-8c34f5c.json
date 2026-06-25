@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x3x3, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_str": "Recombination(base=2x3x3, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])])",
   "lineage_compact": "R[2x3x3; 4,6 | 3,3,3 | 3,3,3]",
   "lineage": {
     "op": "Recombination",
@@ -13,7 +13,14 @@
         "keepN": [1, 2, 3, 4, 5, 6],
         "keepM": [0, 1, 2],
         "keepP": [0, 1, 2],
-        "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+        "child": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 3,
+          "p": 3,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
       },
       {
         "op": "Recombination",

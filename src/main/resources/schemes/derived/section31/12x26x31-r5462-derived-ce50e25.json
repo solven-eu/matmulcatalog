@@ -1,6 +1,6 @@
 {
-  "lineage_str": "SumInner(ConcatCols(OrientAs(2x11x12-r204-hk71-0a11433, ⟨12,2,11⟩), OrientAs(2x12x20-r370-hk71-b358227, ⟨12,2,20⟩)), ConcatCols(naive-12x24x1, KronProduct(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), 4x4x10-r115-perminov_ZT-022a32b)))",
-  "lineage_compact": "2x11x12-r204-hk71-0a11433→⟨12,2,11⟩ +p 2x12x20-r370-hk71-b358227→⟨12,2,20⟩ +m naive-12x24x1 +p 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ 4x4x10-r115-perminov_ZT-022a32b",
+  "lineage_str": "SumInner(ConcatCols(OrientAs(2x11x12-r204-hk71-0a11433, ⟨12,2,11⟩), OrientAs(2x12x20-r370-hk71-b358227, ⟨12,2,20⟩)), ConcatCols(naive-12x24x1, KronProduct(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), 4x4x10-r115-perminov_ZT-022a32b)))",
+  "lineage_compact": "2x11x12-r204-hk71-0a11433→⟨12,2,11⟩ +p 2x12x20-r370-hk71-b358227→⟨12,2,20⟩ +m naive-12x24x1 +p 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ 4x4x10-r115-perminov_ZT-022a32b",
   "lineage": {
     "op": "SumInner",
     "left": {
@@ -10,14 +10,16 @@
         "n": 12,
         "m": 2,
         "p": 11,
-        "child": {"op": "Atom", "ref": "2x11x12-r204-hk71-0a11433"}
+        "child": {"op": "Atom", "ref": "2x11x12-r204-hk71-0a11433"},
+        "axisMap": "pnm"
       },
       "right": {
         "op": "OrientAs",
         "n": 12,
         "m": 2,
         "p": 20,
-        "child": {"op": "Atom", "ref": "2x12x20-r370-hk71-b358227"}
+        "child": {"op": "Atom", "ref": "2x12x20-r370-hk71-b358227"},
+        "axisMap": "mnp"
       }
     },
     "right": {
@@ -30,7 +32,14 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         },
         "inner": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
       }

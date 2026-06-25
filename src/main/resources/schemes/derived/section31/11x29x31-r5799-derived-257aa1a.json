@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[15, 14], allocC=[16, 15], leaves=[Serendipitous(2x3x8 ⊗ ⟨3,5,2⟩), Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 5, 5], allocC=[6, 5, 5], leaves=[2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3, Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=2x5x5, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x15x15-r859-perminov_Q-06c1f02, Recombination(base=2x2x2, allocA=[3, 2], allocB=[7, 7], allocC=[8, 8], leaves=[ConcatCols(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩)), 2x7x8-r88-hk71-e1caeb7]), Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩), 5x15x15-r761-perminov_ZT-2547c0d, 6x14x16-r864-perminov_ZT-d51381b])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[15, 14], allocC=[16, 15], leaves=[Serendipitous(2x3x8 ⊗ ⟨3,5,2⟩), Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 5, 5], allocC=[6, 5, 5], leaves=[2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3, Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=2x5x5, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 6x15x15-r859-perminov_Q-06c1f02, Recombination(base=, allocA=[3, 2], allocB=[7, 7], allocC=[8, 8], leaves=[ConcatCols(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩)), 2x7x8-r88-hk71-e1caeb7]), Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩), 5x15x15-r761-perminov_ZT-2547c0d, 6x14x16-r864-perminov_ZT-d51381b])",
   "lineage_compact": "R[2x2x2; 6,5 | 15,14 | 16,15]",
   "lineage": {
     "op": "Recombination",
@@ -70,7 +70,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "npm"
             },
             "right": {
               "op": "OrientAs",
@@ -86,7 +87,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "npm"
             }
           },
           {"op": "Atom", "ref": "2x7x8-r88-hk71-e1caeb7"}
@@ -102,7 +104,8 @@
           "n": 2,
           "m": 7,
           "p": 3,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mnp"
         }
       },
       {"op": "Atom", "ref": "5x15x15-r761-perminov_ZT-2547c0d"},

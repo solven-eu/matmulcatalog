@@ -1,6 +1,6 @@
 {
-  "lineage_str": "SumInner(ConcatRows(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), ConcatRows(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩))), OrientAs(3x10x16-r355-perminov_ZT-6cc036e, ⟨10,16,3⟩))",
-  "lineage_compact": "3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x4x6-r54-alphaevolve-c197868→⟨4,6,3⟩ +m 3x10x16-r355-perminov_ZT-6cc036e→⟨10,16,3⟩",
+  "lineage_str": "SumInner(ConcatRows(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), ConcatRows(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩))), OrientAs(3x10x16-r355-perminov_ZT-6cc036e, ⟨10,16,3⟩))",
+  "lineage_compact": "3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x4x6-r54-alphaevolve-c197868→⟨4,6,3⟩ +m 3x10x16-r355-perminov_ZT-6cc036e→⟨10,16,3⟩",
   "lineage": {
     "op": "SumInner",
     "left": {
@@ -10,7 +10,14 @@
         "keepN": [0, 1, 2],
         "keepM": [1, 2, 3, 4, 5, 6],
         "keepP": [0, 1, 2],
-        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        "child": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 7,
+          "p": 3,
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
       },
       "bottom": {
         "op": "ConcatRows",
@@ -19,14 +26,22 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         },
         "bottom": {
           "op": "OrientAs",
           "n": 4,
           "m": 6,
           "p": 3,
-          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          "axisMap": "mpn"
         }
       }
     },
@@ -35,7 +50,8 @@
       "n": 10,
       "m": 16,
       "p": 3,
-      "child": {"op": "Atom", "ref": "3x10x16-r355-perminov_ZT-6cc036e"}
+      "child": {"op": "Atom", "ref": "3x10x16-r355-perminov_ZT-6cc036e"},
+      "axisMap": "mpn"
     }
   },
   "n": [10, 22, 3],

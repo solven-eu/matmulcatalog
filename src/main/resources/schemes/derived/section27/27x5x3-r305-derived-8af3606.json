@@ -8,7 +8,8 @@
       "n": 6,
       "m": 5,
       "p": 3,
-      "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+      "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+      "axisMap": "pmn"
     },
     "bottom": {
       "op": "ConcatRows",
@@ -17,7 +18,8 @@
         "n": 6,
         "m": 5,
         "p": 3,
-        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+        "axisMap": "pmn"
       },
       "bottom": {
         "op": "ConcatRows",
@@ -35,7 +37,8 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "pmn"
         },
         "bottom": {
           "op": "OrientAs",
@@ -51,7 +54,8 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "pmn"
         }
       }
     }

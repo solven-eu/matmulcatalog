@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[10, 12], allocC=[14, 15], leaves=[Serendipitous(3x4x5 ⊗ ⟨3,3,3⟩), ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨9,10,2⟩), Project(9x10x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])), 9x10x15-r864-perminov_ZT-477779d, 9x12x14-r940-perminov_Q-ffecb1f])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[10, 12], allocC=[14, 15], leaves=[Serendipitous(3x4x5 ⊗ ⟨3,3,3⟩), ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨9,10,2⟩), Project(OrientAs(10x9x13, ⟨9,10,13⟩), keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])), 9x10x15-r864-perminov_ZT-477779d, 9x12x14-r940-perminov_Q-ffecb1f])",
   "lineage_compact": "R[2x2x2; 9,9 | 10,12 | 14,15]",
   "lineage": {
     "op": "Recombination",
@@ -22,14 +22,22 @@
           "n": 9,
           "m": 10,
           "p": 2,
-          "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+          "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"},
+          "axisMap": "mpn"
         },
         "right": {
           "op": "Project",
           "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
           "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
           "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-          "child": {"op": "Atom", "ref": "9x10x13@8c62898"}
+          "child": {
+            "op": "OrientAs",
+            "n": 9,
+            "m": 10,
+            "p": 13,
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+          }
         }
       },
       {"op": "Atom", "ref": "9x10x15-r864-perminov_ZT-477779d"},

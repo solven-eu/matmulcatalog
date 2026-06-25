@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[9, 10], allocC=[11, 12], leaves=[10x10x12-r766-perminov_ZT-a1e93e9, Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[3, 3, 3], allocC=[6, 5], leaves=[Recombination(base=3x3x5, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[4, 3, 3], allocC=[6, 5], leaves=[Recombination(base=3x3x5, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]), Recombination(base=2x2x2, allocA=[5, 5], allocB=[5, 5], allocC=[6, 5], leaves=[5x5x6-r110-perminov_ZT-3420f61, Recombination(base=5x5x5, allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[9, 10], allocC=[11, 12], leaves=[10x10x12-r766-perminov_ZT-a1e93e9, Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[3, 3, 3], allocC=[6, 5], leaves=[Recombination(base=3x3x5, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[3, 3, 3], allocB=[4, 3, 3], allocC=[6, 5], leaves=[Recombination(base=3x3x5, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), Project(OrientAs(9x10x13, ⟨10,9,13⟩), keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]), Recombination(base=2x2x2, allocA=[5, 5], allocB=[5, 5], allocC=[6, 5], leaves=[5x5x6-r110-perminov_ZT-3420f61, Recombination(base=5x5x5, allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
   "lineage_compact": "R[2x2x2; 9,10 | 9,10 | 11,12]",
   "lineage": {
     "op": "Recombination",
@@ -82,7 +82,14 @@
         "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
         "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        "child": {"op": "Atom", "ref": "10x9x13@16f3df1"}
+        "child": {
+          "op": "OrientAs",
+          "n": 10,
+          "m": 9,
+          "p": 13,
+          "axisMap": "mnp",
+          "child": {"op": "Atom", "ref": "9x10x13@16f3df1"}
+        }
       },
       {
         "op": "Recombination",

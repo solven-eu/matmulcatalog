@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[14, 14], allocC=[16, 15], leaves=[6x14x16-r864-perminov_ZT-d51381b, Recombination(base=2x2x2, allocA=[3, 2], allocB=[7, 7], allocC=[8, 8], leaves=[ConcatCols(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩)), 2x7x8-r88-hk71-e1caeb7]), Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩), Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 5, 4], allocC=[5, 5, 5], leaves=[Recombination(base=2x4x5, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=2x5x5, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[14, 14], allocC=[16, 15], leaves=[6x14x16-r864-perminov_ZT-d51381b, Recombination(base=, allocA=[3, 2], allocB=[7, 7], allocC=[8, 8], leaves=[ConcatCols(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨3,7,4⟩)), 2x7x8-r88-hk71-e1caeb7]), Serendipitous(OrientAs(7x2x3, ⟨2,7,3⟩) ⊗ ⟨3,2,5⟩), Recombination(base=2x3x3, allocA=[3, 2], allocB=[5, 5, 4], allocC=[5, 5, 5], leaves=[Recombination(base=2x4x5, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=3x4x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=2x5x5, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
   "lineage_compact": "R[2x2x2; 6,5 | 14,14 | 16,15]",
   "lineage": {
     "op": "Recombination",
@@ -32,7 +32,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "npm"
             },
             "right": {
               "op": "OrientAs",
@@ -48,7 +49,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "npm"
             }
           },
           {"op": "Atom", "ref": "2x7x8-r88-hk71-e1caeb7"}
@@ -64,7 +66,8 @@
           "n": 2,
           "m": 7,
           "p": 3,
-          "child": {"op": "Atom", "ref": "7x2x3@7d96426"}
+          "child": {"op": "Atom", "ref": "7x2x3@7d96426"},
+          "axisMap": "mnp"
         }
       },
       {

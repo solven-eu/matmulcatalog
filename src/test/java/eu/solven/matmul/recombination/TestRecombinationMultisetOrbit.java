@@ -60,4 +60,32 @@ class TestRecombinationMultisetOrbit {
 				RecombinationMultisetOrbit.shapeStabilizer(base.n, base.m, base.p).length);
 		assertThat(res.canonicalMultisets).isNotEmpty();
 	}
+
+	/**
+	 * Guard for the sampled-frontier inflation bug: {@link RecombinationMultisetOrbit#enumerate} gives
+	 * the EXACT dominance antichain ({@code frontierExact==true}); {@link
+	 * RecombinationMultisetOrbit#enumerateSampled} gives an INFLATED upper bound ({@code
+	 * frontierExact==false}) because dominance over-reports on its incomplete (capped) canonical set.
+	 * Concretely for ⟨2,3,3⟩: exact frontier = 170 over the complete 62 487 canonical set, while the
+	 * sampled set is a strict SUBSET (no canonicalization drift) yet yields a LARGER, mostly-spurious
+	 * frontier. So a sampled frontier is a safe candidate source but must never be treated as exact.
+	 */
+	@Test
+	@Tag("slow")
+	void sampled_frontier_is_inflated_not_exact() throws Exception {
+		NonCubicBilinearAlgorithm base = load("section3/2x3x3-r15-alphatensor_Z-497eea7.json");
+
+		RecombinationMultisetOrbit.Result exact = RecombinationMultisetOrbit.enumerate(base, 2);
+		assertThat(exact.frontierExact).as("enumerate is exact").isTrue();
+		assertThat(exact.dominanceFrontier()).hasSize(170);
+
+		RecombinationMultisetOrbit.Result sampled = RecombinationMultisetOrbit.enumerateSampled(base, 60_000, 2);
+		assertThat(sampled.frontierExact).as("sampled is NOT exact").isFalse();
+		// sampled canonical keys are a clean subset of exact's (no canonicalization bug)…
+		assertThat(exact.canonicalMultisets).containsAll(sampled.canonicalMultisets);
+		// …yet its dominance frontier is INFLATED: it contains members absent from the exact frontier.
+		List<String> exactFront = exact.dominanceFrontier();
+		boolean inflated = sampled.dominanceFrontier().stream().anyMatch(k -> !exactFront.contains(k));
+		assertThat(inflated).as("sampled frontier over-reports vs exact").isTrue();
+	}
 }

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 6], allocB=[11, 11], allocC=[10, 12], leaves=[6x11x12-r521-perminov_ZT-77435fe, Recombination(base=2x2x2, allocA=[3, 3], allocB=[6, 5], allocC=[5, 5], leaves=[OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 6], allocB=[11, 11], allocC=[10, 12], leaves=[6x11x12-r521-perminov_ZT-77435fe, Recombination(base=, allocA=[3, 3], allocB=[6, 5], allocC=[5, 5], leaves=[OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
   "lineage_compact": "R[2x2x2; 6,6 | 11,11 | 10,12]",
   "lineage": {
     "op": "Recombination",
@@ -21,7 +21,8 @@
             "n": 3,
             "m": 6,
             "p": 5,
-            "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+            "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+            "axisMap": "npm"
           },
           {
             "op": "Recombination",

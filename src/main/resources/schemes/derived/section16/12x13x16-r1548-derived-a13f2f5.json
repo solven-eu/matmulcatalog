@@ -8,7 +8,8 @@
       "n": 12,
       "m": 4,
       "p": 16,
-      "child": {"op": "Atom", "ref": "4x12x16-r513-perminov_ZT-eb31d9a"}
+      "child": {"op": "Atom", "ref": "4x12x16-r513-perminov_ZT-eb31d9a"},
+      "axisMap": "mnp"
     },
     "right": {
       "op": "OrientAs",
@@ -21,7 +22,8 @@
         "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "child": {"op": "Atom", "ref": "9x13x16@4b0ebf7"}
-      }
+      },
+      "axisMap": "mnp"
     }
   },
   "n": [12, 13, 16],

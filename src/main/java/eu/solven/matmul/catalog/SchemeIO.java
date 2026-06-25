@@ -120,8 +120,15 @@ public final class SchemeIO {
 		return read(MAPPER.readTree(r));
 	}
 
-	/** Parse a pre-loaded JsonNode into a bilinear scheme. */
+	/** Parse a pre-loaded JsonNode into a bilinear scheme. Auto-dispatches across the three
+	 *  on-disk encodings: Perminov "reduced" sparse-list ({@code u}/{@code v}/{@code w} of
+	 *  {@code {index,value}} objects, possibly with {@code *_fresh} shared intermediates),
+	 *  {@code u_sparse} sparse, and dense. Previously {@code read} silently omitted the reduced
+	 *  branch (only {@code readBilinear} dispatched it), so the 168 {@code *_reduced} files —
+	 *  including the best NC integer bases like perminov ⟨2,4,4⟩=26 / ⟨4,4,4⟩=49 — threw
+	 *  "row 0 has 1 cols, expected …" when loaded via the common {@code read} path. */
 	public static NonCubicBilinearAlgorithm read(JsonNode root) throws IOException {
+		if (isReduced(root)) return readReduced(root);
 		return root.has("u_sparse") ? fromJsonSparse(root) : fromJson(root);
 	}
 
@@ -541,7 +548,8 @@ public final class SchemeIO {
 					node.path("perm").asText(""));
 			case "OrientAs" -> new Lineage.OrientAs(
 					parseLineageNode(node.get("child"), idMap),
-					node.path("n").asInt(0), node.path("m").asInt(0), node.path("p").asInt(0));
+					node.path("n").asInt(0), node.path("m").asInt(0), node.path("p").asInt(0),
+					node.hasNonNull("axisMap") ? Lineage.axisMapFromStr(node.get("axisMap").asString()) : null);
 			case "DCE" -> new Lineage.Dce(parseLineageNode(node.get("child"), idMap));
 			case "PeeledViaTa" -> new Lineage.PeeledViaTa(
 					node.path("n").asInt(0), node.path("s").asInt(0),

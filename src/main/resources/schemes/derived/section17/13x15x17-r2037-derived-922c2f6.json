@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=Transpose(3x4x5, perm=\"ABC->BCA\"), allocA=[3, 3, 3, 4], allocB=[3, 3, 3, 3, 3], allocC=[6, 5, 6], leaves=[Recombination(base=3x3x5, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=Transpose(3x4x5, perm=\"ABC->BAC\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])",
+  "lineage_str": "Recombination(base=Transpose(3x4x5, perm=\"ABC->BCA\"), allocA=[3, 3, 3, 4], allocB=[3, 3, 3, 3, 3], allocC=[6, 5, 6], leaves=[Recombination(base=3x3x5, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Recombination(base=Transpose(, perm=\"ABC->BAC\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])",
   "lineage_compact": "R[3x4x5^ABC->BCA; 3,3,3,4 | 3,3,3,3,3 | 6,5,6]",
   "lineage": {
     "op": "Recombination",
@@ -27,7 +27,8 @@
         "n": 4,
         "m": 3,
         "p": 6,
-        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+        "axisMap": "mnp"
       },
       {
         "op": "Project",

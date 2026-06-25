@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[12, 13], allocC=[12, 14], leaves=[Recombination(base=2x2x2, allocA=[5, 5], allocB=[7, 6], allocC=[7, 7], leaves=[5x7x7-r176-perminov_ZT-fb1a527, 5x6x7-r150-kauers_2026-b7666c1]), 10x12x12-r902-perminov_Z-937a912, 9x12x14-r940-perminov_Q-ffecb1f, Recombination(base=2x2x2, allocA=[5, 5], allocB=[7, 6], allocC=[6, 6], leaves=[OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨5,7,6⟩), 5x6x6-r130-perminov_ZT-653ce4e]), 9x13x14-r1024-perminov_Q-3386a90, KronProduct(2x2x2, 5x6x7-r150-kauers_2026-b7666c1), OrientAs(9x12x13-r878-perminov_Q-3187d5e, ⟨9,13,12⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[12, 13], allocC=[12, 14], leaves=[Recombination(base=, allocA=[5, 5], allocB=[7, 6], allocC=[7, 7], leaves=[5x7x7-r176-perminov_ZT-fb1a527, 5x6x7-r150-kauers_2026-b7666c1]), 10x12x12-r902-perminov_Z-937a912, 9x12x14-r940-perminov_Q-ffecb1f, Recombination(base=, allocA=[5, 5], allocB=[7, 6], allocC=[6, 6], leaves=[OrientAs(5x6x7-r150-kauers_2026-b7666c1, ⟨5,7,6⟩), 5x6x6-r130-perminov_ZT-653ce4e]), 9x13x14-r1024-perminov_Q-3386a90, KronProduct(2x2x2, 5x6x7-r150-kauers_2026-b7666c1), OrientAs(9x12x13-r878-perminov_Q-3187d5e, ⟨9,13,12⟩)])",
   "lineage_compact": "R[2x2x2; 9,10 | 12,13 | 12,14]",
   "lineage": {
     "op": "Recombination",
@@ -33,7 +33,8 @@
             "n": 5,
             "m": 7,
             "p": 6,
-            "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
+            "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
+            "axisMap": "npm"
           },
           {"op": "Atom", "ref": "5x6x6-r130-perminov_ZT-653ce4e"}
         ]
@@ -49,7 +50,8 @@
         "n": 9,
         "m": 13,
         "p": 12,
-        "child": {"op": "Atom", "ref": "9x12x13-r878-perminov_Q-3187d5e"}
+        "child": {"op": "Atom", "ref": "9x12x13-r878-perminov_Q-3187d5e"},
+        "axisMap": "npm"
       }
     ]
   },

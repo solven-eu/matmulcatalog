@@ -24,7 +24,8 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "pnm"
         },
         "right": {
           "op": "ConcatCols",
@@ -42,7 +43,8 @@
               "leaves": [
                 {"op": "Atom", "ref": "naive-1x1x1"}
               ]
-            }
+            },
+            "axisMap": "pnm"
           },
           "right": {
             "op": "ConcatCols",
@@ -60,7 +62,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "pnm"
             },
             "right": {
               "op": "ConcatCols",
@@ -78,7 +81,8 @@
                   "leaves": [
                     {"op": "Atom", "ref": "naive-1x1x1"}
                   ]
-                }
+                },
+                "axisMap": "pnm"
               },
               "right": {
                 "op": "OrientAs",
@@ -94,7 +98,8 @@
                   "leaves": [
                     {"op": "Atom", "ref": "naive-1x1x1"}
                   ]
-                }
+                },
+                "axisMap": "pnm"
               }
             }
           }
@@ -116,7 +121,8 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "npm"
         },
         "inner": {
           "op": "Project",

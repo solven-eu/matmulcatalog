@@ -1,6 +1,6 @@
 {
-  "lineage_str": "ConcatRows(SumInner(Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 6], allocC=[3, 3], leaves=[Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->BCA\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))), Serendipitous(OrientAs(2x4x11, ⟨4,11,2⟩) ⊗ ⟨4,2,3⟩))",
-  "lineage_compact": "R[2x2x2; 3,3 | 4,6 | 3,3] +m 2x2x2 ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 2x4x11→⟨4,11,2⟩ ⊗ˢ⟨4,2,3⟩",
+  "lineage_str": "ConcatRows(SumInner(Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 6], allocC=[3, 3], leaves=[Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->BCA\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))), Serendipitous(OrientAs(2x4x11, ⟨4,11,2⟩) ⊗ ⟨4,2,3⟩))",
+  "lineage_compact": "R[2x2x2; 3,3 | 4,6 | 3,3] +m 2x2x2 ⊗ 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 2x4x11→⟨4,11,2⟩ ⊗ˢ⟨4,2,3⟩",
   "lineage": {
     "op": "ConcatRows",
     "top": {
@@ -17,7 +17,14 @@
             "keepN": [0, 1, 2],
             "keepM": [1, 2, 3, 4, 5, 6],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 3,
+              "m": 7,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           {
             "op": "Recombination",
@@ -43,7 +50,14 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       }
     },
@@ -57,7 +71,8 @@
         "n": 4,
         "m": 11,
         "p": 2,
-        "child": {"op": "Atom", "ref": "2x4x11@0ae9c5e"}
+        "child": {"op": "Atom", "ref": "2x4x11@0ae9c5e"},
+        "axisMap": "mpn"
       }
     }
   },

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 6], allocB=[11, 11], allocC=[10, 12], leaves=[SumInner(Recombination(base=2x2x2, allocA=[3, 3], allocB=[3, 2], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]))]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))), Recombination(base=2x2x2, allocA=[3, 3], allocB=[6, 5], allocC=[5, 5], leaves=[OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 4x11x12-r362-perminov_Q-b4c8311, Recombination(base=2x2x2, allocA=[2, 2], allocB=[6, 5], allocC=[5, 5], leaves=[OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), Recombination(base=2x5x5, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 6], allocB=[11, 11], allocC=[10, 12], leaves=[SumInner(Recombination(base=, allocA=[3, 3], allocB=[3, 2], allocC=[6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]))]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))), Recombination(base=, allocA=[3, 3], allocB=[6, 5], allocC=[5, 5], leaves=[OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩), Recombination(base=3x5x5, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), 4x11x12-r362-perminov_Q-b4c8311, Recombination(base=, allocA=[2, 2], allocB=[6, 5], allocC=[5, 5], leaves=[OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), Recombination(base=2x5x5, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])])])",
   "lineage_compact": "R[2x2x2; 4,6 | 11,11 | 10,12]",
   "lineage": {
     "op": "Recombination",
@@ -78,7 +78,8 @@
             "n": 3,
             "m": 6,
             "p": 5,
-            "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+            "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+            "axisMap": "npm"
           },
           {
             "op": "Recombination",
@@ -105,7 +106,8 @@
             "n": 2,
             "m": 6,
             "p": 5,
-            "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+            "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+            "axisMap": "npm"
           },
           {
             "op": "Recombination",

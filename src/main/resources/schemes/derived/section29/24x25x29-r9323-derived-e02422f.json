@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x3x3, allocA=[12, 12], allocB=[7, 9, 9], allocC=[9, 10, 10], leaves=[KronProduct(2x3x3, Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Project(13x9x10, keepN=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), OrientAs(7x10x12-r557-perminov_Q-6bea6f4, ⟨12,7,10⟩), OrientAs(7x9x12-r508-perminov_Q-bed063c, ⟨12,7,9⟩)])",
+  "lineage_str": "Recombination(base=2x3x3, allocA=[12, 12], allocB=[7, 9, 9], allocC=[9, 10, 10], leaves=[KronProduct(2x3x3, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Project(OrientAs(10x9x13, ⟨13,9,10⟩), keepN=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), OrientAs(7x10x12-r557-perminov_Q-6bea6f4, ⟨12,7,10⟩), OrientAs(7x9x12-r508-perminov_Q-bed063c, ⟨12,7,9⟩)])",
   "lineage_compact": "R[2x3x3; 12,12 | 7,9,9 | 9,10,10]",
   "lineage": {
     "op": "Recombination",
@@ -16,7 +16,14 @@
           "keepN": [1, 2, 3, 4, 5, 6],
           "keepM": [0, 1, 2],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       },
       {
@@ -24,21 +31,30 @@
         "keepN": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
         "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-        "child": {"op": "Atom", "ref": "13x9x10@8c62898"}
+        "child": {
+          "op": "OrientAs",
+          "n": 13,
+          "m": 9,
+          "p": 10,
+          "axisMap": "pmn",
+          "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+        }
       },
       {
         "op": "OrientAs",
         "n": 12,
         "m": 7,
         "p": 10,
-        "child": {"op": "Atom", "ref": "7x10x12-r557-perminov_Q-6bea6f4"}
+        "child": {"op": "Atom", "ref": "7x10x12-r557-perminov_Q-6bea6f4"},
+        "axisMap": "pnm"
       },
       {
         "op": "OrientAs",
         "n": 12,
         "m": 7,
         "p": 9,
-        "child": {"op": "Atom", "ref": "7x9x12-r508-perminov_Q-bed063c"}
+        "child": {"op": "Atom", "ref": "7x9x12-r508-perminov_Q-bed063c"},
+        "axisMap": "pnm"
       }
     ]
   },

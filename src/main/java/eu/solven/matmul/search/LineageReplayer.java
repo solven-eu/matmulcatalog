@@ -172,10 +172,16 @@ public final class LineageReplayer {
 					replayInternal(s.left(), memo), replayInternal(s.right(), memo));
 			case Lineage.RecombinationN r -> applyRecomb(r, memo);
 			case Lineage.Transpose t -> applyTranspose(t, memo);
-			case Lineage.OrientAs o -> replayInternal(o.child(), memo)
-					.orientAs(o.n(), o.m(), o.p())
-					.orElseThrow(() -> new IllegalStateException("LineageReplayer: OrientAs to ⟨"
-							+ o.n() + "," + o.m() + "," + o.p() + "⟩ failed"));
+			case Lineage.OrientAs o -> {
+				NonCubicBilinearAlgorithm oc = replayInternal(o.child(), memo);
+				// Explicit axis-map → deterministic orientByPerm (no shape search, dim-repeat-safe);
+				// legacy null → orientAs inference (first shape match).
+				yield o.axisMap() != null
+						? oc.orientByPerm(o.axisMap())
+						: oc.orientAs(o.n(), o.m(), o.p())
+								.orElseThrow(() -> new IllegalStateException("LineageReplayer: OrientAs to ⟨"
+										+ o.n() + "," + o.m() + "," + o.p() + "⟩ failed"));
+			}
 			case Lineage.AxisFlip af -> applyAxisFlip(af, memo);
 			case Lineage.AxisPermute ap -> applyAxisPermute(ap, memo);
 			case Lineage.RecombinationWithPairN ignored -> throw new UnsupportedOperationException(

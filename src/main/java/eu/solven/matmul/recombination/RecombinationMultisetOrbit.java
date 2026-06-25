@@ -56,12 +56,30 @@ public final class RecombinationMultisetOrbit {
 		public final Set<String> canonicalMultisets = new LinkedHashSet<>();
 		/** key → representative shape array {@code [r][3]} of block indices (0 = largest block). */
 		public final Map<String, int[][]> representativeShapes = new LinkedHashMap<>();
+		/**
+		 * key → the integer GL transform {@code {X(n×n), Y(m×m), Z(p×p)}} that realises this
+		 * multiset (only populated by the exact {@link #enumerate} path, not the structural one).
+		 * {@link #materialise} applies it to the base to rebuild the concrete orbited scheme — the
+		 * "1 scheme + transform config" so the frontier needn't persist a scheme per multiset.
+		 */
+		public final Map<String, int[][][]> representativeTransforms = new LinkedHashMap<>();
 		/** Per-axis count of distinct block-index patterns (diagnostics). */
 		public int[] perAxisPatternCounts;
 		public int dirBound;
 		public long combinations;
 		/** Base shape (number of parts per axis = axis dimension); fixes the canonicalising group. */
 		public int n, m, p;
+		/**
+		 * Whether {@link #dominanceFrontier()} is the EXACT, complete dominance antichain (true) or a
+		 * possibly-INFLATED upper bound (false). True only for {@link #enumerate} (the complete
+		 * canonical set). False for {@link #enumerateSampled}: dominance is computed over an INCOMPLETE
+		 * sampled set, so a member whose true dominator was never sampled wrongly appears non-dominated
+		 * — empirically 225 of 226 sampled ⟨2,3,3⟩ frontier members are actually dominated (exact
+		 * frontier = 170). A sampled frontier is therefore a safe candidate SOURCE (every spurious
+		 * member is still a valid GL support that can only tie, never beat, so build-verification stays
+		 * sound) but must NOT be reported as "the frontier" or counted as exhaustive.
+		 */
+		public boolean frontierExact = false;
 
 		/**
 		 * The <b>dominance frontier</b> of {@link #canonicalMultisets}: the subset
@@ -284,9 +302,9 @@ public final class RecombinationMultisetOrbit {
 			int wMin = minColNonZero_dualCols(W[k], adjZ); // cols of …W_kZ⁻¹ ← W_k·(cols of adjZ)
 			return Math.max(vMin, wMin);
 		}));
-		Set<int[]> nPat = fNPat.join();
-		Set<int[]> mPat = fMPat.join();
-		Set<int[]> pPat = fPPat.join();
+		List<AxisRep> nPat = fNPat.join();
+		List<AxisRep> mPat = fMPat.join();
+		List<AxisRep> pPat = fPPat.join();
 
 		int[][] stabilizer = shapeStabilizer(n, m, p);
 
@@ -295,21 +313,177 @@ public final class RecombinationMultisetOrbit {
 		res.m = m;
 		res.p = p;
 		res.dirBound = dirBound;
+		res.frontierExact = true; // complete canonical set ⇒ exact dominance antichain
 		res.perAxisPatternCounts = new int[] { nPat.size(), mPat.size(), pPat.size() };
-		for (int[] np : nPat)
-			for (int[] mp : mPat)
-				for (int[] pp : pPat) {
+		for (AxisRep np : nPat)
+			for (AxisRep mp : mPat)
+				for (AxisRep pp : pPat) {
 					res.combinations++;
 					int[][] shapes = new int[r][3];
 					for (int k = 0; k < r; k++) {
-						shapes[k][0] = np[k];
-						shapes[k][1] = mp[k];
-						shapes[k][2] = pp[k];
+						shapes[k][0] = np.pattern[k];
+						shapes[k][1] = mp.pattern[k];
+						shapes[k][2] = pp.pattern[k];
 					}
 					String key = canonicalKey(shapes, stabilizer);
-					if (res.canonicalMultisets.add(key)) res.representativeShapes.put(key, shapes);
+					if (res.canonicalMultisets.add(key)) {
+						res.representativeShapes.put(key, shapes);
+						// the (X,Y,Z) realising the RAW (np,mp,pp) → these shapes (key canonicalises them)
+						res.representativeTransforms.put(key, new int[][][] { np.matrix, mp.matrix, pp.matrix });
+					}
 				}
 		return res;
+	}
+
+	/**
+	 * <b>Saturation-sampled enumeration</b> — the anytime path for bases where the exact GL odometer
+	 * is intractable (any axis dim ≥ 4: {@code (2·bound+1)^(dim²)} blows up). Instead of sweeping
+	 * every integer change-of-basis it SAMPLES random integer {@code (X,Y,Z)} per axis and keeps the
+	 * distinct block-index patterns, stopping an axis once {@code maxTriesSinceNew} consecutive
+	 * samples yield nothing new (saturation). Deterministic (fixed seed) for reproducibility. The
+	 * frontier is therefore a <b>partial menu</b> — NOT certified complete (caller stamps
+	 * {@code exhaustive=false}); but per [[Strassen-vs-Winograd]] it still exposes alternative
+	 * supports the native does not.
+	 *
+	 * @param maxTriesSinceNew per-axis saturation budget (e.g. 100_000)
+	 * @param entryBound       integer entry range {@code [-entryBound,entryBound]} for the random GL matrices
+	 */
+	/** Memory bound: stop sampling once this many distinct CANONICAL multisets are collected
+	 *  (the dim-4 orbit is enormous; the dominanceFrontier is then computed over this capped set). */
+	static int SAMPLED_MAX_CANONICAL = 6000;
+
+	public static Result enumerateSampled(NonCubicBilinearAlgorithm seed, int maxTriesSinceNew, int entryBound) {
+		int n = seed.n, m = seed.m, p = seed.p, r = seed.r;
+		int[][][] U = reshape(seed.denseU(), r, n, m);
+		int[][][] V = reshape(seed.denseV(), r, m, p);
+		int[][][] W = reshape(seed.denseW(), r, n, p);
+		int[][] stabilizer = shapeStabilizer(n, m, p);
+
+		Result res = new Result();
+		res.n = n; res.m = m; res.p = p; res.dirBound = entryBound;
+		java.util.Random rng = new java.util.Random(917L + n * 31 + m * 7 + p);
+		int since = 0;
+		long total = 0;
+		boolean first = true;
+		while (since < maxTriesSinceNew && total < SAMPLED_MAX_TOTAL && res.canonicalMultisets.size() < SAMPLED_MAX_CANONICAL) {
+			total++;
+			// sample one GL point per axis (identity first → frontier ⊇ native)
+			int[][] X = first ? eye(n) : randomInvertible(n, entryBound, rng);
+			int[][] Y = first ? eye(m) : randomInvertible(m, entryBound, rng);
+			int[][] Z = first ? eye(p) : randomInvertible(p, entryBound, rng);
+			first = false;
+			int[][] adjX = adjugate(X), adjY = adjugate(Y), adjZ = adjugate(Z);
+			int[][] shapes = new int[r][3];
+			for (int k = 0; k < r; k++) {
+				shapes[k][0] = Math.max(minRowNonZero_leftCols(X, U[k]), minRowNonZero_dualRows(adjX, W[k]));
+				shapes[k][1] = Math.max(minColNonZero_rightRows(U[k], Y), minRowNonZero_dualColsLeft(adjY, V[k]));
+				shapes[k][2] = Math.max(minColNonZero_rightRows(V[k], Z), minColNonZero_dualCols(W[k], adjZ));
+			}
+			String key = canonicalKey(shapes, stabilizer);
+			if (res.canonicalMultisets.add(key)) {
+				res.representativeShapes.put(key, shapes);
+				res.representativeTransforms.put(key, new int[][][] { deepCopy(X), deepCopy(Y), deepCopy(Z) });
+				since = 0;
+			} else {
+				since++;
+			}
+		}
+		res.combinations = total;
+		res.perAxisPatternCounts = new int[] { res.canonicalMultisets.size(), 0, 0 };
+		return res;
+	}
+
+	private static int[][] eye(int d) { int[][] I = new int[d][d]; for (int i = 0; i < d; i++) I[i][i] = 1; return I; }
+
+	/** Random integer {@code d×d} matrix with entries in {@code [-bound,bound]} and nonzero det (rejection). */
+	private static int[][] randomInvertible(int d, int bound, java.util.Random rng) {
+		int[][] M = new int[d][d];
+		for (int attempt = 0; attempt < 64; attempt++) {
+			for (int i = 0; i < d; i++) for (int j = 0; j < d; j++) M[i][j] = rng.nextInt(2 * bound + 1) - bound;
+			if (determinant(M) != 0) return M;
+		}
+		return eye(d); // degenerate fallback (vanishingly rare)
+	}
+
+	/** Hard per-axis total-sample backstop so high-dim sampling always terminates (saturation alone
+	 *  may never trigger when the pattern set is huge, e.g. a dim-4 axis). */
+	static long SAMPLED_MAX_TOTAL = 3_000_000L;
+	/** Memory bound: stop an axis once this many distinct patterns are collected (a dim-4 axis can
+	 *  have millions — storing them all OOMs). The frontier is then a partial menu (still ⊇ native). */
+	static int SAMPLED_MAX_PATTERNS = 150_000;
+
+	/** Random integer change-of-basis sampling for one axis, pruned ONLINE to the pointwise-maximal
+	 *  antichain (a multiset using a dominated axis-pattern is itself dominated — sound for the
+	 *  combined frontier and the only way to bound memory at dim-4). Stops at saturation
+	 *  ({@code maxTriesSinceNew} no-new), the total-sample backstop, or the antichain cap. */
+	private static List<AxisRep> axisPatternsSampled(int dim, int r, int maxTriesSinceNew, int entryBound, long seed, AxisIndex fn) {
+		List<AxisRep> antichain = new ArrayList<>();
+		java.util.Set<String> seenKeys = new java.util.HashSet<>();
+		java.util.Random rng = new java.util.Random(seed * 1000003L + dim);
+		int since = 0;
+		long total = 0;
+		int[][] M = new int[dim][dim];
+		for (int i = 0; i < dim; i++) M[i][i] = 1; // seed with identity so the frontier always ⊇ native
+		boolean first = true;
+		while (since < maxTriesSinceNew && total < SAMPLED_MAX_TOTAL && antichain.size() < SAMPLED_MAX_PATTERNS) {
+			total++;
+			if (first) { first = false; } else
+			for (int i = 0; i < dim; i++) for (int j = 0; j < dim; j++) M[i][j] = rng.nextInt(2 * entryBound + 1) - entryBound;
+			if (determinant(M) == 0) { since++; continue; }
+			int[][] adj = adjugate(M);
+			int[] pat = new int[r];
+			for (int k = 0; k < r; k++) pat[k] = fn.idx(M, adj, k);
+			if (!seenKeys.add(Arrays.toString(pat))) { since++; continue; } // already considered this exact pattern
+			boolean dominated = false;
+			for (AxisRep q : antichain) if (dominatesPointwise(q.pattern, pat)) { dominated = true; break; }
+			if (dominated) { since++; continue; }
+			antichain.removeIf(q -> dominatesPointwise(pat, q.pattern));
+			antichain.add(new AxisRep(pat, deepCopy(M)));
+			since = 0;
+		}
+		return antichain;
+	}
+
+	/**
+	 * Apply an integer GL transform {@code (X,Y,Z)} (from {@link Result#representativeTransforms})
+	 * to a base, returning the orbited scheme — the isotropy action
+	 * {@code U'_k = XᵀU_kYᵀ, V'_k = Y⁻ᵀV_kZᵀ, W'_k = X⁻¹W_kZ⁻¹}. The result computes the SAME
+	 * ⟨n,m,p⟩ product at the same rank, but its support realises the target frontier multiset.
+	 * Coefficients are rational (the inverses divide by det); {@code SchemeIO} stores them exactly.
+	 */
+	public static NonCubicBilinearAlgorithm materialise(NonCubicBilinearAlgorithm seed, int[][] X, int[][] Y, int[][] Z) {
+		int n = seed.n, m = seed.m, p = seed.p, r = seed.r;
+		int[][][] U = reshape(seed.denseU(), r, n, m);
+		int[][][] V = reshape(seed.denseV(), r, m, p);
+		int[][][] W = reshape(seed.denseW(), r, n, p);
+		double[][] Xt = transposeI(X), Yt = transposeI(Y);
+		double[][] Yinv_t = transpose(inverse(Y)), Xinv = inverse(X), Zt = transposeI(Z), Zinv = inverse(Z);
+		double[][] Up = new double[n * m][r], Vp = new double[m * p][r], Wp = new double[n * p][r];
+		for (int k = 0; k < r; k++) {
+			double[][] uk = mul(mul(Xt, toD(U[k])), Yt);          // n×m
+			double[][] vk = mul(mul(Yinv_t, toD(V[k])), Zt);      // m×p
+			double[][] wk = mul(mul(Xinv, toD(W[k])), Zinv);      // n×p
+			// snap floating residue to exact 0 so the support (nonzero pattern) is correct
+			for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) Up[i * m + j][k] = snap(uk[i][j]);
+			for (int i = 0; i < m; i++) for (int j = 0; j < p; j++) Vp[i * p + j][k] = snap(vk[i][j]);
+			for (int i = 0; i < n; i++) for (int j = 0; j < p; j++) Wp[i * p + j][k] = snap(wk[i][j]);
+		}
+		return new NonCubicBilinearAlgorithm(n, m, p, Up, Vp, Wp);
+	}
+
+	private static double snap(double x) { return Math.abs(x) < 1e-9 ? 0.0 : x; }
+	private static double[][] toD(int[][] M) { double[][] d = new double[M.length][M[0].length]; for (int i = 0; i < M.length; i++) for (int j = 0; j < M[0].length; j++) d[i][j] = M[i][j]; return d; }
+	private static double[][] transposeI(int[][] M) { int n = M.length, c = M[0].length; double[][] t = new double[c][n]; for (int i = 0; i < n; i++) for (int j = 0; j < c; j++) t[j][i] = M[i][j]; return t; }
+	private static double[][] transpose(double[][] M) { int n = M.length, c = M[0].length; double[][] t = new double[c][n]; for (int i = 0; i < n; i++) for (int j = 0; j < c; j++) t[j][i] = M[i][j]; return t; }
+	private static double[][] mul(double[][] A, double[][] B) { int n = A.length, kk = B.length, c = B[0].length; double[][] R = new double[n][c]; for (int i = 0; i < n; i++) for (int j = 0; j < c; j++) { double s = 0; for (int x = 0; x < kk; x++) s += A[i][x] * B[x][j]; R[i][j] = s; } return R; }
+	/** Exact integer-matrix inverse via adjugate/det, as doubles (M small & integer ⇒ exact). */
+	private static double[][] inverse(int[][] M) {
+		long det = determinant(M);
+		int[][] adj = adjugate(M);
+		int d = M.length;
+		double[][] inv = new double[d][d];
+		for (int i = 0; i < d; i++) for (int j = 0; j < d; j++) inv[i][j] = adj[i][j] / (double) det;
+		return inv;
 	}
 
 	/**
@@ -631,18 +805,27 @@ public final class RecombinationMultisetOrbit {
 	 * bound 4 is {@code 9^16≈2e15} regardless. That needs critical-direction enumeration,
 	 * not more threads.)
 	 */
-	private static Set<int[]> axisPatterns(int dim, int r, int bound, AxisIndex fn) {
-		Map<String, int[]> merged = java.util.stream.IntStream.rangeClosed(-bound, bound).parallel()
+	/** A realisable axis block-index pattern together with one integer change-of-basis that realises it. */
+	static final class AxisRep {
+		final int[] pattern;
+		final int[][] matrix; // the dim×dim integer M whose flag induces {@code pattern}
+		AxisRep(int[] pattern, int[][] matrix) { this.pattern = pattern; this.matrix = matrix; }
+	}
+
+	private static List<AxisRep> axisPatterns(int dim, int r, int bound, AxisIndex fn) {
+		Map<String, AxisRep> merged = java.util.stream.IntStream.rangeClosed(-bound, bound).parallel()
 				.mapToObj(v0 -> {
 					int[][] M = new int[dim][dim];
 					M[0][0] = v0;
-					Map<String, int[]> local = new java.util.HashMap<>();
+					Map<String, AxisRep> local = new java.util.HashMap<>();
 					Sink eval = () -> {
 						if (determinant(M) == 0) return;
 						int[][] adjM = adjugate(M);
 						int[] pat = new int[r];
 						for (int k = 0; k < r; k++) pat[k] = fn.idx(M, adjM, k);
-						local.putIfAbsent(Arrays.toString(pat), pat);
+						String key = Arrays.toString(pat);
+						// keep one representative matrix per pattern (deep-copy M, it is mutated by the sweep)
+						local.computeIfAbsent(key, kk -> new AxisRep(pat, deepCopy(M)));
 					};
 					if (dim == 1) {
 						eval.accept(); // 1×1: the single entry is already pinned
@@ -652,7 +835,13 @@ public final class RecombinationMultisetOrbit {
 					return local;
 				})
 				.collect(java.util.HashMap::new, Map::putAll, Map::putAll);
-		return new LinkedHashSet<>(merged.values());
+		return new ArrayList<>(merged.values());
+	}
+
+	private static int[][] deepCopy(int[][] M) {
+		int[][] c = new int[M.length][];
+		for (int i = 0; i < M.length; i++) c[i] = M[i].clone();
+		return c;
 	}
 
 	private interface Sink { void accept(); }

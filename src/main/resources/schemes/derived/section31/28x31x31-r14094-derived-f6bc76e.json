@@ -18,7 +18,8 @@
         "n": 12,
         "m": 16,
         "p": 15,
-        "child": {"op": "Atom", "ref": "12x15x16-r1725-perminov_Z-337086a"}
+        "child": {"op": "Atom", "ref": "12x15x16-r1725-perminov_Z-337086a"},
+        "axisMap": "npm"
       },
       {
         "op": "KronProduct",
@@ -34,7 +35,8 @@
             "keepM": [0, 1, 2],
             "keepP": [1, 2, 3, 4, 5, 6],
             "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
-          }
+          },
+          "axisMap": "pnm"
         }
       },
       {
@@ -52,9 +54,11 @@
             "n": 5,
             "m": 5,
             "p": 4,
-            "child": {"op": "Atom", "ref": "4x5x5@54f4614"}
+            "child": {"op": "Atom", "ref": "4x5x5@54f4614"},
+            "axisMap": "mpn"
           }
-        }
+        },
+        "axisMap": "pnm"
       }
     ]
   },

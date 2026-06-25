@@ -19,7 +19,8 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        }
+        },
+        "axisMap": "mpn"
       },
       "right": {
         "op": "SumInner",
@@ -37,14 +38,16 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "mpn"
         },
         "right": {
           "op": "OrientAs",
           "n": 4,
           "m": 8,
           "p": 3,
-          "child": {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"}
+          "child": {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"},
+          "axisMap": "mpn"
         }
       }
     },
@@ -58,7 +61,8 @@
         "n": 2,
         "m": 11,
         "p": 4,
-        "child": {"op": "Atom", "ref": "2x4x11@0ae9c5e"}
+        "child": {"op": "Atom", "ref": "2x4x11@0ae9c5e"},
+        "axisMap": "npm"
       }
     }
   },

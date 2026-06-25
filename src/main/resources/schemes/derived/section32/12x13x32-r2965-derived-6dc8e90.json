@@ -1,5 +1,5 @@
 {
-  "lineage_str": "ConcatCols(OrientAs(8x12x13-r781-perminov_Q-f0b186c, ⟨12,13,8⟩), Recombination(base=2x2x2, allocA=[6, 6], allocB=[7, 6], allocC=[12, 12], leaves=[Recombination(base=2x2x2, allocA=[3, 3], allocB=[4, 3], allocC=[6, 6], leaves=[3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))]))",
+  "lineage_str": "ConcatCols(OrientAs(8x12x13-r781-perminov_Q-f0b186c, ⟨12,13,8⟩), Recombination(base=2x2x2, allocA=[6, 6], allocB=[7, 6], allocC=[12, 12], leaves=[Recombination(base=, allocA=[3, 3], allocB=[4, 3], allocC=[6, 6], leaves=[3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])]), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))]))",
   "lineage_compact": "8x12x13-r781-perminov_Q-f0b186c→⟨12,13,8⟩ +p R[2x2x2; 6,6 | 7,6 | 12,12]",
   "lineage": {
     "op": "ConcatCols",
@@ -8,7 +8,8 @@
       "n": 12,
       "m": 13,
       "p": 8,
-      "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"}
+      "child": {"op": "Atom", "ref": "8x12x13-r781-perminov_Q-f0b186c"},
+      "axisMap": "mpn"
     },
     "right": {
       "op": "Recombination",

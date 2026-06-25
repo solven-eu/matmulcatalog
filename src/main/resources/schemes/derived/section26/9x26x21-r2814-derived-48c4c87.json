@@ -1,6 +1,6 @@
 {
-  "lineage_str": "SumInner(ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), OrientAs(2x9x12-r168-hk71-1e99416, ⟨9,2,12⟩)), KronProduct(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))",
-  "lineage_compact": "2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +p 2x9x12-r168-hk71-1e99416→⟨9,2,12⟩ +m R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage_str": "SumInner(ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), OrientAs(2x9x12-r168-hk71-1e99416, ⟨9,2,12⟩)), KronProduct(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))",
+  "lineage_compact": "2x9x9-r126-hk71-1e432f3→⟨9,2,9⟩ +p 2x9x12-r168-hk71-1e99416→⟨9,2,12⟩ +m R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1] ⊗ 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
   "lineage": {
     "op": "SumInner",
     "left": {
@@ -10,14 +10,16 @@
         "n": 9,
         "m": 2,
         "p": 9,
-        "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+        "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"},
+        "axisMap": "pnm"
       },
       "right": {
         "op": "OrientAs",
         "n": 9,
         "m": 2,
         "p": 12,
-        "child": {"op": "Atom", "ref": "2x9x12-r168-hk71-1e99416"}
+        "child": {"op": "Atom", "ref": "2x9x12-r168-hk71-1e99416"},
+        "axisMap": "mnp"
       }
     },
     "right": {
@@ -37,7 +39,14 @@
         "keepN": [0, 1, 2],
         "keepM": [1, 2, 3, 4, 5, 6],
         "keepP": [0, 1, 2],
-        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        "child": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 7,
+          "p": 3,
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
       }
     }
   },

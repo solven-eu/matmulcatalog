@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[6, 8], allocC=[15, 16], leaves=[7x8x16-r598-perminov_ZT-46662ba, ConcatCols(ConcatRows(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩)), Recombination(base=2x2x2, allocA=[4, 3], allocB=[3, 3], allocC=[6, 6], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])])), ConcatCols(KronProduct(2x2x2, Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1])), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))), 7x8x15-r557-perminov_Q-cdc3366, 6x8x16-r510-perminov_ZT-d67ed06, Recombination(base=2x2x2, allocA=[4, 3], allocB=[3, 3], allocC=[8, 8], leaves=[OrientAs(3x4x8-r73-perminov_Z-89c37df, ⟨4,3,8⟩), ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))]), KronProduct(2x4x5-r32-alphaevolve-6216e15, Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]))])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 7], allocB=[6, 8], allocC=[15, 16], leaves=[7x8x16-r598-perminov_ZT-46662ba, ConcatCols(ConcatRows(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,6,3⟩)), Recombination(base=, allocA=[4, 3], allocB=[3, 3], allocC=[6, 6], leaves=[OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])])), ConcatCols(KronProduct(2x2x2, Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1])), KronProduct(2x2x2, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))), 7x8x15-r557-perminov_Q-cdc3366, 6x8x16-r510-perminov_ZT-d67ed06, Recombination(base=, allocA=[4, 3], allocB=[3, 3], allocC=[8, 8], leaves=[OrientAs(3x4x8-r73-perminov_Z-89c37df, ⟨4,3,8⟩), ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]))]), KronProduct(2x4x5-r32-alphaevolve-6216e15, Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]))])",
   "lineage_compact": "R[2x2x2; 6,7 | 6,8 | 15,16]",
   "lineage": {
     "op": "Recombination",
@@ -18,14 +18,22 @@
             "keepN": [0, 1, 2],
             "keepM": [1, 2, 3, 4, 5, 6],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 3,
+              "m": 7,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           "bottom": {
             "op": "OrientAs",
             "n": 4,
             "m": 6,
             "p": 3,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "mpn"
           }
         },
         "right": {
@@ -40,7 +48,8 @@
               "n": 4,
               "m": 3,
               "p": 6,
-              "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+              "axisMap": "mnp"
             },
             {
               "op": "Project",
@@ -99,7 +108,8 @@
             "n": 4,
             "m": 3,
             "p": 8,
-            "child": {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"}
+            "child": {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"},
+            "axisMap": "mnp"
           },
           {
             "op": "ConcatCols",

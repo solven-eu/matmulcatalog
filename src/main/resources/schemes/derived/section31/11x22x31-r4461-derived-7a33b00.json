@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[5, 6], allocB=[12, 10], allocC=[16, 15], leaves=[Serendipitous(2x3x8 ⊗ ⟨3,4,2⟩), Recombination(base=2x2x2, allocA=[3, 2], allocB=[6, 6], allocC=[8, 8], leaves=[ConcatCols(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩)), 2x6x8-r75-perminov_Z-b661843]), Recombination(base=2x2x2, allocA=[3, 2], allocB=[5, 5], allocC=[8, 8], leaves=[Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x5x8-r63-perminov_Z-0cda074]), 6x12x15-r686-perminov_Q-a06dc94, Recombination(base=2x2x2, allocA=[3, 2], allocB=[5, 5], allocC=[8, 7], leaves=[Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x5x8-r63-perminov_Z-0cda074, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]))])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[5, 6], allocB=[12, 10], allocC=[16, 15], leaves=[Serendipitous(2x3x8 ⊗ ⟨3,4,2⟩), Recombination(base=2x2x2, allocA=[3, 2], allocB=[6, 6], allocC=[8, 8], leaves=[ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩)), 2x6x8-r75-perminov_Z-b661843]), Recombination(base=2x2x2, allocA=[3, 2], allocB=[5, 5], allocC=[8, 8], leaves=[Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x5x8-r63-perminov_Z-0cda074]), 6x12x15-r686-perminov_Q-a06dc94, Recombination(base=2x2x2, allocA=[3, 2], allocB=[5, 5], allocC=[8, 7], leaves=[Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), 2x5x8-r63-perminov_Z-0cda074, Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), KronProduct(2x2x2, Recombination(base=ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]))])",
   "lineage_compact": "R[2x2x2; 5,6 | 12,10 | 16,15]",
   "lineage": {
     "op": "Recombination",
@@ -29,14 +29,22 @@
               "keepN": [0, 1, 2],
               "keepM": [1, 2, 3, 4, 5, 6],
               "keepP": [0, 1, 2],
-              "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+              "child": {
+                "op": "OrientAs",
+                "n": 3,
+                "m": 7,
+                "p": 3,
+                "axisMap": "mpn",
+                "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+              }
             },
             "right": {
               "op": "OrientAs",
               "n": 3,
               "m": 6,
               "p": 5,
-              "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+              "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+              "axisMap": "npm"
             }
           },
           {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"}

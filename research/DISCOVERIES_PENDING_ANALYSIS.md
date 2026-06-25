@@ -7,6 +7,61 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-06-25 — VERIFIED R⟨17,19,20⟩=3780 (−17 vs catalog 3797) via GL-orbit frontier of ⟨2,2,2⟩
+
+**Claim:** `R⟨17,19,20⟩ = 3780`, beating the catalog's 3797 by 17. The win comes
+from a GL-orbit frontier member of the ⟨2,2,2⟩ Strassen base — a change-of-basis
+support the live pool's AXIS_FLIP expansion cannot reach (it only does
+row-reversals; this needs full `GL×GL×GL`).
+
+**Status: REGISTERED to the catalog (2026-06-25).** Written as a lineage stub
+`schemes/derived/section20/17x19x20-r3780-derived-1dd1c50.json` via
+`docs.migrate.RegisterGLWin 17 19 20` (lineage = Recombination of base
+`2x2x2@511df05…` = **Winograd_1971**, allocA=[9,8] allocB=[10,9] allocC=[12,8] +
+Project leaves). `docs/catalog.json` regenerated (`findRank(17,19,20)=3780`).
+Independently replay-verified from the COMMITTED catalog alone (no injected base):
+`VerifyOneScheme` → replayed r=3780 (151 ms), `isExactNonCubic = true` (154 s).
+`TestSweepSpotsSota` 16/16 still green. The superseded `…-r3797-…b4e28ce.json`
+remains on disk (harmless — `findRank` picks the 3780 min). Manifest flags it
+`explicitable=False` (conservative for >16 stubs) but the disk-only replay proves
+it explicitable. Field-stamp note: tagged `[R,C]` (old 3797 was `[Q,R,C]`) — may
+under-claim Q; not yet audited.
+
+**Breakdown** (single-level ⟨2,2,2⟩ GL-member recombination, all sub-blocks
+`find()`-buildable, maxDim ≤ 12 so not stub-blind):
+`2×⟨9,10,12⟩=668 + 1×⟨9,9,8⟩=430 + 1×⟨8,9,12⟩=560 + 2×⟨8,10,8⟩=427 + 1×⟨9,9,12⟩=600 = 3780`.
+
+**Repro:**
+- `mvn -q -o -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.verify.VerifyGLCandidate -Dexec.args="17 19 20"`
+- Discovered by `eu.solven.matmul.docs.explore.GLLargeSweep` (band 17–32, ⟨2,2,2⟩
+  base, full GL frontier vs `FieldAwareLookup.findRank`): 2 strict wins + 480
+  shapes where the single ⟨2,2,2⟩ GL frontier re-derives catalog SOTA exactly.
+
+**Second candidate (UNVERIFIED): R⟨18,30,31⟩=8970 (−18 vs 8988).** Rests on
+sub-blocks ⟨9,18,18⟩/⟨9,18,13⟩/⟨9,12,18⟩ that are `find()=none` — but maxDim=18>16,
+so this is the `find` vs `findRank` stub-blindness case, NOT proven phantom.
+Needs a materialiser build to confirm or reject. `VerifyGLCandidate 18 30 31`
+materialise was too slow to finish in-session (huge >16 sub-blocks).
+
+**To register R⟨17,19,20⟩=3780:** re-run the materialise with `writeNewSchemes=true`
+into `schemes/derived/section20/`, lineage = recombination of the GL ⟨2,2,2⟩
+member; then regenerate `docs/catalog.json` and run `TestSweepSpotsSota`.
+Deferred pending user OK (autonomous session avoided catalog mutation).
+
+**Methodology note — three bugs this run surfaced (see also memory):**
+1. `SchemeIO.read` didn't dispatch the Perminov "reduced"/compact format → 168
+   files (incl. NC integer bases ⟨4,4,4⟩=49, ⟨2,4,4⟩=26) unloadable. **FIXED**
+   (`read(JsonNode)` now branches `isReduced`), +3 regression tests.
+2. `Recombination.catalogResolver` returns CUBIC `a·b·c` for shapes outside its
+   small hardcoded `KnownAlgorithmCatalog` (⟨9,9,9⟩→729 not 486) — invalidated the
+   absolute numbers of every AllocationOptimizer probe (relative same-sota
+   comparisons survive). Use `FieldAwareLookup.findRank`-backed sota instead.
+3. `RecombinationMultisetOrbit.enumerateSampled` over-reports the frontier (226 vs
+   exact 170 for ⟨2,3,3⟩) — canonicalization mismatch; harmless for win-finding
+   (duplicates, build-verified) but wrong for any exhaustiveness claim. NOT fixed.
+
+---
+
 ## 2026-06-12 — Kaporin 2024 C⟨4,4,4⟩=48 predates AlphaEvolve 2025 (attribution audit)
 
 Imported Kaporin's explicit complex `(4,4,4;48)` scheme from *Semi-analytical

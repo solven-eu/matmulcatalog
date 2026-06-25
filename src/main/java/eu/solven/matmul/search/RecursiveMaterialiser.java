@@ -276,7 +276,7 @@ public final class RecursiveMaterialiser {
 			// the exact ⟨n,m,p⟩ alg — the replayable-lineage invariant.
 			int[] nat = shapeFromName(disk.get().path().getFileName().toString());
 			if (nat != null && (nat[0] != n || nat[1] != m || nat[2] != p)) {
-				leaf = new Lineage.OrientAs(leaf, n, m, p);
+				leaf = Lineage.orientAs(leaf, nat[0], nat[1], nat[2], n, m, p);
 			}
 			diskResult = new Result(disk.get().alg(), leaf, true);
 			// Fill-mode (default): the disk scheme is the answer. Derive-best still
@@ -292,7 +292,7 @@ public final class RecursiveMaterialiser {
 			if (oriented.isPresent()) {
 				Lineage.Node ln = derivedLineage.get(key);
 				if (cached.n != n || cached.m != m || cached.p != p) {
-					ln = new Lineage.OrientAs(ln, n, m, p);
+					ln = Lineage.orientAs(ln, cached.n, cached.m, cached.p, n, m, p);
 				}
 				return Optional.of(new Result(oriented.get(), ln, false));
 			}
@@ -1192,6 +1192,22 @@ public final class RecursiveMaterialiser {
 	/** Memoise a freshly-composed scheme and (if configured) write it to disk. */
 	private void persist(int n, int m, int p, Result built) {
 		String key = canon(n, m, p);
+		// WRITE-TIME CYCLE GUARD (user 2026-06-25): never memoise/persist a scheme whose lineage is
+		// cyclic or carries an unresolvable "@ref?:Ln" fallback. A cycle can NEVER be uniquely optimal
+		// — project-then-concat-back reconstructs the removed slice, so the rank is ≥ the original — so
+		// FAILING here loses no genuine win: a real rank is reachable acyclically (the search keeps the
+		// clean alternative), a phantom is correctly skipped. Loud, so a "cyclic = claimed-better" case
+		// is surfaced for investigation rather than silently written. [[cyclic lineage → silent SOE]]
+		if (built.lineage != null) {
+			String corruption = lineageCorruption(built.lineage, n, m, p,
+					SchemeIO.contentHash(built.alg).substring(0, 7));
+			if (corruption != null) {
+				log.error("REFUSING ⟨{},{},{}⟩ r={}: cyclic/corrupt lineage [{}] — SKIPPED (a cycle is "
+						+ "never uniquely optimal; if this rank was thought best, investigate)",
+						n, m, p, built.alg.r, corruption);
+				return;
+			}
+		}
 		derived.put(key, built.alg);
 		derivedLineage.put(key, built.lineage);
 		// A better scheme now exists at ⟨n,m,p⟩, so any cached projection parent for
@@ -1252,6 +1268,13 @@ public final class RecursiveMaterialiser {
 			if (lineageCorruption(mat.get().lineage, n, m, p, h) != null) {
 				mat = Optional.empty();
 			}
+		}
+		// Fallback-ref guard — runs even for fromDisk leaves (the !fromDisk gate above skips them):
+		// a disk scheme whose STORED lineage is cyclic parses to an unresolvable Atom("@ref?:L0")
+		// IN MEMORY (parseLineageNode forward-ref fallback). Embedding it propagates the corruption
+		// into the parent (the ⟨17,19,20⟩ self-referential ⟨2,3,3⟩ memo node). Cheap in-memory scan.
+		if (mat.isPresent() && mat.get().lineage != null && hasFallbackRef(mat.get().lineage)) {
+			mat = Optional.empty();
 		}
 		// findRank may know a strictly-better REPLAYABLE block than materialise returns:
 		// a lower-rank STUB that findWithSource skips (maxDim>16) and compose can't rebuild
@@ -1408,7 +1431,7 @@ public final class RecursiveMaterialiser {
 		}
 		String shapeRef = sn + "x" + sm + "x" + sp;
 		Lineage.Node atom = new Lineage.Atom(shapeRef + "@" + hash);
-		return (sn == n && sm == m && sp == p) ? atom : new Lineage.OrientAs(atom, n, m, p);
+		return (sn == n && sm == m && sp == p) ? atom : Lineage.orientAs(atom, sn, sm, sp, n, m, p);
 	}
 
 	private static final java.util.regex.Pattern REF_SHAPE =
@@ -1541,6 +1564,16 @@ public final class RecursiveMaterialiser {
 			Lineage.Node baseNode = r.baseOriginLineage() != null
 					? r.baseOriginLineage()
 					: new Lineage.Atom(r.baseLabel());
+			// CYCLE PREVENTION: the base's origin lineage can itself carry inherited cycle corruption
+			// (an "@ref?:L0" fallback read from a legacy cyclic disk scheme). Embedding it spreads the
+			// corruption into the parent recombination (the ⟨17,19,20⟩ ⟨2,3,3⟩ base case). Pin the base
+			// by content hash instead — replay loads it; corruption stays contained to the legacy scheme.
+			if (hasFallbackRef(baseNode)) {
+				String pinned = r.base().n + "x" + r.base().m + "x" + r.base().p + "@" + SchemeIO.contentHash(r.base());
+				log.warn("recombination BASE ⟨{},{},{}⟩ had corrupt (cyclic) origin lineage — pinned by hash ({})",
+						r.base().n, r.base().m, r.base().p, pinned);
+				baseNode = new Lineage.Atom(pinned);
+			}
 			Lineage.Node tree = new Lineage.RecombinationN(
 					baseNode,
 					r.allocA().clone(), r.allocB().clone(), r.allocC().clone(),
@@ -1666,7 +1699,7 @@ public final class RecursiveMaterialiser {
 				continue;
 			}
 			if (nat[0] != a || nat[1] != b || nat[2] != c) {
-				leaf = new Lineage.OrientAs(leaf, a, b, c);
+				leaf = Lineage.orientAs(leaf, nat[0], nat[1], nat[2], a, b, c);
 			}
 			try {
 				NonCubicBilinearAlgorithm rep = replayer.replay(leaf);
@@ -1713,6 +1746,11 @@ public final class RecursiveMaterialiser {
 	private String dfsCorruption(String ref, String selfHash7, java.util.Set<Path> onPath,
 			java.util.Set<Path> cleanVisited, int[] budget) {
 		if (budget[0]-- <= 0) return null; // bounded; treat over-budget as clean
+		// An "@ref?:L0" Atom is the parse-time FALLBACK for an unresolvable internal lineage-id
+		// (a self-referential / dedup-broken node — the ⟨17,19,20⟩ degenerate-memo cycle). It can
+		// never resolve to a scheme, so a sub-block carrying it is corrupt and must be rejected (the
+		// composition then uses a clean alternative instead of embedding the broken node).
+		if (ref.startsWith("@ref?:")) return "FALLBACK-REF " + ref;
 		int at = ref.indexOf('@');
 		if (at <= 0) return null; // bare/named/naive — resolves to catalog-best, not a file edge
 		String tail = ref.substring(at + 1);
@@ -1758,6 +1796,18 @@ public final class RecursiveMaterialiser {
 		} else {
 			for (Lineage.Node ch : Lineage.childrenOf(node)) collectAtomRefs(ch, out);
 		}
+	}
+
+	/** True if any leaf is an unresolvable {@code "@ref?:Ln"} fallback Atom — the parse-time
+	 *  placeholder for a cyclic/dedup-broken lineage node (never resolves to a scheme). */
+	private static boolean hasFallbackRef(Lineage.Node node) {
+		if (node instanceof Lineage.Atom a) {
+			return a.ref() != null && a.ref().startsWith("@ref?:");
+		}
+		for (Lineage.Node ch : Lineage.childrenOf(node)) {
+			if (hasFallbackRef(ch)) return true;
+		}
+		return false;
 	}
 
 	/** Every {@code ref} string in an on-disk scheme's JSON lineage. */
@@ -1941,6 +1991,18 @@ public final class RecursiveMaterialiser {
 			Optional<Result> r = materialise(n, m, p);
 			if (r.isEmpty()) return Optional.empty();
 			Lineage.Node leaf = r.get().lineage;
+			// CYCLE PREVENTION: materialise() can return a catalog-best block whose lineage carries
+			// INHERITED cycle corruption (a legacy 565-class stub — an unresolvable "@ref?:L0" fallback
+			// from a projection cycle). This overlay path (unlike resolveSubScheme) would EMBED that
+			// broken lineage into the parent, spreading the corruption. Instead, pin the block by its
+			// content hash — the parent stays clean, replay loads the block by hash, and the corruption
+			// is contained to the (separately purged) legacy scheme. [[cyclic lineage → silent SOE]]
+			if (leaf != null && hasFallbackRef(leaf)) {
+				String pinned = n + "x" + m + "x" + p + "@" + SchemeIO.contentHash(r.get().alg);
+				log.warn("recombination leaf ⟨{},{},{}⟩ had corrupt (cyclic) lineage — pinned by hash "
+						+ "instead of embedding ({})", n, m, p, pinned);
+				leaf = new Lineage.Atom(pinned);
+			}
 			if (seen.putIfAbsent(key, leaf) == null) {
 				lineageOrder.add(leaf);
 			}

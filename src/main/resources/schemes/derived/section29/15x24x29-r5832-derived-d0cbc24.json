@@ -1,6 +1,6 @@
 {
-  "lineage_str": "ConcatCols(OrientAs(2x15x24-r552-hk71-b085daf, ⟨15,24,2⟩), KronProduct(Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(4x5x9-r132-perminov_ZT-ec019d6, ⟨5,4,9⟩)))",
-  "lineage_compact": "2x15x24-r552-hk71-b085daf→⟨15,24,2⟩ +p 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ 4x5x9-r132-perminov_ZT-ec019d6→⟨5,4,9⟩",
+  "lineage_str": "ConcatCols(OrientAs(2x15x24-r552-hk71-b085daf, ⟨15,24,2⟩), KronProduct(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(4x5x9-r132-perminov_ZT-ec019d6, ⟨5,4,9⟩)))",
+  "lineage_compact": "2x15x24-r552-hk71-b085daf→⟨15,24,2⟩ +p 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] ⊗ 4x5x9-r132-perminov_ZT-ec019d6→⟨5,4,9⟩",
   "lineage": {
     "op": "ConcatCols",
     "left": {
@@ -8,7 +8,8 @@
       "n": 15,
       "m": 24,
       "p": 2,
-      "child": {"op": "Atom", "ref": "2x15x24-r552-hk71-b085daf"}
+      "child": {"op": "Atom", "ref": "2x15x24-r552-hk71-b085daf"},
+      "axisMap": "mpn"
     },
     "right": {
       "op": "KronProduct",
@@ -17,14 +18,22 @@
         "keepN": [0, 1, 2],
         "keepM": [1, 2, 3, 4, 5, 6],
         "keepP": [0, 1, 2],
-        "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+        "child": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 7,
+          "p": 3,
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
       },
       "inner": {
         "op": "OrientAs",
         "n": 5,
         "m": 4,
         "p": 9,
-        "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"}
+        "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"},
+        "axisMap": "mnp"
       }
     }
   },

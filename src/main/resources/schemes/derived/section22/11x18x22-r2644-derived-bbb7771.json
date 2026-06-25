@@ -1,6 +1,6 @@
 {
-  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[4, 4, 3], allocB=[6, 6, 6], allocC=[2, 2], leaves=[OrientAs(Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨4,6,2⟩), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]))]), ConcatRows(2x18x18-r495-hk71-29cb65b, KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))))",
-  "lineage_compact": "R[2x3x3^ABC->CBA; 4,4,3 | 6,6,6 | 2,2] +p 2x18x18-r495-hk71-29cb65b +n 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x7x3 ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
+  "lineage_str": "ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[4, 4, 3], allocB=[6, 6, 6], allocC=[2, 2], leaves=[OrientAs(Recombination(base=ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨4,6,2⟩), SumInner(Recombination(base=, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=, allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]))]), ConcatRows(2x18x18-r495-hk71-29cb65b, KronProduct(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))))",
+  "lineage_compact": "R[2x3x3^ABC->CBA; 4,4,3 | 6,6,6 | 2,2] +p 2x18x18-r495-hk71-29cb65b +n 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6] ⊗ 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
   "lineage": {
     "op": "ConcatCols",
     "left": {
@@ -29,7 +29,8 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          }
+          },
+          "axisMap": "mpn"
         },
         {
           "op": "SumInner",
@@ -73,7 +74,14 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       }
     }

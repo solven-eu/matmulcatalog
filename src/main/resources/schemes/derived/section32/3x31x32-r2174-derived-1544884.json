@@ -10,7 +10,8 @@
         "n": 3,
         "m": 6,
         "p": 4,
-        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+        "axisMap": "npm"
       },
       "right": {
         "op": "SumInner",
@@ -19,7 +20,8 @@
           "n": 3,
           "m": 6,
           "p": 4,
-          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+          "axisMap": "npm"
         },
         "right": {
           "op": "SumInner",
@@ -28,7 +30,8 @@
             "n": 3,
             "m": 6,
             "p": 4,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "npm"
           },
           "right": {
             "op": "SumInner",
@@ -37,7 +40,8 @@
               "n": 3,
               "m": 6,
               "p": 4,
-              "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+              "axisMap": "npm"
             },
             "right": {
               "op": "OrientAs",
@@ -53,7 +57,8 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              }
+              },
+              "axisMap": "npm"
             }
           }
         }

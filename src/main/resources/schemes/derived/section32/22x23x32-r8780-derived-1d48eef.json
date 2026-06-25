@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 12], allocB=[11, 12], allocC=[16, 16], leaves=[12x12x16-r1380-perminov_Z-d48e4cc, OrientAs(11x12x16-r1278-perminov_Q-b69da16, ⟨12,11,16⟩), Recombination(base=2x2x2, allocA=[5, 5], allocB=[6, 5], allocC=[8, 8], leaves=[5x6x8-r170-perminov_ZT-b476d2a, Recombination(base=ext[5x5x8-r144-perminov_ZT-2554eb2.json] / <5,5,8>=144 :: CANONICAL, allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), Serendipitous(OrientAs(3x4x5, ⟨5,3,4⟩) ⊗ ⟨2,4,4⟩)])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 12], allocB=[11, 12], allocC=[16, 16], leaves=[12x12x16-r1380-perminov_Z-d48e4cc, OrientAs(11x12x16-r1278-perminov_Q-b69da16, ⟨12,11,16⟩), Recombination(base=, allocA=[5, 5], allocB=[6, 5], allocC=[8, 8], leaves=[5x6x8-r170-perminov_ZT-b476d2a, Recombination(base=ext[5x5x8-r144-perminov_ZT-2554eb2.json] / <5,5,8>=144 :: CANONICAL, allocA=[1, 1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1])]), Serendipitous(OrientAs(3x4x5, ⟨5,3,4⟩) ⊗ ⟨2,4,4⟩)])",
   "lineage_compact": "R[2x2x2; 10,12 | 11,12 | 16,16]",
   "lineage": {
     "op": "Recombination",
@@ -14,7 +14,8 @@
         "n": 12,
         "m": 11,
         "p": 16,
-        "child": {"op": "Atom", "ref": "11x12x16-r1278-perminov_Q-b69da16"}
+        "child": {"op": "Atom", "ref": "11x12x16-r1278-perminov_Q-b69da16"},
+        "axisMap": "mnp"
       },
       {
         "op": "Recombination",
@@ -46,7 +47,8 @@
           "n": 5,
           "m": 3,
           "p": 4,
-          "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+          "child": {"op": "Atom", "ref": "3x4x5@cd8003c"},
+          "axisMap": "pnm"
         }
       }
     ]

@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 12], allocB=[12, 13], allocC=[12, 13], leaves=[Recombination(base=2x4x4, allocA=[6, 6], allocB=[3, 3, 3, 4], allocC=[3, 3, 4, 3], leaves=[Project(7x3x3, keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,3,4⟩), OrientAs(4x4x6-r73-perminov_ZT-5bb1a46, ⟨6,4,4⟩)]), 11x12x12-r968-perminov_Q-501db78, OrientAs(11x12x13-r1082-perminov_Q-d1fe0c5, ⟨11,13,12⟩), 12x12x13-r1144-perminov_Q-751608b, 11x13x13-r1205-perminov_ZT-4aa1059])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[11, 12], allocB=[12, 13], allocC=[12, 13], leaves=[Recombination(base=2x4x4, allocA=[6, 6], allocB=[3, 3, 3, 4], allocC=[3, 3, 4, 3], leaves=[Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,3,4⟩), OrientAs(4x4x6-r73-perminov_ZT-5bb1a46, ⟨6,4,4⟩)]), 11x12x12-r968-perminov_Q-501db78, OrientAs(11x12x13-r1082-perminov_Q-d1fe0c5, ⟨11,13,12⟩), 12x12x13-r1144-perminov_Q-751608b, 11x13x13-r1205-perminov_ZT-4aa1059])",
   "lineage_compact": "R[2x2x2; 11,12 | 12,13 | 12,13]",
   "lineage": {
     "op": "Recombination",
@@ -20,21 +20,30 @@
             "keepN": [1, 2, 3, 4, 5, 6],
             "keepM": [0, 1, 2],
             "keepP": [0, 1, 2],
-            "child": {"op": "Atom", "ref": "7x3x3@00460b6"}
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
           },
           {
             "op": "OrientAs",
             "n": 6,
             "m": 3,
             "p": 4,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "axisMap": "pnm"
           },
           {
             "op": "OrientAs",
             "n": 6,
             "m": 4,
             "p": 4,
-            "child": {"op": "Atom", "ref": "4x4x6-r73-perminov_ZT-5bb1a46"}
+            "child": {"op": "Atom", "ref": "4x4x6-r73-perminov_ZT-5bb1a46"},
+            "axisMap": "pnm"
           }
         ]
       },
@@ -44,7 +53,8 @@
         "n": 11,
         "m": 13,
         "p": 12,
-        "child": {"op": "Atom", "ref": "11x12x13-r1082-perminov_Q-d1fe0c5"}
+        "child": {"op": "Atom", "ref": "11x12x13-r1082-perminov_Q-d1fe0c5"},
+        "axisMap": "npm"
       },
       {"op": "Atom", "ref": "12x12x13-r1144-perminov_Q-751608b"},
       {"op": "Atom", "ref": "11x13x13-r1205-perminov_ZT-4aa1059"}

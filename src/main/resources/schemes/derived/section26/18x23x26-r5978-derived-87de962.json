@@ -1,5 +1,5 @@
 {
-  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[11, 12], allocC=[14, 12], leaves=[9x12x14-r940-perminov_Q-ffecb1f, 9x11x14-r882-perminov_Q-8df7e2c, 9x11x12-r738-perminov_Q-435e5a3, KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->BAC\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(3x7x3, keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))])",
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[11, 12], allocC=[14, 12], leaves=[9x12x14-r940-perminov_Q-ffecb1f, 9x11x14-r882-perminov_Q-8df7e2c, 9x11x12-r738-perminov_Q-435e5a3, KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->BAC\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))])",
   "lineage_compact": "R[2x2x2; 9,9 | 11,12 | 14,12]",
   "lineage": {
     "op": "Recombination",
@@ -32,7 +32,14 @@
           "keepN": [0, 1, 2],
           "keepM": [1, 2, 3, 4, 5, 6],
           "keepP": [0, 1, 2],
-          "child": {"op": "Atom", "ref": "3x7x3@00460b6"}
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
         }
       }
     ]

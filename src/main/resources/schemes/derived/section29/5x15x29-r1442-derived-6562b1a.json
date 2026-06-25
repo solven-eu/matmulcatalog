@@ -10,14 +10,16 @@
         "n": 5,
         "m": 3,
         "p": 5,
-        "child": {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"}
+        "child": {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"},
+        "axisMap": "pnm"
       },
       "right": {
         "op": "OrientAs",
         "n": 5,
         "m": 12,
         "p": 5,
-        "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+        "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
+        "axisMap": "mpn"
       }
     },
     "right": {"op": "Atom", "ref": "5x15x24@611bdadcd8db447b66fe40c34460810202cc3468b006cbb76041ba1883e0e72d"}
