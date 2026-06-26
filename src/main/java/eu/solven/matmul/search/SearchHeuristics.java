@@ -16,11 +16,11 @@ package eu.solven.matmul.search;
  * <p>Related structured carriers (left where they are — they are types, not
  * loose constants): {@link SearchBudget} bundles the per-search
  * {@code (upperBound, maxNodes, maxNodesWithoutImprovement)} triple, and
- * {@link PoolConfig} carries the pool-shape knobs with their own
+ * {@link RecombinationPoolConfig} carries the pool-shape knobs with their own
  * {@code UNBOUNDED_*} / {@code NO_PADDING} sentinels.</p>
  *
  * @see SearchBudget
- * @see PoolConfig
+ * @see RecombinationPoolConfig
  */
 public final class SearchHeuristics {
 

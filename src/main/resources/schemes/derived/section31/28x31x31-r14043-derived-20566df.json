@@ -1,0 +1,118 @@
+{
+  "lineage_str": "RecombinationTa(base=naive-1x2x2, allocA=[28], allocB=[3, 28], allocC=[3, 28], leaves=[OrientAs(SumInner(Recombination(base=Transpose(3x3x4, perm=\"ABC->BCA\"), allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), SumInner(SumInner(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), SumInner(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))), ⟨3,3,28⟩), Project(28x28x29, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28])])",
+  "lineage_compact": "Rta[naive-1x2x2; 28 | 3,28 | 3,28]",
+  "lineage": {
+    "op": "RecombinationTa",
+    "base": {"op": "Atom", "ref": "naive-1x2x2"},
+    "allocA": [28],
+    "allocB": [3, 28],
+    "allocC": [3, 28],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 3,
+        "p": 28,
+        "axisMap": "pnm",
+        "child": {
+          "op": "SumInner",
+          "left": {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->BCA",
+              "child": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"}
+            },
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          "right": {
+            "op": "SumInner",
+            "left": {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              },
+              "right": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              }
+            },
+            "right": {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              },
+              "right": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+        "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+        "child": {"op": "Atom", "ref": "28x28x29@31d7e9618c4a2fe1907e3f9590b759ea9b69e70666556f0e9579059d44cfd7f3"}
+      }
+    ]
+  },
+  "n": [28, 31, 31],
+  "m": 14043,
+  "hash": "20566df790dc4d417aea50c4647eb1ac424b09a523abd6cf1aa3244ea507437f",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

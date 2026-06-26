@@ -32,14 +32,14 @@ import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.ConcatSplitSearch;
 import eu.solven.matmul.search.CitedBound;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import eu.solven.matmul.search.RecursiveClosureSota;
 import eu.solven.matmul.search.RecursiveMaterialiser;
 import eu.solven.matmul.util.ProgressMonitor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Unified shape-sweep driver. Replaces {@code PoolConfigSweep},
+ * Unified shape-sweep driver. Replaces {@code RecombinationPoolConfigSweep},
  * {@code MaterialiseRecursiveSweep} and {@code MaterializeClosureLoop}.
  * Selects behaviour via {@code --mode}:
  *
@@ -237,7 +237,7 @@ public final class SchemeSweep {
 	 * is applied on top either way.
 	 */
 	private static List<BlockSplitSearch.NamedBase> buildPoolFor(
-			PoolConfig config, RunSpec spec, FieldAwareLookup lookup) {
+			RecombinationPoolConfig config, RunSpec spec, FieldAwareLookup lookup) {
 		List<BlockSplitSearch.NamedBase> pool =
 				(spec.baseShapes == null || spec.baseShapes.isEmpty())
 						? BlockSplitSearch.buildPool(config, spec.field)
@@ -308,17 +308,24 @@ public final class SchemeSweep {
 	}
 
 	private static final List<NamedConfig> ALL_CONFIGS = List.of(
-			new NamedConfig("simple", PoolConfig.simple()),
-			new NamedConfig("auditAxisFlip", PoolConfig.auditAxisFlip()),
-			new NamedConfig("axisFlipOnly", PoolConfig.axisFlipOnly()),
-			new NamedConfig("rectangular", PoolConfig.rectangular()),
-			new NamedConfig("includeDerived", PoolConfig.includeDerived()),
-			new NamedConfig("thorough", PoolConfig.thorough())
+			new NamedConfig("defaultLarge", RecombinationPoolConfig.defaultLarge()),
+			new NamedConfig("simple", RecombinationPoolConfig.simple()),
+			new NamedConfig("auditAxisFlip", RecombinationPoolConfig.auditAxisFlip()),
+			new NamedConfig("axisFlipOnly", RecombinationPoolConfig.axisFlipOnly()),
+			new NamedConfig("rectangular", RecombinationPoolConfig.rectangular()),
+			new NamedConfig("includeDerived", RecombinationPoolConfig.includeDerived()),
+			new NamedConfig("thorough", RecombinationPoolConfig.thorough())
 	// auditPermutation omitted: at maxBaseDim=5 it collapses to AXIS_FLIP via the cap.
 	);
 
+	// DEFAULT = the sensible-but-large recombination pool: non-cubic bases ≤5, cubic ≤8,
+	// cubicOnly=false (user 2026-06-26). The old `simple()` default was cubicOnly=true,
+	// which silently dropped EVERY non-cubic base (AxisSplit + naïve grids) — the root
+	// cause of the fullDerive's non-cubic regressions (⟨7,7,30⟩, ⟨13,13,32⟩, and the
+	// Pan-TA ⟨26,29,29⟩/⟨28,31,31⟩). A user wanting the old narrow search asks for
+	// `--config=simple` (or `--cubicOnly=true`) explicitly.
 	private static final List<NamedConfig> DEFAULT_CONFIGS = List.of(
-			new NamedConfig("simple", PoolConfig.simple()));
+			new NamedConfig("defaultLarge", RecombinationPoolConfig.defaultLarge()));
 
 	private static final int OFF = -1;
 
@@ -326,7 +333,7 @@ public final class SchemeSweep {
 
 	private SchemeSweep() {}
 
-	private record NamedConfig(String name, PoolConfig config) {}
+	private record NamedConfig(String name, RecombinationPoolConfig config) {}
 
 	private record RunSpec(
 			Mode mode,
@@ -366,7 +373,7 @@ public final class SchemeSweep {
 				|| spec.maxCombinationsOverride != null || spec.maxPaddingOverride != null) {
 			List<NamedConfig> overridden = new ArrayList<>();
 			for (NamedConfig nc : configs) {
-				PoolConfig pc = nc.config;
+				RecombinationPoolConfig pc = nc.config;
 				if (spec.balancedOnlyOverride != null) pc = pc.withBalancedOnly(spec.balancedOnlyOverride);
 				if (spec.maxImbalanceOverride != null) pc = pc.withMaxImbalance(spec.maxImbalanceOverride);
 				if (spec.maxBaseDimOverride != null) pc = pc.withMaxBaseDim(spec.maxBaseDimOverride);
@@ -401,7 +408,7 @@ public final class SchemeSweep {
 	}
 
 	// ---------------------------------------------------------------------
-	// EVALUATE mode (was PoolConfigSweep)
+	// EVALUATE mode (was RecombinationPoolConfigSweep)
 	// ---------------------------------------------------------------------
 
 	/**
@@ -560,7 +567,7 @@ public final class SchemeSweep {
 		// footgun (feedback_dont_silently_prune_search_space) — e.g. ⟨25,26,32⟩ missed the
 		// (6,26) p-concat (10954) and stored 11343; ⟨5,32,32⟩ missed the ⟨2,4,4⟩ recombination
 		// allocA=[3,2] route (3320) and stored 3446. Balanced-only is now an OPT-IN
-		// (--balancedOnly=true), consistent with PoolConfig's own back-compat default.
+		// (--balancedOnly=true), consistent with RecombinationPoolConfig's own back-compat default.
 		// A user who wants the cheaper balanced search can still ask for it.
 		boolean composeBalancedOnly = spec.balancedOnlyOverride != null
 				? spec.balancedOnlyOverride : false;
@@ -1191,7 +1198,7 @@ public final class SchemeSweep {
 				case "balancedOnly", "balanced-only" -> balancedOnlyOverride = Boolean.parseBoolean(value);
 				case "maxImbalance", "max-imbalance" -> {
 					maxImbalanceOverride = "off".equalsIgnoreCase(value)
-							? PoolConfig.UNBOUNDED_IMBALANCE
+							? RecombinationPoolConfig.UNBOUNDED_IMBALANCE
 							: Integer.parseInt(value);
 				}
 				case "maxBaseDim", "max-base-dim" -> maxBaseDimOverride = Integer.parseInt(value);
@@ -1199,7 +1206,7 @@ public final class SchemeSweep {
 						eu.solven.matmul.SymmetryTransforms.InternalOrbitMode.valueOf(
 								value.toUpperCase(java.util.Locale.ROOT));
 				case "maxCombinations", "max-combinations" -> maxCombinationsOverride =
-						"off".equalsIgnoreCase(value) ? PoolConfig.UNBOUNDED_COMBINATIONS
+						"off".equalsIgnoreCase(value) ? RecombinationPoolConfig.UNBOUNDED_COMBINATIONS
 								: Integer.parseInt(value);
 				case "maxPadding", "max-padding" -> maxPaddingOverride = Integer.parseInt(value);
 				case "dry-run", "dryRun", "skipMaterialise", "skip-materialise", "skip-materialize" ->
@@ -1317,7 +1324,7 @@ public final class SchemeSweep {
 		System.out.println("  --projection-only=true          closure: run ONLY the downward projection closure");
 		System.out.println("                                  (Phase 3) — skips the upward search/materialise");
 		System.out.println();
-		System.out.println("Search-shape overrides (override the PoolConfig preset):");
+		System.out.println("Search-shape overrides (override the RecombinationPoolConfig preset):");
 		System.out.println("  --balancedOnly=true|false       force balanced allocations on each axis");
 		System.out.println("                                  (true = old DIS09 heuristic; default false)");
 		System.out.println("  --maxImbalance=N                cap on max(parts) − min(parts) per axis");
@@ -1406,7 +1413,7 @@ public final class SchemeSweep {
 			pw.println("Generated by `eu.solven.matmul.docs.SchemeSweep --mode=evaluate`.");
 			pw.println();
 			pw.println("Compares the rank that `BlockSplitSearch.findBestStrategy`");
-			pw.println("returns under each named PoolConfig across the shape sweep.");
+			pw.println("returns under each named RecombinationPoolConfig across the shape sweep.");
 			pw.println("Rows where a non-`simple` config beats `simple` are evidence");
 			pw.println("that the richer config genuinely closes catalog gaps.");
 			pw.println();

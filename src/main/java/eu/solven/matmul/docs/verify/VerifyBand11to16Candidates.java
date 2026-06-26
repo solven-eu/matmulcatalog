@@ -13,7 +13,7 @@ import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.recombination.BlockSplitSearch.NamedBase;
 import eu.solven.matmul.recombination.BlockSplitSearch.NonCubicStrategy;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import eu.solven.matmul.search.RecursiveClosureSota;
 import eu.solven.matmul.search.RecursiveMaterialiser;
 
@@ -50,7 +50,7 @@ public final class VerifyBand11to16Candidates {
 				{ 2, 10, 15 }, { 2, 10, 16 }, { 2, 12, 16 }, { 3, 3, 14 }, { 3, 3, 15 } };
 
 		FieldAwareLookup lk = new FieldAwareLookup("R");
-		List<NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.simple());
+		List<NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.simple());
 		SotaResolver sota = catalogSota(lk);
 		RecursiveClosureSota recSota = new RecursiveClosureSota(lk, pool, true, true);
 		Path tmp = Path.of("target/verify-tmp");

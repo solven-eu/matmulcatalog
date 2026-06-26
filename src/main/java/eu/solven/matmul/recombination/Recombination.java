@@ -542,6 +542,103 @@ public final class Recombination {
 	 *  lineage records so replay re-fuses identically. */
 	public record TaFusedConstruction(NonCubicBilinearAlgorithm alg, List<int[]> fusedPairs) {}
 
+	/**
+	 * Human- and machine-readable breakdown of how a naïve-grid recombination's rank
+	 * decomposes — specifically WHERE Pan trilinear aggregation (TA) saves
+	 * multiplications. Surfaces the otherwise-implicit fusion so the final rank is
+	 * explainable: {@code totalRank == unpairedLeafSum + fusedCost}, and TA bought
+	 * {@code taSaving == Σ(naivePairRank − fusedCost)} multiplications versus building
+	 * every product independently.
+	 *
+	 * <p>{@code null} from {@link #describeTaFusion} when the base is not a naïve grid
+	 * (a block-combining base like Strassen carries no TA-fusable disjoint cyclic pair),
+	 * so a caller can treat "no breakdown" as "no TA in this recombination".</p>
+	 */
+	public record TaFusionBreakdown(
+			int totalRank,
+			long unpairedLeafSum,
+			long fusedCost,
+			long taSaving,
+			List<FusedPair> fusedPairs,
+			List<int[]> unpairedShapes) {
+
+		/** One TA-fused product pair: the two cyclic-rotation single-block sub-shapes,
+		 *  the fused column cost {@code abc+ab+bc+ca}, the un-fused {@code 2·leaf} rank,
+		 *  and the saving (always {@code > 0} — non-saving pairs are never fused). */
+		public record FusedPair(int[] shapeA, int[] shapeB, long fusedCost, long naiveRank, long saving) {}
+
+		/** {@code true} iff at least one pair fused (i.e. TA actually lowered the rank). */
+		public boolean hasFusion() {
+			return !fusedPairs.isEmpty();
+		}
+
+		/** Compact one-liner for logs / lineage display, e.g.
+		 *  {@code "rank 11693 = 11381 leaves + 312 fused; Pan-TA saved 312 over 1 pair ⟨26,3,26⟩"}. */
+		public String summary() {
+			if (!hasFusion()) {
+				return "rank " + totalRank + " = " + unpairedLeafSum + " leaves; no Pan-TA pair fused";
+			}
+			StringBuilder shapes = new StringBuilder();
+			for (FusedPair fp : fusedPairs) {
+				if (shapes.length() > 0) shapes.append(", ");
+				shapes.append('⟨').append(fp.shapeA()[0]).append(',').append(fp.shapeA()[1])
+						.append(',').append(fp.shapeA()[2]).append('⟩');
+			}
+			return "rank " + totalRank + " = " + unpairedLeafSum + " leaves + " + fusedCost
+					+ " fused; Pan-TA saved " + taSaving + " over " + fusedPairs.size()
+					+ (fusedPairs.size() == 1 ? " pair " : " pairs ") + shapes;
+		}
+	}
+
+	/**
+	 * Price a naïve-grid recombination and report its {@link TaFusionBreakdown} — the
+	 * same pairing decision {@link #constructWithTaFusion} makes, but rank-only (no
+	 * scheme materialised), so it is cheap enough to run over the whole catalog when
+	 * generating the manifest. Returns {@code null} when {@code base} is not a naïve
+	 * grid (no TA structure to describe).
+	 */
+	public static TaFusionBreakdown describeTaFusion(
+			NonCubicBilinearAlgorithm base, SotaResolver sota,
+			int[] allocA, int[] allocB, int[] allocC) {
+		if (!isNaiveGrid(base)) {
+			return null;
+		}
+		Result rec = recombineWithAllocation(base, sota, allocA, allocB, allocC);
+		int baseR = base.r;
+		int[][] grids = new int[baseR][];
+		long[] subRanks = new long[baseR];
+		for (int k = 0; k < baseR; k++) {
+			int[] sz = rec.smallMatrixSizes[k];
+			if (sz[0] == 0 || sz[1] == 0 || sz[2] == 0) continue;
+			subRanks[k] = sota.getRank(sz[0], sz[1], sz[2]);
+			grids[k] = singleBlockGrid(base, k);
+		}
+		List<int[]> pairs = findTaPairs(rec.smallMatrixSizes, grids, subRanks);
+		boolean[] inPair = new boolean[baseR];
+		for (int[] pr : pairs) { inPair[pr[0]] = true; inPair[pr[1]] = true; }
+
+		List<TaFusionBreakdown.FusedPair> fused = new ArrayList<>();
+		long fusedCost = 0, taSaving = 0;
+		for (int[] pr : pairs) {
+			int[] s1 = rec.smallMatrixSizes[pr[0]], s2 = rec.smallMatrixSizes[pr[1]];
+			long cost = PairedSubProducts.pairCost(s1[0], s1[1], s1[2]);
+			long naive = subRanks[pr[0]] + subRanks[pr[1]];
+			fused.add(new TaFusionBreakdown.FusedPair(s1.clone(), s2.clone(), cost, naive, naive - cost));
+			fusedCost += cost;
+			taSaving += naive - cost;
+		}
+		long unpaired = 0;
+		List<int[]> unpairedShapes = new ArrayList<>();
+		for (int k = 0; k < baseR; k++) {
+			int[] sz = rec.smallMatrixSizes[k];
+			if (sz[0] == 0 || sz[1] == 0 || sz[2] == 0 || inPair[k]) continue;
+			unpaired += subRanks[k];
+			unpairedShapes.add(sz.clone());
+		}
+		return new TaFusionBreakdown((int) (unpaired + fusedCost),
+				unpaired, fusedCost, taSaving, fused, unpairedShapes);
+	}
+
 	/** {@code true} iff {@code base} is a NAÏVE GRID — every product is a single-block
 	 *  sub-matmul (coeff +1), i.e. {@code base.r == n·m·p} and each {@link #singleBlockGrid}
 	 *  is non-null. Only naïve grids can carry TA-fusable disjoint cyclic pairs (FMM's

@@ -18,7 +18,7 @@ import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
 import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import eu.solven.matmul.search.RecursiveClosureSota;
 import eu.solven.matmul.search.RecursiveMaterialiser;
 
@@ -77,7 +77,7 @@ public final class VerifyGLCandidate {
 						sota, n, m, p, eu.solven.matmul.search.SearchBudget.EXACT, null).rank();
 				if (r < bestR) { bestR = r; bestMem = mem; }
 			}
-			List<NamedBase> pool = new ArrayList<>(BlockSplitSearch.buildPool(PoolConfig.simple()));
+			List<NamedBase> pool = new ArrayList<>(BlockSplitSearch.buildPool(RecombinationPoolConfig.simple()));
 			pool.add(new NamedBase("GL222_win", bestMem));
 			RecursiveClosureSota recSota = new RecursiveClosureSota(lk, pool, false, true);
 			RecursiveMaterialiser mat = new RecursiveMaterialiser(lk, pool, recSota, Path.of("target/verify-tmp"), false, false);

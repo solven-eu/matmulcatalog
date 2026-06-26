@@ -4,7 +4,7 @@ import eu.solven.matmul.SymmetryTransforms.InternalOrbitMode;
 
 /**
  * Configuration for the outer-template base pool used by
- * {@link BlockSplitSearch#buildPool(PoolConfig)}. Three independent
+ * {@link BlockSplitSearch#buildPool(RecombinationPoolConfig)}. Three independent
  * axes — {@code (cubicOnly, rootsOnly, orbitMode)} — span the 3·3 = 9
  * meaningful tradeoff points between "fast default sweep" and
  * "thorough audit". Defaults match the user-stated "DIS-like simple
@@ -42,7 +42,7 @@ import eu.solven.matmul.SymmetryTransforms.InternalOrbitMode;
  * Recombination search cost is roughly linear in pool size, so a
  * loose config can multiply wall-clock by 100× or more.
  */
-public record PoolConfig(
+public record RecombinationPoolConfig(
 		boolean cubicOnly,
 		boolean rootsOnly,
 		InternalOrbitMode orbitMode,
@@ -51,7 +51,8 @@ public record PoolConfig(
 		boolean balancedOnly,
 		int maxImbalance,
 		int maxCombinations,
-		int maxPadding) {
+		int maxPadding,
+			int maxCubicBaseDim) {
 
 	/** Sentinel for "no imbalance cap"; equivalent to fully-unbalanced search. */
 	public static final int UNBOUNDED_IMBALANCE = Integer.MAX_VALUE;
@@ -62,7 +63,7 @@ public record PoolConfig(
 	/** Default {@code maxPadding} = 0: no over-allocation (no DIS09 γ5 peel pattern tried). */
 	public static final int NO_PADDING = 0;
 
-	public PoolConfig {
+	public RecombinationPoolConfig {
 		if (maxBaseDim < 2) throw new IllegalArgumentException("maxBaseDim must be ≥ 2, got " + maxBaseDim);
 		if (permutationOrbitCap < 8) throw new IllegalArgumentException(
 				"permutationOrbitCap must be ≥ 8 (axis-flip subset size), got " + permutationOrbitCap);
@@ -82,44 +83,44 @@ public record PoolConfig(
 	 * (see project memory feedback_dont_silently_prune_search_space).
 	 * Pruning heuristics must be opt-in, not the default.</p>
 	 */
-	public PoolConfig(boolean cubicOnly, boolean rootsOnly, InternalOrbitMode orbitMode,
+	public RecombinationPoolConfig(boolean cubicOnly, boolean rootsOnly, InternalOrbitMode orbitMode,
 			int maxBaseDim, long permutationOrbitCap) {
 		this(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap,
-				false, UNBOUNDED_IMBALANCE, UNBOUNDED_COMBINATIONS, NO_PADDING);
+				false, UNBOUNDED_IMBALANCE, UNBOUNDED_COMBINATIONS, NO_PADDING, maxBaseDim);
 	}
 
 	/** 7-arg back-compat (pre-maxCombinations / maxPadding). */
-	public PoolConfig(boolean cubicOnly, boolean rootsOnly, InternalOrbitMode orbitMode,
+	public RecombinationPoolConfig(boolean cubicOnly, boolean rootsOnly, InternalOrbitMode orbitMode,
 			int maxBaseDim, long permutationOrbitCap,
 			boolean balancedOnly, int maxImbalance) {
 		this(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap,
-				balancedOnly, maxImbalance, UNBOUNDED_COMBINATIONS, NO_PADDING);
+				balancedOnly, maxImbalance, UNBOUNDED_COMBINATIONS, NO_PADDING, maxBaseDim);
 	}
 
 	/** Returns a copy of {@code this} with {@code balancedOnly} replaced. */
-	public PoolConfig withBalancedOnly(boolean v) {
-		return new PoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, v, maxImbalance, maxCombinations, maxPadding);
+	public RecombinationPoolConfig withBalancedOnly(boolean v) {
+		return new RecombinationPoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, v, maxImbalance, maxCombinations, maxPadding, maxCubicBaseDim);
 	}
 
 	/** Returns a copy of {@code this} with {@code maxImbalance} replaced. */
-	public PoolConfig withMaxImbalance(int v) {
-		return new PoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, balancedOnly, v, maxCombinations, maxPadding);
+	public RecombinationPoolConfig withMaxImbalance(int v) {
+		return new RecombinationPoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, balancedOnly, v, maxCombinations, maxPadding, maxCubicBaseDim);
 	}
 
-	public PoolConfig withMaxBaseDim(int v) {
-		return new PoolConfig(cubicOnly, rootsOnly, orbitMode, v, permutationOrbitCap, balancedOnly, maxImbalance, maxCombinations, maxPadding);
+	public RecombinationPoolConfig withMaxBaseDim(int v) {
+		return new RecombinationPoolConfig(cubicOnly, rootsOnly, orbitMode, v, permutationOrbitCap, balancedOnly, maxImbalance, maxCombinations, maxPadding, maxCubicBaseDim);
 	}
 
-	public PoolConfig withOrbitMode(InternalOrbitMode v) {
-		return new PoolConfig(cubicOnly, rootsOnly, v, maxBaseDim, permutationOrbitCap, balancedOnly, maxImbalance, maxCombinations, maxPadding);
+	public RecombinationPoolConfig withOrbitMode(InternalOrbitMode v) {
+		return new RecombinationPoolConfig(cubicOnly, rootsOnly, v, maxBaseDim, permutationOrbitCap, balancedOnly, maxImbalance, maxCombinations, maxPadding, maxCubicBaseDim);
 	}
 
-	public PoolConfig withMaxCombinations(int v) {
-		return new PoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, balancedOnly, maxImbalance, v, maxPadding);
+	public RecombinationPoolConfig withMaxCombinations(int v) {
+		return new RecombinationPoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, balancedOnly, maxImbalance, v, maxPadding, maxCubicBaseDim);
 	}
 
-	public PoolConfig withMaxPadding(int v) {
-		return new PoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, balancedOnly, maxImbalance, maxCombinations, v);
+	public RecombinationPoolConfig withMaxPadding(int v) {
+		return new RecombinationPoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap, balancedOnly, maxImbalance, maxCombinations, v, maxCubicBaseDim);
 	}
 
 	/**
@@ -128,8 +129,38 @@ public record PoolConfig(
 	 * starting point for routine sweeps; closes most catalog gaps with
 	 * sub-15-minute wall-clock on ~200 shapes.
 	 */
-	public static PoolConfig simple() {
-		return new PoolConfig(true, true, InternalOrbitMode.CANONICAL, 5, 8);
+	/** Copy with {@code maxCubicBaseDim} replaced — the dim ceiling for CUBIC bases, which
+	 *  may exceed {@code maxBaseDim} so cubic bases (⟨6,6,6⟩…⟨8,8,8⟩, e.g. Sedoglavic
+	 *  ⟨7,7,7⟩) stay in a pool whose NON-cubic bases are capped lower. */
+	public RecombinationPoolConfig withMaxCubicBaseDim(int v) {
+		return new RecombinationPoolConfig(cubicOnly, rootsOnly, orbitMode, maxBaseDim, permutationOrbitCap,
+				balancedOnly, maxImbalance, maxCombinations, maxPadding, v);
+	}
+
+	/**
+	 * The sensible-but-large DEFAULT recombination pool (user 2026-06-26): non-cubic bases
+	 * up to {@code maxBaseDim=5}, cubic bases up to {@code maxCubicBaseDim=8} (so ⟨6,6,6⟩…
+	 * ⟨7,7,7⟩ Sedoglavic stay in), {@code cubicOnly=false}, extended catalog included,
+	 * {@code AXIS_FLIP} orbit. Replaces {@link #simple()} ({@code cubicOnly=true}) as the
+	 * materialize default: simple() silently dropped EVERY non-cubic base (the AxisSplits
+	 * and the naïve grids), which regressed the fullDerive's non-cubic recombinations
+	 * (⟨7,7,30⟩, ⟨13,13,32⟩, and the Pan-TA ⟨26,29,29⟩/⟨28,31,31⟩). Users narrow it
+	 * ({@code --cubicOnly}, smaller {@code --maxBaseDim}) or widen it for specific bigger bases.
+	 *
+	 * <p>Orbit is {@code AXIS_FLIP} (the serious-sweep default): the flip orbit explores
+	 * each base's axis ORIENTATIONS, which is exactly what the per-base frontier-multiset
+	 * mechanism (Phase 2) will make efficient — iterating the frontier instead of re-deriving
+	 * every flipped base. {@code CANONICAL} is an A/B-test edge case (fast, single
+	 * orientation), useful to check whether the flip orbit adds anything, but NOT a default
+	 * for any serious sweep — use {@link #withOrbitMode}{@code (CANONICAL)} to probe.</p>
+	 */
+	public static RecombinationPoolConfig defaultLarge() {
+		return new RecombinationPoolConfig(false, false, InternalOrbitMode.AXIS_FLIP, 5, 8,
+				false, UNBOUNDED_IMBALANCE, UNBOUNDED_COMBINATIONS, NO_PADDING, 8);
+	}
+
+	public static RecombinationPoolConfig simple() {
+		return new RecombinationPoolConfig(true, true, InternalOrbitMode.CANONICAL, 5, 8);
 	}
 
 	/**
@@ -137,13 +168,13 @@ public record PoolConfig(
 	 * proportionally slower. Marks lineage as
 	 * {@link eu.solven.matmul.catalog.Lineage.AxisFlip approximate}.
 	 */
-	public static PoolConfig auditAxisFlip() {
-		return new PoolConfig(true, true, InternalOrbitMode.AXIS_FLIP, 5, 8);
+	public static RecombinationPoolConfig auditAxisFlip() {
+		return new RecombinationPoolConfig(true, true, InternalOrbitMode.AXIS_FLIP, 5, 8);
 	}
 
 	/** Cubic, root, full permutation orbit bounded at 216 (tractable through ⟨3,3,3⟩). */
-	public static PoolConfig auditPermutation() {
-		return new PoolConfig(true, true, InternalOrbitMode.PERMUTATION_BOUNDED, 5, 216);
+	public static RecombinationPoolConfig auditPermutation() {
+		return new RecombinationPoolConfig(true, true, InternalOrbitMode.PERMUTATION_BOUNDED, 5, 216);
 	}
 
 	/**
@@ -155,18 +186,18 @@ public record PoolConfig(
 	 * already cover. If it's strictly worse, the canonical scheme is the
 	 * essential one and the orbit expansion is decorative.
 	 */
-	public static PoolConfig axisFlipOnly() {
-		return new PoolConfig(true, true, InternalOrbitMode.AXIS_FLIP_ONLY, 5, 8);
+	public static RecombinationPoolConfig axisFlipOnly() {
+		return new RecombinationPoolConfig(true, true, InternalOrbitMode.AXIS_FLIP_ONLY, 5, 8);
 	}
 
 	/** Allow non-cubic roots (rectangular AT⟨2,2,3⟩, etc.). Canonical orbit. */
-	public static PoolConfig rectangular() {
-		return new PoolConfig(false, true, InternalOrbitMode.CANONICAL, 5, 8);
+	public static RecombinationPoolConfig rectangular() {
+		return new RecombinationPoolConfig(false, true, InternalOrbitMode.CANONICAL, 5, 8);
 	}
 
 	/** Include derived catalog schemes — the full "extendedPool" universe at cap 5. */
-	public static PoolConfig includeDerived() {
-		return new PoolConfig(false, false, InternalOrbitMode.CANONICAL, 5, 8);
+	public static RecombinationPoolConfig includeDerived() {
+		return new RecombinationPoolConfig(false, false, InternalOrbitMode.CANONICAL, 5, 8);
 	}
 
 	/**
@@ -176,8 +207,8 @@ public record PoolConfig(
 	 * and silently fall back to axis-flip anyway. For true permutation
 	 * sweeps, lower {@code maxBaseDim} to 3.
 	 */
-	public static PoolConfig thorough() {
-		return new PoolConfig(false, false, InternalOrbitMode.AXIS_FLIP, 5, 8);
+	public static RecombinationPoolConfig thorough() {
+		return new RecombinationPoolConfig(false, false, InternalOrbitMode.AXIS_FLIP, 5, 8);
 	}
 
 	/** A compact handle for logs / report headers. */

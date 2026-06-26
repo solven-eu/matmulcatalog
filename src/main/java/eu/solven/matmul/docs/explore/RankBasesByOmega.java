@@ -32,7 +32,7 @@ import tools.jackson.databind.json.JsonMapper;
  *
  * <p>This driver doesn't change anything in the pool itself — it just
  * surfaces the data. See task linking the result to
- * {@link eu.solven.matmul.search.PoolConfig}.
+ * {@link eu.solven.matmul.search.RecombinationPoolConfig}.
  */
 @Slf4j
 public final class RankBasesByOmega {

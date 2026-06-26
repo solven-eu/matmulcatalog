@@ -1,0 +1,36 @@
+{
+  "lineage_str": "ConcatCols(SumInner(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), OrientAs(3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad, ⟨3,7,4⟩)), 3x13x22)",
+  "lineage_compact": "3x4x6-r54-alphaevolve-c197868→⟨3,6,4⟩ +m 3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad→⟨3,7,4⟩ +p 3x13x22",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 6,
+        "p": 4,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      },
+      "right": {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 7,
+        "p": 4,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad"}
+      }
+    },
+    "right": {"op": "Atom", "ref": "3x13x22@d327d3dc9e125ede38121f896e8ae38520fdda7e31cd5ce8055f0956527fd6cc"}
+  },
+  "n": [3, 13, 26],
+  "m": 755,
+  "hash": "75e4f2a72e1e0d57c21e97eecfdf8367eb5a2d7ddd58064400fc672b397677f0",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -48,7 +48,7 @@ public class TestUnverifiedBoundsIgnored {
 	@Test
 	public void searchDoesNotElectTheUnverifiedHkBound() {
 		FieldAwareLookup lk = new FieldAwareLookup("R");
-		List<NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.simple());
+		List<NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.simple());
 		Optional<NonCubicStrategy> best =
 				BlockSplitSearch.findBestStrategy(2, 10, 15, pool, sota(lk), false);
 		assertThat(best).isPresent();

@@ -10,7 +10,7 @@ import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.recombination.BlockSplitSearch.NamedBase;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import eu.solven.matmul.search.RecursiveClosureSota;
 import eu.solven.matmul.search.RecursiveMaterialiser;
 
@@ -35,7 +35,7 @@ public final class VerifySubBlocks {
 
 	public static void main(String[] args) throws Exception {
 		FieldAwareLookup lk = new FieldAwareLookup("R");
-		List<NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.thorough());
+		List<NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.thorough());
 		SotaResolver sota = catalogSota(lk);
 		RecursiveClosureSota recSota = new RecursiveClosureSota(lk, pool, false, true);
 		RecursiveMaterialiser mat = new RecursiveMaterialiser(lk, pool, recSota, Path.of("target/verify-tmp"), false, false);

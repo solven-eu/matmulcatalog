@@ -96,6 +96,15 @@
     </select>
   </label>
 
+  <label title="Lower-bound rows (rank ≥ …) are published theoretical floors, NOT constructive schemes — they have no factor matrices. Excluded by default. 'only' isolates them; 'include' mixes them with the achievable ranks so the gap to the best scheme is visible.">
+    Lower bound:
+    <select id="f-lower">
+      <option value="include">include</option>
+      <option value="exclude" selected>exclude</option>
+      <option value="only">only</option>
+    </select>
+  </label>
+
   <label title="Derived = built via recursion / Kronecker / concat / recombine (has a lineage), as opposed to an atom or imported scheme">
     Derived:
     <select id="f-composed">

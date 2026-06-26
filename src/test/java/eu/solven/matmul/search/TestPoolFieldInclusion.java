@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 public class TestPoolFieldInclusion {
 
 	private static int poolSize(String fieldTag) {
-		return BlockSplitSearch.buildPool(PoolConfig.includeDerived(), fieldTag).size();
+		return BlockSplitSearch.buildPool(RecombinationPoolConfig.includeDerived(), fieldTag).size();
 	}
 
 	@Test

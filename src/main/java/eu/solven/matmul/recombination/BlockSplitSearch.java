@@ -11,7 +11,7 @@ import eu.solven.matmul.search.ConstructiveMethod;
 import eu.solven.matmul.search.KnownTauIdentities;
 import eu.solven.matmul.search.KroneckerSplitSearch;
 import eu.solven.matmul.search.PairFusedRecombination;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -179,17 +179,17 @@ public class BlockSplitSearch {
 	/**
 	 * Single config-driven entry point. Replaces ad-hoc rootPool/extendedPool
 	 * calls in drivers. Filters the catalog by
-	 * {@link PoolConfig#cubicOnly}, {@link PoolConfig#rootsOnly},
-	 * {@link PoolConfig#maxBaseDim}, then expands each retained scheme
-	 * by the configured {@link PoolConfig#orbitMode}.
+	 * {@link RecombinationPoolConfig#cubicOnly}, {@link RecombinationPoolConfig#rootsOnly},
+	 * {@link RecombinationPoolConfig#maxBaseDim}, then expands each retained scheme
+	 * by the configured {@link RecombinationPoolConfig#orbitMode}.
 	 *
 	 * <p>The two pre-existing helpers {@link #rootPool()} and
 	 * {@link #extendedPool(int)} remain for back-compat; both are now
 	 * special cases of {@code buildPool}.</p>
 	 *
-	 * @see PoolConfig#simple
+	 * @see RecombinationPoolConfig#simple
 	 */
-	public static List<NamedBase> buildPool(PoolConfig config) {
+	public static List<NamedBase> buildPool(RecombinationPoolConfig config) {
 		return buildPool(config, null);
 	}
 
@@ -203,7 +203,7 @@ public class BlockSplitSearch {
 	 * legacy char-0 (Z/Q/R) filter. The hand-curated {@code rootPool} templates are
 	 * integer (Z) so they are valid over every field and are always included.
 	 */
-	public static List<NamedBase> buildPool(PoolConfig config, String fieldTag) {
+	public static List<NamedBase> buildPool(RecombinationPoolConfig config, String fieldTag) {
 		// Start from rootPool's hand-curated list of historical
 		// templates (Strassen + AT⟨2,2,3⟩ + AT⟨2,3,3⟩ + Laderman) —
 		// these are always Leaf-lineage. Always applied first so the
@@ -229,8 +229,15 @@ public class BlockSplitSearch {
 		java.util.Set<String> sigSeen = new java.util.HashSet<>();
 		for (NamedBase nb : raw) {
 			NonCubicBilinearAlgorithm a = nb.base();
-			if (Math.max(a.n, Math.max(a.m, a.p)) > config.maxBaseDim()) continue;
-			if (config.cubicOnly() && (a.n != a.m || a.m != a.p)) continue;
+			boolean cubicBase = (a.n == a.m && a.m == a.p);
+			// Two-threshold cap (user 2026-06-26): non-cubic bases ≤ maxBaseDim; cubic bases
+			// may reach maxCubicBaseDim (≥ maxBaseDim) so e.g. ⟨7,7,7⟩ stays in a pool whose
+			// rectangular bases stop at 5. cubicOnly still drops every non-cubic base.
+			int dimCap = cubicBase
+					? Math.max(config.maxBaseDim(), config.maxCubicBaseDim())
+					: config.maxBaseDim();
+			if (Math.max(a.n, Math.max(a.m, a.p)) > dimCap) continue;
+			if (config.cubicOnly() && !cubicBase) continue;
 			eu.solven.matmul.catalog.Lineage.Node canonicalOrigin = nb.originLineage();
 			// Each variant carries the EXACT per-axis permutation that reconstructs it from
 			// the canonical scheme (flips are reversal permutations) — so the origin lineage
@@ -313,6 +320,19 @@ public class BlockSplitSearch {
 		pool.add(new NamedBase("AxisSplit<2,1,1>=2", eu.solven.matmul.AxisSplitBases.mul211()));
 		pool.add(new NamedBase("AxisSplit<1,2,1>=2", eu.solven.matmul.AxisSplitBases.mul121()));
 		pool.add(new NamedBase("AxisSplit<1,1,2>=2", eu.solven.matmul.AxisSplitBases.mul112()));
+		// ── Rank-4 naïve grids ⟨1,2,2⟩ / ⟨2,1,2⟩ / ⟨2,2,1⟩ ──
+		// Single-block 2×2 grids with one axis unsplit. Unlike the rank-2 AxisSplits,
+		// these carry a disjoint cyclic-rotation product PAIR (e.g. ⟨n,b,c⟩ & its rot²
+		// ⟨n,c,b⟩ under a symmetric m=p split) that Pan trilinear aggregation fuses at
+		// abc+ab+bc+ca < 2·R — the in-recombination TA path (Recombination.tryBuildTaFusion,
+		// gated on isNaiveGrid). Without them the search cannot reach the naive-1x2x2
+		// RecombinationTa schemes master held (⟨26,29,29⟩=11693, ⟨28,31,31⟩=14043): TA is a
+		// saving WITHIN a recombination's multiplications, not a separate strategy, so the
+		// grid must be IN the pool for the saving to be weighed. All three axis orientations
+		// are added so the unsplit axis can align with any target's heaviest axis.
+		pool.add(new NamedBase("Naive<1,2,2>=4", NonCubicBilinearAlgorithm.naive(1, 2, 2)));
+		pool.add(new NamedBase("Naive<2,1,2>=4", NonCubicBilinearAlgorithm.naive(2, 1, 2)));
+		pool.add(new NamedBase("Naive<2,2,1>=4", NonCubicBilinearAlgorithm.naive(2, 2, 1)));
 		// ── ⟨2,*,*⟩ ──
 		// Strassen / Winograd 2×2×2 have the full Burichenko-order-36
 		// stabilizer including S₃ axis-permutation → cubicSymmetric.
@@ -326,7 +346,7 @@ public class BlockSplitSearch {
 		// the per-axis allocation ORDER, so canonical Winograd at the (8,9)³
 		// ordering already gives 2930 (the mirrored (9,8)³ ordering gives
 		// 2954). Verified by TestStrassenCousinHunt (canonical @ (8,9)³=2930,
-		// @ (9,8)³=2954) and TestProbe17ConfigCompare (PoolConfig.simple()
+		// @ (9,8)³=2954) and TestProbe17ConfigCompare (RecombinationPoolConfig.simple()
 		// CANONICAL and auditAxisFlip BOTH return 2930 from base
 		// "Winograd :: CANONICAL/AXIS_FLIP" at alloc [8,9]³). The axis-flip
 		// orbit machinery (#106 AnalyticalMaskSearch, #108 axisFlipCanonical,
@@ -1233,7 +1253,7 @@ public class BlockSplitSearch {
 										}
 									}
 									// Analytical axis-flip mask sweep — restores orbit
-									// coverage when the pool wasn't expanded (e.g.\ PoolConfig
+									// coverage when the pool wasn't expanded (e.g.\ RecombinationPoolConfig
 									// with CANONICAL orbit mode). Gated on peel == null because
 									// AnalyticalMaskSearch doesn't model peel; for peel > 0 the
 									// pool-expansion path is the only coverage. Task #133:

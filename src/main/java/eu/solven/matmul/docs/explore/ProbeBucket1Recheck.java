@@ -7,7 +7,7 @@ import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.CitedBound;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -32,7 +32,7 @@ public class ProbeBucket1Recheck {
 	public static void main(String[] args) {
 		FieldAwareLookup lookup = new FieldAwareLookup(Field.Q);
 		CitedBound sota = new CitedBound(lookup);
-		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.includeDerived());
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.includeDerived());
 		log.info("pool size={} (includeDerived, maxBaseDim=5)", pool.size());
 
 		int improved = 0;
@@ -42,7 +42,7 @@ public class ProbeBucket1Recheck {
 			long t0 = System.currentTimeMillis();
 			Optional<BlockSplitSearch.NonCubicStrategy> best = BlockSplitSearch.findBestStrategy(
 					n, m, p, pool, sota, false,
-					PoolConfig.UNBOUNDED_IMBALANCE, PoolConfig.UNBOUNDED_COMBINATIONS, 0, Long.MAX_VALUE);
+					RecombinationPoolConfig.UNBOUNDED_IMBALANCE, RecombinationPoolConfig.UNBOUNDED_COMBINATIONS, 0, Long.MAX_VALUE);
 			long pred = best.map(BlockSplitSearch.NonCubicStrategy::rank).orElse(-1L);
 			boolean win = pred > 0 && pred < committed;
 			if (win) improved++;

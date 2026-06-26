@@ -1658,9 +1658,23 @@ public final class RecursiveMaterialiser {
 		Lineage.Node tree = new Lineage.RecombinationTaN(baseNode,
 				r.allocA().clone(), r.allocB().clone(), r.allocC().clone(),
 				new java.util.ArrayList<>(leafNodes.values()));
-		log.info("⟨{},{},{}⟩ TA-fusion via base ⟨{},{},{}⟩: {} cross-pair(s) fused → r{}",
-				n, m, p, base.n, base.m, base.p, tc.fusedPairs().size(), alg.r);
+		log.info("⟨{},{},{}⟩ TA-fusion via base ⟨{},{},{}⟩: {}",
+				n, m, p, base.n, base.m, base.p, describeFusionSummary(baseAlg, sota, r, tc, alg));
 		return new Result(alg, tree, false);
+	}
+
+	/**
+	 * The Pan-TA breakdown one-liner for logs (and the same string the catalog stamps
+	 * as {@code ta_fusion.summary}). Falls back to a bare pair-count if rank-only
+	 * re-pricing can't reproduce a naïve grid (should not happen for a fused build).
+	 */
+	private String describeFusionSummary(NonCubicBilinearAlgorithm baseAlg,
+			Recombination.SotaResolver sota, BlockSplitSearch.MultiBaseSplitCandidate r,
+			Recombination.TaFusedConstruction tc, NonCubicBilinearAlgorithm alg) {
+		Recombination.TaFusionBreakdown bd = Recombination.describeTaFusion(
+				baseAlg, sota, r.allocA(), r.allocB(), r.allocC());
+		return bd != null ? bd.summary()
+				: tc.fusedPairs().size() + " cross-pair(s) fused -> r" + alg.r;
 	}
 
 	/**

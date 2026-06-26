@@ -271,6 +271,44 @@ async function loadCatalog() {
     if (dropped) console.info(`[catalog] dropped ${dropped} cited bound(s) superseded by an on-disk scheme`);
   }
 
+  // Lower-bound rows (rank ≥ …): published theoretical floors with no factor
+  // matrices, surfaced as their own row class behind the "Lower bound" selector
+  // (default-excluded, like border rank). A LOWER bound is a fundamentally
+  // different quantity from an achievable rank — it must never dedupe against,
+  // shave, or be shaved by an exact-rank scheme, so it carries `lower: true` and
+  // is isolated in every dedup/dominance key. Emitted AFTER the cited-supersession
+  // drop above so an on-disk scheme can never delete a lower bound.
+  // (Skip `kind: "border"` LB entries — those bound BORDER rank R̃, a different
+  // quantity again; they stay in lower-bounds.json for the reference registry /
+  // lookupLowerBound only.)
+  for (const lb of lowerBounds) {
+    if (lb.kind === "border") continue;
+    if (!Array.isArray(lb.format) || lb.format.length !== 3 || lb.lb == null) continue;
+    // "all" = field-agnostic floor → valid under every field selector; otherwise
+    // keep the single declared field WITHOUT cross-field lifting (a lower bound
+    // proven over R does NOT carry to C — extending the field can only lower rank).
+    const fields = lbFieldList(lb.field);
+    allSchemes.push({
+      format: lb.format,
+      max_dim: Math.max(...lb.format),
+      field: lb.field === "all" ? "R" : lb.field,
+      fields,
+      commutative: false,
+      rank: lb.lb,
+      lower: true,
+      lb_field: lb.field, // original published field token ("all" | "char0" | "F2" | "R" | "F2/Z/Q/R/C" | …)
+      border: false,
+      tight: lb.tight === true,
+      additions: null,
+      source: lb.source,
+      file: null,
+      cited: true,
+      year: lb.year,
+      url: lb.url,
+      notes: lb.notes || "",
+    });
+  }
+
   buildRefRegistry();
   // First render of references uses the full registry; render() will re-filter on first call.
   renderReferences();
@@ -365,7 +403,7 @@ function renderOmegaTriangle() {
   const best = new Map();
   for (const s of allSchemes) {
     if (!s.format || s.format.length !== 3 || s.rank == null) continue;
-    if (s.commutative === true || s.border === true) continue;
+    if (s.commutative === true || s.border === true || s.lower === true) continue;
     if (field && !schemeValidForRequestedField(s.field, field, s)) continue;
     const f = [s.format[0], s.format[1], s.format[2]].sort((a, b) => a - b);
     if (f[0] < 2 || f[2] > D) continue;
@@ -445,7 +483,11 @@ function renderOmegaTriangle() {
 
   const W = xR + labelPad;
   const H = top + (D - 1) * chh + 8;
-  let svg = `<svg width="${W}" height="${H}" font-family="monospace" font-size="9">`;
+  // Scale to fill the container width: a viewBox + width:100%/height:auto lets the
+  // browser stretch the intrinsic W×H layout to the full available width (height
+  // follows proportionally), instead of rendering at a fixed pixel width and
+  // leaving slack / a horizontal scrollbar.
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="auto" preserveAspectRatio="xMinYMin meet" style="width:100%;height:auto;display:block" font-family="monospace" font-size="9">`;
   // Place cells row by row. Row d holds every (n,m) with m ≤ d, in the chosen
   // column order; the cube ⟨d,d,d⟩ is its last (max) pair → offset 0, flush right.
   // Coloured cells carry data-* for the tooltip; no-scheme cells are grey; cube
@@ -711,19 +753,30 @@ function renderReferences(usedKeys) {
   }
 }
 
+// Expand a lower-bound entry's `field` token into the explicit list of fields it
+// is valid over. Tokens: "all" = field-agnostic (every field); "char0" = the
+// characteristic-0 fields only (Z/Q/R/C, NOT F2/F3 — a char-0 floor does not
+// transfer to positive characteristic); otherwise a "/"-separated explicit set
+// (e.g. "F2/Z/Q/R/C" = a floor known over F2 and char 0 but weaker over F3).
+function lbFieldList(field) {
+  if (field === "all") return ["Z", "Q", "R", "C", "F2", "F3"];
+  if (field === "char0") return ["Z", "Q", "R", "C"];
+  return field.split("/").map(x => x.trim()).filter(Boolean);
+}
+
 /**
  * Lookup the best (largest) known LB matching this scheme's (format, field).
- * Prefers exact field match; falls back to 'all' (field-agnostic).
+ * Matches when the scheme is valid over any field the LB covers.
  */
 function lookupLowerBound(scheme) {
   const fmt = scheme.format;
-  // Match any LB whose field the scheme is valid over (or the field-agnostic
-  // "all"). The singular `field` is gone — `fields` membership is authoritative.
+  // Match any LB whose field the scheme is valid over. The singular `field` is
+  // gone — `fields` membership is authoritative.
   const fset = new Set(schemeFieldList(scheme));
   let best = null;
   for (const lb of lowerBounds) {
     if (lb.format[0] !== fmt[0] || lb.format[1] !== fmt[1] || lb.format[2] !== fmt[2]) continue;
-    if (lb.field !== "all" && !fset.has(lb.field)) continue;
+    if (!lbFieldList(lb.field).some(f => fset.has(f))) continue;
     if (!best || lb.lb > best.lb) best = lb;
   }
   return best;
@@ -740,6 +793,7 @@ const CTRL_TO_HASH_KEY = {
   "f-commutative": "commutative",
   "f-composed": "composed",
   "f-border": "border",
+  "f-lower": "lower",
   "f-max-dim": "max",
   "f-min-dim": "min",
   "f-source": "source",
@@ -787,6 +841,7 @@ const HASH_KEY_TO_CTRL = {
   commutative: "f-commutative",
   composed: "f-composed",
   border: "f-border",
+  lower: "f-lower",
   min: "f-min-dim",
   max: "f-max-dim",
   source: "f-source",
@@ -884,6 +939,7 @@ const HASH_DEFAULTS = {
   commutative: "exclude",
   composed: "include",
   border: "exclude",
+  lower: "exclude",
   min: "2",
   max: "32",
   source: "",
@@ -909,10 +965,14 @@ function additionsCell(s) {
   const eff = effectiveAdditions(s);
   if (eff == null) return "—";
   const flat = s.additions;
+  // When the flat structural count exceeds the CSE-scheduled (effective) count,
+  // prefix it as "24 flat +15". The headline "+N" stays LAST so that — the column
+  // being right-aligned — the relevant (effective) addition count lines up
+  // vertically across every row, whether or not a flat annotation is present.
   const note = (flat != null && flat > eff)
-    ? ` <small class="field-narrow" title="flat structural additions (additionCount over U/V/W); the headline ${eff} is the CSE-scheduled count after common subexpressions are reused — e.g. Strassen-Winograd is 15 scheduled vs ${flat} flat">${flat} flat</small>`
+    ? `<small class="field-narrow" title="flat structural additions (additionCount over U/V/W); the headline ${eff} is the CSE-scheduled count after common subexpressions are reused — e.g. Strassen-Winograd is 15 scheduled vs ${flat} flat">${flat} flat</small> `
     : "";
-  return `+${eff}${note}`;
+  return `${note}+${eff}`;
 }
 
 // Secondary ranking key (the tiebreak once rank is equal). Returns a score
@@ -974,6 +1034,7 @@ function render() {
   const commutative = document.getElementById("f-commutative").value;
   const composed = document.getElementById("f-composed").value;
   const border = document.getElementById("f-border")?.value || "exclude";
+  const lower = document.getElementById("f-lower")?.value || "exclude";
   const maxDim = +document.getElementById("f-max-dim").value || 32;
   const minDim = +document.getElementById("f-min-dim").value || 2;
   const sourceQ = document.getElementById("f-source").value.toLowerCase();
@@ -996,6 +1057,10 @@ function render() {
     // Default-excluded; "only" isolates them; "include" mixes them in.
     if (border === "exclude" && s.border === true) return false;
     if (border === "only" && s.border !== true) return false;
+    // Lower-bound rows (rank ≥ …) are a different quantity from achievable rank.
+    // Default-excluded; "only" isolates them; "include" mixes them in.
+    if (lower === "exclude" && s.lower === true) return false;
+    if (lower === "only" && s.lower !== true) return false;
     if (composed === "exclude" && isComposedScheme(s)) return false;
     if (composed === "require" && !isComposedScheme(s)) return false;
     // min-dim filter: hide rows where ANY axis is below the threshold
@@ -1029,7 +1094,7 @@ function render() {
     function keyFmt(s) {
       // `fields` membership signature replaces the old singular `field` (gone
       // 2026-06-04). Two rows only dedupe when they're valid over the same set.
-      return `${s.format.join(",")}|${schemeFieldList(s).join("/")}|${s.rank}|${s.commutative === true}|${s.border === true}`;
+      return `${s.format.join(",")}|${schemeFieldList(s).join("/")}|${s.rank}|${s.commutative === true}|${s.border === true}|${s.lower === true}`;
     }
     function priority(s) {
       const adds = effectiveAdditions(s) == null ? 1 : 0; // -1 step penalty for null adds
@@ -1075,7 +1140,7 @@ function render() {
       // First pass: per cell, find the min non-derived rank.
       const bestNonDerived = new Map();
       for (const s of filtered) {
-        if (s.derived || s.border) continue; // border rank ≠ achievable rank — don't let it shave real derived rows
+        if (s.derived || s.border || s.lower) continue; // border / lower bound ≠ achievable rank — don't let them shave real derived rows
         for (const f of schemeFieldList(s)) {
           const k = cellKey(s, f);
           const cur = bestNonDerived.get(k);
@@ -1113,7 +1178,11 @@ function render() {
       // user-selected secondary key (default "additions"), then a preference
       // for an on-disk scheme over a derived/cited one, then source priority.
       const better = (a, b) => {
-        if (a.rank !== b.rank) return a.rank < b.rank;          // primary: rank
+        // Lower-bound rows live in their own cells (cellKey carries the `lower`
+        // flag), so a/b here are both lower bounds or both achievable. For two
+        // lower bounds the STRONGER (higher) floor wins — ⟨5,5,5⟩ ≥48 beats ≥47;
+        // for achievable ranks the lower rank wins as usual.
+        if (a.rank !== b.rank) return (a.lower && b.lower) ? a.rank > b.rank : a.rank < b.rank;
         const as = secondaryRankScore(a, secondary);
         const bs = secondaryRankScore(b, secondary);            // secondary: user choice
         if (as !== bs) return as < bs;
@@ -1126,7 +1195,7 @@ function render() {
       const repByCell = new Map();
       // Border-rank rows live in their own cells (a separate quantity) so a
       // theoretical R̃ bound never wins/hides an exact-rank constructive scheme.
-      const cellKey = (s, f) => `${s.format.join(",")}|${s.commutative === true}|${s.border === true}|${f}`;
+      const cellKey = (s, f) => `${s.format.join(",")}|${s.commutative === true}|${s.border === true}|${s.lower === true}|${f}`;
       for (const s of filtered) {
         for (const f of schemeFieldList(s)) {
           const k = cellKey(s, f);
@@ -1316,7 +1385,7 @@ function render() {
     } else if (s.cited) {
       tr.classList.add("cited");
       sourceCell = `<span class="cited-tag" title="${escapeHtml(s.source)}${s.notes ? " — " + escapeHtml(s.notes) : ""}">${escapeHtml(cls.label)}</span>${refLink}`;
-      fileCell = `<span class="muted">📖 rank claim (no scheme)</span>` + sourceSchemeLink(s);
+      fileCell = `<span class="muted">📖 ${s.lower ? "lower bound (no scheme)" : "rank claim (no scheme)"}</span>` + sourceSchemeLink(s);
     } else {
       // For COMPOSED schemes show the lineage formula in place of the
       // "Solven-..." auto-attribution — the construction itself IS the
@@ -1366,6 +1435,16 @@ function render() {
     const narrowNote = (!flist.length && narrow && narrow !== "R/Q/Z")
       ? ` (narrowed-from-source: ${narrow})` : "";
     let fieldDisplay = `<span class="field" title="valid over: ${escapeHtml(fullText)}${impliedText}${narrowNote}">${escapeHtml(fieldText)}</span>`;
+    // Lower bounds are published per field. A field-agnostic ("all") floor holds
+    // in any field — show "any" rather than the canonical "Z", which would
+    // understate it; a field-specific floor shows exactly the published field.
+    if (s.lower && s.lb_field) {
+      const lbFieldText = s.lb_field === "all" ? "any" : lbFieldList(s.lb_field).join(", ");
+      const lbFieldTip = s.lb_field === "all" ? "any field (field-agnostic argument)"
+        : s.lb_field === "char0" ? "characteristic 0 (Z, Q, R, C) — does NOT hold over F2/F3"
+        : `valid over ${lbFieldList(s.lb_field).join(", ")}`;
+      fieldDisplay = `<span class="field" title="lower bound published over: ${escapeHtml(lbFieldTip)}">${escapeHtml(lbFieldText)}</span>`;
+    }
     if (field === "C" && !flist.includes("C") && schemeValidForRequestedField(s.field, "C", s)) {
       fieldDisplay = `<span class="field" title="R ⊂ C: R-class scheme is automatically valid over C${narrowNote}">${escapeHtml(fieldText)} <small class="field-fallback">↗ C</small></span>`;
     }
@@ -1373,9 +1452,14 @@ function render() {
       fieldDisplay += ` <span class="commutative-tag" title="commutative-only rank — does NOT lift to recursive matmul over non-commutative entries">cmt</span>`;
     }
     // Rank cell: show NC rank + commutative rank when meaningfully different.
-    let rankCell = s.border
-      ? `≤${s.rank} <span class="commutative-tag" title="border rank R̃ — an asymptotic/degenerate bound, NOT an exact-multiplication scheme; shown separately from achievable ranks">border</span>`
-      : `×${s.rank}`;
+    let rankCell;
+    if (s.lower) {
+      rankCell = `≥${s.rank} <span class="commutative-tag" title="lower bound on the bilinear rank — a published theoretical floor, NOT an achievable scheme${s.tight ? "; TIGHT: a matching construction exists in the catalog" : ""}; shown separately from achievable ranks">LB${s.tight ? " ✓tight" : ""}</span>`;
+    } else if (s.border) {
+      rankCell = `≤${s.rank} <span class="commutative-tag" title="border rank R̃ — an asymptotic/degenerate bound, NOT an exact-multiplication scheme; shown separately from achievable ranks">border</span>`;
+    } else {
+      rankCell = `×${s.rank}`;
+    }
     // commutative_rank is now split into a separate row at load time —
     // no longer rendered inline.
     // Omega cell with heatmap (6-decimal precision).
@@ -1535,6 +1619,22 @@ function openEntryModal(s) {
       `<code class="lineage-formula" style="display:block;margin-bottom:.4em">${escapeHtml(s.lineage_compact)}</code>` +
       `<div class="lineage-graph" id="lineage-graph-box">rendering lineage…</div></div>`
     : "";
+  // Pan-TA highlight: when this recombination fuses cyclic-rotation product pairs,
+  // show WHERE the rank was lowered (rank = unpaired leaves + fused-pair cost; TA
+  // saved `saving`). Makes the final rank explainable, per the catalog's `ta_fusion`.
+  const ta = s.ta_fusion;
+  const taFusionBlock = ta
+    ? `<div style="margin-bottom:.6em;padding:.5em .6em;background:#eef5ff;border-left:3px solid #3b6fb0;border-radius:3px">` +
+      `<div style="font-weight:bold;margin-bottom:.3em">Pan trilinear aggregation (TA) ` +
+      `<span style="font-weight:normal;color:#888;font-size:.85em">— a saving WITHIN this recombination's multiplications: each fused cyclic-rotation pair costs abc+ab+bc+ca instead of 2·R</span></div>` +
+      `<div style="margin-bottom:.3em">${escapeHtml(ta.summary || "")}</div>` +
+      `<div style="color:#555;margin-bottom:.3em">${ta.pairs} pair(s) fused · saved <strong>${ta.saving}</strong> multiplications · ${ta.unpaired_leaf_sum} unpaired leaves + ${ta.fused_cost} fused = ${s.rank}</div>` +
+      (Array.isArray(ta.fused)
+        ? `<ul style="margin:0;padding-left:1.2em">` + ta.fused.map(fp =>
+            `<li>⟨${fp.shape.join(",")}⟩ &amp; its rot² : fused ${fp.fused_cost} vs naïve ${fp.naive_rank} <span style="color:#2a7">(save ${fp.saving})</span></li>`).join("") + `</ul>`
+        : "") +
+      `</div>`
+    : "";
   box.innerHTML =
     `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5em">` +
     `<strong>${title}</strong>` +
@@ -1542,6 +1642,7 @@ function openEntryModal(s) {
     `<div style="margin-bottom:.6em">${fileLink}</div>` +
     `<div style="margin-bottom:.6em">${externalCatalogLinks(s.format, s.rank)}</div>` +
     lineageBlock +
+    taFusionBlock +
     `<pre style="white-space:pre-wrap;word-break:break-word;margin:0">${escapeHtml(JSON.stringify(s, null, 2))}</pre>`;
   ov.appendChild(box);
   box.querySelector("#entry-modal-close").addEventListener("click", () => ov.remove());
@@ -1832,6 +1933,10 @@ function shapeRankIndex() {
   const sorted = new Map();
   for (const s of allSchemes || []) {
     if (!s.format || s.format.length !== 3 || s.rank == null) continue;
+    // Skip non-achievable rows: a lower bound (rank ≥ …) or a border rank (R̃ ≤ …)
+    // is NOT a multiplication count we can realise, so it must not become the
+    // shape's "best known" rank used by lineage / omega annotations.
+    if (s.lower === true || s.border === true) continue;
     const ek = s.format.join("x");
     if (!exact.has(ek) || s.rank < exact.get(ek)) exact.set(ek, s.rank);
     const sk = [...s.format].sort((a, b) => a - b).join("x");
@@ -1930,6 +2035,7 @@ function bestSchemeForShape(shape) {
   for (const pass of [exact, permOf]) {
     for (const s of allSchemes || []) {
       if (!s.format || s.format.length !== 3 || s.rank == null) continue;
+      if (s.lower === true || s.border === true) continue; // not an achievable scheme
       if (pass(s) && (!best || s.rank < best.rank)) best = s;
     }
     if (best) break;

@@ -208,7 +208,7 @@ public class TestSweepSpotsSota {
 	 */
 	@Test
 	public void pool_keeps_content_distinct_244_bases() {
-		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.includeDerived(), "Q");
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.includeDerived(), "Q");
 		long distinct244 = pool.stream()
 				.map(BlockSplitSearch.NamedBase::base)
 				.filter(b -> b.n == 2 && b.m == 4 && b.p == 4 && b.r == 26)
@@ -242,13 +242,13 @@ public class TestSweepSpotsSota {
 	 */
 	@Test
 	public void includeDerived_sweep_finds_5x32x32_3320_via_2x4x4() {
-		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.includeDerived());
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.includeDerived());
 		CitedBound sota = new CitedBound(lookup);
 		// bound just above 3320 so the recombination B&B prunes hard and the test
 		// stays fast, while still letting the 3320 route through.
 		Optional<BlockSplitSearch.NonCubicStrategy> best = BlockSplitSearch.findBestStrategy(
 				5, 32, 32, pool, sota, false,
-				PoolConfig.UNBOUNDED_IMBALANCE, PoolConfig.UNBOUNDED_COMBINATIONS, 0, 3446L);
+				RecombinationPoolConfig.UNBOUNDED_IMBALANCE, RecombinationPoolConfig.UNBOUNDED_COMBINATIONS, 0, 3446L);
 		assertThat(best).as("⟨5,32,32⟩ must resolve via the includeDerived pool").isPresent();
 		assertThat(best.get().rank())
 				.as("⟨5,32,32⟩ must reach FMM's 3320 or better (regression → 3446 = ⟨2,4,4⟩ base lost)")

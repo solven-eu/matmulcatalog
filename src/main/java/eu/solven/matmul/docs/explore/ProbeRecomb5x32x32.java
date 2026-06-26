@@ -9,7 +9,7 @@ import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.CitedBound;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,7 +33,7 @@ public class ProbeRecomb5x32x32 {
 				lookup.findRank(5, 32, 32));
 
 		// (1) Is ⟨2,4,4⟩ in the pool?
-		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.includeDerived());
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.includeDerived());
 		long count244 = pool.stream().filter(nb -> {
 			NonCubicBilinearAlgorithm a = nb.base();
 			int[] d = { a.n, a.m, a.p };
@@ -45,7 +45,7 @@ public class ProbeRecomb5x32x32 {
 		// (2) What does the full search pick (unbalanced, uncapped)?
 		Optional<BlockSplitSearch.NonCubicStrategy> best = BlockSplitSearch.findBestStrategy(
 				5, 32, 32, pool, sota, false,
-				PoolConfig.UNBOUNDED_IMBALANCE, PoolConfig.UNBOUNDED_COMBINATIONS, 0, Long.MAX_VALUE);
+				RecombinationPoolConfig.UNBOUNDED_IMBALANCE, RecombinationPoolConfig.UNBOUNDED_COMBINATIONS, 0, Long.MAX_VALUE);
 		if (best.isPresent()) {
 			BlockSplitSearch.NonCubicStrategy s = best.get();
 			log.info("FULL SEARCH best: rank={} label={}", s.rank(), s.label());

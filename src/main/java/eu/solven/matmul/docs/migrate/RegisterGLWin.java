@@ -18,7 +18,7 @@ import eu.solven.matmul.recombination.BlockSplitSearch.NamedBase;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
 import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import eu.solven.matmul.search.RecursiveMaterialiser;
 import eu.solven.matmul.search.SearchBudget;
 
@@ -74,7 +74,7 @@ public final class RegisterGLWin {
 		System.out.printf("⟨%d,%d,%d⟩ catalog=%d  best GL-member recomb=%d%n", n, m, p, catalog, bestR);
 		if (bestR >= catalog) { System.out.println("no strict win — aborting registration"); return; }
 
-		List<NamedBase> pool = new ArrayList<>(BlockSplitSearch.buildPool(PoolConfig.simple()));
+		List<NamedBase> pool = new ArrayList<>(BlockSplitSearch.buildPool(RecombinationPoolConfig.simple()));
 		pool.add(new NamedBase("GL222_win", bestMem));
 
 		// writeNewSchemes=true, improveExisting=true → persist the improvement to the real catalog.

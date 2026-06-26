@@ -2,7 +2,7 @@
   "_description": "Known lower bounds for the bilinear rank of small \u27e8n,m,p\u27e9 matmul formats. Field-specific where known. 'tight: true' means a matching upper-bound algorithm exists in our catalog. Manually maintained \u2014 add entries as new lower bounds are published.",
   "_schema": {
     "format": "[n, m, p] \u2014 canonical (sorted) ordering, since rank is permutation-invariant",
-    "field": "F2 | R | C | all \u2014 'all' = field-agnostic argument (rank-independent of field)",
+    "field": "Which fields the lower bound is PROVEN over. Unlike upper bounds (a scheme over Z is automatically valid over Q/R/C/F2/F3 by inclusion + reduction), a lower bound does NOT inherit across fields: a char-0 floor does not transfer to F2/F3, and an F2 floor does not transfer to char-0. So name exactly what is proven. Tokens: a single field (F2 | F3 | R | C); a '/'-separated explicit set (e.g. 'F2/Z/Q/R/C' = proven over F2 and characteristic 0, but weaker/unknown over F3); 'char0' = the characteristic-0 fields Z/Q/R/C only (NOT F2/F3); 'all' = RESERVED for a genuinely field-agnostic ARGUMENT \u2014 one proof valid over arbitrary fields of any characteristic (e.g. Blaser's 'over arbitrary fields' rank families, or R(<2,2,2>)=7). Do NOT use 'all' merely because a value happens to coincide across the fields you checked \u2014 that over-claims; use an explicit set instead.",
     "lb": "lower bound on the bilinear rank",
     "tight": "whether some algorithm achieves this rank (some entry in catalog.json matches lb)",
     "source": "primary reference (citation key \u2014 use the SAME string across multiple entries for the same paper, so the reference registry deduplicates correctly)",
@@ -30,12 +30,12 @@
         2,
         3
       ],
-      "field": "all",
+      "field": "F2/Z/Q/R/C",
       "lb": 11,
       "tight": true,
       "source": "Hopcroft\u2013Kerr 1971",
       "year": 1971,
-      "notes": "Tight; matches Smirnov / Hopcroft-Kerr construction. Also independently established by Alexeev 1985 (J.Algorithms 6, 71\u201385), cited as [6] in Burichenko 2014 (arXiv:1408.6273)."
+      "notes": "Tight over F\u2082 (confirmed by Wang 2026 arXiv:2603.07280, table) and over characteristic 0; matches Smirnov / Hopcroft-Kerr construction. Also independently established by Alexeev 1985 (J.Algorithms 6, 71\u201385), cited as [6] in Burichenko 2014 (arXiv:1408.6273). NARROWED from 'all' (2026-06-26): over F\u2083 only \u226510 is known (Bl\u00e4ser 1999, reproduced by Wang 2026) \u2014 see the separate F\u2083 entry; the tight 11 is NOT established over F\u2083."
     },
     {
       "format": [
@@ -43,12 +43,12 @@
         2,
         4
       ],
-      "field": "all",
+      "field": "F2/Z/Q/R/C",
       "lb": 14,
       "tight": true,
       "source": "Hopcroft\u2013Kerr 1971",
       "year": 1971,
-      "notes": "Formula R(\u27e82,2,n\u27e9) = \u23087n/2\u2309 for n \u2265 2 (Hopcroft\u2013Kerr tight). Also established by Alexeev\u2013Smirnov 2013, 'On exact and approximate complexities of multiplication of matrices of sizes 4\u00d72 and 2\u00d72', Contemporary problems of mathematics 17, 135\u2013152 (in Russian), cited as [7] in Burichenko 2014 (arXiv:1408.6273)."
+      "notes": "Formula R(\u27e82,2,n\u27e9) = \u23087n/2\u2309 for n \u2265 2 (Hopcroft\u2013Kerr tight). Also established by Alexeev\u2013Smirnov 2013, 'On exact and approximate complexities of multiplication of matrices of sizes 4\u00d72 and 2\u00d72', Contemporary problems of mathematics 17, 135\u2013152 (in Russian), cited as [7] in Burichenko 2014 (arXiv:1408.6273). NARROWED from 'all' (2026-06-26): tight over F\u2082 (Hopcroft\u2013Kerr per Wang 2026) and over characteristic 0 (Alexeev\u2013Smirnov); the value over F\u2083 is unconfirmed, so 'all' (a field-agnostic claim) was unjustified."
     },
     {
       "format": [
@@ -56,12 +56,12 @@
         2,
         5
       ],
-      "field": "all",
+      "field": "F2/Z/Q/R/C",
       "lb": 18,
       "tight": true,
       "source": "Hopcroft\u2013Kerr 1971",
       "year": 1971,
-      "notes": "Formula R(\u27e82,2,n\u27e9) = \u23087n/2\u2309 for n \u2265 2."
+      "notes": "Formula R(\u27e82,2,n\u27e9) = \u23087n/2\u2309 for n \u2265 2. NARROWED from 'all' (2026-06-26): tight over F\u2082 (Hopcroft\u2013Kerr per Wang 2026) and over characteristic 0; the value over F\u2083 is unconfirmed, so 'all' was unjustified."
     },
     {
       "format": [
@@ -69,12 +69,12 @@
         3,
         3
       ],
-      "field": "all",
+      "field": "F2/Z/Q/R/C",
       "lb": 15,
       "tight": true,
       "source": "Hopcroft\u2013Kerr 1971",
       "year": 1971,
-      "notes": "Hopcroft\u2013Kerr 1971, Theorem 1 + abstract: the \u2308(3pn+max(n,p))/2\u2309 construction is proven minimal for p=1 or 2 (any n) and for p=3, n=3. The p=3, n=3 case = \u27e83,2,3\u27e9 = \u27e82,3,3\u27e9 by S\u2083 symmetry \u2192 R(\u27e82,3,3\u27e9) = 15 tight. Also proven by Pan 1978. (Burichenko 2014 [arXiv:1408.6273] cites only Bl\u00e4ser 2003's weaker LB\u226514 as ref [9], but the HK proof of minimality for p=3,n=3 is explicit and pre-dates Bl\u00e4ser by 32 years.)"
+      "notes": "Hopcroft\u2013Kerr 1971, Theorem 1 + abstract: the \u2308(3pn+max(n,p))/2\u2309 construction is proven minimal for p=1 or 2 (any n) and for p=3, n=3. The p=3, n=3 case = \u27e83,2,3\u27e9 = \u27e82,3,3\u27e9 by S\u2083 symmetry \u2192 R(\u27e82,3,3\u27e9) = 15 tight. Also proven by Pan 1978. (Burichenko 2014 [arXiv:1408.6273] cites only Bl\u00e4ser 2003's weaker LB\u226514 as ref [9], but the HK proof of minimality for p=3,n=3 is explicit and pre-dates Bl\u00e4ser by 32 years.) Confirmed over F\u2082 by Wang 2026 (arXiv:2603.07280, table). NARROWED from 'all' (2026-06-26): over F\u2083 only \u226514 is known (Bl\u00e4ser 1999, reproduced by Wang 2026) \u2014 see the separate F\u2083 entry; the tight 15 is NOT established over F\u2083."
     },
     {
       "format": [
@@ -82,11 +82,12 @@
         3,
         4
       ],
-      "field": "all",
+      "field": "char0",
       "lb": 20,
       "tight": true,
       "source": "Smirnov 2013",
-      "year": 2013
+      "year": 2013,
+      "notes": "Tight over characteristic 0 (Z/Q/R/C): UB 20 is Smirnov's construction, matched from below. NARROWED from 'all' (2026-06-26): the lower bound of 20 does NOT hold over F₂ — a char-0 LB does not transfer to characteristic 2. Wang 2026 (arXiv:2603.07280, Thm 2) proves only R_{F₂}(⟨2,3,4⟩) ≥ 19 with UB 20, so over F₂ the format is open in [19,20]. See the separate Wang F₂ entry."
     },
     {
       "format": [
@@ -94,27 +95,13 @@
         3,
         3
       ],
-      "field": "R",
+      "field": "all",
       "lb": 19,
       "tight": false,
       "source": "Bl\u00e4ser 2003",
       "url": "https://www.sciencedirect.com/science/article/pii/S0885064X02000079",
       "year": 2003,
-      "notes": "Bl\u00e4ser, M. 'On the complexity of the multiplication of matrices of small formats', J.Complexity 19, 43\u201360. Applies over R, C, Q. Best upper bound is 23 (Laderman 1976) \u2014 gap of 4 remains open. Held the SOTA for \u27e83,3,3\u27e9 since 2003."
-    },
-    {
-      "format": [
-        3,
-        3,
-        3
-      ],
-      "field": "C",
-      "lb": 19,
-      "tight": false,
-      "source": "Bl\u00e4ser 2003",
-      "url": "https://www.sciencedirect.com/science/article/pii/S0885064X02000079",
-      "year": 2003,
-      "notes": "Same Bl\u00e4ser 2003 paper (J.Complexity 19, 43\u201360); bound holds over C."
+      "notes": "Bl\u00e4ser, M. 'On the complexity of the multiplication of matrices of small formats', J.Complexity 19, 43\u201360. Applies over R, C, Q. Best upper bound is 23 (Laderman 1976) \u2014 gap of 4 remains open. Held the SOTA for \u27e83,3,3\u27e9 since 2003. WIDENED from 'R'/'C' to 'all' (2026-06-26) and merged with the former separate C entry: per Wang 2026 (arXiv:2603.07280) \u00a71.1, Bl\u00e4ser's R(\u27e8n,m,n\u27e9) \u2265 2mn+2n\u2212m\u22122 (m\u2265n\u22653) holds over ARBITRARY fields, so \u27e83,3,3\u27e9 \u2265 19 is field-agnostic (incl. Z/Q/R/C/F2/F3). SUPERSEDED over F\u2082 by Wang 2026 (\u226520, Theorem 1) \u2014 see the separate F\u2082 entry; the 19 floor still stands over F\u2083 and characteristic 0."
     },
     {
       "format": [
@@ -128,7 +115,91 @@
       "source": "Wang 2026",
       "url": "https://arxiv.org/abs/2603.07280",
       "year": 2026,
-      "notes": "Wang, C. 'Automated Lower Bounds for Small Matrix Multiplication Complexity over Finite Fields', arXiv:2603.07280 (Mar 2026, latest revision May 2026). Strengthens Bl\u00e4ser's 19 specifically over F\u2082 using orbit classification + dynamic programming with verifiable proof certificates. UB still 23; gap of 3. The R/C/Q bound is unchanged at 19 \u2014 extending Wang's method to characteristic 0 is open."
+      "notes": "Wang, C. 'Automated Lower Bounds for Small Matrix Multiplication Complexity over Finite Fields', arXiv:2603.07280 (Mar 2026, latest revision May 2026). Theorem 1. Strengthens Bl\u00e4ser's 19 specifically over F\u2082 using orbit classification + dynamic programming with verifiable proof certificates. UB still 23; gap of 3. The R/C/Q bound is unchanged at 19 \u2014 extending Wang's method to characteristic 0 is open."
+    },
+    {
+      "format": [
+        2,
+        3,
+        4
+      ],
+      "field": "F2",
+      "lb": 19,
+      "tight": false,
+      "source": "Wang 2026",
+      "url": "https://arxiv.org/abs/2603.07280",
+      "year": 2026,
+      "notes": "Wang 2026 (arXiv:2603.07280), Theorem 2: R_{F\u2082}(\u27e82,3,4\u27e9) \u2265 19. Completes a proof that Hopcroft\u2013Kerr 1971 [9] stated but omitted. Previous F\u2082 LB was 18 (Bl\u00e4ser 1999 [2]). UB 20 (Hopcroft\u2013Kerr); gap of 1 \u2014 over F\u2082 the format is open in [19,20]. (Over characteristic 0 the format is tight at 20 \u2014 see the Smirnov 2013 char0 entry.)"
+    },
+    {
+      "format": [
+        3,
+        3,
+        4
+      ],
+      "field": "F2",
+      "lb": 25,
+      "tight": false,
+      "source": "Wang 2026",
+      "url": "https://arxiv.org/abs/2603.07280",
+      "year": 2026,
+      "notes": "Wang 2026 (arXiv:2603.07280), Theorem 3: R_{F\u2082}(\u27e83,3,4\u27e9) \u2265 25. Improves the previous F\u2082 LB of 24 (Bl\u00e4ser 2003 [3]). UB 29 (Smirnov 2013 [13]); gap of 4."
+    },
+    {
+      "format": [
+        3,
+        4,
+        4
+      ],
+      "field": "F2",
+      "lb": 29,
+      "tight": false,
+      "source": "Wang 2026",
+      "url": "https://arxiv.org/abs/2603.07280",
+      "year": 2026,
+      "notes": "Wang 2026 (arXiv:2603.07280), Theorem 4: R_{F\u2082}(\u27e83,4,4\u27e9) \u2265 29. Improves the previous F\u2082 LB of 28 (Bl\u00e4ser 1999 [2]). UB 38 (Smirnov 2013 [13]); gap of 9."
+    },
+    {
+      "format": [
+        2,
+        2,
+        2
+      ],
+      "field": "F3",
+      "lb": 7,
+      "tight": true,
+      "source": "Bl\u00e4ser 1999",
+      "url": "https://doi.org/10.1007/s000370050007",
+      "year": 1999,
+      "notes": "Bl\u00e4ser, M. 'Lower bounds for the multiplicative complexity of matrix multiplication', computational complexity 8(3):203\u2013226, 1999 (ref [2] in Wang 2026). R_{F\u2083}(\u27e82,2,2\u27e9) \u2265 7; tight (Strassen UB 7). Reproduced over F\u2083 by Wang 2026's automated framework \u2014 attribution_for_rank: Bl\u00e4ser 1999, NOT Wang (a re-derivation, not a discovery)."
+    },
+    {
+      "format": [
+        2,
+        2,
+        3
+      ],
+      "field": "F3",
+      "lb": 10,
+      "tight": false,
+      "source": "Bl\u00e4ser 1999",
+      "url": "https://doi.org/10.1007/s000370050007",
+      "year": 1999,
+      "notes": "Bl\u00e4ser 1999 (computational complexity 8(3), ref [2] in Wang 2026): R_{F\u2083}(\u27e82,2,3\u27e9) \u2265 10. Reproduced over F\u2083 by Wang 2026's automated framework \u2014 attribution_for_rank: Bl\u00e4ser 1999, not Wang. (Over F\u2082 the same format is tight at 11.)"
+    },
+    {
+      "format": [
+        2,
+        3,
+        3
+      ],
+      "field": "F3",
+      "lb": 14,
+      "tight": false,
+      "source": "Bl\u00e4ser 1999",
+      "url": "https://doi.org/10.1007/s000370050007",
+      "year": 1999,
+      "notes": "Bl\u00e4ser 1999 (computational complexity 8(3), ref [2] in Wang 2026): R_{F\u2083}(\u27e82,3,3\u27e9) \u2265 14. Reproduced over F\u2083 by Wang 2026's automated framework \u2014 attribution_for_rank: Bl\u00e4ser 1999, not Wang. (Over F\u2082 / char 0 the same format is tight at 15.)"
     },
     {
       "format": [
@@ -163,11 +234,12 @@
         5
       ],
       "field": "all",
-      "lb": 48,
+      "lb": 53,
       "tight": false,
-      "source": "Bl\u00e4ser (via Landsberg 2008)",
-      "year": 2008,
-      "notes": "R(\u27e85,5,5\u27e9) \u2265 \u2308(5/2)\u00b75\u00b2 \u2212 3\u00b75\u2309 = 48. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+      "source": "Bl\u00e4ser 2003",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0885064X02000079",
+      "year": 2003,
+      "notes": "R(\u27e85,5,5\u27e9) \u2265 2\u00b75\u00b75 + 2\u00b75 \u2212 5 \u2212 2 = 53, via Bl\u00e4ser's R(\u27e8n,m,n\u27e9) \u2265 2mn+2n\u2212m\u22122 (m\u2265n\u22653) over ARBITRARY fields (Bl\u00e4ser 2003, J.Complexity 19, 43\u201360 = ref [3] in Wang 2026 \u00a71.1; the same formula yields \u27e83,3,3\u27e9\u226519). STRENGTHENED 2026-06-26 from the weaker 48 = \u2308(5/2)\u00b75\u00b2\u22123\u00b75\u2309 (Bl\u00e4ser via Landsberg 2008, Bull.AMS 45(2):247\u2013284, Thm 3.8.4); for n\u22647 the 2n\u00b2+n\u22122 formula dominates 5/2\u00b7n\u00b2\u22123n, for n\u22658 vice-versa. Not tight: UB 93 (AlphaEvolve 2025)."
     },
     {
       "format": [
@@ -176,11 +248,12 @@
         6
       ],
       "field": "all",
-      "lb": 72,
+      "lb": 76,
       "tight": false,
-      "source": "Bl\u00e4ser (via Landsberg 2008)",
-      "year": 2008,
-      "notes": "R(\u27e86,6,6\u27e9) \u2265 \u2308(5/2)\u00b76\u00b2 \u2212 3\u00b76\u2309 = 72. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+      "source": "Bl\u00e4ser 2003",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0885064X02000079",
+      "year": 2003,
+      "notes": "R(\u27e86,6,6\u27e9) \u2265 2\u00b76\u00b76 + 2\u00b76 \u2212 6 \u2212 2 = 76, via Bl\u00e4ser's R(\u27e8n,m,n\u27e9) \u2265 2mn+2n\u2212m\u22122 (m\u2265n\u22653) over ARBITRARY fields (Bl\u00e4ser 2003, J.Complexity 19, 43\u201360 = ref [3] in Wang 2026 \u00a71.1). STRENGTHENED 2026-06-26 from the weaker 72 = \u2308(5/2)\u00b76\u00b2\u22123\u00b76\u2309 (Bl\u00e4ser via Landsberg 2008, Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: UBs are ~m^2.37 vs \u0398(m\u00b2)."
     },
     {
       "format": [
@@ -189,11 +262,12 @@
         7
       ],
       "field": "all",
-      "lb": 102,
+      "lb": 103,
       "tight": false,
-      "source": "Bl\u00e4ser (via Landsberg 2008)",
-      "year": 2008,
-      "notes": "R(\u27e87,7,7\u27e9) \u2265 \u2308(5/2)\u00b77\u00b2 \u2212 3\u00b77\u2309 = 102. Generic LB attributed to M. Bl\u00e4ser in Landsberg 2008 (Bull.AMS 45(2):247\u2013284, Thm 3.8.4). Not tight: known UBs are ~m^2.37 vs \u0398(m\u00b2) lower bound."
+      "source": "Bl\u00e4ser 2003",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0885064X02000079",
+      "year": 2003,
+      "notes": "R(\u27e87,7,7\u27e9) \u2265 2\u00b77\u00b77 + 2\u00b77 \u2212 7 \u2212 2 = 103, via Bl\u00e4ser's R(\u27e8n,m,n\u27e9) \u2265 2mn+2n\u2212m\u22122 (m\u2265n\u22653) over ARBITRARY fields (Bl\u00e4ser 2003, J.Complexity 19, 43\u201360 = ref [3] in Wang 2026 \u00a71.1). STRENGTHENED 2026-06-26 from the weaker 102 = \u2308(5/2)\u00b77\u00b2\u22123\u00b77\u2309 (Bl\u00e4ser via Landsberg 2008, Bull.AMS 45(2):247\u2013284, Thm 3.8.4); 103 is the last n where 2n\u00b2+n\u22122 beats 5/2\u00b7n\u00b2\u22123n (n\u22658 reverts). Not tight: UBs are ~m^2.37 vs \u0398(m\u00b2)."
     },
     {
       "format": [
@@ -318,13 +392,13 @@
         2,
         2
       ],
-      "field": "all",
+      "field": "C",
       "kind": "border",
       "lb": 7,
       "tight": true,
       "source": "Landsberg 2006",
       "year": 2006,
-      "notes": "R\u0303(\u27e82,2,2\u27e9) = 7 (border rank). Closed a 23-year open question \u2014 Bini 1980 introduced border rank, Strassen 1983 proved R\u0303 \u2265 6, but whether the border-rank could improve on the tensor rank of 7 was open until Landsberg 2006 settled R\u0303 = 7 exactly. Implication: no \u03b5-aggregation trick can multiply 2\u00d72 matrices with fewer than 7 bilinear multiplications."
+      "notes": "R\u0303(\u27e82,2,2\u27e9) = 7 (border rank). Closed a 23-year open question \u2014 Bini 1980 introduced border rank, Strassen 1983 proved R\u0303 \u2265 6, but whether the border-rank could improve on the tensor rank of 7 was open until Landsberg 2006 settled R\u0303 = 7 exactly. Implication: no \u03b5-aggregation trick can multiply 2\u00d72 matrices with fewer than 7 bilinear multiplications. NARROWED from 'all' (2026-06-26): border rank was settled over C (algebraically closed, characteristic 0) by Landsberg's geometric argument \u2014 it is not a characteristic-free result, so 'all' was unjustified."
     }
   ]
 }

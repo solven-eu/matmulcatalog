@@ -1,0 +1,112 @@
+{
+  "lineage_str": "RecombinationTa(base=naive-1x2x2, allocA=[26], allocB=[3, 26], allocC=[3, 26], leaves=[OrientAs(SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CAB\"), allocA=[1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), SumInner(SumInner(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), SumInner(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])))), ⟨3,3,26⟩), DIS09Lemma4(n=26)])",
+  "lineage_compact": "Rta[naive-1x2x2; 26 | 3,26 | 3,26]",
+  "lineage": {
+    "op": "RecombinationTa",
+    "base": {"op": "Atom", "ref": "naive-1x2x2"},
+    "allocA": [26],
+    "allocB": [3, 26],
+    "allocC": [3, 26],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 3,
+        "p": 26,
+        "axisMap": "pnm",
+        "child": {
+          "op": "SumInner",
+          "left": {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->CAB",
+              "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+            },
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          "right": {
+            "op": "SumInner",
+            "left": {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              },
+              "right": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              }
+            },
+            "right": {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              },
+              "right": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              }
+            }
+          }
+        }
+      },
+      {"op": "Atom", "ref": "DIS09Lemma4(n=26)"}
+    ]
+  },
+  "n": [26, 29, 29],
+  "m": 11693,
+  "hash": "5f635b9bfa34a9fb61d7da02d386c0acb46a4c73cbccf7793105b7ce3189f1db",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

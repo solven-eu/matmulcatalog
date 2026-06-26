@@ -63,6 +63,10 @@ public class GenerateCatalogManifest {
 	private static final int HUMAN_MAX_DIM = 12;
 	public static void main(String[] args) throws IOException {
 		List<ObjectNode> schemeNodes = new ArrayList<>();
+		// Tally, across every scheme's lineage, how many times each base is USED as a
+		// building block (by recombination / projection / kronecker / …). Stamped onto
+		// each entry as `used_as_base` in a post-pass once all entries exist.
+		eu.solven.matmul.catalog.BaseUsageStats baseUsage = new eu.solven.matmul.catalog.BaseUsageStats();
 		// Every corrupted basename, captured BEFORE shape-dedup (so same-shape
 		// siblings the dedup drops are still excluded by FieldAwareLookup's gating).
 		java.util.Set<String> corruptedFiles = new java.util.TreeSet<>();
@@ -472,6 +476,48 @@ public class GenerateCatalogManifest {
 			// single expansion as buds), with an inline fallback for small schemes
 			// not yet stamped. R−μ is the rank one index down; high μ ⇒ strong
 			// downward (projection) parent even at higher rank.
+			// Pan-TA highlight (user 2026-06-26): when this scheme's lineage root is a
+			// naïve-grid recombination, surface WHERE Pan trilinear aggregation saved
+			// multiplications, so the final rank is explainable (rank = unpaired leaves +
+			// fused-pair cost; TA bought `saving`). TA is a saving WITHIN the recombination's
+			// multiplications — not a separate strategy — so it is highlighted on the node,
+			// recomputed from base+allocs exactly as build/replay does. Structured for the
+			// SPA + a one-line summary for displays/logs.
+			try {
+				java.util.Optional<eu.solven.matmul.catalog.Lineage.Node> taLn = SchemeIO.readLineage(root);
+					taLn.ifPresent(baseUsage::accumulate);   // base-usage stats by op
+				if (taLn.isPresent()
+						&& taLn.get() instanceof eu.solven.matmul.catalog.Lineage.RecombinationTaN taNode) {
+					eu.solven.matmul.catalog.TaFusionExplainer
+							.describe(taNode, (a, b, c) -> lazyLookup().findRank(a, b, c))
+							.filter(eu.solven.matmul.recombination.Recombination.TaFusionBreakdown::hasFusion)
+							.ifPresent(bd -> {
+								ObjectNode ta = mapper.createObjectNode();
+								ta.put("pairs", bd.fusedPairs().size());
+								ta.put("saving", bd.taSaving());
+								ta.put("fused_cost", bd.fusedCost());
+								ta.put("unpaired_leaf_sum", bd.unpairedLeafSum());
+								ArrayNode fused = mapper.createArrayNode();
+								for (var fp : bd.fusedPairs()) {
+									ObjectNode pr = mapper.createObjectNode();
+									ArrayNode shape = mapper.createArrayNode();
+									shape.add(fp.shapeA()[0]);
+									shape.add(fp.shapeA()[1]);
+									shape.add(fp.shapeA()[2]);
+									pr.set("shape", shape);
+									pr.put("fused_cost", fp.fusedCost());
+									pr.put("naive_rank", fp.naiveRank());
+									pr.put("saving", fp.saving());
+									fused.add(pr);
+								}
+								ta.set("fused", fused);
+								ta.put("summary", bd.summary());
+								entry.set("ta_fusion", ta);
+							});
+				}
+			} catch (Exception ignored) {
+				// best-effort highlight: never block manifest generation
+			}
 			if (root.has("projection_margin")) {
 				entry.put("projection_margin", root.get("projection_margin").asInt());
 			} else if (realAlg != null && maxDim <= HUMAN_MAX_DIM) {
@@ -633,6 +679,11 @@ public class GenerateCatalogManifest {
 		// "best" building block, not hidden behind the rank-minimal one.
 		int paretoBest = markRankBudPareto(schemeNodes);
 		log.info(String.format("registered %d (rank,buds) Pareto-best entries%n", paretoBest));
+
+			// Stamp per-base usage: how many times each scheme is USED as a building block
+			// (by recombination / projection / kronecker / …) across the whole catalog.
+			int usedBases = stampBaseUsage(schemeNodes, baseUsage, mapper);
+			log.info(String.format("stamped used_as_base on %d entries%n", usedBases));
 
 		ObjectNode root = mapper.createObjectNode();
 		// Intentionally no "generated" timestamp — it triggers merge conflicts
@@ -844,6 +895,76 @@ public class GenerateCatalogManifest {
 	 * (rank ↓, bud-richness ↑) axes. Returns the count of frontier entries.
 	 * See {@link BudParetoSelection}.
 	 */
+	/** The 7-char content hash a scheme filename ends with ({@code …-1a2b3c4.json}). */
+	private static final Pattern FILE_HASH7 = Pattern.compile("-([0-9a-f]{7})\\.json$");
+
+	/**
+	 * Stamp each entry with {@code used_as_base}: how many OTHER schemes use it as a
+	 * building block, by op ({@code by_recombination} / {@code by_projection} /
+	 * {@code by_kronecker} / …) plus a {@code total}. Hash-pinned references attribute to
+	 * the exact scheme ({@code shape@hash7}); bare-shape references attribute to the
+	 * rank-best entry of that shape (what a bare ref resolves to at build time). Returns
+	 * the number of entries that received a non-empty stamp.
+	 */
+	private static int stampBaseUsage(List<ObjectNode> entries,
+			eu.solven.matmul.catalog.BaseUsageStats usage, JsonMapper mapper) {
+		// Rank-best entry per shape — the target a bare-shape reference resolves to.
+		Map<String, ObjectNode> bestByShape = new java.util.LinkedHashMap<>();
+		for (ObjectNode e : entries) {
+			String shape = shapeOf(e);
+			ObjectNode cur = bestByShape.get(shape);
+			if (cur == null || e.get("rank").asLong() < cur.get("rank").asLong()) {
+				bestByShape.put(shape, e);
+			}
+		}
+		int stamped = 0;
+		for (ObjectNode e : entries) {
+			String shape = shapeOf(e);
+			String hash7 = hash7Of(e);
+			Map<String, Integer> merged = new java.util.LinkedHashMap<>();
+			if (hash7 != null) {
+				mergeCounts(merged, usage.forKey(shape + "@" + hash7));
+			}
+			if (bestByShape.get(shape) == e) {
+				mergeCounts(merged, usage.forKey(shape));
+			}
+			if (merged.isEmpty()) {
+				continue;
+			}
+			ObjectNode node = mapper.createObjectNode();
+			int total = 0;
+			for (Map.Entry<String, Integer> en : merged.entrySet()) {
+				node.put("by_" + en.getKey(), en.getValue());
+				total += en.getValue();
+			}
+			node.put("total", total);
+			e.set("used_as_base", node);
+			stamped++;
+		}
+		return stamped;
+	}
+
+	private static void mergeCounts(Map<String, Integer> into, Map<String, Integer> from) {
+		for (Map.Entry<String, Integer> en : from.entrySet()) {
+			into.merge(en.getKey(), en.getValue(), Integer::sum);
+		}
+	}
+
+	private static String shapeOf(ObjectNode e) {
+		ArrayNode f = (ArrayNode) e.get("format");
+		return f.get(0).asInt() + "x" + f.get(1).asInt() + "x" + f.get(2).asInt();
+	}
+
+	/** The 7-char content hash from the entry's file name, or {@code null}. */
+	private static String hash7Of(ObjectNode e) {
+		JsonNode fileNode = e.get("file");
+		if (fileNode == null || !fileNode.isString()) {
+			return null;
+		}
+		Matcher m = FILE_HASH7.matcher(fileNode.asString());
+		return m.find() ? m.group(1) : null;
+	}
+
 	private static int markRankBudPareto(List<ObjectNode> entries) {
 		Map<String, List<ObjectNode>> groups = new java.util.LinkedHashMap<>();
 		for (ObjectNode e : entries) {

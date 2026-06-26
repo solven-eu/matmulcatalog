@@ -18,7 +18,7 @@ import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.search.CitedBound;
-import eu.solven.matmul.search.PoolConfig;
+import eu.solven.matmul.search.RecombinationPoolConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -74,7 +74,7 @@ public class MapBehindBand {
 
 		FieldAwareLookup lookup = new FieldAwareLookup(Field.Q);
 		CitedBound sota = new CitedBound(lookup);
-		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(PoolConfig.includeDerived());
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.buildPool(RecombinationPoolConfig.includeDerived());
 		log.info("pool={} (includeDerived, unbalanced)", pool.size());
 
 		AtomicInteger done = new AtomicInteger();
@@ -88,8 +88,8 @@ public class MapBehindBand {
 		for (Behind b : behind) {
 			futs.add(exec.submit(() -> {
 				Optional<BlockSplitSearch.NonCubicStrategy> best2 = BlockSplitSearch.findBestStrategy(
-						b.n, b.m, b.p, pool, sota, false, PoolConfig.UNBOUNDED_IMBALANCE,
-						PoolConfig.UNBOUNDED_COMBINATIONS, 0, Long.MAX_VALUE);
+						b.n, b.m, b.p, pool, sota, false, RecombinationPoolConfig.UNBOUNDED_IMBALANCE,
+						RecombinationPoolConfig.UNBOUNDED_COMBINATIONS, 0, Long.MAX_VALUE);
 				long pred = best2.map(BlockSplitSearch.NonCubicStrategy::rank).orElse(-1L);
 				if (pred > 0 && pred <= b.ext) {
 					closeable.incrementAndGet();

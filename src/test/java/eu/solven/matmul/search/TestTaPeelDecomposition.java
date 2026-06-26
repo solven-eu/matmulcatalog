@@ -59,7 +59,7 @@ public class TestTaPeelDecomposition {
 		// not just the un-paired 11841 / concat 11839 the optimizer alone reports.
 		Optional<BlockSplitSearch.NonCubicStrategy> picked = BlockSplitSearch.findBestStrategy(
 				26, 29, 29, peelPool, sota, false,
-				PoolConfig.UNBOUNDED_IMBALANCE, Integer.MAX_VALUE, 0, Long.MAX_VALUE);
+				RecombinationPoolConfig.UNBOUNDED_IMBALANCE, Integer.MAX_VALUE, 0, Long.MAX_VALUE);
 		assertThat(picked).as("a ⟨1,2,2⟩-peel recombination strategy must be found").isPresent();
 		assertThat(picked.get().rank())
 				.as("⟨26,29,29⟩ via ⟨1,2,2⟩ must be priced ≤ 11693 (TA cross-fusion), got %s",
