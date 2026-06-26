@@ -205,6 +205,21 @@ public final class SchemeSweep {
 	 */
 	private static volatile boolean MATERIALIZE_BUILDABLE_REQUIRED = true;
 
+	/** {@code --expect=NxMxP:rank[,…]} — regression-check expectations. After the sweep,
+	 *  each shape's freshly-rebuilt {@link FieldAwareLookup#findRank} must be ≤ its
+	 *  expected rank, else the run fails loud (REGRESS). The honest "did new code find the
+	 *  previous rank again?" gate the user asked for. Empty = no check. NB: findRank is
+	 *  NON-COMMUTATIVE, so a previous rank that relied on a commutative leaf will (rightly)
+	 *  REGRESS here — that is information, not a false alarm. */
+	private static volatile Map<String, Integer> EXPECTATIONS = Map.of();
+
+	/** {@code --recursive-derive} — OPT-IN to recursively materialise (optimize) leaf
+	 *  sub-schemes during a build. DEFAULT off: leaves are LOADED from disk as-is (a sweep
+	 *  is not implicitly recursive). Populate the catalog by re-deriving whole bands
+	 *  bottom-up instead. Turn this on only when introducing a NEW base whose sub-products
+	 *  are not on disk yet. See {@link RecursiveMaterialiser#setRecursiveDerive}. */
+	private static volatile boolean MATERIALIZE_RECURSIVE_DERIVE = false;
+
 	/** Dependency order for closure: smallest max-axis first, so larger-shape
 	 *  splits can reuse discoveries at smaller shapes in the same round. */
 	private static final java.util.Comparator<Shape> BY_MAX_AXIS_ASC =
@@ -591,7 +606,7 @@ public final class SchemeSweep {
 					: new CitedBound(lookup);                // --buildable=optional: incl. non-explicit bounds
 			RecursiveMaterialiser m = new RecursiveMaterialiser(
 					lookup, pool, sota, spec.schemesRoot, true, composeBalancedOnly,
-					MATERIALIZE_IMPROVE, MATERIALIZE_DERIVE_BEST);
+					MATERIALIZE_IMPROVE, MATERIALIZE_DERIVE_BEST, MATERIALIZE_RECURSIVE_DERIVE);
 			m.registerDerivedAnyway(MATERIALIZE_DERIVE_ALL);
 			m.setStrategies(spec.strategies);
 			m.setAllowCommutative(spec.allowCommutative());
@@ -654,12 +669,48 @@ public final class SchemeSweep {
 		System.out.printf("Summary: %d wins, %d ties, %d skipped (direct), %d no-improvement, %d errors%n",
 				results.get(0), results.get(1), results.get(2), results.get(3), results.get(6));
 
-		if (!failures.isEmpty()) {
+		if (!EXPECTATIONS.isEmpty()) {
+				FieldAwareLookup fresh = new FieldAwareLookup(spec.field == null ? "Q" : spec.field);
+				System.out.println("-".repeat(60));
+				System.out.printf("%-12s  %-8s  %-8s  %s%n", "shape", "expect", "found", "regress-check");
+				for (Map.Entry<String, Integer> ex : EXPECTATIONS.entrySet()) {
+					int[] f = parseShapeStr(ex.getKey());
+					int got = fresh.findRank(f[0], f[1], f[2]);
+					boolean ok = got >= 0 && got <= ex.getValue();
+					System.out.printf("%-12s  %-8d  %-8d  %s%n", ex.getKey(), ex.getValue(), got,
+							ok ? "PASS" : "REGRESS (+" + (got - ex.getValue()) + ")");
+					if (!ok) {
+						failures.add(new IllegalStateException(
+								"--expect " + ex.getKey() + " <= " + ex.getValue() + " but found " + got));
+					}
+				}
+			}
+
+			if (!failures.isEmpty()) {
 			throw new IllegalStateException(failures.size()
 					+ " shape(s) failed during materialize (see ERROR logs above) — failing loud "
 					+ "AFTER completing the full sweep so all divergences surface in one run",
 					failures.get(0));
 		}
+	}
+
+	/** Parse {@code "NxMxP:rank,NxMxP:rank,…"} into a shape→expected-rank map (for --expect). */
+	private static Map<String, Integer> parseExpectations(String spec) {
+		Map<String, Integer> out = new java.util.LinkedHashMap<>();
+		for (String tok : spec.split(",")) {
+			if (tok.isBlank()) continue;
+			String[] kv = tok.split(":");
+			if (kv.length != 2) {
+				throw new IllegalArgumentException("--expect token must be NxMxP:rank, got '" + tok + "'");
+			}
+			out.put(kv[0].trim(), Integer.parseInt(kv[1].trim()));
+		}
+		return out;
+	}
+
+	private static int[] parseShapeStr(String s) {
+		String[] t = s.split("x");
+		return new int[] { Integer.parseInt(t[0]), Integer.parseInt(t[1]), Integer.parseInt(t[2]) };
 	}
 
 	private static void materializeOne(RecursiveMaterialiser mat, FieldAwareLookup lookup,
@@ -929,7 +980,8 @@ public final class SchemeSweep {
 		// for recombination wins). It writes each improvement to disk itself.
 		RecursiveClosureSota sota = new RecursiveClosureSota(lookup, pool, true, true);
 		RecursiveMaterialiser mat = new RecursiveMaterialiser(
-				lookup, pool, sota, spec.schemesRoot, true, true, /* improveExisting */ true);
+				lookup, pool, sota, spec.schemesRoot, true, true,
+				/* improveExisting */ true, /* deriveBest */ false, MATERIALIZE_RECURSIVE_DERIVE);
 		mat.setStrategies(spec.strategies);
 		mat.setAllowCommutative(spec.allowCommutative());
 		List<Shape> orderedOverlay = new ArrayList<>(pendingOverlay.keySet());
@@ -967,7 +1019,8 @@ public final class SchemeSweep {
 		System.out.println("=== PHASE 3: downward projection closure (multipass) ===");
 		RecursiveClosureSota sota = new RecursiveClosureSota(lookup, pool, true, true);
 		RecursiveMaterialiser mat = new RecursiveMaterialiser(
-				lookup, pool, sota, spec.schemesRoot, true, true, /* improveExisting */ true);
+				lookup, pool, sota, spec.schemesRoot, true, true,
+				/* improveExisting */ true, /* deriveBest */ false, MATERIALIZE_RECURSIVE_DERIVE);
 		mat.setStrategies(spec.strategies);
 		mat.setAllowCommutative(spec.allowCommutative());
 		// Largest first: project a parent before the children that may project from it.
@@ -1118,6 +1171,9 @@ public final class SchemeSweep {
 				case "only-if-missing", "only_if_missing", "onlyifmissing" ->
 						MATERIALIZE_IMPROVE = !(value.isBlank() || Boolean.parseBoolean(value));
 				case "improve" -> MATERIALIZE_IMPROVE = value.isBlank() || Boolean.parseBoolean(value);
+				case "expect" -> EXPECTATIONS = parseExpectations(value);
+				case "recursive-derive", "recursivederive" ->
+						MATERIALIZE_RECURSIVE_DERIVE = value.isBlank() || Boolean.parseBoolean(value);
 				case "buildable" -> {
 					if (value.equalsIgnoreCase("required")) MATERIALIZE_BUILDABLE_REQUIRED = true;
 					else if (value.equalsIgnoreCase("optional")) MATERIALIZE_BUILDABLE_REQUIRED = false;

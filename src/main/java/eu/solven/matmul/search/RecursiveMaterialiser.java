@@ -65,6 +65,15 @@ public final class RecursiveMaterialiser {
 	 *  replace it if a Verifier-passing composition is STRICTLY better. Off by
 	 *  default (fill-only — the historic behaviour). */
 	private final boolean improveExisting;
+	/** Leaf resolution mode (user 2026-06-26). DEFAULT {@code false} = LOAD: a sub-scheme
+	 *  (recombination/Kron/concat leaf) is resolved from the DISK catalog as-is, NEVER
+	 *  re-derived — so a sweep is NOT implicitly recursive. The catalog is populated by
+	 *  re-deriving whole BANDS bottom-up (smallest max-axis first), so a leaf is already
+	 *  on disk by the time a larger shape needs it. {@code true} = OPTIMIZE: leaves are
+	 *  recursively materialised (the old implicit behaviour) — an EXPLICIT opt-in, intended
+	 *  for introducing a NEW base whose sub-products aren't on disk yet. A constructor
+	 *  parameter (immutable per instance); {@code SchemeSweep --recursive-derive} sets it. */
+	private final boolean recursiveDerive;
 	/** Derive-best mode: ALWAYS materialise the best DERIVED scheme per shape and
 	 *  persist it when it ties-or-beats the catalog incumbent — even if a hand-crafted
 	 *  / imported direct entry already exists at the same rank. The derived (replayable)
@@ -122,6 +131,34 @@ public final class RecursiveMaterialiser {
 	/** Opt-in bound on the per-base allocation Cartesian product (default unbounded). */
 	public void setMaxCombinations(int v) {
 		this.maxCombinations = v;
+	}
+
+	/** Disk-only leaf resolution: the best on-disk scheme for ⟨n,m,p⟩ wrapped as a
+	 *  {@link Result} (fromDisk), or empty if absent — NO search, NO recursion. This is the
+	 *  default leaf resolver (LOAD mode); the catalog is filled by re-deriving bands
+	 *  bottom-up so the leaf is already present. Mirrors the direct-hit branch of
+	 *  {@link #materialise} without the compose fall-through. */
+	private Optional<Result> diskBest(int n, int m, int p) {
+		if (n == 1 || m == 1 || p == 1) {
+			return Optional.of(trivialOneAxis(n, m, p));
+		}
+		Optional<FieldAwareLookup.WithSource> disk = diskLookup.findWithSource(n, m, p);
+		if (disk.isEmpty()) {
+			return Optional.empty();
+		}
+		Lineage.Node leaf;
+		try {
+			Optional<Lineage.Node> deep = SchemeIO.readLineage(disk.get().path().toFile());
+			leaf = deep.isPresent() ? deep.get()
+					: Lineage.atomFromFilename(disk.get().path().getFileName().toString());
+		} catch (java.io.IOException e) {
+			leaf = Lineage.atomFromFilename(disk.get().path().getFileName().toString());
+		}
+		int[] nat = shapeFromName(disk.get().path().getFileName().toString());
+		if (nat != null && (nat[0] != n || nat[1] != m || nat[2] != p)) {
+			leaf = Lineage.orientAs(leaf, nat[0], nat[1], nat[2], n, m, p);
+		}
+		return Optional.of(new Result(disk.get().alg(), leaf, true));
 	}
 
 	/** Whether the downward projection-closure phase should run for this config. */
@@ -184,6 +221,17 @@ public final class RecursiveMaterialiser {
 			Recombination.SotaResolver sota,
 			Path writeRoot, boolean writeNewSchemes, boolean balancedOnly,
 			boolean improveExisting, boolean deriveBest) {
+		this(diskLookup, pool, sota, writeRoot, writeNewSchemes, balancedOnly,
+				improveExisting, deriveBest, false);
+	}
+
+	/** Full constructor. {@code recursiveDerive} (last) selects LOAD (false, default) vs
+	 *  OPTIMIZE (true) leaf resolution — see {@link #recursiveDerive}. */
+	public RecursiveMaterialiser(FieldAwareLookup diskLookup,
+			List<BlockSplitSearch.NamedBase> pool,
+			Recombination.SotaResolver sota,
+			Path writeRoot, boolean writeNewSchemes, boolean balancedOnly,
+			boolean improveExisting, boolean deriveBest, boolean recursiveDerive) {
 		this.diskLookup = diskLookup;
 		this.pool = pool;
 		this.sota = sota;
@@ -192,6 +240,7 @@ public final class RecursiveMaterialiser {
 		this.balancedOnly = balancedOnly;
 		this.improveExisting = improveExisting;
 		this.deriveBest = deriveBest;
+		this.recursiveDerive = recursiveDerive;
 	}
 
 	/** When true (with {@link #deriveBest}), persist the best DERIVED scheme for a
@@ -1257,7 +1306,9 @@ public final class RecursiveMaterialiser {
 	 * atom, which replays to the same catalog best the matrices came from.
 	 */
 	private Optional<Result> resolveSubScheme(int n, int m, int p, int tn, int tm, int tp) {
-		Optional<Result> mat = materialise(n, m, p);
+		// LOAD by default (no implicit recursion): a leaf comes from the disk catalog as-is.
+		// OPTIMIZE (recursiveDerive) only when explicitly asked — e.g. introducing a new base.
+		Optional<Result> mat = recursiveDerive ? materialise(n, m, p) : diskBest(n, m, p);
 		// A composed sub-block whose own lineage is CORRUPT (dangling/cyclic) must NOT be
 		// handed to a parent: writeToDisk would refuse to persist it, yet the parent would
 		// pin it by a file that never lands → the parent itself dangles. Reject it here so
@@ -2002,7 +2053,8 @@ public final class RecursiveMaterialiser {
 		@Override
 		public Optional<NonCubicBilinearAlgorithm> find(int n, int m, int p) {
 			String key = canon(n, m, p);
-			Optional<Result> r = materialise(n, m, p);
+			// LOAD by default (no implicit recursion) — see resolveSubScheme / recursiveDerive.
+			Optional<Result> r = recursiveDerive ? materialise(n, m, p) : diskBest(n, m, p);
 			if (r.isEmpty()) return Optional.empty();
 			Lineage.Node leaf = r.get().lineage;
 			// CYCLE PREVENTION: materialise() can return a catalog-best block whose lineage carries

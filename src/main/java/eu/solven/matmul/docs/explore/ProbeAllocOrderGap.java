@@ -43,6 +43,13 @@ public class ProbeAllocOrderGap {
 			AllocationOptimizer.Result r = AllocationOptimizer.optimize(strassen, sota, N, M, P);
 			System.out.printf("  optimizer best: rank=%d allocC=%s (exhaustive=%s, nodes=%d)%n",
 					r.rank(), java.util.Arrays.toString(r.allocC()), r.exhaustive(), r.nodes());
+			System.out.println("  induced sub-shapes @ optimum (shape : findRank : naive n*m*p):");
+			for (int[] s : r.multiset()) {
+				int rk = lookup.findRank(s[0], s[1], s[2]);
+				int naive = s[0] * s[1] * s[2];
+				System.out.printf("    ⟨%d,%d,%d⟩ : %d%s%n", s[0], s[1], s[2], rk,
+						rk > naive ? "  (> naive " + naive + " — improvable!)" : "");
+			}
 		}
 	}
 
