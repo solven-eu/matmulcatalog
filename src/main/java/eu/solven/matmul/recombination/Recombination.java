@@ -1,5 +1,7 @@
 package eu.solven.matmul.recombination;
 
+import eu.solven.matmul.FactorMatrix;
+import eu.solven.matmul.SparseFactorMatrix;
 import eu.solven.matmul.catalog.KnownAlgorithmCatalog;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 
@@ -493,27 +495,97 @@ public final class Recombination {
 			throw new IllegalStateException("construct: empty composed algorithm");
 		}
 
-		double[][] U = new double[targetA * targetB][totalRank];
-		double[][] V = new double[targetB * targetC][totalRank];
-		double[][] W = new double[targetA * targetC][totalRank];
+		// SPARSE build (no dense [dim²][totalRank] result — the recombination-replay OOM
+		// source). Output column kStart[kBase]+kSub belongs to exactly ONE base product, so
+		// each result column is built independently by embedding sub column kSub across the
+		// base product's blocks (disjoint row-ranges ⇒ no cross-block collision).
+		FactorMatrix U = embedFactorSparse(base.u(), base.n, base.m, subs, subStarts, totalRank,
+				targetA * targetB, cumA, cumB, targetB, 0);
+		FactorMatrix V = embedFactorSparse(base.v(), base.m, base.p, subs, subStarts, totalRank,
+				targetB * targetC, cumB, cumC, targetC, 1);
+		FactorMatrix W = embedFactorSparse(base.w(), base.n, base.p, subs, subStarts, totalRank,
+				targetA * targetC, cumA, cumC, targetC, 2);
+		return NonCubicBilinearAlgorithm.fromFactors(targetA, targetB, targetC, U, V, W);
+	}
 
+	/** Sparse build of one recombined factor — the no-dense-round-trip replacement for
+	 *  {@link #embedFactor}. {@code factorSel}: 0=U(sub.n×sub.m), 1=V(sub.m×sub.p),
+	 *  2=W(sub.n×sub.p). For each base product, embeds each sub column across the base
+	 *  product's non-zero blocks, scaled by the base coefficient, into the global row
+	 *  {@code (rowOff+iSub)·targetCols + (colOff+jSub)} (block-padded entries skipped). */
+	private static FactorMatrix embedFactorSparse(FactorMatrix baseFactor, int baseRows, int baseCols,
+			NonCubicBilinearAlgorithm[] subs, int[] subStarts, int totalRank, int resultRows,
+			int[] cumRows, int[] cumCols, int targetCols, int factorSel) {
+		int baseR = baseFactor.cols();
+		int[][] baseRowsByCol = new int[baseR][];
+		double[][] baseValsByCol = new double[baseR][];
+		columnSnapshot(baseFactor, baseRowsByCol, baseValsByCol);
+
+		int[][] colRows = new int[totalRank][];
+		double[][] colVals = new double[totalRank][];
 		for (int kBase = 0; kBase < baseR; kBase++) {
-			if (subs[kBase] == null) continue;
 			NonCubicBilinearAlgorithm sub = subs[kBase];
+			if (sub == null) continue;
+			FactorMatrix subF = factorSel == 0 ? sub.u() : factorSel == 1 ? sub.v() : sub.w();
+			int subCols = factorSel == 0 ? sub.m : factorSel == 1 ? sub.p : sub.p;
+			int subR = subF.cols();
+			int[][] subRowsByCol = new int[subR][];
+			double[][] subValsByCol = new double[subR][];
+			columnSnapshot(subF, subRowsByCol, subValsByCol);
+
+			int[] bR = baseRowsByCol[kBase];
+			double[] bV = baseValsByCol[kBase];
 			int kStart = subStarts[kBase];
-
-			// U: base shape (base.n × base.m), sub shape (sub.n × sub.m), block placement uses (cumA, cumB).
-			embedFactor(U, base.denseU(), sub.denseU(), kBase, kStart,
-					base.n, base.m, sub.n, sub.m, cumA, cumB, targetB);
-			// V: base shape (base.m × base.p), sub shape (sub.m × sub.p), placement (cumB, cumC).
-			embedFactor(V, base.denseV(), sub.denseV(), kBase, kStart,
-					base.m, base.p, sub.m, sub.p, cumB, cumC, targetC);
-			// W: base shape (base.n × base.p), sub shape (sub.n × sub.p), placement (cumA, cumC).
-			embedFactor(W, base.denseW(), sub.denseW(), kBase, kStart,
-					base.n, base.p, sub.n, sub.p, cumA, cumC, targetC);
+			for (int kSub = 0; kSub < subR; kSub++) {
+				int[] sR = subRowsByCol[kSub];
+				double[] sV = subValsByCol[kSub];
+				java.util.LinkedHashMap<Integer, Double> acc = new java.util.LinkedHashMap<>();
+				for (int bi = 0; bi < bR.length; bi++) {
+					int aBase = bR[bi];
+					double c = bV[bi];
+					int iBase = aBase / baseCols, jBase = aBase % baseCols;
+					int rowOff = cumRows[iBase], colOff = cumCols[jBase];
+					int brs = cumRows[iBase + 1] - cumRows[iBase];
+					int bcs = cumCols[jBase + 1] - cumCols[jBase];
+					for (int si = 0; si < sR.length; si++) {
+						int aSub = sR[si];
+						int iSub = aSub / subCols, jSub = aSub % subCols;
+						if (iSub >= brs || jSub >= bcs) continue;   // padded zero — skip
+						int globRow = (rowOff + iSub) * targetCols + (colOff + jSub);
+						acc.merge(globRow, c * sV[si], Double::sum);
+					}
+				}
+				int[] rr = new int[acc.size()];
+				double[] vv = new double[acc.size()];
+				int w = 0;
+				for (java.util.Map.Entry<Integer, Double> e : acc.entrySet()) {
+					rr[w] = e.getKey();
+					vv[w] = e.getValue();
+					w++;
+				}
+				colRows[kStart + kSub] = rr;
+				colVals[kStart + kSub] = vv;
+			}
 		}
+		for (int k = 0; k < totalRank; k++) {
+			if (colRows[k] == null) { colRows[k] = new int[0]; colVals[k] = new double[0]; }
+		}
+		return SparseFactorMatrix.fromColumns(resultRows, colRows, colVals);
+	}
 
-		return new NonCubicBilinearAlgorithm(targetA, targetB, targetC, U, V, W);
+	/** Snapshot a factor's non-zeros into per-column (rows, vals) arrays. */
+	private static void columnSnapshot(FactorMatrix f, int[][] outRows, double[][] outVals) {
+		int cols = f.cols();
+		int[] cnt = new int[cols];
+		f.forEachNonZero((row, col, val) -> { if (val != 0.0) cnt[col]++; });
+		for (int c = 0; c < cols; c++) { outRows[c] = new int[cnt[c]]; outVals[c] = new double[cnt[c]]; }
+		int[] w = new int[cols];
+		f.forEachNonZero((row, col, val) -> {
+			if (val == 0.0) return;
+			int i = w[col]++;
+			outRows[col][i] = row;
+			outVals[col][i] = val;
+		});
 	}
 
 	private static int[] cumulative(int[] alloc) {

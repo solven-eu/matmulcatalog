@@ -166,50 +166,63 @@ public final class Compose {
 	public static NonCubicBilinearAlgorithm project(
 			NonCubicBilinearAlgorithm a, int[] keepN, int[] keepM, int[] keepP) {
 		int n2 = keepN.length, m2 = keepM.length, p2 = keepP.length;
-		double[][] srcU = a.denseU(), srcV = a.denseV(), srcW = a.denseW();
-		java.util.List<double[]> uc = new java.util.ArrayList<>();
-		java.util.List<double[]> vc = new java.util.ArrayList<>();
-		java.util.List<double[]> wc = new java.util.ArrayList<>();
+		// SPARSE project (no dense round-trip — the OOM source on big parents). Per product,
+		// restrict each factor's column to the kept rows/cols (decode row→(rowIdx,colIdx),
+		// keep iff both survive, re-encode); DCE the product if ANY of U/V/W restricts to
+		// empty. invN/invM/invP map an old axis index to its new position (or -1 if dropped).
+		int[] invN = invMap(keepN, a.n), invM = invMap(keepM, a.m), invP = invMap(keepP, a.p);
+		java.util.List<int[]> uR = new java.util.ArrayList<>(), vR = new java.util.ArrayList<>(),
+				wR = new java.util.ArrayList<>();
+		java.util.List<double[]> uV = new java.util.ArrayList<>(), vV = new java.util.ArrayList<>(),
+				wVl = new java.util.ArrayList<>();
 		for (int l = 0; l < a.r; l++) {
-			double[] u = new double[n2 * m2];
-			boolean unz = false;
-			for (int i = 0; i < n2; i++)
-				for (int j = 0; j < m2; j++) {
-					double v = srcU[keepN[i] * a.m + keepM[j]][l];
-					u[i * m2 + j] = v;
-					if (v != 0) unz = true;
-				}
-			if (!unz) continue;
-			double[] vv = new double[m2 * p2];
-			boolean vnz = false;
-			for (int j = 0; j < m2; j++)
-				for (int k = 0; k < p2; k++) {
-					double v = srcV[keepM[j] * a.p + keepP[k]][l];
-					vv[j * p2 + k] = v;
-					if (v != 0) vnz = true;
-				}
-			if (!vnz) continue;
-			double[] ww = new double[n2 * p2];
-			boolean wnz = false;
-			for (int i = 0; i < n2; i++)
-				for (int k = 0; k < p2; k++) {
-					double v = srcW[keepN[i] * a.p + keepP[k]][l];
-					ww[i * p2 + k] = v;
-					if (v != 0) wnz = true;
-				}
-			if (!wnz) continue;
-			uc.add(u);
-			vc.add(vv);
-			wc.add(ww);
+			SCol u = restrictColumn(a.u(), l, a.m, invN, invM, m2);   // U row = i·m + j
+			if (u == null) continue;
+			SCol v = restrictColumn(a.v(), l, a.p, invM, invP, p2);   // V row = j·p + k
+			if (v == null) continue;
+			SCol w = restrictColumn(a.w(), l, a.p, invN, invP, p2);   // W row = i·p + k
+			if (w == null) continue;
+			uR.add(u.rows()); uV.add(u.vals());
+			vR.add(v.rows()); vV.add(v.vals());
+			wR.add(w.rows()); wVl.add(w.vals());
 		}
-		int r = uc.size();
-		double[][] U = new double[n2 * m2][r], V = new double[m2 * p2][r], W = new double[n2 * p2][r];
-		for (int c = 0; c < r; c++) {
-			for (int row = 0; row < n2 * m2; row++) U[row][c] = uc.get(c)[row];
-			for (int row = 0; row < m2 * p2; row++) V[row][c] = vc.get(c)[row];
-			for (int row = 0; row < n2 * p2; row++) W[row][c] = wc.get(c)[row];
-		}
-		return new NonCubicBilinearAlgorithm(n2, m2, p2, U, V, W);
+		return NonCubicBilinearAlgorithm.fromFactors(n2, m2, p2,
+				SparseFactorMatrix.fromColumns(n2 * m2, uR.toArray(int[][]::new), uV.toArray(double[][]::new)),
+				SparseFactorMatrix.fromColumns(m2 * p2, vR.toArray(int[][]::new), vV.toArray(double[][]::new)),
+				SparseFactorMatrix.fromColumns(n2 * p2, wR.toArray(int[][]::new), wVl.toArray(double[][]::new)));
+	}
+
+	/** A restricted sparse column, or {@code null} when empty (→ the product is DCE'd). */
+	private record SCol(int[] rows, double[] vals) {}
+
+	/** {@code invMap[oldIdx]} = position of {@code oldIdx} in {@code keep}, or {@code -1}. */
+	private static int[] invMap(int[] keep, int dim) {
+		int[] inv = new int[dim];
+		java.util.Arrays.fill(inv, -1);
+		for (int i = 0; i < keep.length; i++) inv[keep[i]] = i;
+		return inv;
+	}
+
+	/** Restrict factor column {@code col} to kept rows: a source row decodes as
+	 *  {@code (rowIdx, colIdx) = (row/oldCols, row%oldCols)}, survives iff both
+	 *  {@code invRow[rowIdx]>=0 && invCol[colIdx]>=0}, and re-encodes as
+	 *  {@code invRow[rowIdx]·newCols + invCol[colIdx]}. {@code null} if nothing survives. */
+	private static SCol restrictColumn(FactorMatrix f, int col, int oldCols,
+			int[] invRow, int[] invCol, int newCols) {
+		java.util.ArrayList<Integer> rows = new java.util.ArrayList<>();
+		java.util.ArrayList<Double> vals = new java.util.ArrayList<>();
+		f.forEachInColumn(col, (row, val) -> {
+			if (val == 0.0) return;
+			int nri = invRow[row / oldCols], nci = invCol[row % oldCols];
+			if (nri < 0 || nci < 0) return;
+			rows.add(nri * newCols + nci);
+			vals.add(val);
+		});
+		if (rows.isEmpty()) return null;
+		int[] r = new int[rows.size()];
+		double[] v = new double[vals.size()];
+		for (int i = 0; i < r.length; i++) { r[i] = rows.get(i); v[i] = vals.get(i); }
+		return new SCol(r, v);
 	}
 
 	/** Convenience: keep-set = all indices except {@code drop}. */
@@ -247,55 +260,46 @@ public final class Compose {
 		}
 		int n = left.n, m = left.m, p = left.p + right.p;
 		int r1 = left.r, r2 = right.r, r = r1 + r2;
+		final int p1 = left.p, p2 = right.p, fp = p;
 
-		double[][] leftU = left.denseU(), leftV = left.denseV(), leftW = left.denseW();
-		double[][] rightU = right.denseU(), rightV = right.denseV(), rightW = right.denseW();
-
-		double[][] U = new double[n * m][r];
-		double[][] V = new double[m * p][r];
-		double[][] W = new double[n * p][r];
-
-		// U is over A (n×m) — same shape for both halves. Left products
-		// (k ∈ [0, r1)) use left.U[ab][k]; right (k ∈ [r1, r)) use right.U[ab][k-r1].
-		for (int ab = 0; ab < n * m; ab++) {
-			System.arraycopy(leftU[ab], 0, U[ab], 0, r1);
-			System.arraycopy(rightU[ab], 0, U[ab], r1, r2);
+		// SPARSE build (no dense round-trip). Stack the two operands' columns; reindex rows.
+		// U (n×m) is shape-identical for both halves → rows unchanged. V (m×p) / W (n×p) keep
+		// their first axis and shift the p-block: a source row decodes as (q,l)=(row/pSrc,
+		// row%pSrc) and re-encodes as q·p + (off + l), off = 0 (left) | p1 (right).
+		int[][] uCols = new int[r][], vCols = new int[r][], wCols = new int[r][];
+		double[][] uVals = new double[r][], vVals = new double[r][], wVals = new double[r][];
+		for (int k = 0; k < r1; k++) {
+			copyColumn(left.u(), k, uCols, uVals, k, row -> row);
+			copyColumn(left.v(), k, vCols, vVals, k, row -> (row / p1) * fp + (row % p1));
+			copyColumn(left.w(), k, wCols, wVals, k, row -> (row / p1) * fp + (row % p1));
 		}
-
-		// V is over B (m×p). Left half acts on B's first p1 columns; right
-		// half on the last p2 columns. Flat index for B[j, l]: j*p + l.
-		// Left product k contributes left.V[j*left.p + l'][k] to V[j*p + l'][k]
-		// for l' ∈ [0, left.p); right product k' contributes
-		// right.V[j*right.p + l''][k'] to V[j*p + (left.p + l'')][r1 + k'].
-		int p1 = left.p, p2 = right.p;
-		for (int j = 0; j < m; j++) {
-			for (int l = 0; l < p1; l++) {
-				int srcRow = j * p1 + l;
-				int dstRow = j * p + l;
-				System.arraycopy(leftV[srcRow], 0, V[dstRow], 0, r1);
-			}
-			for (int l = 0; l < p2; l++) {
-				int srcRow = j * p2 + l;
-				int dstRow = j * p + (p1 + l);
-				System.arraycopy(rightV[srcRow], 0, V[dstRow], r1, r2);
-			}
+		for (int k = 0; k < r2; k++) {
+			copyColumn(right.u(), k, uCols, uVals, r1 + k, row -> row);
+			copyColumn(right.v(), k, vCols, vVals, r1 + k, row -> (row / p2) * fp + (p1 + row % p2));
+			copyColumn(right.w(), k, wCols, wVals, r1 + k, row -> (row / p2) * fp + (p1 + row % p2));
 		}
+		return NonCubicBilinearAlgorithm.fromFactors(n, m, p,
+				SparseFactorMatrix.fromColumns(n * m, uCols, uVals),
+				SparseFactorMatrix.fromColumns(m * p, vCols, vVals),
+				SparseFactorMatrix.fromColumns(n * p, wCols, wVals));
+	}
 
-		// W is over C (n×p). Same column-stacking as V.
-		for (int i = 0; i < n; i++) {
-			for (int l = 0; l < p1; l++) {
-				int srcRow = i * p1 + l;
-				int dstRow = i * p + l;
-				System.arraycopy(leftW[srcRow], 0, W[dstRow], 0, r1);
-			}
-			for (int l = 0; l < p2; l++) {
-				int srcRow = i * p2 + l;
-				int dstRow = i * p + (p1 + l);
-				System.arraycopy(rightW[srcRow], 0, W[dstRow], r1, r2);
-			}
-		}
-
-		return new NonCubicBilinearAlgorithm(n, m, p, U, V, W);
+	/** Copy the non-zeros of {@code src} column {@code srcCol} into {@code outRows[outCol]} /
+	 *  {@code outVals[outCol]}, re-indexing each row through {@code reindex}. Sparse — never
+	 *  materialises a dense factor (the no-dense-round-trip building block for the concat
+	 *  operators; see the {@code @Deprecated denseU/V/W} note on NonCubicBilinearAlgorithm). */
+	private static void copyColumn(FactorMatrix src, int srcCol, int[][] outRows, double[][] outVals,
+			int outCol, java.util.function.IntUnaryOperator reindex) {
+		java.util.ArrayList<Integer> rows = new java.util.ArrayList<>();
+		java.util.ArrayList<Double> vals = new java.util.ArrayList<>();
+		src.forEachInColumn(srcCol, (row, val) -> {
+			if (val != 0.0) { rows.add(reindex.applyAsInt(row)); vals.add(val); }
+		});
+		int[] rArr = new int[rows.size()];
+		double[] vArr = new double[vals.size()];
+		for (int i = 0; i < rArr.length; i++) { rArr[i] = rows.get(i); vArr[i] = vals.get(i); }
+		outRows[outCol] = rArr;
+		outVals[outCol] = vArr;
 	}
 
 	/**
@@ -314,54 +318,27 @@ public final class Compose {
 		}
 		int m = top.m, p = top.p, n = top.n + bottom.n;
 		int r1 = top.r, r2 = bottom.r, r = r1 + r2;
-		int n1 = top.n, n2 = bottom.n;
+		final int n1 = top.n, fm = m, fp = p;
 
-		double[][] topU = top.denseU(), topV = top.denseV(), topW = top.denseW();
-		double[][] bottomU = bottom.denseU(), bottomV = bottom.denseV(), bottomW = bottom.denseW();
-
-		double[][] U = new double[n * m][r];
-		double[][] V = new double[m * p][r];
-		double[][] W = new double[n * p][r];
-
-		// U: top half acts on A's first n1 rows; bottom on last n2.
-		for (int i = 0; i < n1; i++) {
-			for (int j = 0; j < m; j++) {
-				int srcRow = i * m + j;
-				int dstRow = i * m + j;
-				System.arraycopy(topU[srcRow], 0, U[dstRow], 0, r1);
-			}
+		// SPARSE build. N-axis tile: V (m×p) is shared/identical for both halves; the bottom
+		// half shifts A's rows (U: +n1·m) and C's rows (W: +n1·p). U/W rows decode/re-encode
+		// trivially as an additive offset because m and p are unchanged.
+		int[][] uCols = new int[r][], vCols = new int[r][], wCols = new int[r][];
+		double[][] uVals = new double[r][], vVals = new double[r][], wVals = new double[r][];
+		for (int k = 0; k < r1; k++) {
+			copyColumn(top.u(), k, uCols, uVals, k, row -> row);
+			copyColumn(top.v(), k, vCols, vVals, k, row -> row);
+			copyColumn(top.w(), k, wCols, wVals, k, row -> row);
 		}
-		for (int i = 0; i < n2; i++) {
-			for (int j = 0; j < m; j++) {
-				int srcRow = i * m + j;
-				int dstRow = (n1 + i) * m + j;
-				System.arraycopy(bottomU[srcRow], 0, U[dstRow], r1, r2);
-			}
+		for (int k = 0; k < r2; k++) {
+			copyColumn(bottom.u(), k, uCols, uVals, r1 + k, row -> row + n1 * fm);
+			copyColumn(bottom.v(), k, vCols, vVals, r1 + k, row -> row);
+			copyColumn(bottom.w(), k, wCols, wVals, r1 + k, row -> row + n1 * fp);
 		}
-
-		// V: top and bottom both use full B (m×p) for their respective halves.
-		for (int ab = 0; ab < m * p; ab++) {
-			System.arraycopy(topV[ab], 0, V[ab], 0, r1);
-			System.arraycopy(bottomV[ab], 0, V[ab], r1, r2);
-		}
-
-		// W: top contributes to rows [0, n1); bottom to rows [n1, n).
-		for (int i = 0; i < n1; i++) {
-			for (int l = 0; l < p; l++) {
-				int srcRow = i * p + l;
-				int dstRow = i * p + l;
-				System.arraycopy(topW[srcRow], 0, W[dstRow], 0, r1);
-			}
-		}
-		for (int i = 0; i < n2; i++) {
-			for (int l = 0; l < p; l++) {
-				int srcRow = i * p + l;
-				int dstRow = (n1 + i) * p + l;
-				System.arraycopy(bottomW[srcRow], 0, W[dstRow], r1, r2);
-			}
-		}
-
-		return new NonCubicBilinearAlgorithm(n, m, p, U, V, W);
+		return NonCubicBilinearAlgorithm.fromFactors(n, m, p,
+				SparseFactorMatrix.fromColumns(n * m, uCols, uVals),
+				SparseFactorMatrix.fromColumns(m * p, vCols, vVals),
+				SparseFactorMatrix.fromColumns(n * p, wCols, wVals));
 	}
 
 	/**
@@ -398,47 +375,28 @@ public final class Compose {
 							+ "⟩ — n and p must match");
 		}
 		int n = left.n, p = left.p, m = left.m + right.m;
-		int m1 = left.m, m2 = right.m;
+		final int m1 = left.m, m2 = right.m, fm = m, fp = p;
 		int r1 = left.r, r2 = right.r, r = r1 + r2;
 
-		double[][] leftU = left.denseU(), leftV = left.denseV(), leftW = left.denseW();
-		double[][] rightU = right.denseU(), rightV = right.denseV(), rightW = right.denseW();
-
-		double[][] U = new double[n * m][r];
-		double[][] V = new double[m * p][r];
-		double[][] W = new double[n * p][r];
-
-		// U over A (n×m): A's columns split. Left products own columns
-		// [0, m1); right products own [m1, m). Flat index for A[i, j]: i*m + j.
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m1; j++) {
-				System.arraycopy(leftU[i * m1 + j], 0, U[i * m + j], 0, r1);
-			}
-			for (int j = 0; j < m2; j++) {
-				System.arraycopy(rightU[i * m2 + j], 0, U[i * m + (m1 + j)], r1, r2);
-			}
+		// SPARSE build. M-axis (contraction) split: U splits A's columns, V splits B's rows,
+		// W (n×p) is SHARED (both halves write every C entry; Σ_k accumulates A1·B1+A2·B2).
+		// U row i·mSrc+j → i·m + (off+j); V row j·p+l → (off+j)·p + l, off = 0 (left) | m1 (right).
+		int[][] uCols = new int[r][], vCols = new int[r][], wCols = new int[r][];
+		double[][] uVals = new double[r][], vVals = new double[r][], wVals = new double[r][];
+		for (int k = 0; k < r1; k++) {
+			copyColumn(left.u(), k, uCols, uVals, k, row -> (row / m1) * fm + (row % m1));
+			copyColumn(left.v(), k, vCols, vVals, k, row -> row);
+			copyColumn(left.w(), k, wCols, wVals, k, row -> row);
 		}
-
-		// V over B (m×p): B's rows split the same way. Flat index for B[j, l]: j*p + l.
-		for (int j = 0; j < m1; j++) {
-			for (int l = 0; l < p; l++) {
-				System.arraycopy(leftV[j * p + l], 0, V[j * p + l], 0, r1);
-			}
+		for (int k = 0; k < r2; k++) {
+			copyColumn(right.u(), k, uCols, uVals, r1 + k, row -> (row / m2) * fm + (m1 + row % m2));
+			copyColumn(right.v(), k, vCols, vVals, r1 + k, row -> row + m1 * fp);
+			copyColumn(right.w(), k, wCols, wVals, r1 + k, row -> row);
 		}
-		for (int j = 0; j < m2; j++) {
-			for (int l = 0; l < p; l++) {
-				System.arraycopy(rightV[j * p + l], 0, V[(m1 + j) * p + l], r1, r2);
-			}
-		}
-
-		// W over C (n×p): SHARED — both halves write every output entry; the
-		// reconstruction's Σ_k naturally accumulates A1·B1 + A2·B2.
-		for (int c = 0; c < n * p; c++) {
-			System.arraycopy(leftW[c], 0, W[c], 0, r1);
-			System.arraycopy(rightW[c], 0, W[c], r1, r2);
-		}
-
-		return new NonCubicBilinearAlgorithm(n, m, p, U, V, W);
+		return NonCubicBilinearAlgorithm.fromFactors(n, m, p,
+				SparseFactorMatrix.fromColumns(n * m, uCols, uVals),
+				SparseFactorMatrix.fromColumns(m * p, vCols, vVals),
+				SparseFactorMatrix.fromColumns(n * p, wCols, wVals));
 	}
 
 	/**

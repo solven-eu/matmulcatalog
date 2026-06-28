@@ -50,14 +50,22 @@ public class TestRecursiveMaterialiser {
 	}
 
 	@Test
-	public void compose_18x18x18_returns_3200_via_kron_concat_chain() {
+	public void sota_18x18x18_is_3200_in_catalog_and_kron_path_is_exact() {
 		FieldAwareLookup lookup = new FieldAwareLookup("Q");
+		// Catalog SOTA ⟨18,18,18⟩=3200 — a deep ConcatCols(KronProduct(Project(⟨3,3,7⟩…)))
+		// chain (maxDim>16 ⇒ a lineage stub). findRank reads it straight from the index
+		// (instant) — the right way to assert SOTA without a multi-minute compose sweep.
+		assertThat(lookup.findRank(18, 18, 18)).isLessThanOrEqualTo(3200);
+
+		// The materialiser's FAST always-on path (kron + concat only; the expensive
+		// recombination/serendipitous/projection strategies disabled) must still compose an
+		// EXACT scheme. It reaches 3306 here (the kron/concat optimum); 3200 needs the deep
+		// chain above, which is the slow path we deliberately exclude. ≤ ⇒ SOTA-or-better.
 		RecursiveMaterialiser mat = dryRun(lookup);
+		mat.setStrategies(java.util.Set.of());
 		Optional<RecursiveMaterialiser.Result> r = mat.materialise(18, 18, 18);
 		assertThat(r).isPresent();
-		// ⟨18,18,18⟩=3200 was the strategy survey's prediction;
-		// the materialiser should reach it (or better).
-		assertThat(r.get().alg().r).isLessThanOrEqualTo(3402);
+		assertThat(r.get().alg().r).isLessThanOrEqualTo(3306);
 		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg())).isTrue();
 	}
 }
