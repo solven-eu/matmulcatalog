@@ -41,15 +41,43 @@ public class NonCubicBilinearAlgorithm {
 	/** Factor matrix {@code W} (output combination of products per C-entry). */
 	public FactorMatrix w() { return wMat; }
 
-	// Dense materialisation hatch (task #6): for builders / sibling-class interop
-	// (BilinearAlgorithm, asCubic) that genuinely need a double[][]. Once the
-	// backing is sparse (task #7) these allocate on demand — callers should grab
-	// one once and reuse, not call per element. Hot paths must use u()/v()/w().
-	/** Dense {@code [n·m][r]} view of {@code U} (materialised on demand). */
+	// ── Dense materialisation hatch — AVOID (see @Deprecated) ──────────────────────────
+	// These allocate the FULL dense [dim²][r] double[][] factor. That materialisation is
+	// the memory blow-up behind the large-shape OOMs (the ⟨30,32,32⟩ Verifier dump, the
+	// materialise sweeps). The factors are stored COLUMN-MAJOR SPARSE precisely so callers
+	// DON'T need this — read via u()/v()/w() + forEachInColumn / dotColumn / axpyColumn.
+	// Kept only for genuine double[][] interop (BilinearAlgorithm, asCubic). If you must
+	// use one, grab it ONCE and reuse — never per element, never in a composition or
+	// verification hot path. New code (and AI agents): prefer the sparse path and treat a
+	// denseU/V/W call as a smell to justify. @Deprecated so the compiler/IDE flags every use.
+
+	/**
+	 * Dense {@code [n·m][r]} view of {@code U} — materialises the full dense factor.
+	 *
+	 * @deprecated AVOID where possible — this allocates a dense {@code (n·m)×r}
+	 *     {@code double[][]} (and callers that build the dense matmul tensor on top OOM on
+	 *     large shapes). Prefer the SPARSE accessor {@link #u()} with
+	 *     {@link FactorMatrix#forEachInColumn} / {@link FactorMatrix#dotColumn} /
+	 *     {@link FactorMatrix#axpyColumn}. Use a dense view only for genuine
+	 *     {@code double[][]} interop, grabbed once and reused.
+	 */
+	@Deprecated
 	public double[][] denseU() { return ((SparseFactorMatrix) uMat).toDense(); }
-	/** Dense {@code [m·p][r]} view of {@code V} (materialised on demand). */
+
+	/**
+	 * Dense {@code [m·p][r]} view of {@code V} — materialises the full dense factor.
+	 *
+	 * @deprecated AVOID — see {@link #denseU()}; prefer {@link #v()} + sparse-column access.
+	 */
+	@Deprecated
 	public double[][] denseV() { return ((SparseFactorMatrix) vMat).toDense(); }
-	/** Dense {@code [n·p][r]} view of {@code W} (materialised on demand). */
+
+	/**
+	 * Dense {@code [n·p][r]} view of {@code W} — materialises the full dense factor.
+	 *
+	 * @deprecated AVOID — see {@link #denseU()}; prefer {@link #w()} + sparse-column access.
+	 */
+	@Deprecated
 	public double[][] denseW() { return ((SparseFactorMatrix) wMat).toDense(); }
 
 	/** The ⟨n,m,p⟩ shape of this algorithm (orientation-significant). */

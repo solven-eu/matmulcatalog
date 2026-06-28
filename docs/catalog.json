@@ -1,5 +1,5 @@
 {
-  "total": 8831,
+  "total": 8834,
   "schemes": [
     {
       "format": [2, 9, 10],
@@ -1328,7 +1328,8 @@
       "explicitable": true,
       "fmm_lille": {"best_rank": 80, "details_url": "https://fmm.univ-lille.fr/3x3x12.html"},
       "bud_score": 0,
-      "pareto_rank_buds": true
+      "pareto_rank_buds": true,
+      "used_as_base": {"by_concat": 1, "total": 1}
     },
     {
       "format": [2, 10, 12],
@@ -15585,7 +15586,8 @@
       "external_best_source": "fmm-lille",
       "external_cited": false,
       "bud_score": 30,
-      "pareto_rank_buds": true
+      "pareto_rank_buds": true,
+      "used_as_base": {"by_recombination": 1, "total": 1}
     },
     {
       "format": [2, 4, 6],
@@ -15908,7 +15910,8 @@
         ]
       },
       "bud_score": 0,
-      "pareto_rank_buds": true
+      "pareto_rank_buds": true,
+      "used_as_base": {"by_recombination": 1, "total": 1}
     },
     {
       "format": [6, 6, 6],
@@ -16037,7 +16040,8 @@
       "external_best_rank": 35,
       "external_best_source": "fmm-lille",
       "external_cited": false,
-      "bud_score": 16
+      "bud_score": 16,
+      "used_as_base": {"by_recombination": 1, "total": 1}
     },
     {
       "format": [2, 4, 7],
@@ -16519,7 +16523,8 @@
       "explicitable": true,
       "fmm_lille": {"best_rank": 49, "details_url": "https://fmm.univ-lille.fr/3x3x7.html"},
       "bud_score": 0,
-      "pareto_rank_buds": true
+      "pareto_rank_buds": true,
+      "used_as_base": {"by_recombination": 1, "total": 1}
     },
     {
       "format": [7, 7, 7],
@@ -27749,7 +27754,8 @@
       "external_best_source": "fmm-lille",
       "external_cited": false,
       "bud_score": 0,
-      "pareto_rank_buds": true
+      "pareto_rank_buds": true,
+      "used_as_base": {"by_recombination": 1, "total": 1}
     },
     {
       "format": [2, 7, 14],
@@ -28290,7 +28296,8 @@
       "external_best_source": "fmm-lille",
       "external_cited": false,
       "bud_score": 0,
-      "pareto_rank_buds": true
+      "pareto_rank_buds": true,
+      "used_as_base": {"by_recombination": 1, "total": 1}
     },
     {
       "format": [4, 5, 14],
@@ -113071,6 +113078,29 @@
       "format": [7, 14, 28],
       "max_dim": 28,
       "fields": [
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 1769,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[base<2x3x3>=15; 4,3 | 5,5,4 | 10,9,9]",
+      "file": "derived/section28/7x14x28-r1769-derived-50d0b09.json",
+      "explicitable": false,
+      "fmm_lille": {"best_rank": 1769, "details_url": "https://fmm.univ-lille.fr/7x14x28.html"},
+      "external_best_rank": 1748,
+      "external_best_source": "perminov-serendipitous",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [7, 14, 28],
+      "max_dim": 28,
+      "fields": [
         "F2",
         "F3",
         "Z",
@@ -113113,8 +113143,7 @@
       "external_best_rank": 1748,
       "external_best_source": "perminov-serendipitous",
       "external_cited": false,
-      "bud_score": 0,
-      "pareto_rank_buds": true
+      "bud_score": 0
     },
     {
       "format": [7, 14, 28],
@@ -142444,6 +142473,38 @@
       "format": [14, 15, 31],
       "max_dim": 31,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 3839,
+      "additions": 264879,
+      "has_buds": true,
+      "buds": "394×U⟨1,1,2⟩ + 52×U⟨1,1,3⟩ + 7×U⟨1,1,4⟩ + 4×U⟨1,1,5⟩ + 69×V⟨2,1,1⟩ + 2×V⟨3,1,1⟩ + 1×V⟨5,1,1⟩ + 83×W⟨1,2,1⟩ + 1×W⟨1,3,1⟩ + 2529×⟨1,1,1⟩",
+      "projection_margin": 80,
+      "buds_certainty": "exact",
+      "source": "Derived_Recursive",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[AE<5,5,5>=93 :: CANONICAL; 3,2,3,3,3 | 3,3,3,3,3 | 6,6,6,7,6]",
+      "file": "derived/section31/14x15x31-r3839-derived-fcbc215.json",
+      "explicitable": false,
+      "fmm_lille": {"best_rank": 3870, "details_url": "https://fmm.univ-lille.fr/14x15x31.html"},
+      "external_best_rank": 3870,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "solven_discovery": true,
+      "bud_score": 1310,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [14, 15, 31],
+      "max_dim": 31,
+      "fields": [
         "F3",
         "Q",
         "R",
@@ -166000,6 +166061,34 @@
       "format": [7, 7, 32],
       "max_dim": 32,
       "fields": [
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 1069,
+      "additions": 23554,
+      "has_buds": true,
+      "buds": "326×U⟨1,1,2⟩ + 4×U⟨1,1,3⟩ + 3×U⟨1,1,4⟩ + 1×U⟨1,1,5⟩ + 4×V⟨2,1,1⟩ + 1×V⟨5,1,1⟩ + 3×W⟨1,2,1⟩ + 369×⟨1,1,1⟩",
+      "projection_margin": 60,
+      "buds_certainty": "exact",
+      "source": "Derived_Recursive",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "perminov_ZT-4x7x7_m144_a1983 +p R[Strassen<2,2,2>=7 :: CANONICAL; 3,4 | 3,4 | 14,14]",
+      "file": "derived/section32/7x7x32-r1069-derived-e90577e.json",
+      "explicitable": false,
+      "fmm_lille": {"best_rank": 1069, "details_url": "https://fmm.univ-lille.fr/7x7x32.html"},
+      "external_best_rank": 1069,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 700,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [7, 7, 32],
+      "max_dim": 32,
+      "fields": [
         "F3",
         "Q",
         "R",
@@ -168052,7 +168141,7 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 2,
-      "used_as_base": {"by_recombination": 255, "by_concat": 20, "by_kronecker": 21, "by_sum": 4, "by_serendipitous": 2, "total": 302}
+      "used_as_base": {"by_recombination": 256, "by_concat": 20, "by_kronecker": 21, "by_sum": 4, "by_serendipitous": 2, "total": 303}
     },
     {
       "format": [3, 4, 4],
@@ -178610,7 +178699,7 @@
       "external_cited": true,
       "bud_score": 36,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_sum": 2, "by_concat": 4, "by_recombination": 18, "by_kronecker": 1, "by_projection": 1, "total": 26}
+      "used_as_base": {"by_sum": 2, "by_concat": 4, "by_recombination": 19, "by_kronecker": 1, "by_projection": 1, "total": 27}
     },
     {
       "format": [3, 5, 10],
@@ -179133,7 +179222,7 @@
       "external_cited": true,
       "bud_score": 30,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_concat": 60, "by_sum": 10, "by_recombination": 62, "by_serendipitous": 20, "by_kronecker": 24, "total": 176}
+      "used_as_base": {"by_concat": 60, "by_sum": 10, "by_recombination": 63, "by_serendipitous": 20, "by_kronecker": 24, "total": 177}
     },
     {
       "format": [4, 4, 10],
@@ -179369,7 +179458,7 @@
       "external_cited": true,
       "bud_score": 45,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_concat": 3, "by_recombination": 47, "by_kronecker": 1, "by_serendipitous": 1, "total": 52}
+      "used_as_base": {"by_concat": 3, "by_recombination": 48, "by_kronecker": 1, "by_serendipitous": 1, "total": 53}
     },
     {
       "format": [4, 5, 10],
@@ -241924,7 +242013,7 @@
       "external_cited": true,
       "bud_score": 0,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_recombination": 1984, "by_concat": 848, "by_sum": 111, "by_kronecker": 363, "total": 3306}
+      "used_as_base": {"by_recombination": 1984, "by_concat": 849, "by_sum": 111, "by_kronecker": 363, "total": 3307}
     },
     {
       "format": [2, 3, 3],
@@ -241981,7 +242070,7 @@
       "external_cited": true,
       "bud_score": 0,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_recombination": 1984, "by_concat": 848, "by_sum": 111, "by_kronecker": 363, "total": 3306}
+      "used_as_base": {"by_recombination": 1984, "by_concat": 849, "by_sum": 111, "by_kronecker": 363, "total": 3307}
     },
     {
       "format": [2, 3, 3],
@@ -243869,7 +243958,7 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 2,
-      "used_as_base": {"by_recombination": 255, "by_concat": 20, "by_kronecker": 21, "by_sum": 4, "by_serendipitous": 2, "total": 302}
+      "used_as_base": {"by_recombination": 256, "by_concat": 20, "by_kronecker": 21, "by_sum": 4, "by_serendipitous": 2, "total": 303}
     },
     {
       "format": [3, 3, 4],
@@ -257766,7 +257855,7 @@
       "external_cited": true,
       "bud_score": 27,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_recombination": 43, "by_kronecker": 5, "by_serendipitous": 3, "total": 51}
+      "used_as_base": {"by_recombination": 43, "by_kronecker": 5, "by_serendipitous": 3, "by_concat": 1, "total": 52}
     },
     {
       "format": [4, 7, 7],
@@ -265215,7 +265304,7 @@
       "external_cited": true,
       "bud_score": 26,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_sum": 26, "by_concat": 24, "by_recombination": 17, "by_kronecker": 12, "by_serendipitous": 1, "total": 80}
+      "used_as_base": {"by_sum": 26, "by_concat": 24, "by_recombination": 18, "by_kronecker": 12, "by_serendipitous": 1, "total": 81}
     },
     {
       "format": [3, 5, 9],
@@ -265893,7 +265982,7 @@
       "external_cited": true,
       "bud_score": 0,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_concat": 21, "by_sum": 4, "by_recombination": 54, "by_kronecker": 31, "total": 110}
+      "used_as_base": {"by_concat": 21, "by_sum": 4, "by_recombination": 55, "by_kronecker": 31, "total": 111}
     },
     {
       "format": [4, 4, 9],
@@ -266053,7 +266142,7 @@
       "external_cited": true,
       "bud_score": 37,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_concat": 8, "by_recombination": 44, "by_kronecker": 11, "by_sum": 2, "by_serendipitous": 4, "total": 69}
+      "used_as_base": {"by_concat": 8, "by_recombination": 45, "by_kronecker": 11, "by_sum": 2, "by_serendipitous": 4, "total": 70}
     },
     {
       "format": [4, 5, 9],

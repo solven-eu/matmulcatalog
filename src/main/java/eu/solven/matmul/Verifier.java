@@ -1,5 +1,7 @@
 package eu.solven.matmul;
 
+import java.math.BigInteger;
+
 /**
  * Verifies a bilinear algorithm against the exact matrix-multiplication tensor.
  *
@@ -198,8 +200,129 @@ public class Verifier {
 		return Math.sqrt(sumSq[0]);
 	}
 
+	/**
+	 * Exact non-cubic matmul check — SPARSE + symbolic-target. Replaces the old dense
+	 * path ({@link #forEachTerm} → {@code denseU/V/W} + a dense {@code (nm)×(mp)×(np)}
+	 * {@link #intMatmulTensor}), which OOM'd on large shapes (the ⟨30,32,32⟩ tensor alone
+	 * is ~943M ints ≈ 3.8 GB; the heap dump pinned it to {@code Verifier.forEachTerm}).
+	 *
+	 * <p>Instead: accumulate each rank-1 term's contribution over the factors' SPARSE
+	 * columns into a {@code (a,b,c) → coeff} map (memory ∝ distinct product terms, not the
+	 * dense cube), and compare each accumulated coefficient against the matmul target,
+	 * which is decoded in O(1) ({@link #matmulTargetOf}) — no dense tensor. Coefficients
+	 * are summed exactly for integer / dyadic-rational schemes (the common case: ±1, ½, ¼
+	 * are exact in IEEE-754, so no rounding); the per-term comparison is against the exact
+	 * integer target (0/1), not a Frobenius double residual. Non-dyadic rationals (e.g.
+	 * 1/3) remain ε-approximate here — full BigRational symbolic accumulation is a
+	 * follow-up if a non-dyadic scheme ever needs certifying.</p>
+	 */
 	public static boolean isExactNonCubic(NonCubicBilinearAlgorithm alg) {
-		return residualNonCubic(alg) < 1e-10;
+		return exactDiscrepancyNonCubic(alg, 1e-9) == null;
+	}
+
+	/** The matmul-tensor entry for flattened factor indices: {@code U}-index {@code a=i·m+j},
+	 *  {@code V}-index {@code b=j'·p+l}, {@code W}-index {@code c=i'·p+l'}. The matmul tensor
+	 *  is 1 iff {@code j==j' ∧ i==i' ∧ l==l'}, else 0 — decoded in O(1), no dense allocation. */
+	private static int matmulTargetOf(int a, int b, int c, int m, int p) {
+		int i = a / m, j = a % m;       // U row/col
+		int j2 = b / p, l = b % p;      // V row/col
+		int i2 = c / p, l2 = c % p;     // W row/col
+		return (j == j2 && i == i2 && l == l2) ? 1 : 0;
+	}
+
+	/** A sparse factor column: parallel (row, value) arrays of the non-zeros. */
+	private record Col(int[] rows, double[] vals) {}
+
+	private static Col col(FactorMatrix f, int k) {
+		java.util.ArrayList<Integer> rs = new java.util.ArrayList<>();
+		java.util.ArrayList<Double> vs = new java.util.ArrayList<>();
+		f.forEachInColumn(k, (row, val) -> {
+			if (val != 0.0) { rs.add(row); vs.add(val); }
+		});
+		int[] rows = new int[rs.size()];
+		double[] vals = new double[vs.size()];
+		for (int i = 0; i < rows.length; i++) { rows[i] = rs.get(i); vals[i] = vs.get(i); }
+		return new Col(rows, vals);
+	}
+
+	/** Pack a flattened-index triple into one long. Each index &lt; 2²¹ (covers nm,mp,np
+	 *  up to ~2M — far beyond any catalogued shape, where max is 32·32=1024). */
+	private static long packTerm(long a, long b, long c) {
+		return (a << 42) | (b << 21) | c;
+	}
+
+	/**
+	 * First exact discrepancy of a non-cubic matmul scheme, or {@code null} if exact.
+	 * SPARSE + SYMBOLIC: every coefficient is scaled to an exact integer by the common
+	 * denominator {@code D} (lcm of all denominators) and accumulated as {@link BigInteger}
+	 * — no doubles in the decision, and no dense factor/tensor. Each matmul-target term
+	 * must equal {@code D³}; every other accumulated term must cancel to exactly 0.
+	 * O(Σ_k |supp Uₖ|·|supp Vₖ|·|supp Wₖ|) time, O(#distinct terms) memory. The {@code eps}
+	 * argument is retained for signature compatibility and ignored (the check is exact).
+	 */
+	public static String exactDiscrepancyNonCubic(NonCubicBilinearAlgorithm alg, double eps) {
+		final int n = alg.n, m = alg.m, p = alg.p, r = alg.r;
+		FactorMatrix uMat = alg.u(), vMat = alg.v(), wMat = alg.w();
+		// Pass 1 (sparse): common denominator D = lcm of every non-zero coefficient's denom.
+		BigInteger D = BigInteger.ONE;
+		for (FactorMatrix f : new FactorMatrix[] { uMat, vMat, wMat }) {
+			for (int k = 0; k < r; k++) {
+				for (double v : col(f, k).vals) {
+					D = SymbolicVerifier.lcm(D, SymbolicVerifier.denominatorOf(v));
+				}
+			}
+		}
+		BigInteger D3 = D.multiply(D).multiply(D);
+		// Pass 2 (sparse): accumulate each rank-1 term's outer product as scaled integers.
+		java.util.HashMap<Long, BigInteger> acc = new java.util.HashMap<>();
+		for (int k = 0; k < r; k++) {
+			Col cu = col(uMat, k), cv = col(vMat, k), cw = col(wMat, k);
+			BigInteger[] uN = scaleInts(cu.vals, D), vN = scaleInts(cv.vals, D), wN = scaleInts(cw.vals, D);
+			for (int ai = 0; ai < cu.rows.length; ai++) {
+				int a = cu.rows[ai];
+				for (int bi = 0; bi < cv.rows.length; bi++) {
+					BigInteger uv = uN[ai].multiply(vN[bi]);
+					if (uv.signum() == 0) continue;
+					int b = cv.rows[bi];
+					for (int ci = 0; ci < cw.rows.length; ci++) {
+						BigInteger term = uv.multiply(wN[ci]);
+						if (term.signum() == 0) continue;
+						acc.merge(packTerm(a, b, cw.rows[ci]), term, BigInteger::add);
+					}
+				}
+			}
+		}
+		// Every matmul-target triple (i,j,l) must accumulate to exactly D³; remove as we go.
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				for (int l = 0; l < p; l++) {
+					BigInteger got = acc.remove(packTerm(i * m + j, j * p + l, i * p + l));
+					if (got == null) got = BigInteger.ZERO;
+					if (!got.equals(D3)) {
+						return String.format("⟨%d,%d,%d⟩ matmul term (i=%d,j=%d,l=%d) = %s, want D³=%s",
+								n, m, p, i, j, l, got, D3);
+					}
+				}
+			}
+		}
+		// Anything left must cancel to EXACTLY 0.
+		for (java.util.Map.Entry<Long, BigInteger> e : acc.entrySet()) {
+			if (e.getValue().signum() != 0) {
+				long key = e.getKey();
+				long a = (key >> 42) & 0x1FFFFF, b = (key >> 21) & 0x1FFFFF, c = key & 0x1FFFFF;
+				return String.format("⟨%d,%d,%d⟩ spurious term (a=%d,b=%d,c=%d) = %s, want 0",
+						n, m, p, a, b, c, e.getValue());
+			}
+		}
+		return null;
+	}
+
+	private static BigInteger[] scaleInts(double[] vals, BigInteger D) {
+		BigInteger[] out = new BigInteger[vals.length];
+		for (int i = 0; i < vals.length; i++) {
+			out[i] = SymbolicVerifier.numeratorScaled(vals[i], D);
+		}
+		return out;
 	}
 
 	/**

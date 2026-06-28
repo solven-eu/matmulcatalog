@@ -316,7 +316,7 @@ public final class SymbolicVerifier {
 	 * is an integer to 1e-9 precision. Returns {@code 1L<<30} (treated as an
 	 * "irrational" sentinel) if no small denominator works.
 	 */
-	private static BigInteger denominatorOf(double v) {
+	static BigInteger denominatorOf(double v) {
 		if (v == 0.0) return BigInteger.ONE;
 		for (int d = 1; d <= 1024; d++) {
 			double scaled = v * d;
@@ -327,7 +327,7 @@ public final class SymbolicVerifier {
 		return BigInteger.valueOf(1L << 30);
 	}
 
-	private static BigInteger numeratorScaled(double v, BigInteger d) {
+	static BigInteger numeratorScaled(double v, BigInteger d) {
 		double scaled = v * d.doubleValue();
 		return BigInteger.valueOf(Math.round(scaled));
 	}
@@ -436,7 +436,7 @@ public final class SymbolicVerifier {
 		return Optional.empty();
 	}
 
-	private static BigInteger lcm(BigInteger a, BigInteger b) {
+	static BigInteger lcm(BigInteger a, BigInteger b) {
 		if (a.signum() == 0 || b.signum() == 0) return BigInteger.ZERO;
 		return a.divide(a.gcd(b)).multiply(b).abs();
 	}

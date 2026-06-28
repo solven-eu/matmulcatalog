@@ -192,7 +192,15 @@ public final class SparseFactorMatrix implements FactorMatrix {
 		return new SparseFactorMatrix(newRows, cols, nidx, nval, nnz);
 	}
 
-	/** Materialise a fresh dense {@code [rows][cols]} copy (for {@code denseU()}). */
+	/**
+	 * Materialise a fresh dense {@code [rows][cols]} copy.
+	 *
+	 * @deprecated AVOID — defeats the sparse storage and is the memory blow-up behind the
+	 *     large-shape OOMs. Prefer the sparse reads {@link #forEachInColumn} /
+	 *     {@link #dotColumn} / {@link #axpyColumn}. Dense only for genuine {@code double[][]}
+	 *     interop, grabbed once and reused.
+	 */
+	@Deprecated
 	public double[][] toDense() {
 		double[][] dense = new double[rows][cols];
 		for (int col = 0; col < cols; col++) {
