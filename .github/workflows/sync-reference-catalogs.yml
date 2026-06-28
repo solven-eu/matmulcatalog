@@ -72,11 +72,18 @@ jobs:
             -Dexec.args="--max-dim=32" \
             || echo "Perminov scheme import failed (GitHub API / rate-limit); keeping existing schemes"
 
+      # Regenerate when schemes changed — counting BOTH modified-tracked AND untracked-new
+      # files. `git diff --quiet` alone misses brand-new files, so an import that adds ONLY
+      # new schemes (no modifications) silently skipped this and committed a STALE
+      # docs/catalog.json that lacked the freshly-imported schemes.
       - name: Regenerate catalog manifest if schemes changed
         run: |
-          if ! git diff --quiet -- src/main/resources/schemes; then
+          if ! git diff --quiet -- src/main/resources/schemes \
+             || [ -n "$(git ls-files --others --exclude-standard -- src/main/resources/schemes)" ]; then
             mvn -B -ntp -q exec:java \
               -Dexec.mainClass=eu.solven.matmul.docs.generate.GenerateCatalogManifest
+          else
+            echo "no scheme changes → manifest unchanged"
           fi
 
       - name: Commit digest + imported schemes
