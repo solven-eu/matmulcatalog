@@ -882,38 +882,114 @@ public final class Recombination {
 		}
 		int totalRank = (int) total;
 
-		double[][] U = new double[targetA * targetB][totalRank];
-		double[][] V = new double[targetB * targetC][totalRank];
-		double[][] W = new double[targetA * targetC][totalRank];
+		// SPARSE build (no dense [dim²][totalRank] result). Each output column is written by
+		// exactly one fused pair (a TA block) or one unpaired product, so a per-column builder
+		// suffices — no dense factor is ever materialised.
+		SparseFactorBuilder bU = new SparseFactorBuilder(totalRank, targetA * targetB);
+		SparseFactorBuilder bV = new SparseFactorBuilder(totalRank, targetB * targetC);
+		SparseFactorBuilder bW = new SparseFactorBuilder(totalRank, targetA * targetC);
 		int col = 0;
 
 		// Fused pairs first.
 		for (int[] pr : pairs) {
-			col = embedTaPair(U, V, W, col, pr[0], pr[1], rec.smallMatrixSizes,
+			col = embedTaPair(bU, bV, bW, col, pr[0], pr[1], rec.smallMatrixSizes,
 					grids, cumA, cumB, cumC, targetB, targetC);
 		}
-		// Then the unpaired products, via the normal embed.
+		// Then the unpaired products.
 		for (int kBase = 0; kBase < baseR; kBase++) {
 			if (subs[kBase] == null) continue;
 			NonCubicBilinearAlgorithm sub = subs[kBase];
-			embedFactor(U, base.denseU(), sub.denseU(), kBase, col,
-					base.n, base.m, sub.n, sub.m, cumA, cumB, targetB);
-			embedFactor(V, base.denseV(), sub.denseV(), kBase, col,
-					base.m, base.p, sub.m, sub.p, cumB, cumC, targetC);
-			embedFactor(W, base.denseW(), sub.denseW(), kBase, col,
-					base.n, base.p, sub.n, sub.p, cumA, cumC, targetC);
+			embedProductSparse(bU, base.u(), sub.u(), kBase, col, base.m, sub.m, cumA, cumB, targetB);
+			embedProductSparse(bV, base.v(), sub.v(), kBase, col, base.p, sub.p, cumB, cumC, targetC);
+			embedProductSparse(bW, base.w(), sub.w(), kBase, col, base.p, sub.p, cumA, cumC, targetC);
 			col += sub.r;
 		}
-		return new TaFusedConstruction(
-				new NonCubicBilinearAlgorithm(targetA, targetB, targetC, U, V, W), pairs);
+		return new TaFusedConstruction(NonCubicBilinearAlgorithm.fromFactors(
+				targetA, targetB, targetC, bU.build(), bV.build(), bW.build()), pairs);
+	}
+
+	/** Accumulates a factor's non-zeros by (column, row) and emits a {@link SparseFactorMatrix}
+	 *  — the per-column sparse builder for the recombination/TA construction paths (replaces
+	 *  the dense {@code double[dim²][totalRank]} result). */
+	private static final class SparseFactorBuilder {
+		private final int totalRank;
+		private final int rows;
+		private final java.util.HashMap<Long, Double> acc = new java.util.HashMap<>();
+
+		SparseFactorBuilder(int totalRank, int rows) {
+			this.totalRank = totalRank;
+			this.rows = rows;
+		}
+
+		void add(int col, int row, double val) {
+			if (val == 0.0) return;
+			acc.merge(((long) col << 21) | row, val, Double::sum);
+		}
+
+		FactorMatrix build() {
+			int[] cnt = new int[totalRank];
+			for (java.util.Map.Entry<Long, Double> e : acc.entrySet()) {
+				if (e.getValue() != 0.0) cnt[(int) (e.getKey() >> 21)]++;
+			}
+			int[][] cr = new int[totalRank][];
+			double[][] cv = new double[totalRank][];
+			for (int c = 0; c < totalRank; c++) { cr[c] = new int[cnt[c]]; cv[c] = new double[cnt[c]]; }
+			int[] w = new int[totalRank];
+			for (java.util.Map.Entry<Long, Double> e : acc.entrySet()) {
+				double v = e.getValue();
+				if (v == 0.0) continue;   // cancelled to exactly zero — drop
+				long k = e.getKey();
+				int c = (int) (k >> 21);
+				int i = w[c]++;
+				cr[c][i] = (int) (k & 0x1FFFFF);
+				cv[c][i] = v;
+			}
+			return SparseFactorMatrix.fromColumns(rows, cr, cv);
+		}
+	}
+
+	/** Sparse per-product embed (the no-dense replacement for {@link #embedFactor} in the TA
+	 *  path): for unpaired base product {@code kBase}, place sub column {@code kSub} into
+	 *  output column {@code colStart+kSub}, scaled by the base coefficient, across the base
+	 *  product's blocks (block-padded entries skipped). */
+	private static void embedProductSparse(SparseFactorBuilder b, FactorMatrix baseF, FactorMatrix subF,
+			int kBase, int colStart, int baseCols, int subCols, int[] cumRows, int[] cumCols,
+			int targetCols) {
+		int subR = subF.cols();
+		int[][] sR = new int[subR][];
+		double[][] sV = new double[subR][];
+		columnSnapshot(subF, sR, sV);
+		int[][] bR = new int[baseF.cols()][];
+		double[][] bV = new double[baseF.cols()][];
+		columnSnapshot(baseF, bR, bV);
+		int[] baseRows = bR[kBase];
+		double[] baseVals = bV[kBase];
+		for (int bi = 0; bi < baseRows.length; bi++) {
+			int aBase = baseRows[bi];
+			double c = baseVals[bi];
+			int iBase = aBase / baseCols, jBase = aBase % baseCols;
+			int rowOff = cumRows[iBase], colOff = cumCols[jBase];
+			int brs = cumRows[iBase + 1] - cumRows[iBase];
+			int bcs = cumCols[jBase + 1] - cumCols[jBase];
+			for (int kSub = 0; kSub < subR; kSub++) {
+				int[] r = sR[kSub];
+				double[] v = sV[kSub];
+				for (int si = 0; si < r.length; si++) {
+					int aSub = r[si];
+					int iSub = aSub / subCols, jSub = aSub % subCols;
+					if (iSub >= brs || jSub >= bcs) continue;
+					b.add(colStart + kSub, (rowOff + iSub) * targetCols + (colOff + jSub), c * v[si]);
+				}
+			}
+		}
 	}
 
 	/** Embed the fused TA block {@code build(n,r,p)} for the (rot²-oriented) product
 	 *  pair {@code (k1,k2)} into the global factors starting at column {@code col};
 	 *  returns the next free column. {@code k1}'s sub-shape is {@code ⟨n,r,p⟩},
 	 *  {@code k2}'s is {@code ⟨p,n,r⟩}. */
-	private static int embedTaPair(double[][] U, double[][] V, double[][] W, int col,
-			int k1, int k2, int[][] subShapes, int[][] grids,
+	private static int embedTaPair(SparseFactorBuilder bU, SparseFactorBuilder bV, SparseFactorBuilder bW,
+			int col, int k1, int k2, int[][] subShapes, int[][] grids,
 			int[] cumA, int[] cumB, int[] cumC, int targetB, int targetC) {
 		int[] s1 = subShapes[k1];
 		int n = s1[0], r = s1[1], p = s1[2];
@@ -932,7 +1008,7 @@ public final class Recombination {
 				} else {                  // A2(p×n) → P2 A-block (i2,j2)
 					int d = idx - nr; gRow = cumA[i2] + d / n; gCol = cumB[j2] + d % n;
 				}
-				U[gRow * targetB + gCol][col] += tu[idx];
+				bU.add(col, gRow * targetB + gCol, tu[idx]);
 			}
 			for (int idx = 0; idx < tv.length; idx++) {
 				if (tv[idx] == 0) continue;
@@ -942,7 +1018,7 @@ public final class Recombination {
 				} else {                  // B2(n×r) → P2 B-block (j2,l2)
 					int d = idx - rp; gRow = cumB[j2] + d / r; gCol = cumC[l2] + d % r;
 				}
-				V[gRow * targetC + gCol][col] += tv[idx];
+				bV.add(col, gRow * targetC + gCol, tv[idx]);
 			}
 			for (int idx = 0; idx < tw.length; idx++) {
 				if (tw[idx] == 0) continue;
@@ -952,52 +1028,11 @@ public final class Recombination {
 				} else {                  // C2(p×r) → P2 C-block (i2,l2)
 					int d = idx - np; gRow = cumA[i2] + d / r; gCol = cumC[l2] + d % r;
 				}
-				W[gRow * targetC + gCol][col] += tw[idx];
+				bW.add(col, gRow * targetC + gCol, tw[idx]);
 			}
 			col++;
 		}
 		return col;
 	}
 
-	/**
-	 * Place {@code base[aBase][kBase] · sub[aSub][kSub]} into
-	 * {@code dst[globalRow * targetCols + globalCol][kStart + kSub]} for every
-	 * non-zero base/sub pair, where {@code (globalRow, globalCol)} is the block
-	 * offset given by the allocation {@code cumulatives}.
-	 */
-	private static void embedFactor(double[][] dst, double[][] base, double[][] sub,
-			int kBase, int kStart,
-			int baseRows, int baseCols, int subRows, int subCols,
-			int[] cumRows, int[] cumCols, int targetCols) {
-		int subRank = sub[0].length;
-		int baseDim = baseRows * baseCols;
-		int subDim = subRows * subCols;
-		for (int aBase = 0; aBase < baseDim; aBase++) {
-			double c = base[aBase][kBase];
-			if (c == 0.0) continue;
-			int iBase = aBase / baseCols;
-			int jBase = aBase % baseCols;
-			int rowOff = cumRows[iBase];
-			int colOff = cumCols[jBase];
-			// Block's actual size — may be smaller than sub.{rows,cols} for non-uniform
-			// allocations (e.g. block (1,1) is 3×3 but the sub-algorithm shape is 4×4
-			// when Strassen's M1 stitches A_uu + A_vv via padding). Out-of-range
-			// (iSub, jSub) corresponds to a padded zero in the input — skip it.
-			int blockRowSize = cumRows[iBase + 1] - cumRows[iBase];
-			int blockColSize = cumCols[jBase + 1] - cumCols[jBase];
-			for (int aSub = 0; aSub < subDim; aSub++) {
-				int iSub = aSub / subCols;
-				int jSub = aSub % subCols;
-				if (iSub >= blockRowSize || jSub >= blockColSize) continue;
-				int aGlob = (rowOff + iSub) * targetCols + (colOff + jSub);
-				double[] srcRow = sub[aSub];
-				double[] dstRow = dst[aGlob];
-				for (int kSub = 0; kSub < subRank; kSub++) {
-					double s = srcRow[kSub];
-					if (s == 0.0) continue;
-					dstRow[kStart + kSub] += c * s;
-				}
-			}
-		}
-	}
 }

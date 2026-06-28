@@ -41,6 +41,26 @@ public class TestRecombinationSparse {
 	}
 
 	@Test
+	public void ta_fusion_naive_grid_is_exact() {
+		// naive-⟨1,2,2⟩ grid, allocA=[10] allocB=[3,10] allocC=[3,10] → ⟨10,13,13⟩. The
+		// ⟨10,3,10⟩ & ⟨10,10,3⟩ products are a rot² pair whose TA fusion saves (2·300 > the
+		// fused 460), so it fuses — exercising the SPARSE TA build (embedTaPair +
+		// embedProductSparse, no dense result). Naive leaves keep the whole thing exact.
+		NonCubicBilinearAlgorithm base = NonCubicBilinearAlgorithm.naive(1, 2, 2);
+		Recombination.SubResolver resolve = sz -> NonCubicBilinearAlgorithm.naive(sz[0], sz[1], sz[2]);
+		Recombination.SotaResolver sota = (a, b, c) -> a * b * c;
+		Recombination.TaFusedConstruction tc = Recombination.constructWithTaFusion(
+				base, resolve, sota, new int[] { 10 }, new int[] { 3, 10 }, new int[] { 3, 10 });
+
+		assertThat(tc.fusedPairs()).isNotEmpty();   // at least one TA pair fused
+		NonCubicBilinearAlgorithm cat = tc.alg();
+		assertThat(cat.n).isEqualTo(10);
+		assertThat(cat.m).isEqualTo(13);
+		assertThat(cat.p).isEqualTo(13);
+		assertThat(Verifier.isExactNonCubic(cat)).isTrue();
+	}
+
+	@Test
 	public void strassen_unbalanced_3_2_split_with_padding_is_exact() throws java.io.IOException {
 		NonCubicBilinearAlgorithm s = strassen();
 		// [3,2]³ → ⟨5,5,5⟩ with UNEQUAL blocks (3 vs 2): Strassen's block-combining products

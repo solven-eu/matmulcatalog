@@ -325,6 +325,87 @@ public class Verifier {
 		return out;
 	}
 
+	// ── size/density-aware dispatcher ───────────────────────────────────────────
+
+	/** Which concrete verifier {@link #verifyAuto} chose. */
+	public enum VerifyStrategy {
+		/** {@link #isExactNonCubic} — a real algebraic proof; memory ∝ distinct product terms. */
+		EXACT_SYMBOLIC,
+		/** {@link #passesRandomMatmulSpotCheck} — O(dim) memory, randomised (false-accept ≈ 0). */
+		RANDOM_SPOT_CHECK
+	}
+
+	/** Outcome of {@link #verifyAuto}: the verdict, WHICH strategy produced it, and the
+	 *  estimated exact-verifier work that drove the choice (so callers/logs can be honest
+	 *  about whether they got a proof or a spot-check). */
+	public record Verdict(boolean ok, VerifyStrategy strategy, long estimatedTerms) {
+		/** True iff the verdict is a genuine algebraic proof (not the randomised path). */
+		public boolean isProof() { return strategy == VerifyStrategy.EXACT_SYMBOLIC; }
+	}
+
+	/**
+	 * Default ceiling on the exact verifier's generated-term count (≈ both its time in
+	 * BigInteger multiplies AND a loose upper bound on its HashMap memory). Above this we
+	 * fall back to the spot-check. 30M terms ≈ a few seconds and &lt;~2 GB worst case;
+	 * the ⟨30,32,32⟩ AlphaEvolve-based scheme (dense, rank 14863) estimates far above it,
+	 * which is exactly the case that OOM'd the exact path at 12 GB.
+	 */
+	public static final long DEFAULT_MAX_EXACT_TERMS = 30_000_000L;
+
+	/**
+	 * Verify a non-cubic scheme with the STRONGEST AFFORDABLE strategy, chosen by size and
+	 * density — not a fixed verifier. Sparse / small schemes get the exact symbolic proof
+	 * ({@link #isExactNonCubic}); dense / large schemes (where the exact term-map would blow
+	 * up — the AlphaEvolve-based ⟨30,32,32⟩ being the canonical OOM) get the memory-light
+	 * random matmul spot-check ({@link #passesRandomMatmulSpotCheck}). The specific verifiers
+	 * stay first-class — this only routes between them.
+	 *
+	 * <p>The gate is {@link #estimateExactTerms}: the sum over products of
+	 * {@code |supp Uₖ|·|supp Vₖ|·|supp Wₖ|}, which is what the exact accumulator iterates
+	 * (and an upper bound on the distinct terms it stores). Cheap to compute (O(nnz)).</p>
+	 */
+	public static Verdict verifyAuto(NonCubicBilinearAlgorithm alg, long maxExactTerms) {
+		long est = estimateExactTerms(alg, maxExactTerms);
+		if (est <= maxExactTerms) {
+			return new Verdict(isExactNonCubic(alg), VerifyStrategy.EXACT_SYMBOLIC, est);
+		}
+		return new Verdict(passesRandomMatmulSpotCheck(alg), VerifyStrategy.RANDOM_SPOT_CHECK, est);
+	}
+
+	/** {@link #verifyAuto(NonCubicBilinearAlgorithm, long)} with {@link #DEFAULT_MAX_EXACT_TERMS}. */
+	public static Verdict verifyAuto(NonCubicBilinearAlgorithm alg) {
+		return verifyAuto(alg, DEFAULT_MAX_EXACT_TERMS);
+	}
+
+	/**
+	 * Estimate the exact verifier's generated-term count: {@code Σ_k nnz(Uₖ)·nnz(Vₖ)·nnz(Wₖ)}.
+	 * Counts non-zeros per column over the sparse factors (O(total nnz), no dense). Short-circuits
+	 * at {@code cap}: returns {@link Long#MAX_VALUE} as soon as the running sum exceeds it (and on
+	 * any overflow), so a hugely-dense scheme is classified without summing the whole thing.
+	 */
+	public static long estimateExactTerms(NonCubicBilinearAlgorithm alg, long cap) {
+		int r = alg.r;
+		int[] nu = colNonZeros(alg.u(), r), nv = colNonZeros(alg.v(), r), nw = colNonZeros(alg.w(), r);
+		long total = 0;
+		for (int k = 0; k < r; k++) {
+			long terms = (long) nu[k] * nv[k] * nw[k];
+			total += terms;
+			if (total < 0 || total > cap) return Long.MAX_VALUE; // overflow or clearly over budget
+		}
+		return total;
+	}
+
+	/** Non-zero count per column of a sparse factor (index k → nnz of column k). */
+	private static int[] colNonZeros(FactorMatrix f, int r) {
+		int[] nz = new int[r];
+		for (int k = 0; k < r; k++) {
+			int[] c = { 0 };
+			f.forEachInColumn(k, (row, val) -> { if (val != 0.0) c[0]++; });
+			nz[k] = c[0];
+		}
+		return nz;
+	}
+
 	/**
 	 * <strong>Fast randomised verification</strong> for non-cubic bilinear
 	 * algorithms: instead of computing the full Frobenius residual against
