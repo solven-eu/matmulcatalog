@@ -1078,6 +1078,18 @@ function render() {
     return true;
   });
 
+  // When a single CONCRETE field is selected, collapse every row's cell
+  // membership to THAT field, so the dominance/dedup passes below compare only
+  // WITHIN the viewed field. Without this, a row dominated in the selected field
+  // (e.g. Bläser ⟨3,3,3⟩≥19 vs Wang ≥20 over F₂) still wins an UNVIEWED field's
+  // cell (R/Z/…) and so wrongly appears in the filtered view. Set/sub-class
+  // selectors ("" = all, "ZT", "R/Q/Z") keep the full membership list.
+  const SINGLE_FIELDS = new Set(["F2", "F3", "Z", "Q", "R", "C"]);
+  const cellFieldsOf = (s) =>
+    field === "ZT" ? ["ZT"]                                  // ZT view → one cell per format
+      : (field && SINGLE_FIELDS.has(field)) ? [field]
+      : schemeFieldList(s);
+
   // Dedupe in two passes:
   //
   // Pass 1: collapse rows with the SAME SOURCE + same (format, field, rank,
@@ -1119,7 +1131,10 @@ function render() {
         const eff = effectiveAdditions(s);
         const adds = eff == null ? "-" : eff;
         const key = `${keyFmt(s)}|adds=${adds}`;
-        const prio = sourcePriority(s.source);
+        // PREFER DERIVED: when collapsing a cross-source duplicate (same rank+additions+field),
+        // keep our OWN derivation (composed) over an import — otherwise it'd be dropped here
+        // before the dominance tie-break below ever sees it. [prefer-derived]
+        const prio = sourcePriority(s.source) - (isComposedScheme(s) ? 10000 : 0);
         const prev = byKey.get(key);
         if (!prev || prio < prev.prio) byKey.set(key, { row: s, prio });
       }
@@ -1141,7 +1156,7 @@ function render() {
       const bestNonDerived = new Map();
       for (const s of filtered) {
         if (s.derived || s.border || s.lower) continue; // border / lower bound ≠ achievable rank — don't let them shave real derived rows
-        for (const f of schemeFieldList(s)) {
+        for (const f of cellFieldsOf(s)) {
           const k = cellKey(s, f);
           const cur = bestNonDerived.get(k);
           if (cur == null || s.rank < cur) bestNonDerived.set(k, s.rank);
@@ -1152,7 +1167,7 @@ function render() {
       // competitor exists there).
       filtered = filtered.filter(s => {
         if (!s.derived) return true;
-        const fields = schemeFieldList(s);
+        const fields = cellFieldsOf(s);
         if (!fields.length) return true; // unclassifiable → never silently drop
         return fields.some(f => {
           const best = bestNonDerived.get(cellKey(s, f));
@@ -1186,9 +1201,17 @@ function render() {
         const as = secondaryRankScore(a, secondary);
         const bs = secondaryRankScore(b, secondary);            // secondary: user choice
         if (as !== bs) return as < bs;
+        // A real scheme (factor matrices on disk) still beats a formula-only derived BOUND.
         const aDisk = (a.derived || a.scheme_provided === false) ? 1 : 0;
         const bDisk = (b.derived || b.scheme_provided === false) ? 1 : 0;
-        if (aDisk !== bDisk) return aDisk < bDisk;              // on-disk preferred
+        if (aDisk !== bDisk) return aDisk < bDisk;
+        // PREFER DERIVED (user 2026-06-28): among real schemes at equal rank+additions, our OWN
+        // derivation (composed: Kron / concat / recombination from bases) represents the cell
+        // over an import — a transparent, reproducible lineage rather than crediting an importer
+        // for a value we derive ourselves (⟨4,4,4⟩=49 is Strassen², not an AlphaTensor discovery).
+        const aComp = isComposedScheme(a) ? 0 : 1;
+        const bComp = isComposedScheme(b) ? 0 : 1;
+        if (aComp !== bComp) return aComp < bComp;
         return sourcePriority(a.source) < sourcePriority(b.source);
       };
       // Best representative per (format, commutative, field) cell.
@@ -1197,7 +1220,7 @@ function render() {
       // theoretical R̃ bound never wins/hides an exact-rank constructive scheme.
       const cellKey = (s, f) => `${s.format.join(",")}|${s.commutative === true}|${s.border === true}|${s.lower === true}|${f}`;
       for (const s of filtered) {
-        for (const f of schemeFieldList(s)) {
+        for (const f of cellFieldsOf(s)) {
           const k = cellKey(s, f);
           const cur = repByCell.get(k);
           if (cur == null || better(s, cur)) repByCell.set(k, s);
@@ -1367,8 +1390,16 @@ function render() {
   for (const s of filtered) {
     const tr = document.createElement("tr");
     const cls = classifySource(s.source);
-    if (cls.key) usedRefKeys.add(cls.key);
-    const ref = cls.key ? refRegistry.get(cls.key) : null;
+    // Lower-bound rows are registered in refRegistry under their RAW source
+    // string (buildRefRegistry keys LB entries by lb.source verbatim), whereas
+    // classifySource strips a trailing "(via …)" and requires a year — so a
+    // source like "Bläser (via Landsberg 2008)" classified to "Bläser" missed
+    // its registry entry and rendered no [N] (while "Bläser 2003" worked only
+    // because classifySource left it unchanged). For LB rows, prefer the
+    // raw-source key when the registry holds it.
+    const refKey = (s.lower && refRegistry.has(s.source)) ? s.source : cls.key;
+    if (refKey) usedRefKeys.add(refKey);
+    const ref = refKey ? refRegistry.get(refKey) : null;
     const refLink = ref
       ? ` <sup class="refnum"><a href="#ref-${ref.index}">[${ref.index}]</a></sup>`
       : "";
@@ -1424,8 +1455,15 @@ function render() {
     // Display only the NARROWEST field(s); the implied ones (e.g. a Z scheme's
     // Q/R/C/F2/F3) would be noise in the column. Full list → tooltip.
     const canon = canonicalFields(flist);
-    const fieldText = canon.length ? canon.join(", ") : "—";
-    const fullText = flist.length ? flist.join(", ") : "—";
+    // ZT is a sub-class marker on integer schemes (coefficients all in {−1,0,1}),
+    // carried as the per-scheme `zt` boolean — NOT a member of fields[] (per the
+    // field conventions: ZT is not a field). Surface it in the column by narrowing
+    // the displayed "Z" to "ZT" when the flag is set; "ZT" is the more informative
+    // descriptor for a ternary-integer scheme. (zt is only ever true when Z ∈ fields.)
+    const canonDisp = (s.zt === true) ? canon.map(f => (f === "Z" ? "ZT" : f)) : canon;
+    const ztNote = (s.zt === true) ? " · ZT: ternary integer (coeffs ∈ {−1,0,1})" : "";
+    const fieldText = canonDisp.length ? canonDisp.join(", ") : "—";
+    const fullText = (flist.length ? flist.join(", ") : "—") + ztNote;
     const impliedText = (canon.length && flist.length > canon.length)
       ? ` (implies ${flist.filter(f => !canon.includes(f)).join(", ")})` : "";
     // The "narrowed-from-source" note is a legacy aid for rows lacking an

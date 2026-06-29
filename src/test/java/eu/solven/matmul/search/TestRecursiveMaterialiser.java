@@ -13,6 +13,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
+import eu.solven.matmul.catalog.Lineage;
 import eu.solven.matmul.recombination.Recombination;
 
 public class TestRecursiveMaterialiser {
@@ -24,6 +25,30 @@ public class TestRecursiveMaterialiser {
 		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.defaultPool();
 		RecursiveClosureSota sota = new RecursiveClosureSota(lookup, pool, true, true);
 		return new RecursiveMaterialiser(lookup, pool, sota, null, false, true);
+	}
+
+	@Test
+	public void write_guard_rejects_same_shape_atom_lineage() {
+		// The strengthened write-time guard must REFUSE a lineage that builds a shape from an
+		// Atom of its OWN ordered shape (degenerate self-derivation: "⟨2,2,3⟩ from ⟨2,2,3⟩").
+		// This terminates (the atom is acyclic), so the @hash-cycle DFS alone would not catch it.
+		RecursiveMaterialiser mat = dryRun(new FieldAwareLookup("Q"));
+
+		Lineage.Node selfShape = new Lineage.ConcatCols(
+				new Lineage.Atom("naive-2x2x1"), new Lineage.Atom("2x2x3@deadbee"));
+		assertThat(mat.lineageCorruption(selfShape, 2, 2, 3, "abc1234"))
+				.as("same-ordered-shape atom must be flagged SELF-SHAPE")
+				.contains("SELF-SHAPE");
+
+		// An orientation/transpose atom (same multiset, DIFFERENT ordered shape) is legitimate
+		// — it must NOT be flagged SELF-SHAPE. Bare refs resolve to catalog-best (no @hash edge
+		// followed), so the guard returns null for this clean orientation lineage.
+		Lineage.Node orientation = new Lineage.ConcatCols(
+				new Lineage.Atom("naive-2x2x1"), new Lineage.Atom("2x3x2"));
+		String r = mat.lineageCorruption(orientation, 2, 2, 3, "abc1234");
+		assertThat(r == null || !r.contains("SELF-SHAPE"))
+				.as("orientation/transpose atom must NOT be SELF-SHAPE (got: %s)", r)
+				.isTrue();
 	}
 
 	@Test

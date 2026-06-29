@@ -1,9 +1,13 @@
 {
-  "lineage_str": "Recombination(base=ext[2x4x5-r32-alphaevolve-6216e15.json] / <2,4,5>=32 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])",
-  "lineage_compact": "R[ext[2x4x5-r32-alphaevolve-6216e15.json] / <2,4,5>=32 :: CANONICAL; 1,1 | 1,1,1,1 | 1,1,1,1,1]",
+  "lineage_str": "Recombination(base=Transpose(2x5x4, perm=\"ABC->ACB\"), allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])",
+  "lineage_compact": "R[2x5x4^ABC->ACB; 1,1 | 1,1,1,1 | 1,1,1,1,1]",
   "lineage": {
     "op": "Recombination",
-    "base": {"op": "Atom", "ref": "ext[2x4x5-r32-alphaevolve-6216e15.json] / <2,4,5>=32 :: CANONICAL"},
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->ACB",
+      "child": {"op": "Atom", "ref": "2x5x4@9e4bcd3fc85c6c1ba827304531b7fde731007bf4b3e059bac65b277c6552076c"}
+    },
     "allocA": [1, 1],
     "allocB": [1, 1, 1, 1],
     "allocC": [1, 1, 1, 1, 1],

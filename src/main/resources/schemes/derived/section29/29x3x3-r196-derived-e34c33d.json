@@ -1,0 +1,26 @@
+{
+  "lineage_str": "ConcatRows(OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨5,3,3⟩), 24x3x3)",
+  "lineage_compact": "3x3x5-r36-alphatensor_Z-3895b40→⟨5,3,3⟩ +n 24x3x3",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 3,
+      "p": 3,
+      "axisMap": "pnm",
+      "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"}
+    },
+    "bottom": {"op": "Atom", "ref": "24x3x3@90fa562f25f79fa2ef39c23de2fef26f8cda22f43d66fd10904bd086a4b6a21c"}
+  },
+  "n": [29, 3, 3],
+  "m": 196,
+  "hash": "e34c33d002374a5e91fecad72ee2ea5d1b4839ba278be05bb6971f8a253afafb",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

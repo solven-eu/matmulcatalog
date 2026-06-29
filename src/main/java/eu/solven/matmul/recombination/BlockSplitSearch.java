@@ -766,6 +766,22 @@ public class BlockSplitSearch {
 			int n, int m, int p,
 			List<NamedBase> basePool, Recombination.SotaResolver sota, boolean balancedOnly,
 			int maxImbalance, int maxCombinations, int maxPadding, long upperBoundHint) {
+		// Exclude same-ORDERED-shape bases: a base ⟨n,m,p⟩ can only reach the target ⟨n,m,p⟩
+		// via a no-op all-1s tiling — a degenerate SELF-recombination the write-guard refuses
+		// (SELF-SHAPE). Left in the pool it WINS on rank (it just re-emits the import) and
+		// shadows the best STRICTLY-smaller-base derivation, so the refusal leaves the shape
+		// with no derived witness at all (the ⟨4,4,4⟩=49 Strassen² / ⟨5,5,5⟩=93 gap). Drop it
+		// here so the search keeps the genuine recombination. Orientation/transpose bases (same
+		// multiset, DIFFERENT order — e.g. ⟨4,4,2⟩ for ⟨2,4,4⟩) are legitimate and kept.
+		{
+			List<NamedBase> trimmed = new java.util.ArrayList<>(basePool.size());
+			for (NamedBase nb : basePool) {
+				NonCubicBilinearAlgorithm b = nb.base();
+				if (b.n == n && b.m == m && b.p == p) continue;
+				trimmed.add(nb);
+			}
+			basePool = trimmed;
+		}
 		// Evaluate cheap candidates FIRST so the heavy recombination sweep
 		// has a tight upperBound to prune against. Concat + Kronecker are
 		// O(factor_pairs) — milliseconds vs the multi-minute recombination

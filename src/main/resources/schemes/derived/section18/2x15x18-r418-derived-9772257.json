@@ -1,0 +1,62 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(ConcatRows(OrientAs(Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,2,5⟩), OrientAs(2x5x8-r63-perminov_Z-0cda074, ⟨8,2,5⟩)), ⟨2,15,5⟩), OrientAs(2x13x15-r300-hk71-f1e63e5, ⟨2,15,13⟩))",
+  "lineage_compact": "R[ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL; 1,1 | 1,1,1,1,1 | 1,1,1,1,1,1,1]→⟨7,2,5⟩ +n 2x5x8-r63-perminov_Z-0cda074→⟨8,2,5⟩→⟨2,15,5⟩ +p 2x13x15-r300-hk71-f1e63e5→⟨2,15,13⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 2,
+      "m": 15,
+      "p": 5,
+      "axisMap": "mnp",
+      "child": {
+        "op": "ConcatRows",
+        "top": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 2,
+          "p": 5,
+          "axisMap": "pnm",
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        },
+        "bottom": {
+          "op": "OrientAs",
+          "n": 8,
+          "m": 2,
+          "p": 5,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
+        }
+      }
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 2,
+      "m": 15,
+      "p": 13,
+      "axisMap": "npm",
+      "child": {"op": "Atom", "ref": "2x13x15-r300-hk71-f1e63e5"}
+    }
+  },
+  "n": [2, 15, 18],
+  "m": 418,
+  "hash": "97722576c75685fe294855b5c3ababa9e9022d680a7d8057b983aece3605ad9c",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

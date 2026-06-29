@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatRows(2x3x3-r15-alphatensor_Z-497eea7, 24x3x3)",
+  "lineage_compact": "2x3x3-r15-alphatensor_Z-497eea7 +n 24x3x3",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+    "bottom": {"op": "Atom", "ref": "24x3x3@90fa562f25f79fa2ef39c23de2fef26f8cda22f43d66fd10904bd086a4b6a21c"}
+  },
+  "n": [26, 3, 3],
+  "m": 175,
+  "hash": "a30f78c0aa11a0e65c4ba51dc67620d9cd0ac256d7d8ec4cd8bb3632c5d42aa3",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

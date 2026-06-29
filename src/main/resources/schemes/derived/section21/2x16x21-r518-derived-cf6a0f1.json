@@ -1,0 +1,50 @@
+{
+  "lineage_str": "ConcatCols(SumInner(Recombination(base=2x4x5, allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1]), SumInner(OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩))), 2x16x16-r392-hk71-25739f5)",
+  "lineage_compact": "R[2x4x5; 1,1 | 1,1,1,1 | 1,1,1,1,1] +m 2x5x6-r47-alphaevolve-7387644→⟨2,6,5⟩ +m 2x5x6-r47-alphaevolve-7387644→⟨2,6,5⟩ +p 2x16x16-r392-hk71-25739f5",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"},
+        "allocA": [1, 1],
+        "allocB": [1, 1, 1, 1],
+        "allocC": [1, 1, 1, 1, 1],
+        "leaves": [
+          {"op": "Atom", "ref": "naive-1x1x1"}
+        ]
+      },
+      "right": {
+        "op": "SumInner",
+        "left": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 6,
+          "p": 5,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 6,
+          "p": 5,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+        }
+      }
+    },
+    "right": {"op": "Atom", "ref": "2x16x16-r392-hk71-25739f5"}
+  },
+  "n": [2, 16, 21],
+  "m": 518,
+  "hash": "cf6a0f1fd23bb0e2bd534d4dbf08e4710b524459ac1cd58d496c41b9deeec577",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

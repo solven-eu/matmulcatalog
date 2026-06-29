@@ -1,0 +1,56 @@
+{
+  "lineage_str": "ConcatRows(OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨5,3,3⟩), ConcatRows(Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])))",
+  "lineage_compact": "3x3x5-r36-alphatensor_Z-3895b40→⟨5,3,3⟩ +n 3x3x7→⟨7,3,3⟩ ↓[1,2,3,4,5,6|0,1,2|0,1,2] +n 3x3x7→⟨7,3,3⟩ ↓[1,2,3,4,5,6|0,1,2|0,1,2]",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {
+      "op": "OrientAs",
+      "n": 5,
+      "m": 3,
+      "p": 3,
+      "axisMap": "pnm",
+      "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"}
+    },
+    "bottom": {
+      "op": "ConcatRows",
+      "top": {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6],
+        "keepM": [0, 1, 2],
+        "keepP": [0, 1, 2],
+        "child": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 3,
+          "p": 3,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
+      },
+      "bottom": {
+        "op": "Project",
+        "keepN": [1, 2, 3, 4, 5, 6],
+        "keepM": [0, 1, 2],
+        "keepP": [0, 1, 2],
+        "child": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 3,
+          "p": 3,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+        }
+      }
+    }
+  },
+  "n": [17, 3, 3],
+  "m": 116,
+  "hash": "96ff2f06936c20f53a1d5bf3885a05c1522d00dbf3babccf584d26814b9b1e5b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

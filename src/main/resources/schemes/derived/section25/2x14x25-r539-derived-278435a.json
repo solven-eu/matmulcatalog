@@ -1,0 +1,25 @@
+{
+  "lineage_str": "ConcatCols(SumInner(2x7x7-r76-perminov_Z-f028f76, 2x7x7-r76-perminov_Z-f028f76), 2x14x18-r387-hk71-ae6af40)",
+  "lineage_compact": "2x7x7-r76-perminov_Z-f028f76 +m 2x7x7-r76-perminov_Z-f028f76 +p 2x14x18-r387-hk71-ae6af40",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "SumInner",
+      "left": {"op": "Atom", "ref": "2x7x7-r76-perminov_Z-f028f76"},
+      "right": {"op": "Atom", "ref": "2x7x7-r76-perminov_Z-f028f76"}
+    },
+    "right": {"op": "Atom", "ref": "2x14x18-r387-hk71-ae6af40"}
+  },
+  "n": [2, 14, 25],
+  "m": 539,
+  "hash": "278435a3aece4adae1fefca31ddb49040ad749dee44724fb0497c8199a33fda9",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

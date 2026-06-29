@@ -283,6 +283,18 @@ public final class RecursiveMaterialiser {
 		return false;
 	}
 
+	/** True iff a reproducible <em>recombination</em>-derived scheme already exists for this
+	 *  shape (the {@code derived/} folder only). Unlike {@link #hasOursScheme}, a
+	 *  {@code constructed/} entry (e.g. a COMMUTATIVE Waksman scheme that does NOT lift to
+	 *  non-commutative matmul) does NOT count — so {@code --derive-all} still writes a genuine
+	 *  NC derived witness for every shape that lacks one ("a derived for any shape"). */
+	private boolean hasDerivedScheme(int n, int m, int p) {
+		for (Path path : diskLookup.findFiles(n, m, p)) {
+			if (path.toString().contains("/derived/")) return true;
+		}
+		return false;
+	}
+
 	public record Result(NonCubicBilinearAlgorithm alg, Lineage.Node lineage, boolean fromDisk) {}
 
 	public Optional<Result> materialise(int n, int m, int p) {
@@ -377,7 +389,11 @@ public final class RecursiveMaterialiser {
 			// derivation that is dominated by an EXISTING derived scheme — that is pure
 			// clutter (e.g. a ⟨16,16,16⟩=2304 recursion when a derived 2209 is on disk).
 			boolean tieOrBetter = composed.isPresent() && composed.get().alg.r <= bestKnownRank;
-			boolean fillAtomOnly = registerDerivedAnyway && composed.isPresent() && !hasOursScheme(n, m, p);
+			// Fill a reproducible NC derived witness for any shape that lacks one in derived/
+			// — even if a (possibly commutative) constructed/imported scheme already covers it
+			// ("a derived for any shape", user 2026-06-28). Uses hasDerivedScheme, not
+			// hasOursScheme, so a commutative Waksman constructed/ entry doesn't suppress it.
+			boolean fillAtomOnly = registerDerivedAnyway && composed.isPresent() && !hasDerivedScheme(n, m, p);
 			if (tieOrBetter || fillAtomOnly) {
 				persist(n, m, p, composed.get());
 				return composed;
@@ -1787,7 +1803,8 @@ public final class RecursiveMaterialiser {
 	 *  (DANGLING), or a ref that transitively reaches the WRITTEN shape (CYCLE) — else null.
 	 *  Bounded transitive walk over {@code @hash} refs (the precise edges); bare/named refs
 	 *  get only the cheap self-shape check (they resolve to catalog-best, not a fixed file). */
-	private String lineageCorruption(Lineage.Node root, int n, int m, int p, String selfHash7) {
+	// Package-private for white-box testing of the write-time guard (TestRecursiveMaterialiser).
+	String lineageCorruption(Lineage.Node root, int n, int m, int p, String selfHash7) {
 		// DFS over the @hash-pinned dependency closure. Reports the FIRST corruption:
 		//   DANGLING — a shape@hash ref resolves to no file;
 		//   CYCLE    — a back-edge (a ref reaches a file already on the DFS path, OR the
@@ -1798,6 +1815,21 @@ public final class RecursiveMaterialiser {
 		// fixed file), so they are not followed — only @hash edges are precise.
 		java.util.List<String> rootRefs = new java.util.ArrayList<>();
 		collectAtomRefs(root, rootRefs);
+		// SELF-SHAPE guard: a same-ORDERED-shape Atom leaf is a degenerate self-derivation —
+		// "build ⟨n,m,p⟩ from a (different-hash) ⟨n,m,p⟩ scheme" via project-back/concat. It
+		// TERMINATES (the atom is a concrete, acyclic scheme), so the @hash-cycle DFS below never
+		// catches it — yet it can never be uniquely optimal (project-then-concat-back reconstructs
+		// the removed slice, so rank ≥ the original). No legitimate op (concat/project/Kron/
+		// recombination) ever yields a same-ORDERED-shape leaf; an orientation/transpose leaf
+		// (same multiset, different order — e.g. ⟨2,3,2⟩ from ⟨2,2,3⟩) is fine and NOT flagged.
+		// [[cyclic lineage → silent SOE]] — this is the terminating-cousin of that family.
+		for (String ref : rootRefs) {
+			int[] s = shapeOfRef(ref);
+			if (s != null && s[0] == n && s[1] == m && s[2] == p) {
+				return "SELF-SHAPE: lineage references an Atom of its own shape ⟨"
+						+ n + "," + m + "," + p + "⟩ (" + ref + ")";
+			}
+		}
 		java.util.Set<Path> onPath = new java.util.HashSet<>();
 		java.util.Set<Path> cleanVisited = new java.util.HashSet<>();
 		int[] budget = { 50_000 };
@@ -1855,6 +1887,17 @@ public final class RecursiveMaterialiser {
 	}
 
 	/** Collect every Atom ref in an in-memory lineage tree. */
+	/** Ordered shape {@code [n,m,p]} parsed from a lineage Atom ref (e.g. {@code "2x2x3@h"},
+	 *  {@code "naive-6x14x1"}), or {@code null} if the ref carries no NxMxP token. Reuses the
+	 *  class-level {@link #REF_SHAPE} pattern. */
+	private static int[] shapeOfRef(String ref) {
+		if (ref == null) return null;
+		java.util.regex.Matcher m = REF_SHAPE.matcher(ref);
+		if (!m.find()) return null;
+		return new int[] { Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)),
+				Integer.parseInt(m.group(3)) };
+	}
+
 	private static void collectAtomRefs(Lineage.Node node, java.util.Collection<String> out) {
 		if (node instanceof Lineage.Atom a) {
 			out.add(a.ref());

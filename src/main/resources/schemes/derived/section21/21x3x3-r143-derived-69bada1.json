@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatRows(3x3x3-r23-alphaevolve-e134de1, 18x3x3)",
+  "lineage_compact": "3x3x3-r23-alphaevolve-e134de1 +n 18x3x3",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "3x3x3-r23-alphaevolve-e134de1"},
+    "bottom": {"op": "Atom", "ref": "18x3x3@649a59c804eb5f613dfb0f62e2e831a3b484c8a344a451af585b55c35090a76e"}
+  },
+  "n": [21, 3, 3],
+  "m": 143,
+  "hash": "69bada1397834088a0022680fd684184724b19af1c3e20b92711784525987040",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

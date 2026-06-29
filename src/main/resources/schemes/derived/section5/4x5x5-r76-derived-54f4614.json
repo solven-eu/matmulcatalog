@@ -1,9 +1,13 @@
 {
-  "lineage_str": "Recombination(base=ext[4x5x5-r76-alphatensor_Z-54f4614.json] / <4,5,5>=76 :: CANONICAL, allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])",
-  "lineage_compact": "R[ext[4x5x5-r76-alphatensor_Z-54f4614.json] / <4,5,5>=76 :: CANONICAL; 1,1,1,1 | 1,1,1,1,1 | 1,1,1,1,1]",
+  "lineage_str": "Recombination(base=Transpose(5x4x5, perm=\"ABC->BCA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1], leaves=[naive-1x1x1])",
+  "lineage_compact": "R[5x4x5^ABC->BCA; 1,1,1,1 | 1,1,1,1,1 | 1,1,1,1,1]",
   "lineage": {
     "op": "Recombination",
-    "base": {"op": "Atom", "ref": "ext[4x5x5-r76-alphatensor_Z-54f4614.json] / <4,5,5>=76 :: CANONICAL"},
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->BCA",
+      "child": {"op": "Atom", "ref": "5x4x5@4f9f1a2bf2c5d290e3a0a8979c59b0d7e8e2d8c3b25f04be58613e304818e3b0"}
+    },
     "allocA": [1, 1, 1, 1],
     "allocB": [1, 1, 1, 1, 1],
     "allocC": [1, 1, 1, 1, 1],
