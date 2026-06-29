@@ -414,10 +414,23 @@ public class GenerateCatalogManifest {
 			// "ternary integer" Z-target — distinct from F₃'s ternary modular; it
 			// has nothing to do with F₂/Z₂ / characteristic 2). The flag is
 			// COMPUTED & STAMPED into each scheme JSON by the MaterialiseZT
-			// sanitization procedure; here we merely READ the stored value (user
-			// 2026-06-04: "the catalog would rely on the given field"). Absent →
-			// omitted (scheme not yet sanitized, a stub, or Z ∉ fields).
+			// sanitization procedure; here we PREFER the stored value (user
+			// 2026-06-04: "the catalog would rely on the given field").
+			//
+			// CONTENT-DRIVEN FALLBACK: when no `zt` key is stamped (a folder the
+			// stamp pass never covered — e.g. the whole `derived/` tree, which was
+			// 0/7784 stamped — or a freshly written scheme) but the scheme IS an
+			// integer scheme (Z ∈ fields) AND its matrices expanded above, compute
+			// the flag straight from the coefficients via the SAME definition
+			// (SchemeIO.isTernary, every U/V/W coeff ∈ {-1,0,1}). This keeps the
+			// manifest correct regardless of whether MaterialiseZT has been re-run,
+			// matching the "read metadata from CONTENT, never a side pass" rule. It
+			// reuses the already-expanded realAlg, so it adds no read cost; stubs
+			// (realAlg == null) stay omitted exactly as before.
 			Boolean zt = SchemeIO.readZT(root);
+			if (zt == null && realAlg != null && fieldTags.contains("Z")) {
+				zt = SchemeIO.isTernary(realAlg);
+			}
 			if (zt != null) {
 				entry.put("zt", zt);
 			}

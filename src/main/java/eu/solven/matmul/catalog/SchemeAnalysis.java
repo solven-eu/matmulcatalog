@@ -52,7 +52,7 @@ public interface SchemeAnalysis {
 	 * analyses run on it.
 	 */
 	static List<SchemeAnalysis> defaults() {
-		return List.of(new Verify(), new Additions(), new Buds(), new ProjectionMargin());
+		return List.of(new Verify(), new Additions(), new Buds(), new ProjectionMargin(), new Ternary());
 	}
 
 	/**
@@ -133,6 +133,37 @@ public interface SchemeAnalysis {
 		@Override
 		public Map<String, Object> analyse(NonCubicBilinearAlgorithm alg, Field field) {
 			return Map.of("projection_margin", ProjectionSearch.projectionMargin(alg));
+		}
+	}
+
+	/**
+	 * Ternary-integer sub-class flag → {@code zt}: true ⟺ every U/V/W coefficient
+	 * is in {@code {-1,0,1}} ({@link SchemeIO#isTernary}). This is Perminov's
+	 * "ternary integer" marker — a SUB-CLASS of {@code Z}, NOT a field (it has
+	 * nothing to do with F₂/Z₂ characteristic 2, nor F₃'s ternary <i>modular</i>).
+	 *
+	 * <p>Gated on {@code field == Field.Z}: the enrichment driver's {@code fieldOf}
+	 * returns {@code Z} exactly when {@code Z ∈ fields[]} (Z has top priority), so
+	 * this stamps {@code zt} for — and only for — integer schemes, matching the
+	 * {@code MaterialiseZT} pass. For a non-Z scheme the flag is meaningless, so we
+	 * emit nothing (empty map) and leave any stale value to {@code MaterialiseZT}'s
+	 * clear path. Computing it HERE — from the dense {@code alg} already expanded
+	 * for the bud/projection metrics — means new schemes (notably the whole
+	 * {@code derived/} tree, previously 0/7784 stamped) get {@code zt} in the same
+	 * single-expansion enrichment pass, instead of only via a separate stamp run.</p>
+	 */
+	final class Ternary implements SchemeAnalysis {
+		@Override
+		public String name() {
+			return "ternary";
+		}
+
+		@Override
+		public Map<String, Object> analyse(NonCubicBilinearAlgorithm alg, Field field) {
+			if (field != Field.Z) {
+				return Map.of();
+			}
+			return Map.of("zt", SchemeIO.isTernary(alg));
 		}
 	}
 }

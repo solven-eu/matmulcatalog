@@ -198,7 +198,16 @@ public final class EnrichSchemeMetrics {
 			// through the canonical MatrixJsonFormatter, so a file whose
 			// formatting had drifted (e.g. an older 1-space hand-appended field)
 			// is normalised, while an already-canonical file is a pure no-op.
-			if (root.has("projection_margin") && !(opts.revalidateStubs() && isStubFile)) {
+			// EXCEPTION: an integer scheme (Z ∈ fields[]) enriched BEFORE the
+			// Ternary analysis existed carries projection_margin but no `zt`. We
+			// detect that from the (cheap, no-expansion) fields[] and fall THROUGH
+			// to the full expansion so the zt flag is back-filled — making this
+			// driver self-sufficient (no separate MaterialiseZT run needed) for the
+			// whole derived/ tree.
+			boolean ztMissingOnInteger =
+					SchemeIO.fieldTags(root).contains("Z") && !root.has("zt") && !isStubFile;
+			if (root.has("projection_margin") && !ztMissingOnInteger
+					&& !(opts.revalidateStubs() && isStubFile)) {
 				// Reuse the node + text we already read — no second read/parse.
 				if (SchemeIO.addFields(p.toFile(), root, existing, Map.of(), opts.apply())) {
 					c.normalized.incrementAndGet();
