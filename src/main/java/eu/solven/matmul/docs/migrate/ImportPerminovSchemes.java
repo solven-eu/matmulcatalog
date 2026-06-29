@@ -139,7 +139,27 @@ public final class ImportPerminovSchemes {
 				// upstream field-class (integer ⇒ all fields; rational ⇒ Q/R/C). zt and
 				// additions are (re)computed downstream by GenerateCatalogManifest.
 				Map<String, Object> meta = new LinkedHashMap<>();
-				meta.put("source", "Perminov 2023");
+				// Attribute by Perminov's OWN directory layout, not blindly to "Perminov
+				// 2023": his schemes/known/<sub> subtree re-hosts others' work (e.g.
+				// known/meta_flip_graph = Kauers & Wood 2025). This loop only lists
+				// schemes/results/* (line ~94 — Perminov's own), so forPath returns
+				// PERMINOV_OWN here; the routing is defensive so a widened filter stays
+				// correct, and SKIP_FRESH_IMPORT mirrors (tensor=FMM, matmulcatalog=ours)
+				// are never freshly pulled.
+				var attr = eu.solven.matmul.catalog.PerminovKnownAttribution.forPath(path)
+						.orElse(new eu.solven.matmul.catalog.PerminovKnownAttribution.Attribution(
+								"Perminov 2023",
+								eu.solven.matmul.catalog.PerminovKnownAttribution.Disposition.PERMINOV_OWN));
+				if (attr.disposition()
+						== eu.solven.matmul.catalog.PerminovKnownAttribution.Disposition.SKIP_FRESH_IMPORT) {
+					log.info("[skip-mirror] {} — obtained by other means ({})", base, attr.source());
+					skipExisting++;
+					continue;
+				}
+				meta.put("source", attr.source());
+				if (!attr.isPerminovOwn()) {
+					meta.put("imported_via", "Perminov FastMatrixMultiplication");
+				}
 				meta.put("original_source_path", path);
 				// Clear pointer to the scheme's file in Perminov's own repo (the file,
 				// not the author/paper) — carried into catalog.json and the SPA.

@@ -285,12 +285,31 @@ public class GenerateCatalogManifest {
 			// (FrontierClosure, RankBasesByOmega, paper-table regen) can filter
 			// without re-reading every per-scheme file.
 			String displaySource = source;
+			// Perminov is likewise an AGGREGATOR for his schemes/known/<sub> subtree:
+			// those schemes ORIGINATE ELSEWHERE (he files them under "known"), so
+			// crediting "Perminov 2023" misattributes the historical record — e.g.
+			// ⟨2,7,7⟩=76 under known/meta_flip_graph is Kauers & Wood 2025, not Perminov.
+			// AttributePerminovKnown re-stamps the on-disk `source`; this guard is the
+			// durable safety net (mirrors the fmm-lille exception) so a straggler /
+			// future re-import can never surface as a Perminov "discovery". Only
+			// schemes/results/* stays Perminov. The Perminov-file link is preserved in
+			// source_scheme_url / imported_via. (user 2026-06-29)
+			if (source.toLowerCase(java.util.Locale.ROOT).contains("perminov")
+					&& root.has("original_source_path")) {
+				var attr = eu.solven.matmul.catalog.PerminovKnownAttribution
+						.forPath(root.get("original_source_path").asString());
+				if (attr.isPresent() && !attr.get().isPerminovOwn()) {
+					displaySource = attr.get().source();
+				}
+			}
 			// fmm-lille is an AGGREGATOR, not an originator: it republishes others'
 			// schemes. If its digest cites the literature source for this (format,rank),
 			// attribute to THAT, not to "fmm-lille" (user 2026-06-06; e.g. ⟨3,3,6⟩=40 is
 			// Smirnov 2013, not fmm-lille). This is the deliberate exception to the
-			// "Source = importer" rule (2026-06-03): fmm-lille doesn't discover.
-			if (source.toLowerCase(java.util.Locale.ROOT).startsWith("fmm")) {
+			// "Source = importer" rule (2026-06-03): fmm-lille doesn't discover. Checks
+			// displaySource (not raw source) so a Perminov known/tensor scheme remapped
+			// to "FMM-Lille" just above is further refined to its per-format literature.
+			if (displaySource.toLowerCase(java.util.Locale.ROOT).startsWith("fmm")) {
 				JsonNode fmmRow = fmmByCanonical.get(canonicalKey(n, mm, p));
 				if (fmmRow != null && fmmRow.has("rank") && fmmRow.get("rank").asInt() == rank
 						&& fmmRow.has("references") && fmmRow.get("references").isArray()
