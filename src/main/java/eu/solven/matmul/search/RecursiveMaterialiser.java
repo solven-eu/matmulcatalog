@@ -2022,6 +2022,19 @@ public final class RecursiveMaterialiser {
 					+ " — a leaf could not be resolved though the build resolved it. lineage="
 					+ Lineage.prettyString(r.lineage));
 		}
+		// COEFFICIENT OVERRIDE: fieldNamesFromLineage intersects the leaves' fields,
+		// assuming the composition preserves their ring — coefficient-BLIND. A
+		// recombination / ½-polarization step (e.g. an ABC->ACA projection) divides
+		// out of that ring, so the materialized matrices can hold a 1/8 that excludes
+		// Z/F2 even though every integer leaf claimed them. Narrow the inferred set to
+		// what the ACTUAL coefficients support, so we never BORN-STAMP an over-claim
+		// the field gate would later reject (project-derived-schemes-overclaim-z).
+		java.util.List<String> narrowed = SchemeIO.narrowFieldsToCoefficients(r.alg, fields);
+		if (narrowed.size() != fields.size()) {
+			log.info("narrowed fields {} → {} for {} (coefficients exclude the dropped tag(s); "
+					+ "lineage inference was ring-blind)", fields, narrowed, fn);
+			fields = narrowed;
+		}
 		try {
 			if (stub) {
 				SchemeIO.writeStub(r.alg, out, r.lineage, fields);

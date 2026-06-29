@@ -86,6 +86,17 @@ jobs:
             echo "no scheme changes → manifest unchanged"
           fi
 
+      # Field-claim gate BEFORE committing. This job commits with [skip ci], so
+      # the standalone verify-catalog.yml gate never fires on its commit — the
+      # only place a freshly-imported / regenerated over-claim (e.g. a 1/8
+      # coefficient mis-tagged Z/F2) can be caught is HERE, before the push.
+      # Fails the job (no commit) rather than silently shipping bad field tags.
+      - name: Verify field claims (lineage + coefficients, no dense)
+        run: |
+          mvn -B -ntp -q exec:java \
+            -Dexec.mainClass=eu.solven.matmul.docs.VerifySchemes \
+            -Dexec.args="--check=lineage,coefficients"
+
       - name: Commit digest + imported schemes
         run: |
           git config user.name  "github-actions[bot]"

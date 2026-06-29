@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.Verifier;
 import eu.solven.matmul.algebra.Field;
-import eu.solven.matmul.algebra.FieldCompliance;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.docs.verify.VerifyLineageFieldCompat;
@@ -36,14 +35,14 @@ import tools.jackson.databind.JsonNode;
  *       over-claim. Pure metadata: reads each atom's own {@code fields[]}, never
  *       materializes a tensor. Delegates to {@link VerifyLineageFieldCompat#check}.</li>
  *   <li><b>{@code coefficients}</b> (cheap, content) — for a scheme that carries
- *       explicit matrices (an atom / materialized scheme), every declared field
- *       must be consistent with the actual U/V/W coefficients: a declared
+ *       explicit matrices (an atom / materialized scheme), the declared fields
+ *       must be consistent with the EXACT coefficient denominators: a declared
  *       {@code Z} demands all-integer entries (a {@code 1/8} coefficient
- *       disproves it); declared {@code F2}/{@code F3} must reduce cleanly mod the
- *       prime (handled exactly, so a rational coprime to the prime is allowed —
- *       {@code 1/8} ∈ F₃ but ∉ F₂). Uses {@link FieldCompliance} for membership
- *       and escalates to {@link Verifier#isExactNonCubicFp} for the modular
- *       cases.</li>
+ *       disproves it); declared {@code F2} demands odd denominators and
+ *       {@code F3} demands denominators coprime to 3 ({@code 1/8} ∈ F₃ but ∉ F₂).
+ *       These are NECESSARY conditions read straight off the raw tokens via
+ *       {@link SchemeIO#fieldsContradictedByCoefficients} (no dense
+ *       materialization); the exact modular identity is the {@code full} check.</li>
  *   <li><b>{@code full}</b> (EXPENSIVE, dense) — the scheme must actually COMPUTE
  *       matmul over each declared field: an exact symbolic residual for
  *       F₂/F₃ ({@link Verifier#isExactNonCubicF2}/{@code F3}) and a random
@@ -147,57 +146,30 @@ public final class VerifySchemes {
 		boolean hasMatrices = root.has("u") || root.has("u_sparse");
 		boolean bilinear = hasMatrices && !SchemeIO.isComplex(root)
 				&& !SchemeIO.isNonBilinear(root) && !SchemeIO.isReduced(root);
-		if ((checks.contains(Check.COEFFICIENTS) || checks.contains(Check.FULL)) && bilinear) {
+		if (checks.contains(Check.COEFFICIENTS) && bilinear) {
+			// EXACT, cheap necessary-condition gate read straight off the raw
+			// coefficient tokens (no dense materialization): a declared Z must be
+			// all-integer, F2 must have odd denominators, F3 denominators coprime
+			// to 3. This is the over-claim that has bitten the catalog repeatedly
+			// (a 1/8 coefficient tagged Z/F2). See
+			// SchemeIO.fieldsContradictedByCoefficients.
+			for (String why : SchemeIO.fieldsContradictedByCoefficients(root)) {
+				out.add(name + " coefficients: " + why);
+			}
+		}
+		// (3) full identity verification per declared field (dense, expensive).
+		if (checks.contains(Check.FULL) && bilinear) {
 			NonCubicBilinearAlgorithm alg;
 			try {
 				alg = SchemeIO.read(root);
 			} catch (Exception e) {
-				out.add(name + " coefficients: cannot read matrices: " + e);
+				out.add(name + " full: cannot read matrices: " + e);
 				return out;
 			}
-			if (checks.contains(Check.COEFFICIENTS)) {
-				for (String tag : declared) {
-					Field field = parseFieldTag(tag);
-					if (field == null) continue;  // ZT etc.
-					String why = coefficientViolation(alg, field);
-					if (why != null) out.add(name + " coefficients: declares " + tag + " but " + why);
-				}
-			}
-			// (3) full identity verification per declared field (dense, expensive).
-			if (checks.contains(Check.FULL)) {
-				String why = fullVerifyViolation(alg, declared);
-				if (why != null) out.add(name + " full: " + why);
-			}
+			String why = fullVerifyViolation(alg, declared);
+			if (why != null) out.add(name + " full: " + why);
 		}
 		return out;
-	}
-
-	/**
-	 * CHEAP coefficient/field consistency for a materialized scheme (no dense
-	 * residual). The only field membership that is both cheap AND exact is
-	 * <b>Z ⟺ all-integer</b> — that is the over-claim that bit ⟨3,3,8⟩ (a
-	 * {@code 1/8} coefficient disproves a Z claim). Q/R/C are satisfied by any
-	 * finite value. <b>F₂/F₃ are deliberately NOT checked here</b>: cheap
-	 * coefficient membership is neither sufficient nor necessary for them (an
-	 * integer {@code 2} is valid mod 2 but fails {@code {0,±1}}; {@code 1/8} is
-	 * valid mod 3) — only the exact modular identity decides, which is
-	 * {@code --check=full}. Returns a reason or null.
-	 */
-	private static String coefficientViolation(NonCubicBilinearAlgorithm alg, Field field) {
-		switch (field) {
-			case Z:
-				return FieldCompliance.isCompliant(alg, field) ? null
-						: "coefficients are not all integers (Z over-claim)";
-			case Q:
-			case R:
-			case C:
-				return FieldCompliance.isCompliant(alg, field) ? null
-						: "coefficients are not all in " + field;
-			case F2:
-			case F3:
-			default:
-				return null;  // identity-dependent → validated under --check=full
-		}
 	}
 
 	/** Dense identity verification over each declared field. Returns a reason or null. */
@@ -247,14 +219,6 @@ public final class VerifySchemes {
 
 	private static Optional<Field> parseField(String s) {
 		return s == null ? Optional.empty() : Optional.of(Field.valueOf(s.trim()));
-	}
-
-	private static Field parseFieldTag(String tag) {
-		try {
-			return Field.valueOf(tag);
-		} catch (IllegalArgumentException e) {
-			return null;  // e.g. "ZT" is a sub-class marker, not a Field
-		}
 	}
 
 	private static Set<String> parseShapes(String s) {

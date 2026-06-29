@@ -1,5 +1,5 @@
 {
-  "total": 9209,
+  "total": 9206,
   "schemes": [
     {
       "format": [2, 9, 10],
@@ -22035,38 +22035,6 @@
       "pareto_rank_buds": true
     },
     {
-      "format": [6, 6, 10],
-      "max_dim": 10,
-      "fields": [
-        "F2",
-        "F3",
-        "Z",
-        "Q",
-        "R",
-        "C"
-      ],
-      "zt": false,
-      "rank": 247,
-      "additions": 6850,
-      "has_buds": true,
-      "buds": "3×U⟨1,1,2⟩ + 241×⟨1,1,1⟩",
-      "projection_margin": 6,
-      "buds_certainty": "exact",
-      "source": "unknown",
-      "verified": true,
-      "atom": false,
-      "complex": false,
-      "lineage_compact": "2x2x5 ⊗ˢ⟨3,3,2⟩",
-      "file": "derived/section10/6x6x10-r247-derived-8f85119.json",
-      "explicitable": true,
-      "fmm_lille": {"best_rank": 247, "details_url": "https://fmm.univ-lille.fr/6x6x10.html"},
-      "external_best_rank": 247,
-      "external_best_source": "fmm-lille",
-      "external_cited": false,
-      "bud_score": 6,
-      "pareto_rank_buds": true
-    },
-    {
       "format": [6, 7, 10],
       "max_dim": 10,
       "fields": [
@@ -24237,9 +24205,35 @@
       "format": [3, 9, 11],
       "max_dim": 11,
       "fields": [
-        "F2",
         "F3",
-        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 222,
+      "additions": 3452,
+      "has_buds": true,
+      "buds": "2×U⟨1,1,2⟩ + 1×U⟨1,1,3⟩ + 7×W⟨1,2,1⟩ + 41×W⟨1,3,1⟩ + 78×⟨1,1,1⟩",
+      "projection_margin": 19,
+      "buds_certainty": "exact",
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "3x5x9-r102-perminov_ZT-bf97d17→⟨3,9,5⟩ +p naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
+      "file": "derived/section11/3x9x11-r222-derived-0dd8490.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 222, "details_url": "https://fmm.univ-lille.fr/3x9x11.html"},
+      "external_best_rank": 222,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 144
+    },
+    {
+      "format": [3, 9, 11],
+      "max_dim": 11,
+      "fields": [
+        "F3",
         "Q",
         "R",
         "C"
@@ -24352,63 +24346,6 @@
       "external_best_source": "fmm-lille",
       "external_cited": false,
       "bud_score": 36,
-      "pareto_rank_buds": true
-    },
-    {
-      "format": [3, 9, 11],
-      "max_dim": 11,
-      "fields": [
-        "F3",
-        "Q",
-        "R",
-        "C"
-      ],
-      "rank": 222,
-      "additions": 3452,
-      "has_buds": true,
-      "buds": "2×U⟨1,1,2⟩ + 1×U⟨1,1,3⟩ + 7×W⟨1,2,1⟩ + 41×W⟨1,3,1⟩ + 78×⟨1,1,1⟩",
-      "projection_margin": 19,
-      "buds_certainty": "exact",
-      "source": "unknown",
-      "verified": true,
-      "atom": false,
-      "complex": false,
-      "lineage_compact": "3x5x9-r102-perminov_ZT-bf97d17→⟨3,9,5⟩ +p naive-1x3x1 ⊗ 3x3x7 ↓[0,1,2|0,1,2|1,2,3,4,5,6]",
-      "file": "derived/section11/3x9x11-r222-derived-0dd8490.json",
-      "explicitable": true,
-      "fmm_lille": {"best_rank": 222, "details_url": "https://fmm.univ-lille.fr/3x9x11.html"},
-      "external_best_rank": 222,
-      "external_best_source": "fmm-lille",
-      "external_cited": false,
-      "bud_score": 144
-    },
-    {
-      "format": [3, 9, 11],
-      "max_dim": 11,
-      "fields": [
-        "F3",
-        "Q",
-        "R",
-        "C"
-      ],
-      "rank": 222,
-      "additions": 3458,
-      "has_buds": true,
-      "buds": "2×U⟨1,1,2⟩ + 8×V⟨2,1,1⟩ + 42×V⟨3,1,1⟩ + 76×⟨1,1,1⟩",
-      "projection_margin": 19,
-      "buds_certainty": "exact",
-      "source": "unknown",
-      "verified": true,
-      "atom": false,
-      "complex": false,
-      "lineage_compact": "3x5x9-r102-perminov_ZT-bf97d17→⟨9,5,3⟩ +m 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2] +n 3x3x7→⟨3,7,3⟩ ↓[0,1,2|1,2,3,4,5,6|0,1,2]",
-      "file": "derived/section11/9x11x3-r222-derived-e8d4a8f.json",
-      "explicitable": true,
-      "fmm_lille": {"best_rank": 222, "details_url": "https://fmm.univ-lille.fr/3x9x11.html"},
-      "external_best_rank": 222,
-      "external_best_source": "fmm-lille",
-      "external_cited": false,
-      "bud_score": 146,
       "pareto_rank_buds": true
     },
     {
@@ -26284,9 +26221,7 @@
       "format": [8, 8, 12],
       "max_dim": 12,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -27484,9 +27419,7 @@
       "format": [6, 9, 12],
       "max_dim": 12,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -31079,9 +31012,7 @@
       "format": [12, 14, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -31229,9 +31160,7 @@
       "format": [14, 14, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -31254,7 +31183,8 @@
       "external_best_rank": 1719,
       "external_best_source": "fmm-lille",
       "external_cited": false,
-      "bud_score": 316
+      "bud_score": 316,
+      "pareto_rank_buds": true
     },
     {
       "format": [2, 3, 14],
@@ -32007,37 +31937,6 @@
       "max_dim": 14,
       "fields": [
         "F3",
-        "Q",
-        "R",
-        "C"
-      ],
-      "rank": 188,
-      "additions": 3122,
-      "has_buds": true,
-      "buds": "8×U⟨1,1,2⟩ + 40×W⟨1,3,1⟩ + 52×⟨1,1,1⟩",
-      "projection_margin": 15,
-      "buds_certainty": "exact",
-      "source": "unknown",
-      "verified": true,
-      "atom": false,
-      "complex": false,
-      "lineage_compact": "3x3x6-r40-smirnov13-d246191 +m 3x3x6-r40-smirnov13-d246191 +m 3x3x6-r40-smirnov13-d246191 +m 3x5x6-r68-alphaevolve-14be9c3",
-      "file": "derived/section14/3x14x6-r188-derived-dc4a814.json",
-      "explicitable": true,
-      "fmm_lille": {"best_rank": 188, "details_url": "https://fmm.univ-lille.fr/3x6x14.html"},
-      "external_best_rank": 188,
-      "external_best_source": "fmm-lille",
-      "external_cited": false,
-      "bud_score": 136,
-      "pareto_rank_buds": true
-    },
-    {
-      "format": [3, 6, 14],
-      "max_dim": 14,
-      "fields": [
-        "F2",
-        "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -32950,9 +32849,7 @@
       "format": [6, 12, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33015,9 +32912,7 @@
       "format": [6, 14, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33132,9 +33027,7 @@
       "format": [6, 9, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33506,9 +33399,7 @@
       "format": [8, 12, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33544,9 +33435,7 @@
       "format": [8, 12, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33738,9 +33627,7 @@
       "format": [8, 9, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33811,9 +33698,7 @@
       "format": [9, 12, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33884,9 +33769,7 @@
       "format": [9, 14, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -33920,9 +33803,7 @@
       "format": [9, 14, 14],
       "max_dim": 14,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -34604,9 +34485,7 @@
       "format": [12, 14, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -34635,7 +34514,8 @@
       "external_best_rank": 1538,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 118
+      "bud_score": 118,
+      "pareto_rank_buds": true
     },
     {
       "format": [12, 15, 15],
@@ -34756,9 +34636,7 @@
       "format": [9, 12, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -35115,9 +34993,7 @@
       "format": [14, 15, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -36311,9 +36187,7 @@
       "format": [4, 14, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -37821,9 +37695,7 @@
       "format": [8, 15, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38033,9 +37905,7 @@
       "format": [9, 14, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38069,9 +37939,7 @@
       "format": [9, 14, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38107,9 +37975,7 @@
       "format": [9, 15, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38183,9 +38049,7 @@
       "format": [9, 9, 15],
       "max_dim": 15,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38285,9 +38149,7 @@
       "format": [10, 12, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38322,9 +38184,7 @@
       "format": [10, 12, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38881,9 +38741,7 @@
       "format": [12, 13, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -38912,7 +38770,8 @@
       "external_best_rank": 1509,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 249
+      "bud_score": 249,
+      "pareto_rank_buds": true
     },
     {
       "format": [12, 14, 16],
@@ -39286,9 +39145,7 @@
       "format": [15, 15, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -39317,7 +39174,8 @@
       "external_best_rank": 2132,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 80
+      "bud_score": 80,
+      "pareto_rank_buds": true
     },
     {
       "format": [15, 16, 16],
@@ -39543,9 +39401,7 @@
       "format": [6, 9, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -40735,9 +40591,7 @@
       "format": [4, 15, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -40810,9 +40664,7 @@
       "format": [4, 16, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -40841,7 +40693,8 @@
       "external_best_rank": 666,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 8
+      "bud_score": 8,
+      "pareto_rank_buds": true
     },
     {
       "format": [4, 4, 16],
@@ -41545,9 +41398,7 @@
       "format": [6, 12, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -42357,9 +42208,7 @@
       "format": [8, 14, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -42468,9 +42317,7 @@
       "format": [8, 16, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -42530,16 +42377,13 @@
       "external_best_rank": 1230,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 0,
-      "pareto_rank_buds": true
+      "bud_score": 0
     },
     {
       "format": [8, 8, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -42568,15 +42412,14 @@
       "external_best_rank": 666,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 20
+      "bud_score": 20,
+      "pareto_rank_buds": true
     },
     {
       "format": [8, 9, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -42605,7 +42448,8 @@
       "external_best_rank": 735,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 64
+      "bud_score": 64,
+      "pareto_rank_buds": true
     },
     {
       "format": [9, 10, 16],
@@ -42749,9 +42593,7 @@
       "format": [9, 14, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -42785,9 +42627,7 @@
       "format": [9, 15, 16],
       "max_dim": 16,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -42816,7 +42656,8 @@
       "external_best_rank": 1320,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 52
+      "bud_score": 52,
+      "pareto_rank_buds": true
     },
     {
       "format": [9, 15, 16],
@@ -219894,9 +219735,7 @@
       "format": [8, 9, 9],
       "max_dim": 9,
       "fields": [
-        "F2",
         "F3",
-        "Z",
         "Q",
         "R",
         "C"
@@ -229043,7 +228882,8 @@
       "external_best_rank": 222,
       "external_best_source": "fmm-lille",
       "external_cited": false,
-      "bud_score": 56
+      "bud_score": 56,
+      "pareto_rank_buds": true
     },
     {
       "format": [3, 9, 11],
@@ -229137,7 +228977,8 @@
       "external_best_rank": 222,
       "external_best_source": "fmm-lille",
       "external_cited": false,
-      "bud_score": 79
+      "bud_score": 79,
+      "pareto_rank_buds": true
     },
     {
       "format": [3, 9, 11],
@@ -256765,7 +256606,8 @@
       "external_best_rank": 654,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 96
+      "bud_score": 96,
+      "pareto_rank_buds": true
     },
     {
       "format": [8, 9, 14],
@@ -257251,7 +257093,8 @@
       "external_best_rank": 940,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 180
+      "bud_score": 180,
+      "pareto_rank_buds": true
     },
     {
       "format": [9, 13, 14],
@@ -268338,7 +268181,8 @@
       "external_best_rank": 1130,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 12
+      "bud_score": 12,
+      "pareto_rank_buds": true
     },
     {
       "format": [8, 15, 15],
@@ -268974,7 +268818,8 @@
       "external_best_rank": 996,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 36
+      "bud_score": 36,
+      "pareto_rank_buds": true
     },
     {
       "format": [9, 12, 15],

@@ -18,13 +18,25 @@ on:
       - 'src/main/java/eu/solven/matmul/docs/VerifyAllSchemes.java'
       - 'pom.xml'
       - '.github/workflows/verify-catalog.yml'
+  # PRs touching schemes / engine are gated PRE-merge here. The push trigger
+  # above only runs post-merge (it cannot block a bad merge), and human PRs are
+  # not [skip ci]'d — so this is the blocking field-claim gate for the PR path.
+  pull_request:
+    paths:
+      - 'src/main/resources/schemes/**'
+      - 'src/main/java/eu/solven/matmul/**'
+      - 'src/main/java/eu/solven/matmul/docs/VerifyAllSchemes.java'
+      - 'pom.xml'
+      - '.github/workflows/verify-catalog.yml'
   schedule:
     - cron: '0 6 * * *'  # daily 06:00 UTC
   workflow_dispatch:
 
 concurrency:
-  group: verify-catalog
-  cancel-in-progress: false
+  # Per-ref so a PR run never blocks (or is blocked by) the master/scheduled run
+  # — they share nothing but the workflow name. Cancel superseded PR runs.
+  group: verify-catalog-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:

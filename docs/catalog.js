@@ -987,6 +987,13 @@ function secondaryRankScore(s, key) {
       return -(s.bud_score || 0);
     case "projection_margin":
       return -(s.projection_margin ?? -Infinity);
+    case "year":
+      // Earliest scheme wins a tied cell — credits the rank-ORIGIN over a later
+      // re-discovery or rationalisation (e.g. ℂ⟨4,4,4⟩=48: Kaporin 2024 wins over
+      // AlphaEvolve 2025 and DPS 2025, which the additions tie-break would hide).
+      // Lower year = better; an undated scheme ranks last (Infinity) — an unknown
+      // date must never claim "earliest".
+      return s.year ?? Infinity;
     case "additions":
     default:
       return effectiveAdditions(s) ?? Infinity;

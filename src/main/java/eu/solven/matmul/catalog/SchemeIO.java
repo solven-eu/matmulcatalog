@@ -148,6 +148,243 @@ public final class SchemeIO {
 	}
 
 	/**
+	 * Cheap, EXACT necessary-condition gate: returns a (possibly empty) list of
+	 * human-readable reasons for every {@code fields[]} tag that the scheme's
+	 * U/V/W coefficient <em>denominators</em> make impossible — independent of
+	 * any matmul-identity verification.
+	 *
+	 * <ul>
+	 *   <li>{@code Z}  — every coefficient must be an integer (denominator 1);</li>
+	 *   <li>{@code F2} — every reduced denominator must be odd (2 must be
+	 *       invertible mod 2): a {@code 1/8} coefficient is NOT representable
+	 *       in F₂;</li>
+	 *   <li>{@code F3} — every reduced denominator must be coprime to 3.</li>
+	 * </ul>
+	 *
+	 * <p>These are <b>necessary</b> conditions (a violated denominator is
+	 * definitely unrepresentable), unlike {@link eu.solven.matmul.algebra.FieldCompliance}'s
+	 * {@code {0,±1}}/{@code {0,±1,±2}} membership sets, which are too strict to be
+	 * necessary for F₂/F₃ (the integer {@code 2} reduces cleanly mod 2 yet is
+	 * outside {@code {0,±1}}). {@code Q}/{@code R}/{@code C} impose no denominator
+	 * constraint and are never reported; complex schemes (no real denominator to
+	 * analyse) and schemes carrying no coefficient arrays are skipped.</p>
+	 *
+	 * <p>This is the exact over-claim that has bitten this catalog repeatedly:
+	 * a {@code 1/8}-coefficient derived scheme mechanically stamped
+	 * {@code fields=[F2,F3,Z,Q,R,C]} from an "integer base ⇒ all fields" rule.
+	 * A non-empty result is a field-discipline violation the catalog must never
+	 * persist.</p>
+	 */
+	public static java.util.List<String> fieldsContradictedByCoefficients(JsonNode root) {
+		java.util.List<String> tags = fieldTags(root);
+		if (tags.isEmpty() || isComplex(root)) {
+			return java.util.List.of();
+		}
+		java.util.List<JsonNode> tokens = collectCoefficientTokens(root);
+		if (tokens == null || tokens.isEmpty()) {
+			return java.util.List.of();  // stub / non-bilinear / reduced — no raw coefficients
+		}
+		boolean anyNonInteger = false, anyEvenDen = false, anyDen3 = false;
+		for (JsonNode t : tokens) {
+			long d = reducedDenominator(t);
+			if (d != 1L) anyNonInteger = true;
+			if (d % 2L == 0L) anyEvenDen = true;
+			if (d % 3L == 0L) anyDen3 = true;
+		}
+		return contradictions(tags, anyNonInteger, anyEvenDen, anyDen3);
+	}
+
+	/**
+	 * Same EXACT necessary-condition gate as {@link #fieldsContradictedByCoefficients(JsonNode)},
+	 * but reading the coefficient denominators off an in-memory {@link NonCubicBilinearAlgorithm}'s
+	 * dense U/V/W — for use at <em>write time</em>, before any JSON exists.
+	 *
+	 * <p>This is the production-side guard: the materialiser infers a derived
+	 * scheme's {@code fields[]} from its lineage leaves (coefficient-BLIND — it
+	 * assumes a composition is valid over a field iff every leaf is), which
+	 * over-claims when a recombination / ½-polarization step introduces division
+	 * (a {@code 1/8} coefficient from integer leaves). Intersecting the inferred
+	 * set against this result drops exactly the contradicted tags, so the
+	 * materialiser never emits the over-claim in the first place.</p>
+	 *
+	 * @param tags the candidate field tags (e.g. the lineage-inferred set)
+	 */
+	public static java.util.List<String> fieldsContradictedByCoefficients(
+			NonCubicBilinearAlgorithm alg, java.util.List<String> tags) {
+		if (alg == null || tags == null || tags.isEmpty()) {
+			return java.util.List.of();
+		}
+		boolean anyNonInteger = false, anyEvenDen = false, anyDen3 = false;
+		for (double[][] mat : new double[][][] { alg.denseU(), alg.denseV(), alg.denseW() }) {
+			for (double[] row : mat) {
+				for (double v : row) {
+					long d = reducedDenominatorOfDouble(v);
+					if (d != 1L) anyNonInteger = true;
+					if (d % 2L == 0L) anyEvenDen = true;
+					if (d % 3L == 0L) anyDen3 = true;
+				}
+			}
+		}
+		return contradictions(tags, anyNonInteger, anyEvenDen, anyDen3);
+	}
+
+	/**
+	 * The candidate {@code tags} with every coefficient-contradicted field removed
+	 * (drops {@code Z} if any coefficient is non-integer, {@code F2} if any
+	 * denominator is even, {@code F3} if any is divisible by 3). Order-preserving;
+	 * returns the same list instance when nothing is contradicted.
+	 *
+	 * <p>The write-time companion to {@link #fieldsContradictedByCoefficients(NonCubicBilinearAlgorithm, java.util.List)}:
+	 * narrows a (coefficient-blind) lineage-inferred set down to what the
+	 * materialized coefficients actually support, so the materialiser emits the
+	 * correct {@code fields[]} rather than an over-claim a later gate would reject.</p>
+	 */
+	public static java.util.List<String> narrowFieldsToCoefficients(
+			NonCubicBilinearAlgorithm alg, java.util.List<String> tags) {
+		if (alg == null || tags == null || tags.isEmpty()) {
+			return tags;
+		}
+		boolean anyNonInteger = false, anyEvenDen = false, anyDen3 = false;
+		for (double[][] mat : new double[][][] { alg.denseU(), alg.denseV(), alg.denseW() }) {
+			for (double[] row : mat) {
+				for (double v : row) {
+					long d = reducedDenominatorOfDouble(v);
+					if (d != 1L) anyNonInteger = true;
+					if (d % 2L == 0L) anyEvenDen = true;
+					if (d % 3L == 0L) anyDen3 = true;
+				}
+			}
+		}
+		java.util.Set<String> drop = contradictedTagSet(tags, anyNonInteger, anyEvenDen, anyDen3);
+		if (drop.isEmpty()) {
+			return tags;
+		}
+		java.util.List<String> out = new java.util.ArrayList<>(tags.size());
+		for (String t : tags) {
+			if (!drop.contains(t)) out.add(t);
+		}
+		return out;
+	}
+
+	/** The contradicted field tags as a set (drop list), given the three denominator flags. */
+	private static java.util.Set<String> contradictedTagSet(java.util.List<String> tags,
+			boolean anyNonInteger, boolean anyEvenDen, boolean anyDen3) {
+		java.util.Set<String> drop = new java.util.LinkedHashSet<>();
+		if (anyNonInteger && tags.contains("Z")) drop.add("Z");
+		if (anyEvenDen && tags.contains("F2")) drop.add("F2");
+		if (anyDen3 && tags.contains("F3")) drop.add("F3");
+		return drop;
+	}
+
+	/** Shared core: turn the three denominator flags into over-claim reasons for the claimed tags. */
+	private static java.util.List<String> contradictions(java.util.List<String> tags,
+			boolean anyNonInteger, boolean anyEvenDen, boolean anyDen3) {
+		java.util.List<String> bad = new java.util.ArrayList<>();
+		for (String t : contradictedTagSet(tags, anyNonInteger, anyEvenDen, anyDen3)) {
+			switch (t) {
+				case "Z" -> bad.add("declares Z but coefficients are not all integers (Z over-claim)");
+				case "F2" -> bad.add("declares F2 but a coefficient denominator is even"
+						+ " — not representable mod 2 (F2 over-claim)");
+				case "F3" -> bad.add("declares F3 but a coefficient denominator is divisible by 3"
+						+ " — not representable mod 3 (F3 over-claim)");
+				default -> { }
+			}
+		}
+		return bad;
+	}
+
+	/**
+	 * Collect every raw U/V/W coefficient {@link JsonNode} (sparse {@code *_sparse}
+	 * {@code c[]} arrays and dense {@code u/v/w} / {@code U/V/W} rows). Returns
+	 * {@code null} when the scheme bears no coefficient arrays at all (stub).
+	 */
+	private static java.util.List<JsonNode> collectCoefficientTokens(JsonNode root) {
+		java.util.List<JsonNode> out = new java.util.ArrayList<>();
+		boolean found = false;
+		for (String key : new String[] { "u_sparse", "v_sparse", "w_sparse" }) {
+			JsonNode sp = root.get(key);
+			if (sp != null && sp.isObject()) {
+				found = true;
+				for (JsonNode entry : sp) {
+					JsonNode c = entry.get("c");
+					if (c != null && c.isArray()) {
+						c.forEach(out::add);
+					}
+				}
+			}
+		}
+		for (String key : new String[] { "u", "v", "w", "U", "V", "W" }) {
+			JsonNode arr = root.get(key);
+			if (arr != null && arr.isArray()) {
+				found = true;
+				for (JsonNode row : arr) {
+					if (row.isArray()) {
+						row.forEach(out::add);
+					}
+				}
+			}
+		}
+		return found ? out : null;
+	}
+
+	/**
+	 * Reduced (lowest-terms) positive denominator of a single coefficient token:
+	 * exact for integer / {@code "p/q"}-string tokens, rationalized for decimal
+	 * tokens. Returns 1 (i.e. "treat as integer, do not flag") for anything that
+	 * cannot be resolved — the gate stays a NECESSARY condition with no false
+	 * positives.
+	 */
+	private static long reducedDenominator(JsonNode t) {
+		if (t == null || t.isNull()) return 1L;
+		if (t.isIntegralNumber()) return 1L;
+		if (t.isTextual()) {
+			String s = t.asString().trim();
+			int slash = s.indexOf('/');
+			if (slash < 0) {
+				try {
+					return reducedDenominatorOfDouble(Double.parseDouble(s));
+				} catch (NumberFormatException e) {
+					return 1L;
+				}
+			}
+			try {
+				long num = Long.parseLong(s.substring(0, slash).trim());
+				long den = Long.parseLong(s.substring(slash + 1).trim());
+				if (den == 0L) return 1L;
+				long g = gcd(Math.abs(num), Math.abs(den));
+				return g == 0L ? 1L : Math.abs(den) / g;
+			} catch (NumberFormatException e) {
+				return 1L;
+			}
+		}
+		if (t.isNumber()) {
+			return reducedDenominatorOfDouble(t.asDouble());
+		}
+		return 1L;
+	}
+
+	private static long reducedDenominatorOfDouble(double v) {
+		if (Math.abs(v - Math.rint(v)) < INTEGER_TOL) return 1L;
+		String frac = rationalize(v);  // "p/q" in lowest terms, or null when not resolvable
+		if (frac == null) return 1L;
+		int slash = frac.indexOf('/');
+		try {
+			return Long.parseLong(frac.substring(slash + 1).trim());
+		} catch (NumberFormatException e) {
+			return 1L;
+		}
+	}
+
+	private static long gcd(long a, long b) {
+		while (b != 0L) {
+			long t = a % b;
+			a = b;
+			b = t;
+		}
+		return a;
+	}
+
+	/**
 	 * Returns true if the scheme operates over GF(2) ONLY (characteristic-2
 	 * universe — e.g. AlphaTensor ⟨4,4,4⟩=47). An integer scheme valid over
 	 * many fields (Strassen: {@code fields=[F2,F3,Z,Q,R,C]}) is NOT "z2": its
