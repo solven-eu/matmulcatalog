@@ -1,9 +1,10 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.papers.hopcroftkerr1971;
 
 import java.util.Optional;
 
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.papers.hopcroftkerr1971.HopcroftKerrBound;
+import eu.solven.matmul.search.ConstructiveMethod;
+import eu.solven.matmul.search.ConstructiveMethod.Prediction;
 
 /**
  * {@link ConstructiveMethod} wrapper around

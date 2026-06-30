@@ -3,6 +3,7 @@ package eu.solven.matmul.search;
 import java.util.Optional;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.papers.hopcroftkerr1971.HopcroftKerr1971Method;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
