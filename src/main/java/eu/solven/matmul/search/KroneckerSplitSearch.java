@@ -43,9 +43,11 @@ public final class KroneckerSplitSearch {
 	}
 
 	/**
-	 * Find the minimum-rank Kronecker decomposition. Returns
-	 * {@link Optional#empty()} when no non-trivial factorisation exists
-	 * (any of {@code n, m, p} prime).
+	 * Find the minimum-rank Kronecker decomposition. Thanks to the unit factor
+	 * pairs {@code (1, n)} every shape admits at least the naive Kronecker
+	 * realisation (rank {@code n·m·p}); {@link Optional#empty()} is therefore
+	 * returned only for the degenerate {@code ⟨1,1,1⟩} target, where the sole
+	 * split is the skipped no-op.
 	 */
 	public static Optional<KroneckerSplit> findBest(int targetN, int targetM, int targetP,
 			Recombination.SotaResolver sota) {
@@ -69,10 +71,21 @@ public final class KroneckerSplitSearch {
 					// Skip the no-op: one factor being ⟨1,1,1⟩ ⇒ the other is the
 					// whole target (would just echo R(target) and risk recursion).
 					if ((n1 == 1 && m1 == 1 && p1 == 1) || (n2 == 1 && m2 == 1 && p2 == 1)) continue;
-					int r1 = rankOf(sota, n1, m1, p1);
-					int r2 = rankOf(sota, n2, m2, p2);
+					// Degenerate (axis-1) factors need no special-casing here: the
+					// SotaResolver contract REQUIRES a naive a·b·c fallback (see
+					// Recombination.SotaResolver javadoc), so getRank already returns the
+					// naive rank for a ⟨1,…⟩ factor. (The matrix-level synthesis still lives
+					// in factorScheme, which has no catalog file to read.)
+					int r1 = sota.getRank(n1, m1, p1);
+					int r2 = sota.getRank(n2, m2, p2);
 					if (r1 <= 0 || r2 <= 0) continue;
-					if (r1 >= n1 * m1 * p1 && r2 >= n2 * m2 * p2) continue;  // both naive — skip
+					// Do NOT skip "both-naive" splits: their product
+					// (n1·m1·p1)·(n2·m2·p2) = n·m·p is the target's naive rank — a
+					// legitimate, constructible scheme. Skipping it silently made findBest
+					// return empty for shapes whose only Kronecker route is naive. Surfacing
+					// it is safe: consumers take a global min and the resolver guarantees
+					// rᵢ ≤ naiveᵢ (so tot ≤ naive target, equal only when both are naive),
+					// hence a naive candidate can never be preferred over a real saving.
 					long tot = (long) r1 * r2;
 					if (tot < bestRank) {
 						bestRank = tot;
@@ -106,15 +119,6 @@ public final class KroneckerSplitSearch {
 		}
 		return lookup.find(n, m, p).orElseThrow(() -> new IllegalStateException(
 				"missing Kronecker factor ⟨" + n + "," + m + "," + p + "⟩"));
-	}
-
-	/** Rank of a sub-factor: for a degenerate shape (any axis = 1) the bilinear
-	 *  rank is exactly the naive product n·m·p (no Strassen saving possible), so
-	 *  compute it directly rather than relying on the catalog resolver to carry
-	 *  ⟨1,…⟩ entries. Otherwise defer to {@code sota}. */
-	private static int rankOf(Recombination.SotaResolver sota, int a, int b, int c) {
-		if (a == 1 || b == 1 || c == 1) return a * b * c;
-		return sota.getRank(a, b, c);
 	}
 
 	/** All ordered factor pairs (a, b) with {@code a·b = n}, including the UNIT
