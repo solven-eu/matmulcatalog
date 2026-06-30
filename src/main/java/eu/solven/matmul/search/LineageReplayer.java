@@ -91,6 +91,8 @@ public final class LineageReplayer {
 	/** Pan/Islam trilinear-aggregation cubic ⟨n,n,n⟩ (DIS09 Appendix Lemma 4),
 	 *  emitted by {@code MaterializeDIS09TA} as the lineage of the dis09 cubes. */
 	private static final Pattern DIS09_LEMMA4 = Pattern.compile("DIS09Lemma4\\(n=(\\d+)\\)");
+	/** KGP 2026 LITA cubic ⟨N,N,N⟩ parametric leaf — replays via LitaTaConstruction.build. */
+	private static final Pattern TA_LITA = Pattern.compile("TA_lita\\(n=(\\d+)\\)");
 
 	/**
 	 * Cross-call cache of canonical-path → materialised algorithm for stub
@@ -431,15 +433,21 @@ public final class LineageReplayer {
 	 * recognised parametric form (the caller then tries the shape-ref path).
 	 *
 	 * <p>Currently handles {@code DIS09Lemma4(n=N)} → {@link
-	 * PanTrilinearAggregation#build(int)} (non-commutative cubic ⟨N,N,N⟩). Add
-	 * further families here as their stubs appear (e.g. RosowskiTheorem2(…),
-	 * which is commutative and not needed for non-commutative projection).</p>
+	 * PanTrilinearAggregation#build(int)} and {@code TA_lita(n=N)} → {@link
+	 * eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction#build(int)} (both
+	 * non-commutative cubic ⟨N,N,N⟩). Add further families here as their stubs
+	 * appear (e.g. RosowskiTheorem2(…), commutative).</p>
 	 */
 	private NonCubicBilinearAlgorithm resolveParametric(String ref) {
 		Matcher d = DIS09_LEMMA4.matcher(ref);
 		if (d.matches()) {
 			return eu.solven.matmul.papers.dis2009.PanTrilinearAggregation
 					.build(Integer.parseInt(d.group(1)));
+		}
+		Matcher lita = TA_LITA.matcher(ref);
+		if (lita.matches()) {
+			return eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction
+					.build(Integer.parseInt(lita.group(1)));
 		}
 		return null;
 	}

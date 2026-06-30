@@ -1,4 +1,4 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.prospective;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.catalog.FieldAwareLookup;
+import eu.solven.matmul.search.CitedBound;
 
 /**
  * The acceptance test for {@link DisjointSumSearch}: at ⟨17,17,17⟩ over Q

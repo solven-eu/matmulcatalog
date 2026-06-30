@@ -507,6 +507,12 @@ public final class RecursiveMaterialiser {
 				if (cube != null && (built == null || cube.alg.r <= built.alg.r)) {
 					built = cube;
 				}
+				// KGP-2026 LITA cube (n≥19): strictly beats dis09 + catalog for odd n
+				// and large even n.
+				Result lita = tryLitaCube(n);
+				if (lita != null && (built == null || lita.alg.r < built.alg.r)) {
+					built = lita;
+				}
 			}
 
 			if (built == null) {
@@ -1158,6 +1164,36 @@ public final class RecursiveMaterialiser {
 		NonCubicBilinearAlgorithm cube = pantaCube(n);
 		if (cube == null || !verifies(cube)) return null;
 		Lineage.Node tree = new Lineage.Atom("DIS09Lemma4(n=" + n + ")");
+		if (!replaysConsistently(tree, cube)) return null;
+		return new Result(cube, tree, false);
+	}
+
+	/**
+	 * The buildable KGP-2026 LITA cube for ⟨n,n,n⟩ as a {@link Result}: rank
+	 * {@code LitaTrilinearAggregation.cubicRank(n)}, lineage the parametric atom
+	 * {@code TA_lita(n=N)} (which {@link LineageReplayer} reconstructs via
+	 * {@link eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction#build}). LITA
+	 * beats {@link #tryDis09Cube} (and the catalog) for odd {@code n≥19} and large
+	 * even n.
+	 *
+	 * <p>{@code verifies()} is the random spot-check (not the exact term-map), so
+	 * the dense even-n cubes (the φ-embedding) are handled here too — consistent with
+	 * how the catalog verifiers ({@code VerifyScheme}/{@code VerifyAllSchemes})
+	 * spot-check char-0 schemes.</p>
+	 */
+	private Result tryLitaCube(int n) {
+		if (n < eu.solven.matmul.papers.khoruzhii2026.LitaTrilinearAggregation.MIN_N) {
+			return null;
+		}
+		NonCubicBilinearAlgorithm cube;
+		try {
+			cube = eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction.build(n);
+		} catch (RuntimeException e) {
+			log.warn("LITA build({}) failed — not offered as a cube: {}", n, e.toString());
+			return null;
+		}
+		if (!verifies(cube)) return null;
+		Lineage.Node tree = new Lineage.Atom("TA_lita(n=" + n + ")");
 		if (!replaysConsistently(tree, cube)) return null;
 		return new Result(cube, tree, false);
 	}

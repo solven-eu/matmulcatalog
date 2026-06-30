@@ -2,6 +2,7 @@ package eu.solven.matmul.docs.generate;
 
 import lombok.extern.slf4j.Slf4j;
 
+import eu.solven.matmul.papers.khoruzhii2026.LitaTrilinearAggregation;
 import eu.solven.matmul.papers.laderman1976.Laderman23;
 import eu.solven.matmul.recombination.BlockSplitSearch;
 import eu.solven.matmul.papers.rosowski2019.RosowskiBound;
@@ -64,6 +65,15 @@ public final class GenerateDerivedBounds {
 		for (String field : new String[] { "R", "C", "F2" }) {
 			entries.addAll(nonCubicEntriesForField(strassen, field));
 			entries.addAll(cubicEntriesPerField(field));
+			// LITA (Khoruzhii–Gelß–Pokutta 2026) closed-form trilinear-aggregation
+			// cubic bound. The construction is RATIONAL: its factor matrices carry
+			// denominators divisible by 12 (e.g. coefficients ±1/12 for ⟨21³⟩), so it
+			// is valid over char-0 only (Q/R/C) and does NOT reduce to F2/F3
+			// (gcd(12,2)=2, gcd(12,3)=3). Emit for the char-0 fields R and C; never F2.
+			// Gated on beating that field's direct catalog, like cubicEntriesPerField.
+			if (!"F2".equals(field)) {
+				entries.addAll(litaCubicEntries(field));
+			}
 		}
 		// Note: BlockSplitSearch internally uses "R" for the R/Q/Z cluster (single-letter
 		// field keys are easier to filter on). The catalog manifest uses "R/Q/Z". Normalise
@@ -197,6 +207,50 @@ public final class GenerateDerivedBounds {
 			out.add(sb.toString());
 		}
 		log.info("  " + field + " cubic (recursive): " + gaps + " gaps + " + missing + " missing + " + ok + " at-or-above-catalog");
+		return out;
+	}
+
+	/**
+	 * Cubic {@code ⟨n,n,n⟩} bounds from the LITA closed form
+	 * ({@link LitaTrilinearAggregation}, Khoruzhii–Gelß–Pokutta 2026). Emits a
+	 * row only when the formula STRICTLY beats the field's direct catalog rank
+	 * (or fills a gap) — the trilinear constant dominates only for large N, so
+	 * below the crossover a direct scheme wins and the LITA value is suppressed
+	 * as dominated (same policy as {@link #cubicEntriesPerField}).
+	 */
+	private static List<String> litaCubicEntries(String field) {
+		Map<String, Integer> direct = BlockSplitSearch.loadCatalogBestRanksForField(field);
+		List<String> out = new ArrayList<>();
+		int gaps = 0, missing = 0, dominated = 0;
+		// LITA is undefined for N ≤ 18 — start at MIN_N so we never claim a bound
+		// with no construction behind it.
+		for (int n = LitaTrilinearAggregation.MIN_N; n <= MAX_N_CUBIC; n++) {
+			long rank = LitaTrilinearAggregation.cubicRank(n);
+			long naive = (long) n * n * n;
+			if (rank >= naive) continue; // not a bound
+			Integer directRank = direct.get(n + "x" + n + "x" + n);
+			if (directRank != null && rank >= directRank) {
+				dominated++;
+				continue;
+			}
+			if (directRank == null) missing++;
+			else gaps++;
+			StringBuilder sb = new StringBuilder();
+			sb.append("{");
+			sb.append("\"format\": [").append(n).append(",").append(n).append(",").append(n).append("], ");
+			sb.append("\"field\": \"").append(field).append("\", ");
+			sb.append("\"rank\": ").append(rank).append(", ");
+			sb.append("\"breakdown\": \"LITA trilinear aggregation, ")
+					.append((n & 1) == 0 ? "even" : "odd").append("-N closed form\", ");
+			sb.append("\"construction\": \"LitaTrilinearAggregation.cubicRank(").append(n).append(")\", ");
+			sb.append("\"verified\": false, \"direct_catalog_rank\": ");
+			sb.append(directRank == null ? "null" : directRank.toString());
+			sb.append(", \"source\": \"Khoruzhii, Gelß & Pokutta 2026 (LITA)\"");
+			sb.append("}");
+			out.add(sb.toString());
+		}
+		log.info("  " + field + " LITA cubic: " + gaps + " gaps + " + missing + " missing + "
+				+ dominated + " dominated-by-catalog");
 		return out;
 	}
 

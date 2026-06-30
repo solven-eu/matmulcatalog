@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatCols(3x23x7, 3x23x24)",
+  "lineage_compact": "3x23x7 +p 3x23x24",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "3x23x7@07160b6cbdfbc222e3d6c8bc6838ee7e0d6483f4128db6a9e1834ac6e8785c58"},
+    "right": {"op": "Atom", "ref": "3x23x24@eede64a69cbfbf5b330f84f5be092de81f387e6fe7f7e5d8ac511553ab811153"}
+  },
+  "n": [3, 23, 31],
+  "m": 1572,
+  "hash": "e3f45a7a78229f5f41bfceaa576de28377a48bf5d50af95462db6b66756c9abc",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,38 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[1, 2], allocB=[6, 6, 6, 5], allocC=[6, 5, 6, 6], leaves=[2x6x6-r56-perminov_ZT-5791b42, naive-1x5x6, OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), naive-1x6x6, 2x5x5-r40-alphatensor_Z-67f5fb7, naive-1x5x5])",
+  "lineage_compact": "R[2x4x4; 1,2 | 6,6,6,5 | 6,5,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@a4ed740a036a37c48fd9a3386a354b8827aa1598a3135f17a8332d0d797c1177"},
+    "allocA": [1, 2],
+    "allocB": [6, 6, 6, 5],
+    "allocC": [6, 5, 6, 6],
+    "leaves": [
+      {"op": "Atom", "ref": "2x6x6-r56-perminov_ZT-5791b42"},
+      {"op": "Atom", "ref": "naive-1x5x6"},
+      {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 6,
+        "p": 5,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      {"op": "Atom", "ref": "naive-1x6x6"},
+      {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
+      {"op": "Atom", "ref": "naive-1x5x5"}
+    ]
+  },
+  "n": [3, 23, 23],
+  "m": 1169,
+  "hash": "3b21a57ecd7b5c294646ab78cc6511489d468c3c4b3f6994dc44c40e00467c96",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

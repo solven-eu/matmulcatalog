@@ -216,6 +216,7 @@ add the **Local PDF** line linking the file path.
 | [79](#79-perminov-2025-3x3-a58) | perminov-2025-3x3-a58 | 2025 | algorithm | A. I. Perminov, *A 58-Addition, Rank-23 Scheme for General 3×3 Matrix Multiplication*, arXiv:2512.21980 (Dec 2025). The `R(⟨3,3,3⟩)=23` scheme with only 58 additions and no basis change (also cited as `[add58]` in [RANK_KNOWLEDGE.md](paper/theory/RANK_KNOWLEDGE.md)). [Abs](https://arxiv.org/abs/2512.21980) |
 | [80](#80-alekseev-smirnov-2013) | alekseev-smirnov-2013 | 2013 | algorithm (🇷🇺 Russian) | V. B. Alekseev & Alexey Vladimirovich Smirnov, "On the exact and approximate bilinear complexities of multiplication of 4×2 and 2×2 matrices" (**in Russian**), *Sovr. Probl. Mat.* 17:135–152. Independent confirmation of the exact + border ranks for the inner-dimension-2 Hopcroft-Kerr family (`⟨4,2,2⟩`, `⟨2,2,2⟩`). DOI [10.4213/spm47](https://doi.org/10.4213/spm47); [ResearchGate (RU)](https://www.researchgate.net/publication/284529885_On_the_exact_and_approximate_bilinear_complexities_of_multiplication_of_42_and_22_matrices). |
 | [81](#81-hopcroft-musinski-1973) | hopcroft-musinski-1973 | 1973 | duality / algorithm | J. E. Hopcroft & J. Musinski, "Duality applied to the complexity of matrix multiplication and other bilinear forms," *SIAM J. Comput.* 2(3):159–173. S₃-invariance of matmul rank (Thm 6 / Cor 7); states the Hopcroft-Kerr `⌈(3pn+max(n,p))/2⌉` bound for `p×2 by 2×n` (draft p. 76) and propagates it by duality. Local draft PDF + [cr.yp.to mirror](https://cr.yp.to/bib/1973/hopcroft-duality-draft.pdf). |
+| [82](#82-khoruzhii-2026-lita) | khoruzhii2026lita | 2026 | algorithm (formula) | Kirill Khoruzhii, Patrick Gelß & Sebastian Pokutta, *Local Improvements to Trilinear Aggregation* (LITA). Field-independent closed-form NC cubic rank: even `Rₑ(N)=N³/3+15N²/4+29N/3+7`, odd `Rₒ(N)=(4N³+57N²+14N−15)/12−⌊3(N−1)/8⌋`. Reproduces FMM's large-cubic index values (`R⟨21³⟩=5198`, `R⟨23³⟩=6586`, `R⟨25³⟩=8196`, …). Wired in `LitaTrilinearAggregation`. [GitHub](https://github.com/khoruzhii/lita) |
 | [82](#82-deza-2023-cp) | deza-2023-cp | 2023 | method (exact / infeasibility) | A. Deza, C. Liu, P. Vaezipoor & E. B. Khalil, *Fast Matrix Multiplication Without Tears: A Constraint Programming Approach*, CP 2023 (LIPIcs vol. 280, art. 26), arXiv:2306.01097. CSP/CP formulation of the Brent equations over `{−1,0,1}` with **symmetry-breaking constraints + valid inequalities** enabling *exact* search and **infeasibility proofs** up to ⟨3,3,3⟩=23 — the complement to our heuristic upper-bound construction. Directly comparable to our axis-flip / allocation canonicalisation. Code: [khalil-research/Matrix-Mult-CP](https://github.com/khalil-research/Matrix-Mult-CP). [Abs](https://arxiv.org/abs/2306.01097) |
 | [83](#83-kauers-2026-structure) | kauers-2026-structure | 2026 | method (**serendipitous / buds**) | M. Kauers, J. Moosbauer & I. Wood, *Exploiting the Structure in Tensor Decompositions for Matrix Multiplication*, arXiv:2602.11041 (May 2026; submitted to Elsevier). **The published formalisation of exactly our bud / serendipitous-product idea**: recursive calls that *share an output* (or whose output feeds multiple positions) are merged into a *single larger* matrix multiplication, giving an effective exponent **lower than the tensor rank suggests** — improving 6×6 from ω 2.8075→**2.8019**. Direct prior/concurrent art for our `#159` serendipitous engine, `SerendipitousBudProduct`, and `BudBaseFactory`; cite in the paper. [Abs](https://arxiv.org/abs/2602.11041) |
 | [84](#84-heule-kauers-seidl-2019) | heule-kauers-seidl-2019 | 2019 | method (SAT search) / algorithm | M. J. H. Heule, M. Kauers & M. Seidl, *New Ways to Multiply 3×3-Matrices*, arXiv:1905.10192 (2019); J. Symbolic Computation **104** (2021) 899–916. SAT/heuristic search that produced **many distinct rank-23 ⟨3,3,3⟩ schemes** over ℤ and small fields, mapping out the solution variety (not a rank improvement — ⟨3,3,3⟩=23 is Laderman 1976 — but a *diversity* result, directly relevant to our orbit/uniqueness work and to bud-rich base selection). PDF: [cs.cmu.edu/~mheule/publications/CCA19.pdf](https://www.cs.cmu.edu/~mheule/publications/CCA19.pdf); [arXiv](https://arxiv.org/abs/1905.10192). |
@@ -1903,6 +1904,53 @@ pp. 159–173, so draft p. 76 ≈ published p. 162). Source mirror:
 <https://cr.yp.to/bib/1973/hopcroft-duality-draft.pdf>
 
 Cited in: REFERENCES.md (Hopcroft-Kerr `⟨a,2,c⟩` family caveat), FUTURE_WORK.md.
+
+---
+
+## [82] <a name="82-khoruzhii-2026-lita"></a>khoruzhii2026lita
+
+*Khoruzhii, Gelß & Pokutta 2026 — Local Improvements to Trilinear Aggregation
+(LITA): closed-form cubic rank that tightens the Pan trilinear-aggregation
+constant.*
+
+```bibtex
+@misc{khoruzhii2026lita,
+  author       = {Kirill Khoruzhii and Patrick Gel{\ss} and Sebastian Pokutta},
+  title        = {Local Improvements to Trilinear Aggregation},
+  year         = {2026},
+  url          = {https://github.com/khoruzhii/lita}
+}
+```
+
+Gives a field-independent closed form for the non-commutative rank of the cubic
+matmul tensor `⟨N,N,N⟩` via locally-improved trilinear aggregation:
+
+- **N even:** `Rₑ(N) = N³/3 + 15N²/4 + 29N/3 + 7 = (4N³ + 45N² + 116N + 84)/12`
+- **N odd:**  `Rₒ(N) = (4N³ + 57N² + 14N − 15)/12 − ⌊3(N−1)/8⌋`
+
+Both branches are integer-valued and defined only for **`N > 18`** (`N ≥ 19`;
+the generators reject smaller dimensions). The trilinear constant beats dense /
+recursive schemes from there up — odd N already wins at `N=19`, even N around
+`N≥26`. These are exactly the values FMM-Lille's *index* reports
+for the large cubic formats (e.g. `R⟨21,21,21⟩ = 5198`, `R⟨23,23,23⟩ = 6586`,
+`R⟨25,25,25⟩ = 8196`, `R⟨27,27,27⟩ = 10045`, …) — and the reason a whole band of
+large-cubic shapes appeared "WORSE" in the FMM cross-check before this was wired
+in. The construction is non-commutative, so each value is a valid `K⟨N,N,N⟩`
+rank for any field `K`.
+
+**Field**: **Q-native** (rational factor matrices with denominators divisible by
+12, e.g. ±1/12 for ⟨21³⟩), hence valid over `Q ⊂ R ⊂ C` but NOT F2/F3
+(`gcd(12,2)=2`, `gcd(12,3)=3`). Non-commutative. Emitted for the char-0 fields R
+and C in `docs/derived-from-cited-bounds.json` (gated on beating each field's
+direct catalog). Wired in `LitaTrilinearAggregation`; the companion flip-graph
+repo is `github.com/khoruzhii/flip-cpd` (Khoruzhii–Gelß–Pokutta, ISSAC 2026).
+
+Rather than importing the (large) factor matrices, a follow-up ports the Maple
+generators (`scripts/KGP2026_{odd,even}.mpl`) to Java as a `TA_lita` lineage op
+that materialises the explicit U/V/W on demand (for verification / bud-structure)
+— a self-contained "derive, don't import" realisation.
+
+Cited in: REFERENCES.md, `LitaTrilinearAggregation`, `GenerateDerivedBounds`.
 
 ---
 

@@ -71,7 +71,8 @@ public final class MethodCatalog {
 	public static List<ConstructiveMethod> all() {
 		return List.of(
 				new HopcroftKerr1971Method(),
-				new PanTrilinearAggregationMethod());
+				new PanTrilinearAggregationMethod(),
+				new LitaTrilinearAggregationMethod());
 	}
 
 	/**

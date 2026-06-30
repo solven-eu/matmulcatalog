@@ -241,16 +241,11 @@ public final class PanTrilinearAggregation {
 	 */
 	public static long bestPanTaBound(int n) {
 		if (n < 1) throw new IllegalArgumentException("n must be ≥ 1, got " + n);
-		long best = -1L;
-		// Islam 2009 (Prop 1) covers all n ≥ 1, both parities.
-		long islam = cubicBound(n);
-		if (islam > 0) best = islam;
-		long pan80 = panSiam1980Bound(n);
-		if (pan80 > 0 && (best < 0 || pan80 < best)) best = pan80;
-		long hs82 = panHadasSchwartz1982Bound(n);
-		if (hs82 > 0 && (best < 0 || hs82 < best)) best = hs82;
-		long sz25 = schwartzZwecher2025Bound(n);
-		if (sz25 > 0 && (best < 0 || sz25 < best)) best = sz25;
-		return best;
+		// Delegating shim over the TA-family registry, restricted to the genuine
+		// Pan family (PAN/DIS/HS/SZ) — this preserves the historical semantics of
+		// "best Pan-TA bound" exactly (LITA is NOT Pan-family, so it is excluded
+		// here; callers wanting the broader best incl. LITA use
+		// TrilinearAggregations.bestRank). See TrilinearAggregations.
+		return eu.solven.matmul.papers.ta.TrilinearAggregations.bestPanFamilyRank(n).orElse(-1L);
 	}
 }

@@ -214,6 +214,14 @@ public class GenerateCatalogManifest {
 			int maxDim = Math.max(n, Math.max(mm, p));
 			String source = root.has("source") && !root.get("source").asString().isBlank()
 					? root.get("source").asString() : "unknown";
+			// Lineage-attributed formula atoms: a lineage-only stub carries no on-disk
+			// source, but its construction has a known author. Attribute the KGP-2026
+			// LITA cubes (lineage TA_lita(n=N)) — parallel to how the imported DIS09
+			// cube carries source "DIS09".
+			if ("unknown".equals(source) && root.has("lineage_compact")
+					&& root.get("lineage_compact").asString().startsWith("TA_lita(")) {
+				source = "Khoruzhii, Gelß & Pokutta 2026 (LITA)";
+			}
 			boolean isComplex = SchemeIO.isComplex(root);
 			boolean isZ2 = SchemeIO.isZ2(root);
 

@@ -1,0 +1,49 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[2, 3], allocB=[3, 4, 3, 4], allocC=[6, 6, 7, 6], leaves=[ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7), 2x4x6-r39-hk71-bddc04d, 3x4x6-r54-alphaevolve-c197868, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ConcatCols(naive-3x3x1, 3x3x6-r40-smirnov13-d246191), 3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad, 2x4x7-r45-alphaevolve-7a1bd74, ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x4-r20-alphatensor_Z-91c6b69)])",
+  "lineage_compact": "R[2x4x4; 2,3 | 3,4,3,4 | 6,6,7,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@8e5986af235d2348de764c9d34a2a49e4bbf6e8dbce202595ed374d2a382cbba"},
+    "allocA": [2, 3],
+    "allocB": [3, 4, 3, 4],
+    "allocC": [6, 6, 7, 6],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+        "right": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"}
+      },
+      {"op": "Atom", "ref": "2x4x6-r39-hk71-bddc04d"},
+      {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "naive-3x3x1"},
+        "right": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"}
+      },
+      {"op": "Atom", "ref": "3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad"},
+      {"op": "Atom", "ref": "2x4x7-r45-alphaevolve-7a1bd74"},
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+        "right": {"op": "Atom", "ref": "2x3x4-r20-alphatensor_Z-91c6b69"}
+      }
+    ]
+  },
+  "n": [5, 14, 25],
+  "m": 1173,
+  "hash": "52bddde201bfd495bd39fd884633da93abf73f4cbcf0d9850e2d017587e07e37",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

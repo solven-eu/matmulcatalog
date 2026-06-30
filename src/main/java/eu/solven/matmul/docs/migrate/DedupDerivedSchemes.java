@@ -126,6 +126,65 @@ public final class DedupDerivedSchemes {
 			}
 		}
 
+		// ── Pass 2: DOMINATED derived schemes (incl. lineage-only STUBS that pass 1
+		// skips). Drop a DERIVED scheme only when EVERY field it declares is STRICTLY
+		// better-covered by another scheme at the same shape AND it is not referenced
+		// (@hash) anywhere in the catalog. This never loses unique field coverage (e.g.
+		// an F3 cube whose dominator is Q/R/C-only is KEPT) and never dangles a pin.
+		record Cat(int[] shp, int rank, java.util.List<String> fields, Path path, String hash7) {}
+		java.util.List<Cat> catalog = new ArrayList<>();
+		try (var s = Files.walk(Path.of(ROOT))) {
+			for (Path p : s.filter(x -> x.toString().endsWith(".json")).toList()) {
+				tools.jackson.databind.JsonNode d;
+				try {
+					d = SchemeIO.parseJson(p.toFile());
+				} catch (Exception ex) {
+					continue;
+				}
+				if (!d.has("n") || !d.has("m") || !d.get("n").isArray() || d.get("n").size() != 3) continue;
+				var shp = d.get("n");
+				int[] sh = { shp.get(0).asInt(), shp.get(1).asInt(), shp.get(2).asInt() };
+				java.util.List<String> fl = new ArrayList<>();
+				if (d.has("fields")) d.get("fields").forEach(x -> fl.add(x.asString()));
+				String h7 = d.has("hash") && !d.get("hash").asString().isBlank()
+						? d.get("hash").asString().substring(0, 7) : null;
+				catalog.add(new Cat(sh, d.get("m").asInt(), fl, p, h7));
+			}
+		}
+		java.util.function.Function<int[], String> shapeKey = a -> {
+			int[] c = a.clone();
+			java.util.Arrays.sort(c);
+			return c[0] + "x" + c[1] + "x" + c[2];
+		};
+		Map<String, List<Cat>> byShape = new java.util.HashMap<>();
+		for (Cat c : catalog) byShape.computeIfAbsent(shapeKey.apply(c.shp()), k -> new ArrayList<>()).add(c);
+
+		int dominatedDropped = 0;
+		for (Cat cand : catalog) {
+			if (!cand.path().toString().replace('\\', '/').contains("/derived/")) continue; // only OUR derived
+			if (cand.fields().isEmpty()) continue;
+			if (cand.hash7() != null && pinned.contains(cand.hash7())) continue; // referenced → retain
+			if (toDelete.contains(cand.path())) continue; // already dropped by pass 1
+			List<Cat> sibs = byShape.get(shapeKey.apply(cand.shp()));
+			boolean dominated = true;
+			for (String f : cand.fields()) {
+				boolean better = false;
+				for (Cat t : sibs) {
+					if (t.path().equals(cand.path())) continue;
+					if (t.fields().contains(f) && t.rank() < cand.rank()) { better = true; break; }
+				}
+				if (!better) { dominated = false; break; }
+			}
+			if (dominated) {
+				System.out.printf("    DROP (dominated all-fields, unref): %s  r%d %s%n",
+						cand.path().getFileName(), cand.rank(), cand.fields());
+				toDelete.add(cand.path());
+				dominatedDropped++;
+			}
+		}
+		System.out.printf("Dominated derived schemes %s: %d%n",
+				apply ? "deleted" : "to delete", dominatedDropped);
+
 		System.out.printf("%n%s: %d duplicate buckets; %d files %s; %d referenced files retained.%n",
 				apply ? "APPLIED" : "DRY RUN", bucketsTouched, toDelete.size(),
 				apply ? "deleted" : "to delete", retainedReferenced.size());

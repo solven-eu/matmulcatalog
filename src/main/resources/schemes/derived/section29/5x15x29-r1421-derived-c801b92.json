@@ -1,0 +1,44 @@
+{
+  "lineage_str": "Recombination(base=AxisPermute[approximate](2x5x5, permA=[1, 0], permB=[0, 1, 2, 3, 4], permC=[0, 1, 2, 3, 4]), allocA=[2, 3], allocB=[3, 3, 3, 3, 3], allocC=[6, 6, 6, 5, 6], leaves=[ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7), Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 2x3x5-r25-alphatensor_Z-31f79a7, 3x3x5-r36-alphatensor_Z-3895b40])",
+  "lineage_compact": "R[2x5x5^π([1, 0],[0, 1, 2, 3, 4],[0, 1, 2, 3, 4]); 2,3 | 3,3,3,3,3 | 6,6,6,5,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "AxisPermute",
+      "permA": [1, 0],
+      "permB": [0, 1, 2, 3, 4],
+      "permC": [0, 1, 2, 3, 4],
+      "approximate": true,
+      "child": {"op": "Atom", "ref": "2x5x5@5e3b69e8989d3ac4c5bd80eb8f6c01e25797d0be4096286bc5fa0f762c281e2f"}
+    },
+    "allocA": [2, 3],
+    "allocB": [3, 3, 3, 3, 3],
+    "allocC": [6, 6, 6, 5, 6],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+        "right": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"}
+      },
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      {"op": "Atom", "ref": "2x3x5-r25-alphatensor_Z-31f79a7"},
+      {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"}
+    ]
+  },
+  "n": [5, 15, 29],
+  "m": 1421,
+  "hash": "c801b9257915fce0d51b59719e124c4080dfd5b8659f1a17ad5f772bee1353b8",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

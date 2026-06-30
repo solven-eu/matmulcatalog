@@ -1,4 +1,4 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.prospective;
 
 import java.util.ArrayList;
 import java.util.Arrays;
