@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import eu.solven.matmul.catalog.Compose;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.catalog.SchemeResolver;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Regression guard for the recombination base-orientation divergence

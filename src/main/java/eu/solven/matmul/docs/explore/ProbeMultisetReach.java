@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 
 /**
  * Per-base recombination-multiset frontier for ⟨2,2,3⟩: for each distinct rank-11

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Debug-only: probes 4 flatten conventions (row-major vs col-major on each

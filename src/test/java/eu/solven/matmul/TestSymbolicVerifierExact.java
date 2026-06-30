@@ -6,10 +6,11 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import eu.solven.matmul.SymbolicVerifier.Algebra;
-import eu.solven.matmul.SymbolicVerifier.Result;
+import eu.solven.matmul.verifiers.SymbolicVerifier.Algebra;
+import eu.solven.matmul.verifiers.SymbolicVerifier.Result;
 import eu.solven.matmul.catalog.SchemeIO;
 import tools.jackson.databind.JsonNode;
+import eu.solven.matmul.verifiers.SymbolicVerifier;
 
 /**
  * Exercises the per-algebra exact symbolic verifier

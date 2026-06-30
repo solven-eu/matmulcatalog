@@ -1,7 +1,7 @@
 package eu.solven.matmul.research;
 
 import eu.solven.matmul.NonBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.papers.makarov1986.Makarov22;
 import eu.solven.matmul.papers.makarov1986.Makarov22.WSpec;
 

@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.Compose;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;

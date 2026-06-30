@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.catalog.SchemeIO;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * F₃ residual sanity. Any integer-coefficient bilinear scheme that

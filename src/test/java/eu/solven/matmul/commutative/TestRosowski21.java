@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonBilinearAlgorithm;
 import eu.solven.matmul.papers.rosowski2019.Rosowski21;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Verifies that the encoded Rosowski 2019 Corollary 1 (⟨3,3,3⟩=21

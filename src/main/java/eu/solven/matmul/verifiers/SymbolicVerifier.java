@@ -1,4 +1,4 @@
-package eu.solven.matmul;
+package eu.solven.matmul.verifiers;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import eu.solven.matmul.catalog.SchemeIO;
 import tools.jackson.databind.JsonNode;
+import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.ComplexNonCubicBilinearAlgorithm;
 
 /**
  * Symbolic, exact-arithmetic verifier for bilinear matmul schemes.

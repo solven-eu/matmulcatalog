@@ -128,7 +128,7 @@ public class ProbeAligningGreedy {
 					java.util.EnumSet.allOf(SerendipitousBudProduct.BudType.class));
 			log.info("BUILT ⟨{},{},{}⟩ rank={} exact={} — vs catalog {}",
 					product.n, product.m, product.p, product.r,
-					eu.solven.matmul.Verifier.isExactNonCubic(product), current);
+					eu.solven.matmul.verifiers.Verifier.isExactNonCubic(product), current);
 		}
 	}
 

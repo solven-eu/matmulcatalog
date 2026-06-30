@@ -157,7 +157,7 @@ public final class Compose {
 	 * zero) is removed. Which indices are dropped — and on which axis (incl. the
 	 * contracted axis {@code m}) — changes how many products DCE, hence the rank;
 	 * the caller enumerates choices (see {@link ProjectionSearch}). The result is
-	 * still re-checked by {@link eu.solven.matmul.Verifier#isExactNonCubic}.</p>
+	 * still re-checked by {@link eu.solven.matmul.verifiers.Verifier#isExactNonCubic}.</p>
 	 *
 	 * @param keepN sorted kept row indices in {@code [0,n)} (A-rows / C-rows)
 	 * @param keepM sorted kept inner indices in {@code [0,m)} (A-cols / B-rows)

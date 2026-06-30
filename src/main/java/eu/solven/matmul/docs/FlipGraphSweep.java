@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.SchemeIO;

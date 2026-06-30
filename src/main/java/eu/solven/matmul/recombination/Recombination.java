@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.isotropy.PairedSubProducts;
 
 /**
  * Java port of DeepMind AlphaTensor's recombination algorithm

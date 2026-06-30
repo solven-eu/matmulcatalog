@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 import eu.solven.matmul.ComplexNonCubicBilinearAlgorithm;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.KnownAlgorithm;
 import eu.solven.matmul.catalog.KnownAlgorithmCatalog;
 import eu.solven.matmul.catalog.SchemeIO;

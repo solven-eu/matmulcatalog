@@ -5,8 +5,9 @@ import eu.solven.matmul.algebra.*; import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.recombination.*;
 import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
 import eu.solven.matmul.search.SearchBudget;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 /**
  * LARGE-shape payoff test for the GL-orbit frontier: across the 17..BAND band (sorted n≤m≤p), does
  * the FULL GL-frontier expansion of the base pool STRICTLY beat the live {@code findBestStrategy}

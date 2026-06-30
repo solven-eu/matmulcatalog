@@ -1,6 +1,6 @@
 package eu.solven.matmul.search;
 
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

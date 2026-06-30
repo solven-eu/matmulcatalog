@@ -12,7 +12,8 @@ import tools.jackson.databind.node.ObjectNode;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.MatrixJsonFormatter;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 
 /**
  * Persist the GL-orbit recombination <b>frontier</b> of a base scheme as a sidecar JSON, keyed by

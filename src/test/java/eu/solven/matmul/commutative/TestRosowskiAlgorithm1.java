@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import eu.solven.matmul.NonBilinearAlgorithm;
 import eu.solven.matmul.papers.rosowski2019.Rosowski21;
 import eu.solven.matmul.papers.rosowski2019.RosowskiAlgorithm1;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Validates Rosowski 2019 Algorithm 1 ({@code ⟨n,3,3⟩ = 6n+3} non-bilinear

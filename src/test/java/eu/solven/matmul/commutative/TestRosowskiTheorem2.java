@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.papers.rosowski2019.RosowskiBound;
 import eu.solven.matmul.papers.rosowski2019.RosowskiTheorem2;
 

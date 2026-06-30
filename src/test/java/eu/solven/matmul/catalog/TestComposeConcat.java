@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 public class TestComposeConcat {
 
@@ -71,7 +71,7 @@ public class TestComposeConcat {
 		NonCubicBilinearAlgorithm s = SchemeIO.read(eu.solven.matmul.catalog.SchemeResolver.byHint(
 				"src/main/resources/schemes/known/section2/strassen-2x2x2_m7_a18.json"));
 		NonCubicBilinearAlgorithm naive232 =
-				eu.solven.matmul.NaiveMatMul.ofNonCubic(2, 3, 2);
+				eu.solven.matmul.verifiers.NaiveMatMul.ofNonCubic(2, 3, 2);
 		NonCubicBilinearAlgorithm combined = Compose.concatInner(s, naive232);
 		assertThat(combined.n).isEqualTo(2);
 		assertThat(combined.m).isEqualTo(5);

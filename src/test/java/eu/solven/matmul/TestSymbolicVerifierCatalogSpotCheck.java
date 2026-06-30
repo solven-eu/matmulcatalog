@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.catalog.SchemeIO;
 import tools.jackson.databind.JsonNode;
+import eu.solven.matmul.verifiers.SymbolicVerifier;
 
 /**
  * Live catalog spot-check for {@link SymbolicVerifier}.

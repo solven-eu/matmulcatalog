@@ -1,4 +1,6 @@
-package eu.solven.matmul;
+package eu.solven.matmul.verifiers;
+import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.BilinearAlgorithm;
 
 /**
  * The textbook n³-multiplication algorithm:

@@ -98,11 +98,11 @@ public final class KroneckerSplitSearch {
 
 	/** Resolve a Kronecker factor to an actual scheme. Degenerate shapes (any
 	 *  axis = 1) have no catalog file but their optimal scheme IS the naive one,
-	 *  so synthesise it via {@link eu.solven.matmul.NaiveMatMul#ofNonCubic}. */
+	 *  so synthesise it via {@link eu.solven.matmul.verifiers.NaiveMatMul#ofNonCubic}. */
 	private static NonCubicBilinearAlgorithm factorScheme(
 			Recombination.AlgorithmLookup lookup, int n, int m, int p) {
 		if (n == 1 || m == 1 || p == 1) {
-			return eu.solven.matmul.NaiveMatMul.ofNonCubic(n, m, p);
+			return eu.solven.matmul.verifiers.NaiveMatMul.ofNonCubic(n, m, p);
 		}
 		return lookup.find(n, m, p).orElseThrow(() -> new IllegalStateException(
 				"missing Kronecker factor ⟨" + n + "," + m + "," + p + "⟩"));

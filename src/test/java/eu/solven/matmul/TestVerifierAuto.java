@@ -3,6 +3,7 @@ package eu.solven.matmul;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Guards the size/density-aware verification dispatcher ({@link Verifier#verifyAuto}):

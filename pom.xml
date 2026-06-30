@@ -21,7 +21,6 @@
 		<pepper.version>5.6</pepper.version>
 		<guava.version>33.4.0-jre</guava.version>
 		<commons-math3.version>3.6.1</commons-math3.version>
-		<sat4j.version>2.3.6</sat4j.version>
 		<!-- Override SB-managed Lombok to a version with Java 25 support. -->
 		<lombok.version>1.18.42</lombok.version>
 
@@ -59,18 +58,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 			<version>${commons-math3.version}</version>
-		</dependency>
-
-		<!-- SAT4J: pure-Java SAT/PB solver for v3/sat (A2 pipeline). -->
-		<dependency>
-			<groupId>org.ow2.sat4j</groupId>
-			<artifactId>org.ow2.sat4j.core</artifactId>
-			<version>${sat4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.sat4j</groupId>
-			<artifactId>org.ow2.sat4j.pb</artifactId>
-			<version>${sat4j.version}</version>
 		</dependency>
 
 		<!-- Jackson 3.x for all JSON read/write (SchemeIO, MatrixJsonFormatter,

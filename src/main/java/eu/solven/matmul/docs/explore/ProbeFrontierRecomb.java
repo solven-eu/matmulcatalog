@@ -11,8 +11,8 @@ import eu.solven.matmul.recombination.Recombination.SotaResolver;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.recombination.AllocationOptimizer;
 import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
 import eu.solven.matmul.search.SearchBudget;
 
 /**

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import eu.solven.matmul.BilinearAlgorithm;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Detect non-trivial stabilizer subgroups of a matmul algorithm under the

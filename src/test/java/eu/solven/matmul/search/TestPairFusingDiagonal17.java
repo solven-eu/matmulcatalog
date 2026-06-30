@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import eu.solven.matmul.AxisSplitBases;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.recombination.PairedSubProducts;
+import eu.solven.matmul.isotropy.PairedSubProducts;
 import eu.solven.matmul.recombination.Recombination;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.papers.laderman1976.Laderman23;

@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.recombination.Recombination.AlgorithmLookup;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
@@ -60,11 +60,11 @@ public class TestKroneckerUnitFactor {
 	@Test
 	public void naiveNonCubicVerifies() {
 		// the degenerate factor builder itself must be a valid ⟨1,1,3⟩ scheme.
-		NonCubicBilinearAlgorithm s = eu.solven.matmul.NaiveMatMul.ofNonCubic(1, 1, 3);
+		NonCubicBilinearAlgorithm s = eu.solven.matmul.verifiers.NaiveMatMul.ofNonCubic(1, 1, 3);
 		assertThat(s.r).isEqualTo(3);
 		assertThat(Verifier.isExactNonCubic(s)).isTrue();
 		// and a genuinely rectangular one (⟨2,3,4⟩=24 naive).
-		NonCubicBilinearAlgorithm r = eu.solven.matmul.NaiveMatMul.ofNonCubic(2, 3, 4);
+		NonCubicBilinearAlgorithm r = eu.solven.matmul.verifiers.NaiveMatMul.ofNonCubic(2, 3, 4);
 		assertThat(r.r).isEqualTo(24);
 		assertThat(Verifier.isExactNonCubic(r)).isTrue();
 	}

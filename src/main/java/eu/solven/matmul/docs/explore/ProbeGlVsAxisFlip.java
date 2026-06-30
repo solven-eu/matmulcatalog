@@ -5,8 +5,9 @@ import eu.solven.matmul.algebra.*; import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.recombination.*;
 import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
 import eu.solven.matmul.search.SearchBudget;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 /** For ONE base: does the FULL GL-orbit frontier beat the live pool's AXIS_FLIP expansion?
  *  Both costed by B&B. AXIS_FLIP = 8 row-reversal variants (what defaultPool uses).
  *  GL frontier = full change-of-basis dominance. Sweep INCLUDES odd/unbalanced targets. */

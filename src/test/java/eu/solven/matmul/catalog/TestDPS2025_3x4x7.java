@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Verifies the Dumas-Pernet-Sedoglavic 2025 scheme for {@code Q⟨3,4,7⟩:m=63},

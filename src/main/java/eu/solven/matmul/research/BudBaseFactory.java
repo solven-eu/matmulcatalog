@@ -197,7 +197,7 @@ public final class BudBaseFactory {
 			try {
 				NonCubicBilinearAlgorithm built =
 						SerendipitousBudProduct.productViaBuds(w.base, lookup, w.n2, w.m2, w.p2);
-				boolean ok = eu.solven.matmul.Verifier.passesRandomMatmulSpotCheck(built);
+				boolean ok = eu.solven.matmul.verifiers.Verifier.passesRandomMatmulSpotCheck(built);
 				boolean rankOk = built.r == w.cost;
 				if (ok && rankOk) {
 					verified++;

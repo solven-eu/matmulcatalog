@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Discovery driver for serendipitous products (#159). For a target

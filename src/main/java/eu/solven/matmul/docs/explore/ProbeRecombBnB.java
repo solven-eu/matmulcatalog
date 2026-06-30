@@ -7,8 +7,9 @@ import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.recombination.*;
 import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
 import eu.solven.matmul.search.SearchBudget;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 public final class ProbeRecombBnB {
   public static void main(String[] a) throws Exception {
     SotaResolver sota=Recombination.catalogResolver(Algebra.nonCommutative(Field.R));

@@ -7,6 +7,7 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.catalog.SchemeIO;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Rational reduction mod a prime: a Q-exact scheme is F_p-valid exactly when

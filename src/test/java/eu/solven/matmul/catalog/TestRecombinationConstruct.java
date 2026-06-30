@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.papers.strassen1969.Strassen7;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.Compose;
 import eu.solven.matmul.catalog.Compositions;
 import eu.solven.matmul.recombination.Recombination;

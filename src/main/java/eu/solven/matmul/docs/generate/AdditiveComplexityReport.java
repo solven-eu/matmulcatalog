@@ -3,7 +3,7 @@ package eu.solven.matmul.docs.generate;
 import java.io.File;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.additions.SchemeAdditiveComplexity;
 import eu.solven.matmul.catalog.SchemeIO;
 

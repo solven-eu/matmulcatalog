@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import eu.solven.matmul.NonBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.Lineage;
 import eu.solven.matmul.catalog.SparseNonBilinearWriter;
 import eu.solven.matmul.catalog.SparseNonBilinearWriter.Metadata;

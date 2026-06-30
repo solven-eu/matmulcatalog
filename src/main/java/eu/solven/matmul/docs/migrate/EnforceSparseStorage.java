@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.SchemeIO;
 
 /**

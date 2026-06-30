@@ -5,8 +5,8 @@ import java.util.TreeSet;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.SchemeIO;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
 
 /**
  * Validate the GL-free structural enumerators against the GL-odometer oracle where it is

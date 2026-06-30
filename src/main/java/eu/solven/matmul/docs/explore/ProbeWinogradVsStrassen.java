@@ -5,8 +5,9 @@ import eu.solven.matmul.algebra.*; import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.recombination.*;
 import eu.solven.matmul.recombination.AnalyticalMaskSearch.SchemeSupports;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
 import eu.solven.matmul.search.SearchBudget;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 /** ISOLATE one base's own GL orbit: does any frontier member STRICTLY beat the native support
  *  (both with B&B, both over s3 orientations) on composed-mul count? */
 public final class ProbeWinogradVsStrassen {

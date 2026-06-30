@@ -21,7 +21,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
  * <p>For F₂ composition (e.g. AlphaTensor's `⟨4,4,4⟩=47` Kroneckered with
  * itself), the composed factors stay in {0, 1} and the trilinear identity
  * holds <b>modulo 2</b>. Verify via
- * {@link eu.solven.matmul.Verifier#residualNonCubicF2}.</p>
+ * {@link eu.solven.matmul.verifiers.Verifier#residualNonCubicF2}.</p>
  *
  * <p>For real-arithmetic composition (e.g. Strassen³), the composed factors
  * stay in {-1, 0, +1} and the identity holds exactly over Z.</p>

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.SchemeIO;
 import tools.jackson.databind.JsonNode;
 
@@ -39,7 +39,7 @@ import tools.jackson.databind.JsonNode;
  *   <li>the algorithm passes
  *       {@link Verifier#passesRandomMatmulSpotCheck}, the
  *       fast random-input verifier ({@link
- *       eu.solven.matmul.SymbolicVerifier} is intractable at
+ *       eu.solven.matmul.verifiers.SymbolicVerifier} is intractable at
  *       this scale — {@code O(n⁶·r)} BigInteger multiplies — and
  *       the spot-check covers the polynomial identity densely).</li>
  * </ul>

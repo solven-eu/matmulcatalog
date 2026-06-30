@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.recombination.RecombFrontierIO;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
 
 /**
  * Emit the recombination-frontier sidecar JSON ({@link RecombFrontierIO}) for one or more base

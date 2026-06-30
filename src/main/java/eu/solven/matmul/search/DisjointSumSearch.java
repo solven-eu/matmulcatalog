@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import eu.solven.matmul.recombination.PairedSubProducts;
+import eu.solven.matmul.isotropy.PairedSubProducts;
 import eu.solven.matmul.recombination.Recombination;
 
 /**

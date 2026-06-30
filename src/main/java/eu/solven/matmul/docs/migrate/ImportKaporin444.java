@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.solven.matmul.ComplexNonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.SchemeIO;
 
 import tools.jackson.databind.JsonNode;

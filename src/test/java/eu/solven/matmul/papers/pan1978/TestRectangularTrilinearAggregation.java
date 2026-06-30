@@ -105,7 +105,7 @@ public class TestRectangularTrilinearAggregation {
 		assertThat(scheme.m).isEqualTo(3);
 		assertThat(scheme.p).isEqualTo(3);
 		assertThat(scheme.r).isEqualTo(8 + (int) RectangularTrilinearAggregation.fusedRank(2, 1, 2) + 2);
-		assertThat(eu.solven.matmul.Verifier.isExactNonCubic(scheme))
+		assertThat(eu.solven.matmul.verifiers.Verifier.isExactNonCubic(scheme))
 				.as("buildPeeledViaTa must compute ⟨2,3,3⟩ exactly").isTrue();
 	}
 

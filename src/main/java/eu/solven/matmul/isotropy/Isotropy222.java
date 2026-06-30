@@ -1,4 +1,4 @@
-package eu.solven.matmul.catalog;
+package eu.solven.matmul.isotropy;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
-package eu.solven.matmul.recombination;
+package eu.solven.matmul.isotropy;
 
 import java.util.Arrays;
+import eu.solven.matmul.recombination.Recombination;
 
 /**
  * Pan's "pair simultaneous sub-products" trick (DIS09 §3, Layer 4).

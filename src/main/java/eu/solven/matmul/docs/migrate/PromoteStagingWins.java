@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
-import eu.solven.matmul.search.LineageVerifier;
+import eu.solven.matmul.verifiers.LineageVerifier;
 import lombok.extern.slf4j.Slf4j;
 
 /**

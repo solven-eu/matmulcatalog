@@ -13,8 +13,8 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.api.condition.EnabledIf;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.SymbolicVerifier;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.SymbolicVerifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Sanity tests for {@link MapleLRPParser}: parses the FMM-Lille

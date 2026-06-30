@@ -1,4 +1,4 @@
-package eu.solven.matmul.recombination;
+package eu.solven.matmul.isotropy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.recombination.SubspaceArrangement;
 
 /**
  * Enumerate the distinct <b>recombination multisets</b> realisable by a base
@@ -930,7 +931,7 @@ public final class RecombinationMultisetOrbit {
 	// ---- canonicalisation ----------------------------------------------------
 
 	/** Axis permutations of {@code {0,1,2}} that fix the shape tuple (the base's automorphisms). */
-	static int[][] shapeStabilizer(int n, int m, int p) {
+	public static int[][] shapeStabilizer(int n, int m, int p) {
 		int[] s = { n, m, p };
 		int[][] all = { { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 }, { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 } };
 		List<int[]> keep = new ArrayList<>();
@@ -941,7 +942,7 @@ public final class RecombinationMultisetOrbit {
 	}
 
 	/** Lex-min serialised multiset over the stabiliser group. */
-	static String canonicalKey(int[][] shapes, int[][] stabilizer) {
+	public static String canonicalKey(int[][] shapes, int[][] stabilizer) {
 		String best = null;
 		for (int[] pi : stabilizer) {
 			String[] s = new String[shapes.length];

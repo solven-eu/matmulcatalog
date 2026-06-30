@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import eu.solven.matmul.FactorMatrix;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Discovery driver for the projection operator (#159 / ROADMAP). For a target

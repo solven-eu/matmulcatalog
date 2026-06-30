@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import eu.solven.matmul.catalog.CatalogLimits;
 
-import eu.solven.matmul.recombination.PairedSubProducts;
+import eu.solven.matmul.isotropy.PairedSubProducts;
 
 import eu.solven.matmul.catalog.Compose;
 

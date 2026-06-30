@@ -1,6 +1,12 @@
-package eu.solven.matmul;
+package eu.solven.matmul.verifiers;
 
 import java.math.BigInteger;
+import eu.solven.matmul.BilinearAlgorithm;
+import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.FactorMatrix;
+import eu.solven.matmul.NonBilinearAlgorithm;
+import eu.solven.matmul.ComplexNonCubicBilinearAlgorithm;
+import eu.solven.matmul.RowMajorFactor;
 
 /**
  * Verifies a bilinear algorithm against the exact matrix-multiplication tensor.

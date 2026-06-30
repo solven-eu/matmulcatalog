@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.isotropy.Isotropy222;
 
 /**
  * Constructive check of the de Groote 1978 / Burichenko 2014 fact that all

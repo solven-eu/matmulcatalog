@@ -6,7 +6,8 @@ import java.util.List;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.SymmetryTransforms;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.recombination.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit.Result;
+import eu.solven.matmul.isotropy.RecombinationMultisetOrbit;
 
 /**
  * Score a target ⟨N,M,P⟩ against the whole GL-orbit + axis-orientation menu of recombination

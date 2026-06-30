@@ -18,7 +18,7 @@ import java.util.Map;
  * side). A dense integer cube accidentally supplies these but explodes at {@code dim=4};
  * this class supplies them exactly and cheaply (one generic vector per lattice member).
  */
-final class SubspaceArrangement {
+public final class SubspaceArrangement {
 	private SubspaceArrangement() {}
 
 	/** Defensive cap on a lattice closure (intersections/sums); closures here are tiny in practice. */
@@ -89,7 +89,7 @@ final class SubspaceArrangement {
 	// ---- public subspace ops -------------------------------------------------
 
 	/** Integer basis of the null space {@code {x ∈ ℚ^dim : row·x = 0 ∀ row}}. */
-	static List<int[]> nullspace(List<int[]> rows, int dim) {
+	public static List<int[]> nullspace(List<int[]> rows, int dim) {
 		Frac[][] M = toFrac(rows, dim);
 		List<Integer> pivots = M.length == 0 ? new ArrayList<>() : rref(M, dim);
 		boolean[] isPivot = new boolean[dim];
@@ -110,7 +110,7 @@ final class SubspaceArrangement {
 	}
 
 	/** Reduce a generating set to an independent integer basis of its span. */
-	static List<int[]> basisOf(List<int[]> gens, int dim) {
+	public static List<int[]> basisOf(List<int[]> gens, int dim) {
 		Frac[][] M = toFrac(gens, dim);
 		if (M.length == 0) return new ArrayList<>();
 		List<Integer> pivots = rref(M, dim);
@@ -120,7 +120,7 @@ final class SubspaceArrangement {
 	}
 
 	/** Orthogonal complement (annihilator) {@code Aᗮ}: null space of A's basis-as-rows. */
-	static List<int[]> annihilator(List<int[]> basis, int dim) { return nullspace(basis, dim); }
+	public static List<int[]> annihilator(List<int[]> basis, int dim) { return nullspace(basis, dim); }
 
 	/** Intersection {@code A ∩ B = (Aᗮ + Bᗮ)ᗮ}, returned as an integer basis. */
 	static List<int[]> intersect(List<int[]> A, List<int[]> B, int dim) {
@@ -147,7 +147,7 @@ final class SubspaceArrangement {
 	 * Lattice closure of {@code generators} under {@code ∩} (op="meet") or {@code +} (op="join"),
 	 * each member returned as a basis. Deduped by {@link #key}; capped at {@link #LATTICE_CAP}.
 	 */
-	static List<List<int[]>> closure(List<List<int[]>> generators, int dim, boolean meet) {
+	public static List<List<int[]>> closure(List<List<int[]>> generators, int dim, boolean meet) {
 		Map<String, List<int[]>> seen = new LinkedHashMap<>();
 		List<List<int[]>> work = new ArrayList<>();
 		for (List<int[]> g : generators) {
@@ -198,7 +198,7 @@ final class SubspaceArrangement {
 	 * increasing coprime-ish coefficients {@code (1, t, t², …)}, {@code t} chosen above the
 	 * basis entries so the combination avoids the basis's own proper sub-arrangement.
 	 */
-	static int[] genericIn(List<int[]> basis, int dim, int t) {
+	public static int[] genericIn(List<int[]> basis, int dim, int t) {
 		Frac[] acc = new Frac[dim];
 		for (int j = 0; j < dim; j++) acc[j] = Frac.ZERO;
 		long c = 1;

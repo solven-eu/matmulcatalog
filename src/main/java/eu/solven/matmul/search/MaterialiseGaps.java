@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 
 /**
  * Closes the loop: detect → construct → verify → save.

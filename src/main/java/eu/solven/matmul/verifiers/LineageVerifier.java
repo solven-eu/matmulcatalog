@@ -1,4 +1,4 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.verifiers;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,12 +7,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
-import eu.solven.matmul.Verifier;
+import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
 import eu.solven.matmul.catalog.SchemeIO;
 import tools.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
+import eu.solven.matmul.search.LineageReplayer;
 
 /**
  * Transverse, compositional verification of a lineage tree.
@@ -89,7 +90,7 @@ public final class LineageVerifier {
 			// (audit 2026-06-10: all 10 sampled-verify failures were this).
 			if (SchemeIO.isNonBilinear(root)) {
 				eu.solven.matmul.NonBilinearAlgorithm nb = SchemeIO.readNonBilinear(f);
-				return eu.solven.matmul.Verifier.isExactNonBilinear(nb) ? Result.ok(1)
+				return eu.solven.matmul.verifiers.Verifier.isExactNonBilinear(nb) ? Result.ok(1)
 						: Result.fail("non-bilinear " + f.getName() + " does not exact-verify");
 			}
 			// Primitive: exact-verify the explicit matrices directly.

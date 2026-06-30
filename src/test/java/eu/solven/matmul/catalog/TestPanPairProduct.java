@@ -1,6 +1,6 @@
 package eu.solven.matmul.catalog;
 
-import eu.solven.matmul.recombination.PairedSubProducts;
+import eu.solven.matmul.isotropy.PairedSubProducts;
 
 import eu.solven.matmul.papers.pan1978.PanPairProduct;
 

@@ -37,7 +37,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
  * ({@code ⟨k,1,1⟩}) and {@code W}-buds ({@code ⟨1,k,1⟩}) plus trivial terms.
  * Combined buds (§2.6.4, e.g. {@code ⟨2,1,2⟩}) are a follow-up. The assembled
  * scheme is a standard flatten {@code (U,V,W)}; the caller verifies it with
- * {@link eu.solven.matmul.Verifier#isExactNonCubic} (the oracle).</p>
+ * {@link eu.solven.matmul.verifiers.Verifier#isExactNonCubic} (the oracle).</p>
  */
 public final class SerendipitousBudProduct {
 
