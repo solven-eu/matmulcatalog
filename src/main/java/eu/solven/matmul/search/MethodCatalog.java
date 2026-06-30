@@ -3,6 +3,7 @@ package eu.solven.matmul.search;
 import java.util.List;
 import java.util.Optional;
 
+import eu.solven.matmul.papers.waksman1970.Waksman1970Method;
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
 
 /**
@@ -11,9 +12,20 @@ import eu.solven.matmul.recombination.Recombination.SotaResolver;
  * <h2>Current contents</h2>
  *
  * <ul>
- *   <li>{@link SedoglavicProp1Method} — Sedoglavic 2017 hal-01572046v2
- *       Proposition 1 enumerator (cubic targets).</li>
+ *   <li>{@link HopcroftKerr1971Method} — Hopcroft-Kerr 1971 {@code ⟨2,m,n⟩}
+ *       closed form.</li>
+ *   <li>{@link PanTrilinearAggregationMethod} — Pan 1980 / DIS09 §3 cubic
+ *       odd/even closed form.</li>
  * </ul>
+ *
+ * <p>Note: Sedoglavic 2017 Proposition 1 is <em>not</em> a registered method.
+ * Its bound — {@code ⟨u+v,u+v,u+v⟩ ≤ ⟨u,u,u⟩ + 3·⟨u,u,v⟩ + 3·⟨v,v,u⟩} — is the
+ * recombination multiset of the Strassen {@code ⟨2,2,2⟩} base at a two-part
+ * {@code [u,v]} block allocation, so it is already produced (and dominated when a
+ * better split exists) by the generic recombination path in
+ * {@link BlockSplitSearch#findBestStrategy}; its {@code u=v} doubling is the
+ * {@link PairFusedRecombination} Pan-TA candidate. A standalone enumerator would
+ * only re-derive what recombination already covers.</p>
  *
  * <h2>Adding a method</h2>
  *
@@ -58,8 +70,7 @@ public final class MethodCatalog {
 	public static List<ConstructiveMethod> all() {
 		return List.of(
 				new HopcroftKerr1971Method(),
-				new PanTrilinearAggregationMethod(),
-				new SedoglavicProp1Method());
+				new PanTrilinearAggregationMethod());
 	}
 
 	/**

@@ -20,8 +20,10 @@ import eu.solven.matmul.papers.dis2009.PanTrilinearAggregation;
  * coefficients are rational, denominators bounded by {@code n/2 + 1}).</p>
  *
  * <p>Useful as a baseline at cubic shapes where no better composition
- * exists. The {@link SedoglavicProp1Method} formula usually beats this
- * one at the same shape (e.g. ⟨11⟩³: Sedoglavic 873 vs Pan 1098).</p>
+ * exists. The Sedoglavic Prop 1 bound (the Strassen recombination multiset
+ * at a {@code [u,v]} split) usually beats this one at the same shape
+ * (e.g. ⟨11⟩³: Sedoglavic 873 vs Pan 1098) — but that bound is reached by
+ * the recombination path, not by a registered method.</p>
  */
 public final class PanTrilinearAggregationMethod implements ConstructiveMethod {
 

@@ -20,6 +20,37 @@ sizes, so the multiset is \emph{symbolic} in \((n_i,m_j,p_k)\) --- a product is
 tagged, per axis, by the block index it lands on. The concrete split
 \((9,8)^3\to\nmpshape{17}{17}{17}\) used below is just one instantiation.
 
+\paragraph{Relation to Sedoglavic's Proposition~1.}
+This recovers, and strictly generalises, the closed form of
+Sedoglavic~\cite{sedoglavic2017}. His Proposition~1 reads
+\[
+  \nmpshape{u{+}v}{u{+}v}{u{+}v}\ \le\
+  \nmpshape{u}{u}{u}\;+\;3\,\nmpshape{u}{u}{v}\;+\;3\,\nmpshape{v}{v}{u}
+  \qquad(u>v),
+\]
+which is exactly the recombination multiset of the Strassen \nmpshape{2}{2}{2}
+base at the two-part block allocation \([u,v]\) on every axis: the seven
+Strassen products split as one cube \nmpshape{u}{u}{u} and two cyclic triples of
+mixed sub-shapes, so the multiset \emph{is} the right-hand side, and
+\(\sum_k r_{\text{sub-}k}\) is his bound. The headline cases
+\((u,v)=(4,3)\to\nmpshape{7}{7}{7}{=}250\) and
+\((9,8)\to\nmpshape{17}{17}{17}{=}2940\) are two of its allocations. The
+enumeration of this section subsumes that formula in three directions: it
+ranges over \emph{every} base (not only Strassen), over \emph{every}
+allocation (including the unbalanced and \(\ge 3\)-part splits the two-part
+rule cannot express), and---via the dominance frontier of
+Section~\ref{ssec:frontier}---selects the \emph{optimal} multiset rather than
+committing to one symbolic recipe. Two consequences are worth naming. First,
+the case \(u=v\) that Proposition~1 excludes is recovered as the Pan trilinear
+aggregation~\cite{pan1978} of the base's products (three cyclic pairs fuse at
+cost \(k^3{+}3k^2\) each, leaving one solo \nmpshape{k}{k}{k}), weighed against
+the plain \(7\cdot r\) recombination and kept only when cheaper. Second, the
+generalisation can \emph{beat} the proposition at its own shapes: for
+\nmpshape{17}{17}{17} an allocation in the Strassen orbit dominates the
+\([9,8]\) split and yields \(2930<2940\). The closed form is thus not a
+separate construction we wire in, but a single base-and-allocation point of the
+multiset frontier search.
+
 \subsection{The orbit and a decoupling lemma}
 
 By de Groote~\cite{degroote1978} the rank-7 decompositions of \nmpshape{2}{2}{2}

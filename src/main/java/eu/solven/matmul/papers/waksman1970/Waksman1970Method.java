@@ -1,9 +1,11 @@
-package eu.solven.matmul.search;
+package eu.solven.matmul.papers.waksman1970;
 
 import java.util.Optional;
 
 import eu.solven.matmul.recombination.Recombination.SotaResolver;
-import eu.solven.matmul.papers.waksman1970.WaksmanBound;
+import eu.solven.matmul.search.ConstructiveMethod;
+import eu.solven.matmul.search.MethodCatalog;
+import eu.solven.matmul.search.ConstructiveMethod.Prediction;
 
 /**
  * {@link ConstructiveMethod} wrapper around

@@ -18,9 +18,9 @@ import eu.solven.matmul.recombination.Recombination.SotaResolver;
  *       by the search to pick the min candidate. Implements {@link #predict}.</li>
  *   <li><strong>Constructors</strong>: additionally materialise the actual
  *       bilinear algorithm. Optional; implements {@link #construct}. Some
- *       methods (e.g. {@code SedoglavicProp1} which composes catalog atoms)
- *       only have a predictor; the constructor falls back to recursive
- *       materialisation through {@link LineageReplayer}.</li>
+ *       methods that merely compose catalog atoms only have a predictor;
+ *       the constructor falls back to recursive materialisation through
+ *       {@link LineageReplayer}.</li>
  * </ol>
  *
  * <h2>Why this exists</h2>
@@ -44,11 +44,11 @@ import eu.solven.matmul.recombination.Recombination.SotaResolver;
  * </ul>
  *
  * @see MethodCatalog
- * @see SedoglavicProp1Method  initial adopter
+ * @see HopcroftKerr1971Method
  */
 public interface ConstructiveMethod {
 
-	/** Short identifier, e.g. {@code "SedoglavicProp1"}, {@code "HopcroftKerr1971"}. */
+	/** Short identifier, e.g. {@code "HopcroftKerr1971"}, {@code "PanTrilinearAggregation"}. */
 	String name();
 
 	/** Bibliographic reference, e.g. {@code "Sedoglavic 2017 hal-01572046v2"}. */

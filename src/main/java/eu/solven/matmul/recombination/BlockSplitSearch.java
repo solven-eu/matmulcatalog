@@ -661,42 +661,33 @@ public class BlockSplitSearch {
 			ConcatSplitSearch.ConcatSplit concat,
 			KroneckerSplitSearch.KroneckerSplit kronecker,
 			PairFusedRecombination.Prediction pairFused,
-			KnownTauIdentities.Identity tauIdentity,
-			eu.solven.matmul.papers.sedoglavic2017.SedoglavicProp1.Prediction sedoglavicProp1) {
+			KnownTauIdentities.Identity tauIdentity) {
 		public static NonCubicStrategy ofRecombination(MultiBaseSplitCandidate c) {
 			return new NonCubicStrategy(
-					"recombination[" + c.baseLabel() + "]", c.rank(), c, null, null, null, null, null);
+					"recombination[" + c.baseLabel() + "]", c.rank(), c, null, null, null, null);
 		}
 		public static NonCubicStrategy ofConcat(ConcatSplitSearch.ConcatSplit c) {
 			String axisName = c.axis() == 2 ? "p" : "n";
 			return new NonCubicStrategy(
 					"concat-" + axisName + "[" + c.leftSize() + "," + c.rightSize() + "]",
-					c.totalRank(), null, c, null, null, null, null);
+					c.totalRank(), null, c, null, null, null);
 		}
 		public static NonCubicStrategy ofKronecker(KroneckerSplitSearch.KroneckerSplit k) {
 			return new NonCubicStrategy(
 					"kronecker[⟨" + k.n1() + "," + k.m1() + "," + k.p1() + "⟩=" + k.r1()
 							+ " ⊗ ⟨" + k.n2() + "," + k.m2() + "," + k.p2() + "⟩=" + k.r2() + "]",
-					k.totalRank(), null, null, k, null, null, null);
+					k.totalRank(), null, null, k, null, null);
 		}
 		public static NonCubicStrategy ofPairFused(PairFusedRecombination.Prediction p, String baseLabel) {
 			return new NonCubicStrategy(
 					"pair-fused[" + baseLabel + "; " + p.pairs() + "×Pan + " + p.solos() + "×solo ⟨"
 							+ p.subK() + "⟩³]",
-					p.totalRank(), null, null, null, p, null, null);
+					p.totalRank(), null, null, null, p, null);
 		}
 		public static NonCubicStrategy ofTauIdentity(KnownTauIdentities.Identity id) {
 			return new NonCubicStrategy(
 					"τ-identity[" + id.attribution() + "]",
-					id.predictedRank(), null, null, null, null, id, null);
-		}
-		public static NonCubicStrategy ofSedoglavicProp1(
-				eu.solven.matmul.papers.sedoglavic2017.SedoglavicProp1.Prediction p) {
-			String label = p.usesPanPairCost()
-					? "Sedoglavic-doubling[k=" + p.u() + "]"
-					: "Sedoglavic-prop1[u=" + p.u() + ",v=" + p.v() + "]";
-			return new NonCubicStrategy(
-					label, p.predictedRank(), null, null, null, null, null, p);
+					id.predictedRank(), null, null, null, null, id);
 		}
 		/**
 		 * Generic ConstructiveMethod wrapper. After the
@@ -706,7 +697,7 @@ public class BlockSplitSearch {
 		 */
 		public static NonCubicStrategy ofMethodPrediction(ConstructiveMethod.Prediction p) {
 			return new NonCubicStrategy(
-					p.label(), p.predictedRank(), null, null, null, null, null, null);
+					p.label(), p.predictedRank(), null, null, null, null, null);
 		}
 	}
 
@@ -865,8 +856,11 @@ public class BlockSplitSearch {
 		}
 
 		// ConstructiveMethod registry (#161). Iterates every known
-		// formula-driven constructor: Sedoglavic Prop 1 today; HK71,
-		// Waksman, Rosowski, Pan TA, KnownTauIdentities as adopters land.
+		// formula-driven constructor: HK71 and Pan TA today; Waksman,
+		// Rosowski, etc. as adopters land. (Sedoglavic Prop 1 is NOT a
+		// registered method — its bound is the Strassen ⟨2,2,2⟩ recombination
+		// multiset at a [u,v] split, already covered by the recomb +
+		// PairFused candidates above; see MethodCatalog.)
 		// Each method's prediction (when applicable to this shape) becomes
 		// a search candidate competing with Kron / Concat / recombination.
 		for (ConstructiveMethod.Prediction pred : MethodCatalog.predictAll(n, m, p, sota)) {
