@@ -1,5 +1,5 @@
 {
-  "total": 9268,
+  "total": 9269,
   "schemes": [
     {
       "format": [2, 9, 10],
@@ -297358,6 +297358,39 @@
         "C"
       ],
       "zt": true,
+      "rank": 82,
+      "additions": 1028,
+      "has_buds": true,
+      "buds": "6×U⟨1,1,2⟩ + 3×V⟨2,1,1⟩ + 64×⟨1,1,1⟩",
+      "projection_margin": 18,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/ZT/3x6x6_m82_ZT.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section6/3x6x6-r82-perminov_ZT-a7d4577.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 80, "details_url": "https://fmm.univ-lille.fr/3x6x6.html"},
+      "external_best_rank": 80,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 18,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [3, 6, 6],
+      "max_dim": 6,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": true,
       "rank": 83,
       "additions": 912,
       "min_additions": 354,
@@ -297377,8 +297410,7 @@
       "external_best_rank": 80,
       "external_best_source": "fmm-lille",
       "external_cited": false,
-      "bud_score": 18,
-      "pareto_rank_buds": true
+      "bud_score": 18
     },
     {
       "format": [3, 6, 6],
