@@ -323,8 +323,8 @@ public final class LineageReplayer {
 	private NonCubicBilinearAlgorithm resolveLeaf(String ref) {
 		// Hash-ref: "{n}x{m}x{p}@{contentHash}" — resolve the EXACT scheme by
 		// content hash (precise; avoids the shape-ref picking a bud-poor sibling
-		// of the same shape/rank/adds). Falls back to the shape part if the hash
-		// no longer resolves (catalog changed).
+		// of the same shape/rank/adds). A hash that no longer resolves THROWS —
+		// never a silent shape-best substitution.
 		int at = ref.indexOf('@');
 		if (at > 0) {
 			String shapePart = ref.substring(0, at);
@@ -354,15 +354,16 @@ public final class LineageReplayer {
 						// unreadable candidate — keep scanning
 					}
 				}
-				// Hash gone → fall through to shape-ref. WARN: the replay will use
-				// DIFFERENT content than the pin recorded (same shape, possibly same
-				// rank) — the phantom-replay mechanism behind task #91's ⟨17,22,29⟩
-				// 6129→6138. Callers needing bit-exactness must treat this as failure;
-				// RepinDanglingLineageRefs is the repair pass for such pins.
-				log.warn("resolveLeaf: pinned ref {} no longer resolves — falling back to "
-						+ "shape-best at ⟨{},{},{}⟩ (content will differ from the pin)",
-						ref, hn, hmm, hp);
-				ref = shapePart;
+				// Hash gone → THROW. A pin records exact content; substituting the
+				// shape-best sibling replays DIFFERENT content under the same lineage —
+				// the phantom-replay mechanism behind task #91's ⟨17,22,29⟩ 6129→6138.
+				// (Historically this fell back with a WARN; see
+				// references/PURGE_REFCOUNT_POLICY.md.) RepinDanglingLineageRefs is the
+				// repair pass for such pins.
+				throw new IllegalStateException("LineageReplayer: pinned ref '" + ref
+						+ "' no longer resolves at ⟨" + hn + "," + hmm + "," + hp
+						+ "⟩ — refusing shape-best substitution (phantom replay); "
+						+ "run RepinDanglingLineageRefs to repair the pin");
 			}
 		}
 
