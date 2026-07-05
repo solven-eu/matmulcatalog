@@ -2,7 +2,10 @@
 
 *(2026-06-12; the projection sibling of `SERENDIPITY_RANK_TRADEOFF.md`; see
 also `BUD_STRUCTURE_THEORY.md` for the bud-count vs σ-value distinction and the
-flip-graph move lifecycle. Status: the statements under "Exchange rate" and
+flip-graph move lifecycle, and `PURGE_REFCOUNT_POLICY.md` for the catalog-hygiene
+consequences — a dethroned cube can remain the best projection parent (LITA vs
+DIS09 at ⟨30,30,30⟩), so purging must be refcount- and Pareto-aware, never
+rank-only. Status: the statements under "Exchange rate" and
 "Free margin" are theorems; the scan numbers are catalog-dated.)*
 
 ## Catalog home: `schemes/margin-bases/`

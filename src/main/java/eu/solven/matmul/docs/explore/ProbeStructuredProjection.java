@@ -5,7 +5,7 @@ import java.util.List;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.verifiers.Verifier;
-import eu.solven.matmul.papers.dis2009.PanTrilinearAggregation;
+import eu.solven.matmul.papers.ta.TrilinearAggregations;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -26,7 +26,10 @@ import lombok.extern.slf4j.Slf4j;
  * operator, so the surviving-product count IS the rank. The winner is rebuilt and
  * spot-checked as ⟨n−1,n,n⟩ to prove correctness by construction.</p>
  *
- * <pre>mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.explore.ProbeStructuredProjection -Dexec.args="28"</pre>
+ * <pre>mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.explore.ProbeStructuredProjection -Dexec.args="28 DIS"</pre>
+ *
+ * <p>Second arg picks the TA family ({@link TrilinearAggregations} member name,
+ * default {@code DIS}) — e.g. {@code "30 LITA"} probes the LITA cube.</p>
  */
 @Slf4j
 public final class ProbeStructuredProjection {
@@ -36,9 +39,13 @@ public final class ProbeStructuredProjection {
 
 	public static void main(String[] args) {
 		int N = args.length > 0 ? Integer.parseInt(args[0]) : 28;
-		NonCubicBilinearAlgorithm cube = PanTrilinearAggregation.build(N);
+		TrilinearAggregations ta = args.length > 1
+				? TrilinearAggregations.valueOf(args[1].toUpperCase(java.util.Locale.ROOT))
+				: TrilinearAggregations.DIS;
+		NonCubicBilinearAlgorithm cube = ta.build(N)
+				.orElseThrow(() -> new IllegalArgumentException(ta.tag() + " cannot build n=" + N));
 		int n = cube.n, m = cube.m, p = cube.p, r = cube.r;
-		log.info("PanTA ⟨{},{},{}⟩ r={} exact={}", n, m, p, r,
+		log.info("{} ⟨{},{},{}⟩ r={} exact={}", ta.tag(), n, m, p, r,
 				Verifier.passesRandomMatmulSpotCheck(cube));
 		if (n > 31) throw new IllegalStateException("n-row bitmask assumes n≤31");
 		double[][] U = cube.denseU(), V = cube.denseV(), W = cube.denseW();
