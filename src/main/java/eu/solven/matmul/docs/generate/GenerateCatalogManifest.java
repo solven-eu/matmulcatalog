@@ -214,13 +214,8 @@ public class GenerateCatalogManifest {
 			int maxDim = Math.max(n, Math.max(mm, p));
 			String source = root.has("source") && !root.get("source").asString().isBlank()
 					? root.get("source").asString() : "unknown";
-			// Lineage-attributed formula atoms: a lineage-only stub carries no on-disk
-			// source, but its construction has a known author. Attribute the KGP-2026
-			// LITA cubes (lineage TA_lita(n=N)) — parallel to how the imported DIS09
-			// cube carries source "DIS09".
-			if ("unknown".equals(source) && root.has("lineage_compact")
-					&& root.get("lineage_compact").asString().startsWith("TA_lita(")) {
-				source = "Khoruzhii, Gelß & Pokutta 2026 (LITA)";
+			if ("unknown".equals(source) && root.has("lineage_compact")) {
+				source = attributeSourceFromLineage(root.get("lineage_compact").asString());
 			}
 			boolean isComplex = SchemeIO.isComplex(root);
 			boolean isZ2 = SchemeIO.isZ2(root);
@@ -802,6 +797,23 @@ public class GenerateCatalogManifest {
 		if (author.isEmpty()) return token;
 		String cap = Character.toUpperCase(author.charAt(0)) + author.substring(1);
 		return cap + year;
+	}
+
+	/** Lineage-attributed formula constructions: a lineage-only stub carries no
+	 *  on-disk source, but its constructive head has a known author. Covers the
+	 *  KGP-2026 LITA cubes ({@code TA_lita(n=N)}) and the DIS09 Lemma-4 family
+	 *  ({@code DIS09Lemma4(n=N)}) — parallel to how the imported DIS09 cube
+	 *  carries source "DIS09". {@code startsWith} deliberately also matches a
+	 *  projected/re-oriented formula ({@code DIS09Lemma4(n=30) ↓[…]}, e.g. the
+	 *  ⟨29,30,30⟩ row): the projection is ours, but the formula credit — surfaced
+	 *  by the SPA as a "disc." tag, never as the discovery of the projected
+	 *  shape's rank — still belongs to the paper. Returns "unknown" when the
+	 *  lineage names no published formula. */
+	static String attributeSourceFromLineage(String lineageCompact) {
+		if (lineageCompact == null) return "unknown";
+		if (lineageCompact.startsWith("TA_lita(")) return "Khoruzhii, Gelß & Pokutta 2026 (LITA)";
+		if (lineageCompact.startsWith("DIS09Lemma4(")) return "DIS09";
+		return "unknown";
 	}
 
 	/** True if the source label denotes one of OUR composer/materialiser outputs

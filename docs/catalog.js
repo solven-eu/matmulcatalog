@@ -626,6 +626,9 @@ function sourcePriority(rawSource) {
 
 function classifySource(rawSource) {
   if (!rawSource) return { label: "(unknown)", key: null, year: null, url: null };
+  // The manifest's explicit placeholder for a scheme with no source on disk —
+  // same rendering as a missing source, not a literal "unknown" author.
+  if (/^unknown$/i.test(rawSource)) return { label: "(unknown)", key: null, year: null, url: null };
   // Catalog scheme sources (filename-derived).
   if (/^Strassen$/i.test(rawSource))       return { label: "Strassen 1969", key: "Strassen 1969", year: 1969 };
   if (/^Laderman$/i.test(rawSource))       return { label: "Laderman 1976", key: "Laderman 1976", year: 1976 };
@@ -1429,19 +1432,22 @@ function render() {
       // "Solven-..." auto-attribution — the construction itself IS the
       // source. Atoms keep their historical attribution (Strassen 1969,
       // Laderman 1976, …).
-      if (isComposedLineage(s.lineage_compact)) {
-        // Show the SHAPE-ONLY composition (e.g. "3x5x5 ⊗ 5x5x7"); the base's
-        // source/rank/adds are noise in this structural view — drop them, keeping
-        // the full ref in the hover tooltip (user 2026-06-08).
-        const shapes = shapesOnlyLineage(s.lineage_compact);
-        sourceCell = `<code class="lineage-formula" title="${escapeHtml(s.lineage_compact)}">${escapeHtml(shapes)}</code>`;
-      } else if (isFormulaLineage(s.lineage_compact)) {
+      // Formula check FIRST: a projected formula ("DIS09Lemma4(n=30) ↓[…]")
+      // also matches isComposedLineage (via ↓), but its head is a closed-form
+      // constructor whose "disc." credit must survive the projection.
+      if (isFormulaLineage(s.lineage_compact)) {
         // Formula-DERIVED scheme (e.g. DIS09Lemma4(n=20)): we materialise it
         // ourselves from a published closed-form, so the construction (lineage)
         // IS the source — but the formula/rank was DISCOVERED by the cited paper,
         // so we keep that credit as a "disc." prior-art highlight (user 2026-06-08).
-        sourceCell = `<code class="lineage-formula" title="${escapeHtml(s.source || "")}">${escapeHtml(s.lineage_compact)}</code>`
+        sourceCell = `<code class="lineage-formula" title="${escapeHtml(s.lineage_compact)}${s.source ? " — " + escapeHtml(s.source) : ""}">${escapeHtml(collapseKeepLists(s.lineage_compact))}</code>`
           + ` <span class="disc-tag" title="discovered by ${escapeHtml(cls.label)}">disc. ${escapeHtml(cls.label)}</span>${refLink}`;
+      } else if (isComposedLineage(s.lineage_compact)) {
+        // Show the SHAPE-ONLY composition (e.g. "3x5x5 ⊗ 5x5x7"); the base's
+        // source/rank/adds are noise in this structural view — drop them, keeping
+        // the full ref in the hover tooltip (user 2026-06-08).
+        const shapes = collapseKeepLists(shapesOnlyLineage(s.lineage_compact));
+        sourceCell = `<code class="lineage-formula" title="${escapeHtml(s.lineage_compact)}">${escapeHtml(shapes)}</code>`;
       } else {
         sourceCell = `<span title="${escapeHtml(s.source)}">${escapeHtml(cls.label)}</span>${refLink}`;
       }
@@ -1782,12 +1788,15 @@ document.addEventListener("keydown", (e) => {
  * walk of `s.lineage.op` and the parent ref(s).
  */
 // A lineage_compact is "composed" if it contains any operator: ⊗ (Kronecker),
-// +p / +n (concat), R[…] (recombination), AxisFlip, AxisPermute, DisjointSum.
+// ⊕ (disjoint sum), +p / +n / +m (concat), ↓[…] (projection / row-col drop),
+// R[…] / Rta[…] / R*[…] (recombination), TA[…] (peel-via-TA), AS( (augment-square),
+// AxisFlip, AxisPermute, DisjointSum.
 // A bare ref (e.g. "Strassen<2,2,2>=7", "3x3x6_m40_a862", "winograd-1971-7mult")
-// is an Atom.
+// is an Atom. A bare re-orientation ("9x10x13→⟨10,9,13⟩") stays an Atom — the
+// scheme is the same tensor, just re-oriented.
 function isComposedLineage(compact) {
   if (!compact) return false;
-  return /[⊗◊]|[+]p\b|[+]n\b|[+]m\b|^R\[|^Kron\[|^Derived\[|^Composed\[|AxisFlip|AxisPermute|DisjointSum|->NPM|->PMN|->NMP/.test(compact);
+  return /[⊗◊⊕↓]|[+]p\b|[+]n\b|[+]m\b|^R\[|^Rta\[|^R\*\[|^TA\[|^AS\(|^Kron\[|^Derived\[|^Composed\[|AxisFlip|AxisPermute|DisjointSum|->NPM|->PMN|->NMP/.test(compact);
 }
 
 // A formula-DERIVED lineage: a single parametric closed-form constructor call
@@ -1807,13 +1816,34 @@ function shapesOnlyLineage(compact) {
   });
 }
 
+// Strip trailing STRUCTURAL suffixes — projection "↓[keepN|keepM|keepP]" and
+// re-orientation "→⟨n,m,p⟩" — so a projected/re-oriented formula (e.g.
+// "DIS09Lemma4(n=30) ↓[…]", the ⟨29,30,30⟩ row) still classifies by its
+// constructive head. Suffixes can stack, so strip until fixpoint.
+function lineageHead(compact) {
+  let c = compact.trim(), prev;
+  do {
+    prev = c;
+    c = c.replace(/\s*↓\[[^\]]*\]$/, "").replace(/\s*→⟨\d+,\d+,\d+⟩$/, "").trim();
+  } while (c !== prev);
+  return c;
+}
+
 function isFormulaLineage(compact) {
-  if (!compact || isComposedLineage(compact)) return false;
-  const c = compact.trim();
+  if (!compact) return false;
+  const c = lineageHead(compact);
+  if (isComposedLineage(c)) return false;
   // A single parametric closed-form constructor call. Restricted to known
   // published formula families (not composition ops, which render infix and are
   // caught by isComposedLineage) so a future "Op(...)" form can't slip through.
   return /^(DIS09Lemma4|PanTrilinear\w*|Waksman\w*|Rosowski\w*|Makarov\w*|Sedoglavic\w*|Pan\w*)\([^)]*\)$/.test(c);
+}
+
+// Collapse each verbose projection keep-list "↓[0,1,2,…|…|…]" to a bare "↓"
+// for the source cell — the target shape is already the row's format column,
+// and the full keep-lists stay available in the hover tooltip.
+function collapseKeepLists(compact) {
+  return compact.replace(/\s*↓\[[^\]]*\]/g, " ↓").trim();
 }
 
 // The clean field LIST for a row (#182). The manifest (GenerateCatalogManifest)
@@ -2142,6 +2172,27 @@ function lineageToMermaid(lc) {
       const me = node("⊗ Kronecker", "opKron", opBadges(shape, rank), shape);
       kids.forEach((k) => edge(me, k.id, ""));
       return { id: me, rank, shape };
+    }
+    // Projection suffix (row/col drop): "child ↓[keepN|keepM|keepP]". The
+    // target shape is the keep-list lengths; the rank is the child's (a
+    // projection only zeroes rows/cols, it never adds products).
+    const pj = str.match(/^([\s\S]*\S)\s*↓\[([^\]]*)\]$/);
+    if (pj) {
+      const kid = parse(pj[1]);
+      const keeps = pj[2].split("|").map((x) => x.split(",").filter(Boolean).length);
+      const shape = keeps.length === 3 && keeps.every((k) => k > 0) ? keeps : null;
+      const me = node("Project ↓", "opComposed", shape ? [shapeBadge(shape)] : [], shape);
+      edge(me, kid.id, "");
+      return { id: me, rank: kid.rank, shape };
+    }
+    // Re-orientation suffix: "child →⟨n,m,p⟩" — same tensor, permuted axes.
+    const or = str.match(/^([\s\S]*\S)\s*→⟨(\d+),(\d+),(\d+)⟩$/);
+    if (or) {
+      const kid = parse(or[1]);
+      const shape = [+or[2], +or[3], +or[4]];
+      const me = node("Orient →", "opComposed", [shapeBadge(shape)], shape);
+      edge(me, kid.id, "");
+      return { id: me, rank: kid.rank, shape };
     }
     if (str.startsWith("R[") && str.endsWith("]")) {
       const inner = str.slice(2, -1);
