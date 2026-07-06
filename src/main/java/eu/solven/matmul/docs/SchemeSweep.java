@@ -65,7 +65,13 @@ import lombok.extern.slf4j.Slf4j;
  *   --field=Q|Z|R|C|F2|F3                 MANDATORY — a sweep is field-specific;
  *                                         there is NO default (an unspecified field
  *                                         leaks cross-field phantoms, e.g. an F₂
- *                                         base into a Q search).
+ *                                         base into a Q search). Convention: char-0
+ *                                         NC work uses Q (the FMM/Perminov digest
+ *                                         scope; a Q lookup admits Z+Q). Pass R only
+ *                                         when R-only ingredients are deliberately
+ *                                         wanted — R-stamped derived stubs are
+ *                                         usually FIELD DRIFT to repair (NarrowFields),
+ *                                         not schemes to build on.
  *   --config=NAME[,NAME…]                 pool preset(s): simple | auditAxisFlip |
  *                                         axisFlipOnly | rectangular | includeDerived
  *                                         | thorough. EVALUATE takes many (A/B);
@@ -138,17 +144,17 @@ import lombok.extern.slf4j.Slf4j;
  * <p><b>Worked recipes.</b></p>
  * <pre>
  * # A/B-compare pool presets on the cubic band, no writes:
- *   --mode=evaluate --field=R --config=simple,includeDerived --cubic=2-16
+ *   --mode=evaluate --field=Q --config=simple,includeDerived --cubic=2-16
  *
  * # Close a curated FMM-gap list with a CURATED cheap base pool (incl ⟨2,4,4⟩,
  * # excl the 5-way-split ⟨2,5,5⟩ that costs minutes/shape):
- *   --mode=materialize --field=R \
+ *   --mode=materialize --field=Q \
  *       --base=2x2x2,2x2x3,2x3x3,3x3x3,2x2x4,2x4x4,4x4x4 \
  *       --shape-file=target/fmm-gaps-non5.txt \
  *       --schemes-root=src/main/resources/schemes --threads=6
  *
  * # Dig one shape with an explicit base, staged write for inspection:
- *   --mode=materialize --field=R --shape=5x23x32 --base=2x4x4 \
+ *   --mode=materialize --field=Q --shape=5x23x32 --base=2x4x4 \
  *       --schemes-root=target/staging-schemes
  * </pre>
  *
