@@ -87,19 +87,49 @@ public final class RecursiveMaterialiser {
 	public static final String STRAT_RECOMBINATION = "recombination";
 	public static final String STRAT_SERENDIPITOUS = "serendipitous";
 	public static final String STRAT_PROJECTION = "projection";
-	/** Plain Kronecker products — no block-split search, no bud fusion. Typical use is
-	 *  a restricted {@code --strategies=kron} sweep (e.g. A/B-ing how much serendipitous
-	 *  bud fusion buys over the plain product). NOT in the default set (the recombination
-	 *  strategy enumerates Kronecker splits among its candidates), but when BOTH are
-	 *  selected the Kron pass still runs — it is near-free and rescues the case where
-	 *  findBestStrategy's single pick fails its spot-check. */
+	/** Plain Kronecker products — no block-split search, no bud fusion. Elects only the
+	 *  {@link BlockSplitSearch.CandidateKind#KRONECKER} kind of the upward search.
+	 *  Typical use is a restricted {@code --strategies=kron} sweep (e.g. A/B-ing how
+	 *  much serendipitous bud fusion buys over the plain product). */
 	public static final String STRAT_KRONECKER = "kronecker";
-	private java.util.Set<String> strategies =
-			java.util.Set.of(STRAT_RECOMBINATION, STRAT_SERENDIPITOUS, STRAT_PROJECTION);
+	/** Additive axis-concat splits — the {@link BlockSplitSearch.CandidateKind#CONCAT}
+	 *  kind of the upward search, selectable on its own. */
+	public static final String STRAT_CONCAT = "concat";
+	/** Default = every operator. Each token now maps 1:1 to its candidate kind(s) —
+	 *  {@code recombination} no longer implicitly elects Kronecker/concat picks, so
+	 *  Kron and concat must be (and are) first-class members of the default set. */
+	private java.util.Set<String> strategies = java.util.Set.of(
+			STRAT_RECOMBINATION, STRAT_KRONECKER, STRAT_CONCAT,
+			STRAT_SERENDIPITOUS, STRAT_PROJECTION);
 
 	/** Restrict the compose phase to the given strategy tokens (default: all three). */
 	public void setStrategies(java.util.Set<String> strategies) {
 		this.strategies = java.util.Set.copyOf(strategies);
+	}
+
+	/**
+	 * The {@link BlockSplitSearch.CandidateKind}s electable under a strategy-token
+	 * set — the 1:1 mapping that keeps {@code --strategies} honest. The τ-identity /
+	 * MethodCatalog recipes travel with the {@code recombination} token until they
+	 * earn a token of their own (Pan-TA pair fusion is not a kind at all — it is a
+	 * saving WITHIN recombination). Shared by {@link #materialise} and SchemeSweep's
+	 * closure mode so the mapping cannot drift.
+	 */
+	public static java.util.EnumSet<BlockSplitSearch.CandidateKind> kindsFor(
+			java.util.Set<String> strategies) {
+		java.util.EnumSet<BlockSplitSearch.CandidateKind> kinds =
+				java.util.EnumSet.noneOf(BlockSplitSearch.CandidateKind.class);
+		if (strategies.contains(STRAT_RECOMBINATION)) {
+			kinds.add(BlockSplitSearch.CandidateKind.RECOMBINATION);
+			kinds.add(BlockSplitSearch.CandidateKind.METHOD);
+		}
+		if (strategies.contains(STRAT_KRONECKER)) {
+			kinds.add(BlockSplitSearch.CandidateKind.KRONECKER);
+		}
+		if (strategies.contains(STRAT_CONCAT)) {
+			kinds.add(BlockSplitSearch.CandidateKind.CONCAT);
+		}
+		return kinds;
 	}
 
 	/**
@@ -441,8 +471,12 @@ public final class RecursiveMaterialiser {
 		}
 		try {
 			Result built = null;
-			// Upward block-split strategies (Kronecker / concat / recombination).
-			if (strategies.contains(STRAT_RECOMBINATION)) {
+			// Upward composite search (findBestStrategy), electing ONLY the candidate
+			// kinds mapped 1:1 from the selected strategy tokens — `recombination` no
+			// longer implicitly returns Kronecker/concat picks (their cheap bounds are
+			// still computed inside as B&B pruning seeds).
+			java.util.EnumSet<BlockSplitSearch.CandidateKind> kinds = kindsFor(strategies);
+			if (!kinds.isEmpty()) {
 				// In improve mode, bound the (expensive) recombination B&B by the catalog
 				// incumbent: we only keep strict improvements, so any allocation ≥ the
 				// incumbent is wasted exploration. findRank sees stubs; sentinel/0 → no
@@ -455,10 +489,18 @@ public final class RecursiveMaterialiser {
 				// derive-best: do NOT bound by the incumbent — we want to FIND the best
 				// derivation even when it only ties an import (a strict-improvement bound
 				// would prune the tie and we'd never materialise it).
-				Optional<BlockSplitSearch.NonCubicStrategy> picked =
-						BlockSplitSearch.findBestStrategy(n, m, p, pool, sota, balancedOnly,
-								maxImbalance, maxCombinations, 0, incumbentBound);
-				if (picked.isPresent()) {
+				//
+				// Retry over kinds: findBestStrategy commits to a SINGLE min-rank pick;
+				// if that pick fails to build or verify, drop ITS kind and re-elect among
+				// the rest. This rescues e.g. the Kron fallback when a recombination pick
+				// fails its spot-check, and ends the old dead-end where an unbuildable
+				// pair-fused / method pick nulled the whole upward phase.
+				java.util.EnumSet<BlockSplitSearch.CandidateKind> remaining = kinds.clone();
+				while (!remaining.isEmpty()) {
+					Optional<BlockSplitSearch.NonCubicStrategy> picked =
+							BlockSplitSearch.findBestStrategy(n, m, p, pool, sota, balancedOnly,
+									maxImbalance, maxCombinations, 0, incumbentBound, remaining);
+					if (picked.isEmpty()) break;
 					BlockSplitSearch.NonCubicStrategy s = picked.get();
 					if (s.kronecker() != null) {
 						built = buildKronecker(s.kronecker());
@@ -467,27 +509,15 @@ public final class RecursiveMaterialiser {
 					} else if (s.recombination() != null) {
 						built = buildRecombination(n, m, p, s.recombination());
 					}
-					// pair-fused not yet handled here; left to a follow-up.
+					// pair-fused / method picks are not yet buildable here → built stays
+					// null and their kind is dropped below (was: whole phase dead-ended).
 					if (built != null && !verifies(built.alg)) {
 						log.warn("⟨{}⟩ materialised at r={} but FAILED spot-check (strategy={})",
 								key, built.alg.r, s.label());
 						built = null;
 					}
-				}
-			}
-
-			// Plain Kronecker (no block-split search, no bud fusion): cheapest
-			// ⟨n1,m1,p1⟩⊗⟨n2,m2,p2⟩ over all divisor factorisations. Runs even
-			// alongside recombination: findBestStrategy enumerates Kronecker splits
-			// too, but commits to a SINGLE pick — if that pick fails its spot-check,
-			// built is null and the Kron candidate is lost. This pass is the cheap
-			// rescue (findBest is a divisor-triple arithmetic loop; the build only
-			// fires on a predicted strict improvement over `upperK`).
-			if (strategies.contains(STRAT_KRONECKER)) {
-				long upperK = built != null ? built.alg.r : Long.MAX_VALUE;
-				Result kron = tryKronecker(n, m, p, upperK);
-				if (kron != null && (built == null || kron.alg.r < built.alg.r)) {
-					built = kron;
+					if (built != null) break;
+					remaining.remove(BlockSplitSearch.kindOf(s));
 				}
 			}
 
@@ -1354,10 +1384,13 @@ public final class RecursiveMaterialiser {
 		for (int[] q : perms) parentCache.remove(q[0] + "x" + q[1] + "x" + q[2]);
 	}
 
-	/** {@link #STRAT_KRONECKER} strategy: the cheapest plain Kronecker product
-	 *  {@code ⟨n1,m1,p1⟩⊗⟨n2,m2,p2⟩} over all divisor factorisations, priced by the
-	 *  sota resolver and materialised via {@link #buildKronecker} (durable lineage).
-	 *  Returns null unless the verified product lands strictly below {@code upper}. */
+	/** Standalone plain-Kronecker probe: the cheapest {@code ⟨n1,m1,p1⟩⊗⟨n2,m2,p2⟩}
+	 *  over all divisor factorisations, priced by the sota resolver and materialised
+	 *  via {@link #buildKronecker} (durable lineage). {@link #materialise} routes the
+	 *  {@link #STRAT_KRONECKER} token through findBestStrategy's KRONECKER kind (same
+	 *  underlying {@link KroneckerSplitSearch#findBest}); this direct entry serves
+	 *  probes/tests. Returns null unless the verified product lands strictly below
+	 *  {@code upper}. */
 	Result tryKronecker(int n, int m, int p, long upper) {
 		Optional<KroneckerSplitSearch.KroneckerSplit> split =
 				KroneckerSplitSearch.findBest(n, m, p, sota);

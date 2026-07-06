@@ -128,9 +128,12 @@ import lombok.extern.slf4j.Slf4j;
  *                                         existing one (implies --best-derived).
  *   --buildable=required|optional         require sub-blocks be buildable (default
  *                                         required — no unbuildable stub churn).
- *   --strategies=kron,serendip,recomb,proj  restrict to a subset of build strategies
- *                                         (kron = PLAIN Kronecker only; serendipity
- *                                         is an accepted alias of serendipitous).
+ *   --strategies=kron,concat,recomb,serendip,proj  restrict to a subset of build
+ *                                         strategies — tokens map 1:1 to operators
+ *                                         (kron = PLAIN Kronecker only, concat =
+ *                                         additive axis splits, recomb = block
+ *                                         recombination incl. pair-fused/method
+ *                                         recipes; serendipity aliases serendipitous).
  *   --dry-run=true                        search/report only; write nothing (alias: --skip-materialise).
  *   --projection-only=true                projection strategy only.
  *
@@ -790,19 +793,21 @@ public final class SchemeSweep {
 			return;
 		}
 
-		// The upward search phase is the recombination/Kron/concat operator
-		// (findBestStrategy). Skip it entirely when 'recombination' is not selected
-		// — e.g. a serendipity-only closure run. (Serendipity itself fires per-shape
-		// in compose(); in closure mode it only sees overlay shapes, so a pure
-		// serendipity sweep is better run via --mode=materialize.)
+		// The upward search phase is findBestStrategy, electing only the candidate
+		// kinds mapped from the selected tokens (kron/concat/recombination). Skip it
+		// entirely when no upward kind is selected — e.g. a serendipity-only closure
+		// run. (Serendipity itself fires per-shape in compose(); in closure mode it
+		// only sees overlay shapes, so a pure serendipity sweep is better run via
+		// --mode=materialize.)
+		java.util.EnumSet<BlockSplitSearch.CandidateKind> upwardKinds =
+				RecursiveMaterialiser.kindsFor(spec.strategies);
 		Map<Shape, BlockSplitSearch.NonCubicStrategy> pendingOverlay =
-				spec.strategies.contains(RecursiveMaterialiser.STRAT_RECOMBINATION)
-						? runSearchRounds(ordered, pool, lookup, config, verbosePerShape)
+				!upwardKinds.isEmpty()
+						? runSearchRounds(ordered, pool, lookup, config, verbosePerShape, upwardKinds)
 						: new java.util.LinkedHashMap<>();
-		if (pendingOverlay.isEmpty()
-				&& !spec.strategies.contains(RecursiveMaterialiser.STRAT_RECOMBINATION)) {
+		if (pendingOverlay.isEmpty() && upwardKinds.isEmpty()) {
 			System.out.println();
-			System.out.println("Skipping upward search (--strategies excludes 'recombination').");
+			System.out.println("Skipping upward search (--strategies selects no upward kind).");
 		}
 
 		// ── PHASE 2: materialise overlay wins (unless --dry-run). ─
@@ -846,7 +851,8 @@ public final class SchemeSweep {
 	 */
 	private static Map<Shape, BlockSplitSearch.NonCubicStrategy> runSearchRounds(
 			List<Shape> ordered, List<BlockSplitSearch.NamedBase> pool,
-			FieldAwareLookup lookup, NamedConfig config, boolean verbosePerShape) {
+			FieldAwareLookup lookup, NamedConfig config, boolean verbosePerShape,
+			java.util.Set<BlockSplitSearch.CandidateKind> kinds) {
 		// Per-round wins live in {@code pendingOverlay}; the resolver consults the
 		// overlay first so subsequent rounds see prior-round discoveries WITHOUT
 		// having to materialise + write + reload from disk.
@@ -907,7 +913,8 @@ public final class SchemeSweep {
 					Optional<BlockSplitSearch.NonCubicStrategy> picked =
 							BlockSplitSearch.findBestStrategy(n, m, p, pool, flat,
 									config.config.balancedOnly(), config.config.maxImbalance(),
-									config.config.maxCombinations(), config.config.maxPadding());
+									config.config.maxCombinations(), config.config.maxPadding(),
+									Long.MAX_VALUE, kinds);
 					if (verbosePerShape) {
 						long searchMs = (System.nanoTime() - searchStart) / 1_000_000L;
 						String pickedLabel = picked.map(q -> "rank=" + q.rank() + " via " + q.label())
@@ -1118,11 +1125,13 @@ public final class SchemeSweep {
 		int minMaxDim = 0;  // 0 = no band floor; else keep shapes with max(n,m,p) ≥ this
 		int bandMin = OFF, bandMax = OFF;  // --band=lo-hi (or N): all shapes with maxDim in [lo,hi]
 		// --strategies: restrict the compose phase to a subset of upward operators.
-		// Default = all three; e.g. --strategies=serendipitous runs ONLY the
-		// serendipitous-product operator (skips recombination/Kron/concat search
-		// AND the downward projection closure).
+		// Default = ALL operators. Tokens map 1:1 to candidate kinds (kron/concat are
+		// first-class, no longer implicit in 'recombination'); e.g.
+		// --strategies=serendipitous runs ONLY the serendipitous-product operator.
 		java.util.Set<String> strategies = java.util.Set.of(
 				RecursiveMaterialiser.STRAT_RECOMBINATION,
+				RecursiveMaterialiser.STRAT_KRONECKER,
+				RecursiveMaterialiser.STRAT_CONCAT,
 				RecursiveMaterialiser.STRAT_SERENDIPITOUS,
 				RecursiveMaterialiser.STRAT_PROJECTION);
 		// Commutativity axis (orthogonal to the field): default NON-COMMUTATIVE — schemes
@@ -1291,13 +1300,15 @@ public final class SchemeSweep {
 							// it now selects the dedicated PLAIN-Kronecker-only strategy.
 							case "kronecker", "kron" ->
 									sel.add(RecursiveMaterialiser.STRAT_KRONECKER);
-							case "recombination", "recomb", "concat", "split" ->
+							case "concat" ->
+									sel.add(RecursiveMaterialiser.STRAT_CONCAT);
+							case "recombination", "recomb", "split" ->
 									sel.add(RecursiveMaterialiser.STRAT_RECOMBINATION);
 							case "projection", "project", "proj" ->
 									sel.add(RecursiveMaterialiser.STRAT_PROJECTION);
 							default -> throw new IllegalArgumentException(
 									"--strategies: unknown token '" + t + "' (expected "
-									+ "kronecker|serendipitous|recombination|projection).");
+									+ "kronecker|concat|serendipitous|recombination|projection).");
 						}
 					}
 					if (sel.isEmpty()) {
