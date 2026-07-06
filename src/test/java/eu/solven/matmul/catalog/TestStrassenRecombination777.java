@@ -26,37 +26,15 @@ import eu.solven.matmul.recombination.Recombination.AlgorithmLookup;
  */
 public class TestStrassenRecombination777 {
 
-	private static AlgorithmLookup catalogLookup() {
-		return (n, m, p) -> {
-			int[] sorted = { n, m, p };
-			java.util.Arrays.sort(sorted);
-			String prefix = sorted[0] + "x" + sorted[1] + "x" + sorted[2];
+	// Content-driven catalog-best resolver over Q (the char-0 default field; excludes
+	// F2-only schemes via fields[], not filenames). Replaces a Files.walk+findFirst
+	// FILENAME matcher whose pick was walk-order-dependent: as the catalog grew it
+	// started resolving DOMINATED files (⟨3,4,4⟩ → a r=40 derived stub instead of the
+	// 38-rank best), silently inflating the built rank (250 → 256).
+	private static final FieldAwareLookup LOOKUP = new FieldAwareLookup("Q");
 
-			Path root = Path.of("src/main/resources/schemes");
-			try (Stream<Path> s = Files.walk(root)) {
-				Optional<Path> best = s.filter(p_ -> {
-					String name = p_.getFileName().toString();
-					if (!name.endsWith(".json")) return false;
-					// Match both the legacy `note-{shape}_m{rank}` and the
-					// content-driven `{shape}-r{rank}-note-{hash}` filename forms:
-					// the shape may sit at the start of the name and be followed by
-					// `-r` (not only `_m`/`_r`).
-					if (!name.matches("(.*[_-])?" + prefix + "[_-][rm].*")) return false;
-					if (name.contains("F2") || name.contains("Z2")) return false;
-					return true;
-				}).findFirst();
-				if (best.isEmpty()) return Optional.empty();
-				File f = best.get().toFile();
-				try {
-					NonCubicBilinearAlgorithm alg = SchemeIO.readBilinear(f);
-					return alg.orientAs(n, m, p);
-				} catch (Exception e) {
-					return Optional.empty();
-				}
-			} catch (IOException e) {
-				return Optional.empty();
-			}
-		};
+	private static AlgorithmLookup catalogLookup() {
+		return LOOKUP::find;
 	}
 
 	@Test
@@ -100,11 +78,13 @@ public class TestStrassenRecombination777 {
 				strassen, catalogLookup(),
 				new int[] { 4, 3 }, new int[] { 4, 3 }, new int[] { 4, 3 });
 		assertThat(built.n).isEqualTo(7);
-		// This is the deterministic forced-[4,3] constructive build — the original
-		// Sedoglavic 2017 recombination, which yields 250 (as the method name says).
-		// The global SOTA ⟨7,7,7⟩=249 (Perminov) is found by a different, free-
-		// allocation search, NOT by this fixed-allocation construction.
-		assertThat(built.r).isEqualTo(250);
+		// The deterministic forced-[4,3] constructive build — Sedoglavic 2017's
+		// recombination, 250 with 2017-era leaves (⟨4,4,4⟩=49, ⟨3,4,4⟩=38, …).
+		// SOTA-or-better, not equality (repo guard rule): catalog-best leaves can
+		// only improve the total (e.g. the DPS-2025 ⟨4,4,4⟩=48 rationalisation),
+		// and an improvement must never break the guard. The global free-allocation
+		// SOTA ⟨7,7,7⟩=249 (Perminov) is a different construction.
+		assertThat(built.r).isLessThanOrEqualTo(250);
 		assertThat(Verifier.isExactNonCubic(built)).isTrue();
 	}
 }

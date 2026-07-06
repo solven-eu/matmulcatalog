@@ -33,16 +33,40 @@ public class TestConstructWithTaFusion {
 	}
 
 	@Test
-	public void ta_fusion_is_bit_exact_on_a_small_peel() {
-		// ⟨2,3,3⟩ via the ⟨1,2,2⟩ peel: cube ⟨2,2,2⟩ + corner ⟨2,1,1⟩ + ONE fused cross-pair.
-		// Small enough to verify the full tensor exactly.
+	public void unprofitable_peel_pair_is_refused_and_the_fallback_verifies() {
+		// ⟨2,3,3⟩ via the ⟨1,2,2⟩ peel. Its cross-pair ⟨2,2,1⟩+⟨2,1,2⟩ is a cyclic
+		// rotation GEOMETRICALLY, but fusing it is NEVER profitable: fusedRank(2,1,2)
+		// = nrp+np+nr+rp = 12 ≥ 2·naive = 8 (a peel pair has shape ⟨a,k,a⟩-family,
+		// whose correction terms always dominate). Historically this test expected 1
+		// fused pair — an accident of the UNKNOWN_RANK sentinel (leaves priced as
+		// infinite made ANY fusion look like a saving); the findRank naive fallback
+		// exposed it. The honest behaviour: the economics gate refuses, and the
+		// unfused fallback construction still computes matmul exactly.
 		Recombination.TaFusedConstruction tc = Recombination.constructWithTaFusion(
 				NonCubicBilinearAlgorithm.naive(1, 2, 2), TestConstructWithTaFusion::resolve, sota,
 				new int[] { 2 }, new int[] { 2, 1 }, new int[] { 2, 1 });
-		assertThat(tc.fusedPairs()).as("the symmetric peel fuses exactly one cross-pair").hasSize(1);
+		assertThat(tc.fusedPairs()).as("an unprofitable pair must NOT be fused").isEmpty();
 		assertThat(tc.alg().n).isEqualTo(2);
 		assertThat(tc.alg().m).isEqualTo(3);
 		assertThat(tc.alg().p).isEqualTo(3);
+		assertThat(Verifier.isExactNonCubic(tc.alg()))
+				.as("the unfused fallback ⟨2,3,3⟩ must compute matmul exactly").isTrue();
+	}
+
+	@Test
+	public void forced_fusion_is_bit_exact_on_the_small_peel() {
+		// The bit-exactness guard the old test intended: exercise embedTaPair on the
+		// smallest full-tensor-verifiable instance. Fusion only fires when priced
+		// profitable, so steer the sota to price the cross leaves as if no fast
+		// scheme existed (999 ≫ fusedRank 12) — the TA construction must be correct
+		// whenever elected, whatever the economics that elected it.
+		Recombination.SotaResolver expensiveLeaves = (a, b, c) ->
+				(a * b * c == 4 && Math.min(a, Math.min(b, c)) == 1) ? 999 : sota.getRank(a, b, c);
+		Recombination.TaFusedConstruction tc = Recombination.constructWithTaFusion(
+				NonCubicBilinearAlgorithm.naive(1, 2, 2), TestConstructWithTaFusion::resolve,
+				expensiveLeaves,
+				new int[] { 2 }, new int[] { 2, 1 }, new int[] { 2, 1 });
+		assertThat(tc.fusedPairs()).as("the steered peel fuses exactly one cross-pair").hasSize(1);
 		assertThat(Verifier.isExactNonCubic(tc.alg()))
 				.as("the TA-fused ⟨2,3,3⟩ must compute matmul exactly").isTrue();
 	}

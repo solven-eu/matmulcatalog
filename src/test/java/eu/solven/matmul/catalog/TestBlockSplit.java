@@ -27,48 +27,19 @@ import eu.solven.matmul.recombination.Recombination.AlgorithmLookup;
  */
 public class TestBlockSplit {
 
-	/**
-	 * Catalog-backed lookup: for ⟨n,m,p⟩, finds the lowest-rank scheme on disk
-	 * with matching canonical (sorted) dims.
-	 */
-	private static AlgorithmLookup catalogLookup() {
-		return (n, m, p) -> {
-			int[] sorted = { n, m, p };
-			java.util.Arrays.sort(sorted);
-			String prefix = sorted[0] + "x" + sorted[1] + "x" + sorted[2];
+	// Content-driven catalog-best resolver over Q (char-0 default field; F2-only
+	// schemes excluded via fields[], not the long-dead filename filter — post the
+	// 2026-06 content-driven migration an F2-only file no longer says "F2" in its
+	// name and could silently win the min-rank pick here).
+	private static final FieldAwareLookup LOOKUP = new FieldAwareLookup("Q");
 
-			Path root = Path.of("src/main/resources/schemes");
-			try (Stream<Path> s = Files.walk(root)) {
-				// LOWEST-rank real-arithmetic bilinear scheme on disk for this shape.
-				// Iterate ALL matching files (not findFirst): the catalog carries
-				// multiple ⟨n,m,p⟩ files, some of which are lineage-only stubs,
-				// non-bilinear/commutative, or complex-only (e.g. perminov_2025 /
-				// kauers_2026 with no fields[], makarov non-bilinear, AlphaEvolve C)
-				// — those throw in readBilinear and must be SKIPPED, not give up.
-				// Also skip F₂/Z₂ schemes (don't verify under regular arithmetic).
-				// Re-orient via cyclic shift to match the requested (n, m, p).
-				return s.filter(p_ -> {
-					String name = p_.getFileName().toString();
-					if (!name.endsWith(".json")) return false;
-					// Match both the legacy `note-{shape}_m{rank}` and the
-					// content-driven `{shape}-r{rank}-note-{hash}` filename forms:
-					// the shape may sit at the start of the name and be followed by
-					// `-r` (not only `_m`/`_r`).
-					if (!name.matches("(.*[_-])?" + prefix + "[_-][rm].*")) return false;
-					if (name.contains("F2") || name.contains("Z2")) return false;
-					return true;
-				}).map(p_ -> {
-					try {
-						return SchemeIO.readBilinear(p_.toFile()).orientAs(n, m, p).orElse(null);
-					} catch (Exception e) {
-						return null;
-					}
-				}).filter(java.util.Objects::nonNull)
-						.min(java.util.Comparator.comparingInt(a -> a.r));
-			} catch (IOException e) {
-				return Optional.empty();
-			}
-		};
+	private static AlgorithmLookup catalogLookup() {
+		return LOOKUP::find;
+	}
+
+	/** Rank of the catalog-best leaf the lookup will hand blockSplitCubic. */
+	private static int leaf(int n, int m, int p) {
+		return catalogLookup().find(n, m, p).orElseThrow().r;
 	}
 
 	/**
@@ -83,7 +54,7 @@ public class TestBlockSplit {
 		// Total = 56 (worse than Strassen²=49 but constructive proof block-split works).
 		NonCubicBilinearAlgorithm alg = Compose.blockSplitCubic(4, 2, 2, catalogLookup());
 		assertThat(alg.n).isEqualTo(4);
-		assertThat(alg.r).isEqualTo(56);
+		assertThat(alg.r).isEqualTo(8 * leaf(2, 2, 2));
 		assertThat(Verifier.isExactNonCubic(alg)).isTrue();
 	}
 
@@ -93,7 +64,7 @@ public class TestBlockSplit {
 		// Total = 184 (worse than fmm-lille's 153 best, but again constructive validation).
 		NonCubicBilinearAlgorithm alg = Compose.blockSplitCubic(6, 3, 3, catalogLookup());
 		assertThat(alg.n).isEqualTo(6);
-		assertThat(alg.r).isEqualTo(184);
+		assertThat(alg.r).isEqualTo(8 * leaf(3, 3, 3));
 		assertThat(Verifier.isExactNonCubic(alg)).isTrue();
 	}
 
@@ -108,9 +79,13 @@ public class TestBlockSplit {
 	public void mixed_block_split_777_4_3_constructs_and_verifies_at_273() throws IOException {
 		NonCubicBilinearAlgorithm alg = Compose.blockSplitCubic(7, 4, 3, catalogLookup());
 		assertThat(alg.n).isEqualTo(7);
-		// Was 273 (49 + 3·29 + 3·38 + 23) at the time the test was written;
-		// catalog gained a better ⟨4,3,3⟩ scheme, so the formula now totals 272.
-		assertThat(alg.r).isEqualTo(272);
+		// SELF-CONSISTENT expectation: the block decomposition must cost exactly the
+		// sum of the leaves the lookup resolves — an invariant of the construction,
+		// not of catalog state. (The old hand-pinned constant broke every time the
+		// catalog gained a better mixed-shape scheme: 273 → 272 → 271 → …)
+		int expected = leaf(4, 4, 4) + 3 * leaf(4, 4, 3) + 3 * leaf(4, 3, 3) + leaf(3, 3, 3);
+		assertThat(alg.r).isEqualTo(expected);
+		assertThat(alg.r).isLessThanOrEqualTo(273);   // never worse than the 2017-era leaves
 		// Full residual at ⟨7,7,7⟩ ≈ 32M ops — acceptable to assert in a test.
 		assertThat(Verifier.isExactNonCubic(alg)).isTrue();
 	}
