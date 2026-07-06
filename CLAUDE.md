@@ -25,7 +25,7 @@ chat, a search run), register it:
 3. **If the scheme is derivable from a formula** (Waksman, Rosowski,
    Pan TA, etc.) → wire the formula into the matching `*Bound.java`
    helper (e.g. `WaksmanBound`, `PanTrilinearAggregation`) and have
-   `GenerateDerivedBounds.java` emit it to `docs/derived-bounds.json`.
+   `GenerateDerivedBounds.java` emit it to `docs/derived-from-cited-bounds.json`.
 4. **If the scheme is non-bilinear or otherwise doesn't fit `SchemeIO`**
    (e.g. Rosowski 2019's Algorithm 1) → describe it in markdown under
    `references/` and reference it from `REFERENCES.md`. Wire the bound
@@ -175,6 +175,14 @@ canonical user-facing version is the "Fields covered" legend in the SPA
   (All three are characteristic-0 and non-commutative-friendly, so they
   lift to recursive matmul — but that shared property is not a licence to
   fold them together.)
+- **Sweeps default to `--field=Q`** (user requirement). All char-0 NC
+  search/sweep/gap-closing work runs over `Q` — the FMM/Perminov digest
+  scope; a `Q` lookup admits Z+Q ingredients. R and Q are often the same
+  in practice (the catalog holds ~1 R-only scheme), but `Q` is required
+  by default. Pass `R` only when R-only ingredients are deliberately
+  wanted — and treat an R-only *derived* stub (a composition of Q/Z
+  atoms stamped `["R","C"]`, e.g. `17x19x20-r3780`) as field drift to
+  repair with `NarrowFields`, not a scheme to build on.
 - **C**: complex extension; R-valid schemes work; plus AE 48 for ⟨4,4,4⟩.
 - **F₂**: characteristic 2. AlphaTensor results. Integer (Z-exact) schemes
   also reduce here (mod 2) — and mod 3 to F₃ — as a theorem; the stampers

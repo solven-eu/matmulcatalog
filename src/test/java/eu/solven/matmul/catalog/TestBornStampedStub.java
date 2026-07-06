@@ -74,10 +74,14 @@ public class TestBornStampedStub {
 		assertThat(lk.fieldNamesFromLineage(
 				new Lineage.ConcatCols(new Lineage.Atom("2x4x4"), new Lineage.Atom("2x8x8"))))
 				.containsExactly("F2", "F3", "Z", "Q", "R", "C");
-		// unresolvable leaf → EMPTY (caller refuses to stamp; no [Z] over-claim).
+		// unresolvable leaf → FLOOR to the lookup field's inclusion chain (user
+		// 2026-06-13: "always at least shrink into the requested field") — a Q-build
+		// resolved that leaf to a Q-valid scheme, so the composition is at least
+		// Q-valid. The load-bearing part of this guard is unchanged: NO over-claim —
+		// never F2/F3/Z from an unresolved leaf (possible under-claim only).
 		assertThat(lk.fieldNamesFromLineage(
 				new Lineage.ConcatCols(new Lineage.Atom("2x4x4"), new Lineage.Atom("99x99x99"))))
-				.isEmpty();
+				.containsExactly("Q", "R", "C");
 	}
 
 	@Test

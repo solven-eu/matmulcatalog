@@ -638,6 +638,14 @@ public final class FieldAwareLookup implements Recombination.AlgorithmLookup {
 		if (ref.contains("<") && ref.contains("=")) {
 			return Optional.of(Field.Z);
 		}
+		// Terminal ground-truth leaf ("naive-NxMxP", synthesised by trivialOneAxis /
+		// naive grids): all-ones INTEGER coefficients, valid over every field → Z.
+		// Without this it fell through to unknownLeaves and the whole lineage's
+		// field inference bailed (mirrors atomFields' naive branch; same blind spot
+		// as the SELF-SHAPE naive exemption in RecursiveMaterialiser).
+		if (ref.contains("naive")) {
+			return Optional.of(Field.Z);
+		}
 		// Shape ref: resolve to a file via the catalog lookup by shape.
 		Matcher m = LEAF_SHAPE_REF.matcher(ref);
 		if (m.matches()) {

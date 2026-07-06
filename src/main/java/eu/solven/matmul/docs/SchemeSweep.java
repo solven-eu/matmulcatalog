@@ -65,7 +65,13 @@ import lombok.extern.slf4j.Slf4j;
  *   --field=Q|Z|R|C|F2|F3                 MANDATORY — a sweep is field-specific;
  *                                         there is NO default (an unspecified field
  *                                         leaks cross-field phantoms, e.g. an F₂
- *                                         base into a Q search).
+ *                                         base into a Q search). Convention: char-0
+ *                                         NC work uses Q (the FMM/Perminov digest
+ *                                         scope; a Q lookup admits Z+Q). Pass R only
+ *                                         when R-only ingredients are deliberately
+ *                                         wanted — R-stamped derived stubs are
+ *                                         usually FIELD DRIFT to repair (NarrowFields),
+ *                                         not schemes to build on.
  *   --config=NAME[,NAME…]                 pool preset(s): simple | auditAxisFlip |
  *                                         axisFlipOnly | rectangular | includeDerived
  *                                         | thorough. EVALUATE takes many (A/B);
@@ -122,7 +128,12 @@ import lombok.extern.slf4j.Slf4j;
  *                                         existing one (implies --best-derived).
  *   --buildable=required|optional         require sub-blocks be buildable (default
  *                                         required — no unbuildable stub churn).
- *   --strategies=recomb,serendip,proj     restrict to a subset of build strategies.
+ *   --strategies=kron,concat,recomb,serendip,proj  restrict to a subset of build
+ *                                         strategies — tokens map 1:1 to operators
+ *                                         (kron = PLAIN Kronecker only, concat =
+ *                                         additive axis splits, recomb = block
+ *                                         recombination incl. pair-fused/method
+ *                                         recipes; serendipity aliases serendipitous).
  *   --dry-run=true                        search/report only; write nothing (alias: --skip-materialise).
  *   --projection-only=true                projection strategy only.
  *
@@ -138,17 +149,17 @@ import lombok.extern.slf4j.Slf4j;
  * <p><b>Worked recipes.</b></p>
  * <pre>
  * # A/B-compare pool presets on the cubic band, no writes:
- *   --mode=evaluate --field=R --config=simple,includeDerived --cubic=2-16
+ *   --mode=evaluate --field=Q --config=simple,includeDerived --cubic=2-16
  *
  * # Close a curated FMM-gap list with a CURATED cheap base pool (incl ⟨2,4,4⟩,
  * # excl the 5-way-split ⟨2,5,5⟩ that costs minutes/shape):
- *   --mode=materialize --field=R \
+ *   --mode=materialize --field=Q \
  *       --base=2x2x2,2x2x3,2x3x3,3x3x3,2x2x4,2x4x4,4x4x4 \
  *       --shape-file=target/fmm-gaps-non5.txt \
  *       --schemes-root=src/main/resources/schemes --threads=6
  *
  * # Dig one shape with an explicit base, staged write for inspection:
- *   --mode=materialize --field=R --shape=5x23x32 --base=2x4x4 \
+ *   --mode=materialize --field=Q --shape=5x23x32 --base=2x4x4 \
  *       --schemes-root=target/staging-schemes
  * </pre>
  *
@@ -782,19 +793,21 @@ public final class SchemeSweep {
 			return;
 		}
 
-		// The upward search phase is the recombination/Kron/concat operator
-		// (findBestStrategy). Skip it entirely when 'recombination' is not selected
-		// — e.g. a serendipity-only closure run. (Serendipity itself fires per-shape
-		// in compose(); in closure mode it only sees overlay shapes, so a pure
-		// serendipity sweep is better run via --mode=materialize.)
+		// The upward search phase is findBestStrategy, electing only the candidate
+		// kinds mapped from the selected tokens (kron/concat/recombination). Skip it
+		// entirely when no upward kind is selected — e.g. a serendipity-only closure
+		// run. (Serendipity itself fires per-shape in compose(); in closure mode it
+		// only sees overlay shapes, so a pure serendipity sweep is better run via
+		// --mode=materialize.)
+		java.util.EnumSet<BlockSplitSearch.CandidateKind> upwardKinds =
+				RecursiveMaterialiser.kindsFor(spec.strategies);
 		Map<Shape, BlockSplitSearch.NonCubicStrategy> pendingOverlay =
-				spec.strategies.contains(RecursiveMaterialiser.STRAT_RECOMBINATION)
-						? runSearchRounds(ordered, pool, lookup, config, verbosePerShape)
+				!upwardKinds.isEmpty()
+						? runSearchRounds(ordered, pool, lookup, config, verbosePerShape, upwardKinds)
 						: new java.util.LinkedHashMap<>();
-		if (pendingOverlay.isEmpty()
-				&& !spec.strategies.contains(RecursiveMaterialiser.STRAT_RECOMBINATION)) {
+		if (pendingOverlay.isEmpty() && upwardKinds.isEmpty()) {
 			System.out.println();
-			System.out.println("Skipping upward search (--strategies excludes 'recombination').");
+			System.out.println("Skipping upward search (--strategies selects no upward kind).");
 		}
 
 		// ── PHASE 2: materialise overlay wins (unless --dry-run). ─
@@ -838,7 +851,8 @@ public final class SchemeSweep {
 	 */
 	private static Map<Shape, BlockSplitSearch.NonCubicStrategy> runSearchRounds(
 			List<Shape> ordered, List<BlockSplitSearch.NamedBase> pool,
-			FieldAwareLookup lookup, NamedConfig config, boolean verbosePerShape) {
+			FieldAwareLookup lookup, NamedConfig config, boolean verbosePerShape,
+			java.util.Set<BlockSplitSearch.CandidateKind> kinds) {
 		// Per-round wins live in {@code pendingOverlay}; the resolver consults the
 		// overlay first so subsequent rounds see prior-round discoveries WITHOUT
 		// having to materialise + write + reload from disk.
@@ -899,7 +913,8 @@ public final class SchemeSweep {
 					Optional<BlockSplitSearch.NonCubicStrategy> picked =
 							BlockSplitSearch.findBestStrategy(n, m, p, pool, flat,
 									config.config.balancedOnly(), config.config.maxImbalance(),
-									config.config.maxCombinations(), config.config.maxPadding());
+									config.config.maxCombinations(), config.config.maxPadding(),
+									Long.MAX_VALUE, kinds);
 					if (verbosePerShape) {
 						long searchMs = (System.nanoTime() - searchStart) / 1_000_000L;
 						String pickedLabel = picked.map(q -> "rank=" + q.rank() + " via " + q.label())
@@ -1110,11 +1125,13 @@ public final class SchemeSweep {
 		int minMaxDim = 0;  // 0 = no band floor; else keep shapes with max(n,m,p) ≥ this
 		int bandMin = OFF, bandMax = OFF;  // --band=lo-hi (or N): all shapes with maxDim in [lo,hi]
 		// --strategies: restrict the compose phase to a subset of upward operators.
-		// Default = all three; e.g. --strategies=serendipitous runs ONLY the
-		// serendipitous-product operator (skips recombination/Kron/concat search
-		// AND the downward projection closure).
+		// Default = ALL operators. Tokens map 1:1 to candidate kinds (kron/concat are
+		// first-class, no longer implicit in 'recombination'); e.g.
+		// --strategies=serendipitous runs ONLY the serendipitous-product operator.
 		java.util.Set<String> strategies = java.util.Set.of(
 				RecursiveMaterialiser.STRAT_RECOMBINATION,
+				RecursiveMaterialiser.STRAT_KRONECKER,
+				RecursiveMaterialiser.STRAT_CONCAT,
 				RecursiveMaterialiser.STRAT_SERENDIPITOUS,
 				RecursiveMaterialiser.STRAT_PROJECTION);
 		// Commutativity axis (orthogonal to the field): default NON-COMMUTATIVE — schemes
@@ -1278,13 +1295,20 @@ public final class SchemeSweep {
 						switch (t) {
 							case "serendipitous", "serendipity", "serendip" ->
 									sel.add(RecursiveMaterialiser.STRAT_SERENDIPITOUS);
-							case "recombination", "recomb", "kron", "concat", "split" ->
+							// NB: "kron" used to alias the recombination strategy (whose
+							// findBestStrategy enumerates Kronecker splits among others);
+							// it now selects the dedicated PLAIN-Kronecker-only strategy.
+							case "kronecker", "kron" ->
+									sel.add(RecursiveMaterialiser.STRAT_KRONECKER);
+							case "concat" ->
+									sel.add(RecursiveMaterialiser.STRAT_CONCAT);
+							case "recombination", "recomb", "split" ->
 									sel.add(RecursiveMaterialiser.STRAT_RECOMBINATION);
 							case "projection", "project", "proj" ->
 									sel.add(RecursiveMaterialiser.STRAT_PROJECTION);
 							default -> throw new IllegalArgumentException(
 									"--strategies: unknown token '" + t + "' (expected "
-									+ "serendipitous|recombination|projection).");
+									+ "kronecker|concat|serendipitous|recombination|projection).");
 						}
 					}
 					if (sel.isEmpty()) {

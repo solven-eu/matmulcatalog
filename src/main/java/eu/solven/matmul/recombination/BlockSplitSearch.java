@@ -487,7 +487,7 @@ public class BlockSplitSearch {
 	 * and Z/Q/ZT field. We grep the file header rather than fully parsing
 	 * to skip the heavy expansion on schemes we'll drop anyway.
 	 */
-	private static boolean isFieldValidLeafNC(java.io.File f, int maxBaseDim, String fieldTag) {
+	static boolean isFieldValidLeafNC(java.io.File f, int maxBaseDim, String fieldTag) {
 		try {
 			// Read the header (everything before the u/v/w payload, which the
 			// canonical formatter writes AFTER n/m/hash/fields/source). 4 KB covers
@@ -498,6 +498,15 @@ public class BlockSplitSearch {
 				if (read <= 0) return false;
 			}
 			String header = new String(buf, java.nio.charset.StandardCharsets.UTF_8);
+			// PAYLOAD-FIRST files (imports whose key order puts u/v/w before the
+			// metadata, e.g. the flips_mod2 family) keep fields[]/commutative at the
+			// TAIL — outside this window. Treating them as "legacy, no fields[]"
+			// silently admitted F₂/C-only bases into char-0 pools (verify-gate caught
+			// the bogus results, but the pool was polluted). If the window shows no
+			// fields[] and the file is bigger than the window, scan the WHOLE file.
+			if (!header.contains("\"fields\"") && f.length() > buf.length) {
+				header = java.nio.file.Files.readString(f.toPath());
+			}
 			// Reject commutative (cannot be an NC recombination base); reject composed
 			// lineage (an outer base must be a Leaf-lineage atom).
 			if (header.contains("\"commutative\": true")) return false;
@@ -745,6 +754,42 @@ public class BlockSplitSearch {
 	}
 
 	/**
+	 * Which candidate KINDS {@link #findBestStrategy} may RETURN (elect). Concat and
+	 * Kronecker are always COMPUTED regardless — their cheap bounds seed the
+	 * recombination B&amp;B's pruning (load-bearing for its runtime) — but a kind
+	 * absent from the set is never elected as the winning strategy. This is what
+	 * keeps the {@code --strategies} tokens honest: {@code recombination} no longer
+	 * implicitly returns Kronecker/concat picks.
+	 */
+	public enum CandidateKind {
+		/** Plain ⟨a⟩⊗⟨b⟩ product ({@link KroneckerSplitSearch}). */
+		KRONECKER,
+		/** Additive axis split ({@link ConcatSplitSearch}). */
+		CONCAT,
+		/** Multi-base block recombination (allocation/assignment optimiser),
+		 *  INCLUDING the Pan-TA pair-fused variant: TA fusion is a saving WITHIN a
+		 *  recombination — pointless as a standalone strategy — so a pair-fused
+		 *  candidate is elected exactly when recombination is. */
+		RECOMBINATION,
+		/** Formula-driven recipes: τ-identities + {@link MethodCatalog} predictions. */
+		METHOD
+	}
+
+	/** All kinds — the historical behaviour of every pre-kinds overload. */
+	public static final java.util.Set<CandidateKind> ALL_KINDS =
+			java.util.Collections.unmodifiableSet(java.util.EnumSet.allOf(CandidateKind.class));
+
+	/** The {@link CandidateKind} a returned strategy actually is (a method prediction
+	 *  is the only kind with every component field null). */
+	public static CandidateKind kindOf(NonCubicStrategy s) {
+		if (s.kronecker() != null) return CandidateKind.KRONECKER;
+		if (s.concat() != null) return CandidateKind.CONCAT;
+		if (s.recombination() != null) return CandidateKind.RECOMBINATION;
+		if (s.pairFused() != null) return CandidateKind.RECOMBINATION;   // TA fusion ⊂ recombination
+		return CandidateKind.METHOD;   // τ-identity carries a field; ofMethodPrediction does not
+	}
+
+	/**
 	 * As {@link #findBestStrategy(int, int, int, List, Recombination.SotaResolver, boolean, int, int, int)},
 	 * but seeds the recombination B&amp;B with an external {@code upperBoundHint} — e.g.
 	 * the catalog INCUMBENT rank in improve mode. The allocation optimiser then prunes
@@ -757,6 +802,20 @@ public class BlockSplitSearch {
 			int n, int m, int p,
 			List<NamedBase> basePool, Recombination.SotaResolver sota, boolean balancedOnly,
 			int maxImbalance, int maxCombinations, int maxPadding, long upperBoundHint) {
+		return findBestStrategy(n, m, p, basePool, sota, balancedOnly,
+				maxImbalance, maxCombinations, maxPadding, upperBoundHint, ALL_KINDS);
+	}
+
+	/**
+	 * As above, restricted to electing only the given {@code kinds} — the honest
+	 * counterpart of a restricted {@code --strategies} selection. τ-identity plus
+	 * {@link MethodCatalog} recipes travel under {@link CandidateKind#METHOD}.
+	 */
+	public static Optional<NonCubicStrategy> findBestStrategy(
+			int n, int m, int p,
+			List<NamedBase> basePool, Recombination.SotaResolver sota, boolean balancedOnly,
+			int maxImbalance, int maxCombinations, int maxPadding, long upperBoundHint,
+			java.util.Set<CandidateKind> kinds) {
 		// Exclude same-ORDERED-shape bases: a base ⟨n,m,p⟩ can only reach the target ⟨n,m,p⟩
 		// via a no-op all-1s tiling — a degenerate SELF-recombination the write-guard refuses
 		// (SELF-SHAPE). Left in the pool it WINS on rank (it just re-emits the import) and
@@ -783,10 +842,20 @@ public class BlockSplitSearch {
 		Optional<KroneckerSplitSearch.KroneckerSplit> kron =
 				KroneckerSplitSearch.findBest(n, m, p, sota);
 		// Seed with the incumbent hint so the recombination B&B never explores branches
-		// that can't beat what the catalog already has (improve mode).
+		// that can't beat what the catalog already has (improve mode). A cheap bound is
+		// folded EXACTLY only when its kind is electable (tie goes to the cheap kind, as
+		// ever); a NON-electable kind seeds at rank+1 — pruning a recombination that ties
+		// a kron/concat we are not allowed to return would silently lose the only valid
+		// answer of a --strategies=recomb run (guard: TestStrategyKinds).
 		long cheapUpperBound = upperBoundHint;
-		if (concat.isPresent()) cheapUpperBound = Math.min(cheapUpperBound, concat.get().totalRank());
-		if (kron.isPresent()) cheapUpperBound = Math.min(cheapUpperBound, kron.get().totalRank());
+		if (concat.isPresent()) {
+			long b = concat.get().totalRank() + (kinds.contains(CandidateKind.CONCAT) ? 0 : 1);
+			cheapUpperBound = Math.min(cheapUpperBound, b);
+		}
+		if (kron.isPresent()) {
+			long b = kron.get().totalRank() + (kinds.contains(CandidateKind.KRONECKER) ? 0 : 1);
+			cheapUpperBound = Math.min(cheapUpperBound, b);
+		}
 
 		// Recombination. For the no-peel, unbalanced case use AllocationOptimizer
 		// (exact B&B) — it reports the rank-minimising allocation directly, so it
@@ -796,7 +865,12 @@ public class BlockSplitSearch {
 		// doesn't model: output-zero peel (maxPadding > 0) and the balancedOnly
 		// restriction.
 		Optional<MultiBaseSplitCandidate> recomb;
-		if (!balancedOnly && maxPadding <= 0) {
+		if (!kinds.contains(CandidateKind.RECOMBINATION)) {
+			// Recombination not electable → skip the (expensive) B&B entirely; the
+			// cheap concat/kron bounds above were still computed for the callers
+			// that share this path, and cost microseconds.
+			recomb = Optional.empty();
+		} else if (!balancedOnly && maxPadding <= 0) {
 			Optional<MultiBaseSplitCandidate> opt = USE_ASSIGNMENT_OPTIMIZER
 					? bestViaAssignmentOptimizer(n, m, p, basePool, sota, cheapUpperBound)
 					: bestViaAllocationOptimizer(n, m, p, basePool, sota, cheapUpperBound);
@@ -831,16 +905,20 @@ public class BlockSplitSearch {
 					Long.MAX_VALUE, maxImbalance, maxCombinations, maxPadding, cheapUpperBound);
 		}
 
-		// Collect candidates and pick min.
+		// Collect candidates and pick min — electing only the selected kinds.
 		List<NonCubicStrategy> candidates = new java.util.ArrayList<>();
 		recomb.ifPresent(r -> candidates.add(NonCubicStrategy.ofRecombination(r)));
-		concat.ifPresent(c -> candidates.add(NonCubicStrategy.ofConcat(c)));
-		kron.ifPresent(k -> candidates.add(NonCubicStrategy.ofKronecker(k)));
+		if (kinds.contains(CandidateKind.CONCAT)) {
+			concat.ifPresent(c -> candidates.add(NonCubicStrategy.ofConcat(c)));
+		}
+		if (kinds.contains(CandidateKind.KRONECKER)) {
+			kron.ifPresent(k -> candidates.add(NonCubicStrategy.ofKronecker(k)));
+		}
 
 		// Pair-fused recombination (Pan TA): cubic target ⟨n,n,n⟩ only,
 		// each cubic base in the pool, balanced [k,k]³ allocation. Profitable
 		// when 2·R(⟨k,k,k⟩) > k³+3k² — see MaterializeViaPanPair table.
-		if (n == m && m == p) {
+		if (kinds.contains(CandidateKind.RECOMBINATION) && n == m && m == p) {
 			for (NamedBase nb : basePool) {
 				PairFusedRecombination.predictBalancedCubic(n, nb.base(), sota)
 						.ifPresent(pred -> candidates.add(NonCubicStrategy.ofPairFused(pred, nb.label())));
@@ -851,8 +929,10 @@ public class BlockSplitSearch {
 		// recipes, etc.). For each identity targeting this shape (under
 		// axis-permutation orbit) whose arithmetic verifies against the
 		// current sota resolver, add as a candidate.
-		for (KnownTauIdentities.Identity id : KnownTauIdentities.applicableTo(n, m, p, sota)) {
-			candidates.add(NonCubicStrategy.ofTauIdentity(id));
+		if (kinds.contains(CandidateKind.METHOD)) {
+			for (KnownTauIdentities.Identity id : KnownTauIdentities.applicableTo(n, m, p, sota)) {
+				candidates.add(NonCubicStrategy.ofTauIdentity(id));
+			}
 		}
 
 		// ConstructiveMethod registry (#161). Iterates every known
@@ -863,14 +943,16 @@ public class BlockSplitSearch {
 		// PairFused candidates above; see MethodCatalog.)
 		// Each method's prediction (when applicable to this shape) becomes
 		// a search candidate competing with Kron / Concat / recombination.
-		for (ConstructiveMethod.Prediction pred : MethodCatalog.predictAll(n, m, p, sota)) {
-			// Only ELECT predictions the method can actually construct. Unverified
-			// (theoretical / formula-only) bounds — e.g. the HK1971 ⟨2,m,n⟩ closed
-			// form for parities we have not ported — must not drive the search:
-			// for small matrices we require a realisable scheme, not an unproven
-			// extrapolation. (Such bounds may still be DISPLAYED as cited bounds.)
-			if (!pred.verified()) continue;
-			candidates.add(NonCubicStrategy.ofMethodPrediction(pred));
+		if (kinds.contains(CandidateKind.METHOD)) {
+			for (ConstructiveMethod.Prediction pred : MethodCatalog.predictAll(n, m, p, sota)) {
+				// Only ELECT predictions the method can actually construct. Unverified
+				// (theoretical / formula-only) bounds — e.g. the HK1971 ⟨2,m,n⟩ closed
+				// form for parities we have not ported — must not drive the search:
+				// for small matrices we require a realisable scheme, not an unproven
+				// extrapolation. (Such bounds may still be DISPLAYED as cited bounds.)
+				if (!pred.verified()) continue;
+				candidates.add(NonCubicStrategy.ofMethodPrediction(pred));
+			}
 		}
 
 		if (TRACE_SHAPE != null && TRACE_SHAPE.equals(n + "x" + m + "x" + p)) {

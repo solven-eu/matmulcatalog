@@ -95,8 +95,10 @@ public final class ProjectFmmGaps {
 				? new ArrayList<>(worse.subList(0, limit)) : worse;
 		log.info("shapes to project: {} (limit={}, maxPasses={})", shapes.size(), limit, maxPasses);
 
-		log.info("building FieldAwareLookup(R)…");
-		FieldAwareLookup lookup = new FieldAwareLookup("R");
+		// Q, not R: char-0 NC work runs over the FMM/Perminov digest scope (Z+Q).
+		// See the "Sweeps default to --field=Q" rule under Field discipline.
+		log.info("building FieldAwareLookup(Q)…");
+		FieldAwareLookup lookup = new FieldAwareLookup("Q");
 		log.info("lookup ready; starting projection.");
 
 		// Projection-only materialiser: empty pool/sota (projectInto uses neither).

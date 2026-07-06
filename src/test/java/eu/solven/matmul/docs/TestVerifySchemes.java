@@ -32,8 +32,11 @@ public class TestVerifySchemes {
 
 	private static FieldAwareLookup lookup;
 
-	private static final Path DERIVED_338 = Path.of(
-			"src/main/resources/schemes/derived/section8/derived_recursive-3x3x8_m55_a920_b0.json");
+	// The fixed ⟨3,3,8⟩=55 scheme (fields [F3,Q,R,C], additions 920) — resolved by
+	// shape+token so the 2026 filename migration ('derived_recursive-3x3x8_m55_a920_b0'
+	// → '3x3x8-r55-derived-{hash7}') and future re-hashes cannot orphan this test.
+	private static final Path DERIVED_338 = eu.solven.matmul.catalog.SchemeResolver
+			.byHint("src/main/resources/schemes/derived/section8/derived-3x3x8_m55.json").toPath();
 
 	@BeforeAll
 	static void setup() {
