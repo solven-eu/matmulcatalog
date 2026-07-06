@@ -128,7 +128,9 @@ import lombok.extern.slf4j.Slf4j;
  *                                         existing one (implies --best-derived).
  *   --buildable=required|optional         require sub-blocks be buildable (default
  *                                         required — no unbuildable stub churn).
- *   --strategies=recomb,serendip,proj     restrict to a subset of build strategies.
+ *   --strategies=kron,serendip,recomb,proj  restrict to a subset of build strategies
+ *                                         (kron = PLAIN Kronecker only; serendipity
+ *                                         is an accepted alias of serendipitous).
  *   --dry-run=true                        search/report only; write nothing (alias: --skip-materialise).
  *   --projection-only=true                projection strategy only.
  *
@@ -1284,13 +1286,18 @@ public final class SchemeSweep {
 						switch (t) {
 							case "serendipitous", "serendipity", "serendip" ->
 									sel.add(RecursiveMaterialiser.STRAT_SERENDIPITOUS);
-							case "recombination", "recomb", "kron", "concat", "split" ->
+							// NB: "kron" used to alias the recombination strategy (whose
+							// findBestStrategy enumerates Kronecker splits among others);
+							// it now selects the dedicated PLAIN-Kronecker-only strategy.
+							case "kronecker", "kron" ->
+									sel.add(RecursiveMaterialiser.STRAT_KRONECKER);
+							case "recombination", "recomb", "concat", "split" ->
 									sel.add(RecursiveMaterialiser.STRAT_RECOMBINATION);
 							case "projection", "project", "proj" ->
 									sel.add(RecursiveMaterialiser.STRAT_PROJECTION);
 							default -> throw new IllegalArgumentException(
 									"--strategies: unknown token '" + t + "' (expected "
-									+ "serendipitous|recombination|projection).");
+									+ "kronecker|serendipitous|recombination|projection).");
 						}
 					}
 					if (sel.isEmpty()) {

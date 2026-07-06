@@ -87,6 +87,13 @@ public final class RecursiveMaterialiser {
 	public static final String STRAT_RECOMBINATION = "recombination";
 	public static final String STRAT_SERENDIPITOUS = "serendipitous";
 	public static final String STRAT_PROJECTION = "projection";
+	/** Plain Kronecker products — no block-split search, no bud fusion. Typical use is
+	 *  a restricted {@code --strategies=kron} sweep (e.g. A/B-ing how much serendipitous
+	 *  bud fusion buys over the plain product). NOT in the default set (the recombination
+	 *  strategy enumerates Kronecker splits among its candidates), but when BOTH are
+	 *  selected the Kron pass still runs — it is near-free and rescues the case where
+	 *  findBestStrategy's single pick fails its spot-check. */
+	public static final String STRAT_KRONECKER = "kronecker";
 	private java.util.Set<String> strategies =
 			java.util.Set.of(STRAT_RECOMBINATION, STRAT_SERENDIPITOUS, STRAT_PROJECTION);
 
@@ -466,6 +473,21 @@ public final class RecursiveMaterialiser {
 								key, built.alg.r, s.label());
 						built = null;
 					}
+				}
+			}
+
+			// Plain Kronecker (no block-split search, no bud fusion): cheapest
+			// ⟨n1,m1,p1⟩⊗⟨n2,m2,p2⟩ over all divisor factorisations. Runs even
+			// alongside recombination: findBestStrategy enumerates Kronecker splits
+			// too, but commits to a SINGLE pick — if that pick fails its spot-check,
+			// built is null and the Kron candidate is lost. This pass is the cheap
+			// rescue (findBest is a divisor-triple arithmetic loop; the build only
+			// fires on a predicted strict improvement over `upperK`).
+			if (strategies.contains(STRAT_KRONECKER)) {
+				long upperK = built != null ? built.alg.r : Long.MAX_VALUE;
+				Result kron = tryKronecker(n, m, p, upperK);
+				if (kron != null && (built == null || kron.alg.r < built.alg.r)) {
+					built = kron;
 				}
 			}
 
@@ -1332,6 +1354,23 @@ public final class RecursiveMaterialiser {
 		for (int[] q : perms) parentCache.remove(q[0] + "x" + q[1] + "x" + q[2]);
 	}
 
+	/** {@link #STRAT_KRONECKER} strategy: the cheapest plain Kronecker product
+	 *  {@code ⟨n1,m1,p1⟩⊗⟨n2,m2,p2⟩} over all divisor factorisations, priced by the
+	 *  sota resolver and materialised via {@link #buildKronecker} (durable lineage).
+	 *  Returns null unless the verified product lands strictly below {@code upper}. */
+	Result tryKronecker(int n, int m, int p, long upper) {
+		Optional<KroneckerSplitSearch.KroneckerSplit> split =
+				KroneckerSplitSearch.findBest(n, m, p, sota);
+		if (split.isEmpty() || split.get().totalRank() >= upper) {
+			return null;
+		}
+		Result built = buildKronecker(split.get());
+		if (built == null || built.alg.r >= upper || !verifies(built.alg)) {
+			return null;
+		}
+		return built;
+	}
+
 	private Result buildKronecker(KroneckerSplitSearch.KroneckerSplit k) {
 		// Target = the Kronecker product shape; resolveSubScheme gives the factor
 		// schemes' matrices even when they are stubs improve-mode declines to re-derive
@@ -1860,6 +1899,13 @@ public final class RecursiveMaterialiser {
 		// (same multiset, different order — e.g. ⟨2,3,2⟩ from ⟨2,2,3⟩) is fine and NOT flagged.
 		// [[cyclic lineage → silent SOE]] — this is the terminating-cousin of that family.
 		for (String ref : rootRefs) {
+			// naive-NxMxP is the TERMINAL ground-truth leaf (n·m·p scalar products,
+			// synthesised by trivialOneAxis, no catalog file) — same-shape by
+			// construction and trivially acyclic, NOT a self-derivation. Flagging it
+			// silently killed every Kron/concat build with a unit-axis factor
+			// (⟨3,3,18⟩ = ⟨1,1,3⟩⊗⟨3,3,6⟩ predicted 120 then failed to materialise).
+			// Guard: TestKroneckerOnlyStrategy.kron_only_handles_prime_axes_via_unit_factors.
+			if (ref != null && ref.startsWith("naive-")) continue;
 			int[] s = shapeOfRef(ref);
 			if (s != null && s[0] == n && s[1] == m && s[2] == p) {
 				return "SELF-SHAPE: lineage references an Atom of its own shape ⟨"
