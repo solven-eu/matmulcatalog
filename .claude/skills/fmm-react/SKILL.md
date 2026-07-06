@@ -62,9 +62,11 @@ Math/structure first (CLAUDE.md "Math first"). Classify the gap:
   projection/recombination closure. The cross-check report's
   *Interpretation* paragraph tells you the current split. → react with
   **projection scatter / closure sweep** (§4a, §4b); no import needed.
-- **Import gap** (small shapes, or MISSING): FMM holds a genuinely
-  better base scheme. → **import it** (§3), then react to its
-  *structure* (§4c) so the win propagates to composite shapes.
+- **Base gap** (small shapes, or MISSING): FMM holds a genuinely
+  better base scheme. We do **NOT** copy it into the catalog — if a
+  reaction needs its structure, import it as a **reaction base** (§3)
+  and let projection/serendipity propagate the win as our own derived
+  schemes.
 - **Family gap**: shape belongs to a known parametric family — e.g.
   ⟨N−1,N,N⟩ next to a trilinear-aggregation cube → structured
   projection probe (§4a); ⟨2,3,k⟩ / Hopcroft–Kerr family → usually
@@ -75,7 +77,25 @@ Useful context: `references/fmm-lineage-review.md`,
 `references/BUD_STRUCTURE_THEORY.md`, and whether nearby divisor shapes
 of the target are already SOTA (Kron/concat may close it cheaply).
 
-## 3. Import the FMM scheme (import gaps only)
+## 3. Import a reaction base — NEVER a direct catalog import
+
+**We never import an FMM scheme directly into the catalog trees**
+(`known/`, `curated/`, `constructed/`, `derived/`). FMM's rank stays
+visible through the digest + cross-check; bulk upstream import is the
+CI Perminov pipeline's job, not this skill's. The only reason to pull
+FMM factor matrices here is to serve a reaction, and the JSON goes
+into the matching **base folder**:
+
+- **Projection base** (margin-rich; rank-worse than catalog is fine if
+  projection-valuable) → `src/main/resources/schemes/margin-bases/sectionN/`
+  — policy in `references/PROJECTION_MARGIN_TRADEOFF.md`.
+- **Serendipity base** (bud-rich) →
+  `src/main/resources/schemes/bud-bases/sectionN/`
+  — policy in `references/BUD_STRUCTURE_THEORY.md`.
+
+Retention follows `references/PURGE_REFCOUNT_POLICY.md`: keep the base
+only if the reaction actually uses it; if it produced nothing, delete
+it before landing.
 
 1. Download + parse + write JSON (canonical batch importer; caches in
    `/tmp/fmm-maple-cache`, falls back to the Perminov mirror):
@@ -84,8 +104,8 @@ of the target are already SOTA (Kron/concat may close it cheaply).
    python3 tools/import_fmm_maple.py NxMxP
    ```
 
-   Writes dronperminov-format JSON under
-   `src/main/resources/schemes/section{max_dim}/`.
+   Then **move** the emitted JSON out of the default location into the
+   base folder chosen above — it must not land in a catalog tree.
 
 2. **Verify** — exact `Verifier.isExactNonCubic` for small shapes,
    `Verifier.residualSampled` for big ones (pattern:
@@ -197,8 +217,11 @@ Whether or not the gap closed:
 
 ## Failure modes to avoid
 
-- Reacting to a closure gap by importing (wasted) or to an import gap
-  by sweeping without the base (hopeless) — diagnose first (§2).
+- Importing an FMM scheme directly into a catalog tree (`known/`,
+  `curated/`, `constructed/`, `derived/`) — reaction bases only, in
+  `margin-bases/` / `bud-bases/` (§3).
+- Reacting to a closure gap by importing a base (wasted) or to a base
+  gap by sweeping without the base (hopeless) — diagnose first (§2).
 - Citing FMM as discoverer of an imported rank.
 - Comparing across fields/commutativity: the cross-check is
   Q-non-commutative; don't "close" it with an F2 or commutative scheme.
