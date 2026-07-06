@@ -42,7 +42,10 @@ public class TestCatalogYearMetadata {
 	/** Source prefixes for which a missing year is expected and acceptable. */
 	private static final Pattern ALLOWED_NULL_YEAR = Pattern.compile(
 			"^(Perminov|Dronperminov|Fmm[-_]lille|Derived|derived|Mul\\d{3}|"
-			+ "mul\\d{3}|axis[-_]split|Hopcroft-Kerr ⟨|meta[-_]flip[-_]graph|fmm reduction|"
+			+ "mul\\d{3}|axis[-_]split|Hopcroft-Kerr ⟨|meta[-_]?flip([-_]graph)?|fmm reduction|"
+			// kron_tower = our derived Winograd-tower margin base (e.g. ⟨32³⟩=7⁵) —
+			// a derivation label like "derived", genuinely year-less.
+			+ "kron[-_]tower|"
 			// "unknown" = derived-recursive constructions whose provenance was never
 			// stamped to a publication — genuinely year-less, like the derived family.
 			+ "Solven[-_]|solven |unknown)",
@@ -138,7 +141,7 @@ public class TestCatalogYearMetadata {
 
 	@Test
 	public void derived_bounds_sources_contain_year_or_known_prefix() throws IOException {
-		JsonNode root = new JsonMapper().readTree(Path.of("docs/derived-bounds.json").toFile());
+		JsonNode root = new JsonMapper().readTree(Path.of("docs/derived-from-cited-bounds.json").toFile());
 		if (root.get("entries") == null) return;
 		List<String> unexpectedMissing = new ArrayList<>();
 		java.util.Set<String> seenSources = new java.util.HashSet<>();

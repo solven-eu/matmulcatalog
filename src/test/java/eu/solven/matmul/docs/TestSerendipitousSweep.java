@@ -64,9 +64,13 @@ public class TestSerendipitousSweep {
 	}
 
 	@Test
-	public void absent_shape_has_no_sota() {
-		// Beyond the ≤32 catalog and unfactorable into known pieces → genuinely -1.
-		assertThat(SerendipitousSweep.catalogRank(lk, 41, 41, 41)).isEqualTo(-1L);
-		assertThat(SerendipitousSweep.trueSota(lk, 41, 41, 41)).isEqualTo(-1L);
+	public void absent_shape_falls_back_to_naive() {
+		// Beyond the ≤32 catalog and unfactorable into known pieces. findRank's
+		// contract changed from the UNKNOWN sentinel to the always-constructible
+		// naive n·m·p fallback — so an uncatalogued shape now has SOTA = naive
+		// (41³ = 68921), and a serendipitous candidate must BEAT naive to count as
+		// a win (it is no longer skipped outright as it was under -1).
+		assertThat(SerendipitousSweep.catalogRank(lk, 41, 41, 41)).isEqualTo(41L * 41 * 41);
+		assertThat(SerendipitousSweep.trueSota(lk, 41, 41, 41)).isEqualTo(41L * 41 * 41);
 	}
 }

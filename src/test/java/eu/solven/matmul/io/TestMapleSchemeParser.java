@@ -67,12 +67,15 @@ public class TestMapleSchemeParser {
 	 */
 	@Test
 	public void section17_catalog_json_round_trips() throws Exception {
-		File catalog = eu.solven.matmul.catalog.SchemeResolver.byHint("src/main/resources/schemes/known/section17/fmm_lille_2025-17x17x17_m2945_a68812.json");
-		if (!catalog.isFile()) {
-			// Catalog write is driven by ImportFmmLille17; skip cleanly if not yet emitted.
-			System.out.println("[MapleSchemeParser] catalog JSON not present, skipping round-trip");
-			return;
-		}
+		// STRICT resolution: the fmm_lille ⟨17,17,17⟩=2945 import was retired from the
+		// catalog (superseded by better derived schemes); byHint would silently hand
+		// back an arbitrary same-shape file (it re-targeted this test to a COMMUTATIVE
+		// Waksman scheme). Skip cleanly while the subject is absent; the test revives
+		// if ImportFmmLille17 re-emits it.
+		File catalog = eu.solven.matmul.catalog.SchemeResolver.byHintStrict(
+				"src/main/resources/schemes/known/section17/fmm_lille_2025-17x17x17_m2945_a68812.json");
+		org.junit.jupiter.api.Assumptions.assumeTrue(catalog != null && catalog.isFile(),
+				"fmm_lille ⟨17,17,17⟩=2945 not in the catalog (retired) — skipping round-trip");
 		NonCubicBilinearAlgorithm alg = SchemeIO.read(catalog);
 		assertThat(alg.n).isEqualTo(17);
 		assertThat(alg.m).isEqualTo(17);

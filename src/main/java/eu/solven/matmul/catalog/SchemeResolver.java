@@ -33,14 +33,35 @@ public final class SchemeResolver {
 
 	private static final Pattern SHAPE = Pattern.compile("(\\d+)x(\\d+)x(\\d+)");
 	private static volatile FieldAwareLookup defaultLookup;
+	private static volatile FieldAwareLookup f2Lookup;
+	private static volatile FieldAwareLookup f3Lookup;
 
 	private static FieldAwareLookup lookup() {
 		FieldAwareLookup lk = defaultLookup;
 		if (lk == null) {
-			lk = new FieldAwareLookup("C");  // broadest field → indexes every scheme
+			// C is the widest CHAR-0 field (Z ⊂ Q ⊂ R ⊂ C) — but NOT all-covering:
+			// F₂/F₃ are their own universes (no char-0 inclusion), so an F2-only file
+			// (e.g. AlphaTensor ⟨4,4,4⟩=47) is absent from a C index. Candidate
+			// enumeration must UNION the universes — see findFilesAllFields.
+			lk = new FieldAwareLookup("C");
 			defaultLookup = lk;
 		}
 		return lk;
+	}
+
+	/** Files at ⟨n,m,p⟩ across EVERY field universe: char-0 (C index) first, then the
+	 *  F2-only / F3-only extras. Z-stamped schemes carry all six tags, so the de-dup
+	 *  keeps their C-index entry only. Without this union, a hint naming an F2-only
+	 *  scheme silently resolved to an arbitrary char-0 sibling (a Waksman commutative
+	 *  file for the AlphaTensor ⟨4,4,4⟩=47 hint). */
+	private static List<Path> findFilesAllFields(int n, int m, int p) {
+		FieldAwareLookup f2 = f2Lookup, f3 = f3Lookup;
+		if (f2 == null) { f2 = new FieldAwareLookup("F2"); f2Lookup = f2; }
+		if (f3 == null) { f3 = new FieldAwareLookup("F3"); f3Lookup = f3; }
+		java.util.LinkedHashSet<Path> out = new java.util.LinkedHashSet<>(lookup().findFiles(n, m, p));
+		out.addAll(f2.findFiles(n, m, p));
+		out.addAll(f3.findFiles(n, m, p));
+		return new java.util.ArrayList<>(out);
 	}
 
 	/** Resolve a hint path/stem (old or new) to the actual file. Returns a {@code File}
@@ -76,7 +97,7 @@ public final class SchemeResolver {
 		if (ph == null) {
 			return null;
 		}
-		List<Path> cands = lookup().findFiles(ph.n, ph.m, ph.p);
+		List<Path> cands = findFilesAllFields(ph.n, ph.m, ph.p);
 		File matched = matchToken(cands, ph.token);
 		if (matched == null) {
 			log.warn("byHintStrict: no scheme at ⟨{},{},{}⟩ matches token '{}' (hint {}); returning null",
@@ -131,7 +152,7 @@ public final class SchemeResolver {
 	 *  the caller asked for a specific scheme and is getting a different one.
 	 *  {@code null} if no scheme exists at the shape. */
 	public static File byShapeAndSource(int n, int m, int p, String sourceToken) {
-		List<Path> cands = lookup().findFiles(n, m, p);
+		List<Path> cands = findFilesAllFields(n, m, p);
 		if (cands.isEmpty()) {
 			return null;
 		}

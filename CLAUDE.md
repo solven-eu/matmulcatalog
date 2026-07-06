@@ -25,7 +25,7 @@ chat, a search run), register it:
 3. **If the scheme is derivable from a formula** (Waksman, Rosowski,
    Pan TA, etc.) → wire the formula into the matching `*Bound.java`
    helper (e.g. `WaksmanBound`, `PanTrilinearAggregation`) and have
-   `GenerateDerivedBounds.java` emit it to `docs/derived-bounds.json`.
+   `GenerateDerivedBounds.java` emit it to `docs/derived-from-cited-bounds.json`.
 4. **If the scheme is non-bilinear or otherwise doesn't fit `SchemeIO`**
    (e.g. Rosowski 2019's Algorithm 1) → describe it in markdown under
    `references/` and reference it from `REFERENCES.md`. Wire the bound
