@@ -72,8 +72,10 @@ recording.jfr
 __pycache__/
 *.pyc
 
-# Claude Code
-.claude
+# Claude Code — local state (worktrees, settings.local.json) stays
+# ignored, but repo-shared skills are checked in.
+.claude/*
+!.claude/skills/
 
 
 
