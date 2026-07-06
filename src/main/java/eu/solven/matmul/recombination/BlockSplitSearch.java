@@ -487,7 +487,7 @@ public class BlockSplitSearch {
 	 * and Z/Q/ZT field. We grep the file header rather than fully parsing
 	 * to skip the heavy expansion on schemes we'll drop anyway.
 	 */
-	private static boolean isFieldValidLeafNC(java.io.File f, int maxBaseDim, String fieldTag) {
+	static boolean isFieldValidLeafNC(java.io.File f, int maxBaseDim, String fieldTag) {
 		try {
 			// Read the header (everything before the u/v/w payload, which the
 			// canonical formatter writes AFTER n/m/hash/fields/source). 4 KB covers
@@ -498,6 +498,15 @@ public class BlockSplitSearch {
 				if (read <= 0) return false;
 			}
 			String header = new String(buf, java.nio.charset.StandardCharsets.UTF_8);
+			// PAYLOAD-FIRST files (imports whose key order puts u/v/w before the
+			// metadata, e.g. the flips_mod2 family) keep fields[]/commutative at the
+			// TAIL — outside this window. Treating them as "legacy, no fields[]"
+			// silently admitted F₂/C-only bases into char-0 pools (verify-gate caught
+			// the bogus results, but the pool was polluted). If the window shows no
+			// fields[] and the file is bigger than the window, scan the WHOLE file.
+			if (!header.contains("\"fields\"") && f.length() > buf.length) {
+				header = java.nio.file.Files.readString(f.toPath());
+			}
 			// Reject commutative (cannot be an NC recombination base); reject composed
 			// lineage (an outer base must be a Leaf-lineage atom).
 			if (header.contains("\"commutative\": true")) return false;
