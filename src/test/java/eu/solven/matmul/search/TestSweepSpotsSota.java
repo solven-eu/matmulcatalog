@@ -230,6 +230,12 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(3, 20, 30))
 				.as("⟨3,20,30⟩ must retain the ⟨2,5,6⟩-outer-base 1300 stub (ties FMM)")
 				.isLessThanOrEqualTo(1300);
+		// fmm-gap 2026-07-07 (5th run): ⟨2,4,4⟩=26 outer with the two-axis-uneven alloc
+		// [3,4 | 3,4,3,4 | 6,6,6,6] — in-pool base, but the full thorough pool starves
+		// the per-base alloc budget; only a --baseFilter-concentrated run finds it.
+		assertThat(lookup.findRank(7, 14, 24))
+				.as("⟨7,14,24⟩ must retain the ⟨2,4,4⟩-outer-base 1514 stub (ties FMM)")
+				.isLessThanOrEqualTo(1514);
 	}
 
 	/**

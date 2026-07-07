@@ -200,6 +200,17 @@ Scope alternatives: `--shape-file=PATH` (feed a curated gap list),
 `--stagnation`; `--only-if-missing` / `--best-derived` gate writes.
 Results are **bounds / optimal-within-scope**, never "optimal".
 
+**Pool starvation caveat**: when §2's recipe names an outer base we
+ALREADY pool (dim ≤ 5), do not conclude the engine "can't find it" —
+the thorough pool's ~3k entries starve the per-base allocation budget,
+so deep/uneven allocations get pruned. Re-run with
+`--baseFilter=<file-stem>` (substring on pool label) to concentrate the
+B&B on that base family. Precedent: ⟨7,14,24⟩=1514 = ⟨2,4,4⟩:26 with the
+two-axis-uneven alloc `[3,4 | 3,4,3,4 | 6,6,6,6]` — invisible under the
+full pool, found in seconds under a 6-entry filtered pool. Likewise use
+`--base=NxMxP` for bases the `maxBaseDim=5` cap excludes entirely
+(⟨3,4,7⟩, ⟨3,4,6⟩, ⟨2,5,6⟩, ⟨2,5,7⟩ — the 2026-07-07 harvest family).
+
 ### c) Serendipitous bud product (after importing the base)
 
 The point of importing an FMM base is often its **bud structure**

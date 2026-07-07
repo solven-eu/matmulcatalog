@@ -1,0 +1,85 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[2, 3], allocB=[6, 6, 6, 5], allocC=[6, 7, 6, 6], leaves=[ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), 2x5x6-r47-alphaevolve-7387644, ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩)), 2x6x6-r56-perminov_ZT-5791b42, 2x6x7-r66-perminov_ZT-ed57436, 3x5x7-r79-perminov_Z-5908efd, 3x5x6-r68-alphaevolve-14be9c3, 2x5x7-r55-perminov_Z-258f126])",
+  "lineage_compact": "R[2x4x4; 2,3 | 6,6,6,5 | 6,7,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@a4ed740a036a37c48fd9a3386a354b8827aa1598a3135f17a8332d0d797c1177"},
+    "allocA": [2, 3],
+    "allocB": [6, 6, 6, 5],
+    "allocC": [6, 7, 6, 6],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "right": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 6,
+          "p": 4,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        }
+      },
+      {"op": "Atom", "ref": "2x6x6-r56-perminov_ZT-5791b42"},
+      {"op": "Atom", "ref": "2x6x7-r66-perminov_ZT-ed57436"},
+      {"op": "Atom", "ref": "3x5x7-r79-perminov_Z-5908efd"},
+      {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+      {"op": "Atom", "ref": "2x5x7-r55-perminov_Z-258f126"}
+    ]
+  },
+  "n": [5, 23, 25],
+  "m": 1865,
+  "hash": "13f8049c0e73f0e14b6fc2018ab2f286e5b2142a9033a4b6bae234d53127bd95",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

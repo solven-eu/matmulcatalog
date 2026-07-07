@@ -7,6 +7,31 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-07 — fmm-gap ⟨7,14,24⟩: CLOSED (tie 1514) — NEW root cause: pool starvation of the per-base alloc budget; WORSE 95 → 86
+
+**Target:** `Q⟨7,14,24⟩:m` — ours was 1519, FMM 1514 (+5). All bounds.
+
+**Diagnosis:** FMM's 1514 = outer **⟨2,4,4⟩:26** with the two-axis-uneven alloc
+`[4,3 | 4,4,3,3 | 6,6,6,6]` (leaves 8×⟨4,4,6⟩:73 + 8×⟨4,3,6⟩:54 + 7×⟨3,4,6⟩:54 +
+3×⟨3,3,6⟩:40). The base is dim-4 — IN the default pool (both content-distinct 26s)
+— so this is NOT the pool-cap pattern. Root cause: **pool starvation** — under the
+full thorough pool (~3.3k entries) the per-base allocation B&B budget prunes deep
+two-axis-uneven allocs; a `--baseFilter=2x4x4-r26`-concentrated run (6-entry pool)
+finds 1514 in seconds (`R[2x4x4; 3,4 | 3,4,3,4 | 6,6,6,6]`, exact-verified,
+born-pinned). Skill §4b updated with the caveat.
+
+**Collateral (concentrated per-family sweeps over the 95-row list):**
+`2x4x4-r26` → 8 wins (⟨5,22,23⟩ 1649, ⟨6,23,23⟩ 1940, ⟨7,23,25⟩ 2517, ⟨5,23,23⟩
+1718, ⟨5,23,25⟩ 1865, ⟨7,14,32⟩ 2020, ⟨3,16,32⟩ 1136, ⟨7,23,23⟩ 2321);
+`2x4x5-r32` → 1 (⟨14,20,29⟩ 4708); `2x3x3-r15`/`3x3x4-r29`/`3x4x4-r38`/`3x4x5-r47`
+→ 0 (already exhausted); cascade pass → 0 (immediate fixpoint).
+
+**Net cross-check: WORSE 95 → 86 (−9), BETTER 1476 → 1482 (+6).** Guard row
+⟨7,14,24⟩≤1514. Verification: **9 exact symbolic proofs + 1 spot-check
+(⟨14,20,29⟩, dense), 0 failures** over the 10 stubs.
+
+---
+
 ## 2026-07-07 — fmm-gap ⟨3,20,30⟩: CLOSED (tie 1300); dim-6/7 base battery drops WORSE 128 → 95
 
 **Target:** `Q⟨3,20,30⟩:m` — ours was 1320, FMM 1300 (+20). All bounds.

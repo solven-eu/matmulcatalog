@@ -1,0 +1,70 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[3, 4], allocB=[6, 6, 6, 5], allocC=[6, 5, 6, 6], leaves=[KronProduct(2x2x2, 2x3x3), 3x5x6-r68-alphaevolve-14be9c3, OrientAs(4x5x6-r90-alphaevolve-8aa8e60, ⟨4,6,5⟩), ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), 4x5x5-r76-alphatensor_Z-54f4614, 3x5x5-r58-alphatensor_Z-263818a])",
+  "lineage_compact": "R[2x4x4; 3,4 | 6,6,6,5 | 6,5,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@a4ed740a036a37c48fd9a3386a354b8827aa1598a3135f17a8332d0d797c1177"},
+    "allocA": [3, 4],
+    "allocB": [6, 6, 6, 5],
+    "allocC": [6, 5, 6, 6],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "2x3x3@497eea7"}
+      },
+      {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 6,
+        "p": 5,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "4x5x6-r90-alphaevolve-8aa8e60"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "right": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "4x5x5-r76-alphatensor_Z-54f4614"},
+      {"op": "Atom", "ref": "3x5x5-r58-alphatensor_Z-263818a"}
+    ]
+  },
+  "n": [7, 23, 23],
+  "m": 2321,
+  "hash": "5648796a655e3238598307a8862118a43c1eb85c107e54fc0855ec16ac70230d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
