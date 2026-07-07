@@ -1,9 +1,16 @@
 {
-  "lineage_str": "Recombination(base=base<4x3x7>=63, allocA=[3, 3, 3, 3], allocB=[6, 6, 6], allocC=[3, 3, 3, 3, 3, 3, 2], leaves=[OrientAs(ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7), ⟨3,6,2⟩), OrientAs(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ⟨3,6,3⟩)])",
-  "lineage_compact": "R[base<4x3x7>=63; 3,3,3,3 | 6,6,6 | 3,3,3,3,3,3,2]",
+  "lineage_str": "Recombination(base=OrientAs(3x4x7, ⟨4,3,7⟩), allocA=[3, 3, 3, 3], allocB=[6, 6, 6], allocC=[3, 3, 3, 3, 3, 3, 2], leaves=[OrientAs(ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7), ⟨3,6,2⟩), OrientAs(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ⟨3,6,3⟩)])",
+  "lineage_compact": "R[3x4x7→⟨4,3,7⟩; 3,3,3,3 | 6,6,6 | 3,3,3,3,3,3,2]",
   "lineage": {
     "op": "Recombination",
-    "base": {"op": "Atom", "ref": "base<4x3x7>=63"},
+    "base": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 3,
+      "p": 7,
+      "axisMap": "mnp",
+      "child": {"op": "Atom", "ref": "3x4x7@ac0e1ad89643fa7e0bacda21c38e173a36c63334ab067ca1cce61a5b1b794914"}
+    },
     "allocA": [3, 3, 3, 3],
     "allocB": [6, 6, 6],
     "allocC": [3, 3, 3, 3, 3, 3, 2],

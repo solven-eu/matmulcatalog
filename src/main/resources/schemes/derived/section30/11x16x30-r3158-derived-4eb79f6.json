@@ -1,9 +1,9 @@
 {
-  "lineage_str": "Recombination(base=base<3x4x7>=63, allocA=[3, 4, 4], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4, 6, 4, 4], leaves=[4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e, 3x4x4-r38-alphatensor_Z-644bd5e, 3x4x6-r54-alphaevolve-c197868, 4x4x6-r73-perminov_ZT-5bb1a46])",
-  "lineage_compact": "R[base<3x4x7>=63; 3,4,4 | 4,4,4,4 | 4,4,4,4,6,4,4]",
+  "lineage_str": "Recombination(base=3x4x7, allocA=[3, 4, 4], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4, 6, 4, 4], leaves=[4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e, 3x4x4-r38-alphatensor_Z-644bd5e, 3x4x6-r54-alphaevolve-c197868, 4x4x6-r73-perminov_ZT-5bb1a46])",
+  "lineage_compact": "R[3x4x7; 3,4,4 | 4,4,4,4 | 4,4,4,4,6,4,4]",
   "lineage": {
     "op": "Recombination",
-    "base": {"op": "Atom", "ref": "base<3x4x7>=63"},
+    "base": {"op": "Atom", "ref": "3x4x7@ac0e1ad89643fa7e0bacda21c38e173a36c63334ab067ca1cce61a5b1b794914"},
     "allocA": [3, 4, 4],
     "allocB": [4, 4, 4, 4],
     "allocC": [4, 4, 4, 4, 6, 4, 4],

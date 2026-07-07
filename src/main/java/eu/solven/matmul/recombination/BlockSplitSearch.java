@@ -317,9 +317,15 @@ public class BlockSplitSearch {
 		// Strassen-style mixing). DIS09 includes these in its pool because
 		// they unify axis-splits with the rest of the search; the S₃ orbit
 		// generator below produces the other 2 axis variants automatically.
-		pool.add(new NamedBase("AxisSplit<2,1,1>=2", eu.solven.matmul.AxisSplitBases.mul211()));
-		pool.add(new NamedBase("AxisSplit<1,2,1>=2", eu.solven.matmul.AxisSplitBases.mul121()));
-		pool.add(new NamedBase("AxisSplit<1,1,2>=2", eu.solven.matmul.AxisSplitBases.mul112()));
+		// Pinned as naive-NxMxP: each AxisSplit IS the naive scheme of its shape (rank
+		// n·m·p, unit coefficients), so the elementary naive ref replays it exactly and
+		// keeps recombination stubs built on it explicitable (TestRootPoolOrigins).
+		pool.add(new NamedBase("AxisSplit<2,1,1>=2", eu.solven.matmul.AxisSplitBases.mul211(),
+				new eu.solven.matmul.catalog.Lineage.Atom("naive-2x1x1")));
+		pool.add(new NamedBase("AxisSplit<1,2,1>=2", eu.solven.matmul.AxisSplitBases.mul121(),
+				new eu.solven.matmul.catalog.Lineage.Atom("naive-1x2x1")));
+		pool.add(new NamedBase("AxisSplit<1,1,2>=2", eu.solven.matmul.AxisSplitBases.mul112(),
+				new eu.solven.matmul.catalog.Lineage.Atom("naive-1x1x2")));
 		// ── Rank-4 naïve grids ⟨1,2,2⟩ / ⟨2,1,2⟩ / ⟨2,2,1⟩ ──
 		// Single-block 2×2 grids with one axis unsplit. Unlike the rank-2 AxisSplits,
 		// these carry a disjoint cyclic-rotation product PAIR (e.g. ⟨n,b,c⟩ & its rot²
@@ -330,9 +336,12 @@ public class BlockSplitSearch {
 		// saving WITHIN a recombination's multiplications, not a separate strategy, so the
 		// grid must be IN the pool for the saving to be weighed. All three axis orientations
 		// are added so the unsplit axis can align with any target's heaviest axis.
-		pool.add(new NamedBase("Naive<1,2,2>=4", NonCubicBilinearAlgorithm.naive(1, 2, 2)));
-		pool.add(new NamedBase("Naive<2,1,2>=4", NonCubicBilinearAlgorithm.naive(2, 1, 2)));
-		pool.add(new NamedBase("Naive<2,2,1>=4", NonCubicBilinearAlgorithm.naive(2, 2, 1)));
+		pool.add(new NamedBase("Naive<1,2,2>=4", NonCubicBilinearAlgorithm.naive(1, 2, 2),
+				new eu.solven.matmul.catalog.Lineage.Atom("naive-1x2x2")));
+		pool.add(new NamedBase("Naive<2,1,2>=4", NonCubicBilinearAlgorithm.naive(2, 1, 2),
+				new eu.solven.matmul.catalog.Lineage.Atom("naive-2x1x2")));
+		pool.add(new NamedBase("Naive<2,2,1>=4", NonCubicBilinearAlgorithm.naive(2, 2, 1),
+				new eu.solven.matmul.catalog.Lineage.Atom("naive-2x2x1")));
 		// ── ⟨2,*,*⟩ ──
 		// Strassen / Winograd 2×2×2 have the full Burichenko-order-36
 		// stabilizer including S₃ axis-permutation → cubicSymmetric.

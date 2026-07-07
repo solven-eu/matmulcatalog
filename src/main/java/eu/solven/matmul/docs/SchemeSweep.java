@@ -300,8 +300,13 @@ public final class SchemeSweep {
 	}
 
 	/** Build a pool from explicit {@code --base} shapes: look up each shape's best
-	 *  catalog scheme and add it under every distinct axis orientation. */
-	private static List<BlockSplitSearch.NamedBase> userBasePool(
+	 *  catalog scheme and add it under every distinct axis orientation. Each entry
+	 *  carries an {@code originLineage} pinning the STORED scheme as
+	 *  {@code {shape}@{contentHash}} (wrapped in {@code OrientAs} for non-native
+	 *  orientations), so recombination stubs built on a user base stay fully
+	 *  explicitable — a bare {@code base<shape>=rank} label is a best-at-shape
+	 *  cited bound that silently re-resolves against future catalogs. */
+	static List<BlockSplitSearch.NamedBase> userBasePool(
 			List<int[]> shapes, FieldAwareLookup lookup) {
 		List<BlockSplitSearch.NamedBase> pool = new ArrayList<>();
 		java.util.Set<String> seen = new java.util.LinkedHashSet<>();
@@ -310,19 +315,37 @@ public final class SchemeSweep {
 			// A width-1-axis base (e.g. ⟨1,2,2⟩, the symmetric-peel carrier) is the
 			// elementary naïve scheme — it has no catalog file, so synthesise it
 			// directly rather than dropping it (which would empty the pool).
-			Optional<NonCubicBilinearAlgorithm> found = (n == 1 || m == 1 || p == 1)
-					? Optional.of(NonCubicBilinearAlgorithm.naive(n, m, p))
-					: lookup.find(n, m, p);
-			if (found.isEmpty()) {
-				log.warn("--base ⟨{},{},{}⟩ not found in catalog for this field — skipped", n, m, p);
-				continue;
+			NonCubicBilinearAlgorithm stored;
+			Lineage.Node pinned;
+			if (n == 1 || m == 1 || p == 1) {
+				stored = NonCubicBilinearAlgorithm.naive(n, m, p);
+				pinned = new Lineage.Atom("naive-" + n + "x" + m + "x" + p);
+			} else {
+				Optional<FieldAwareLookup.WithSource> found = lookup.findWithSource(n, m, p);
+				if (found.isEmpty()) {
+					log.warn("--base ⟨{},{},{}⟩ not found in catalog for this field — skipped", n, m, p);
+					continue;
+				}
+				try {
+					stored = SchemeIO.read(found.get().path().toFile());
+				} catch (IOException e) {
+					log.warn("--base ⟨{},{},{}⟩: cannot re-read {} for pinning — skipped",
+							n, m, p, found.get().path(), e);
+					continue;
+				}
+				pinned = new Lineage.Atom(
+						stored.n + "x" + stored.m + "x" + stored.p + "@" + SchemeIO.contentHash(stored));
 			}
-			NonCubicBilinearAlgorithm base = found.get();
 			for (int[] o : new int[][] { {n, m, p}, {n, p, m}, {m, n, p}, {m, p, n}, {p, n, m}, {p, m, n} }) {
 				String key = o[0] + "x" + o[1] + "x" + o[2];
 				if (!seen.add(key)) continue;
-				base.orientAs(o[0], o[1], o[2]).ifPresent(or ->
-						pool.add(new BlockSplitSearch.NamedBase("base<" + key + ">=" + or.r, or)));
+				// The lineage's OrientAs axis-map and the pooled matrices must come from the
+				// same source orientation: orientAs/orientPermForShapes are kept in lockstep.
+				Lineage.Node origin = (o[0] == stored.n && o[1] == stored.m && o[2] == stored.p)
+						? pinned
+						: Lineage.orientAs(pinned, stored.n, stored.m, stored.p, o[0], o[1], o[2]);
+				stored.orientAs(o[0], o[1], o[2]).ifPresent(or ->
+						pool.add(new BlockSplitSearch.NamedBase("base<" + key + ">=" + or.r, or, origin)));
 			}
 		}
 		if (pool.isEmpty()) {

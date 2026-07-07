@@ -1736,9 +1736,23 @@ public final class RecursiveMaterialiser {
 			// AxisFlip node carries the orbit-list INDEX, not the true flip mask
 			// (axisFlipOrbit dedups/compacts the list) — that case would need the true
 			// mask threaded through. The stub-replay check below would catch it.
-			Lineage.Node baseNode = r.baseOriginLineage() != null
-					? r.baseOriginLineage()
-					: new Lineage.Atom(r.baseLabel());
+			Lineage.Node baseNode = r.baseOriginLineage();
+			if (baseNode == null) {
+				// Pool entry without an origin lineage (every stock pool stamps one — this is
+				// an ad-hoc caller, e.g. a GL-member base). Best effort: pin by content hash
+				// if the exact base resolves in the catalog; otherwise fall back to the label
+				// and WARN — a label ref is a best-at-shape cited bound, the stub will not be
+				// explicitable, and its replay is hostage to future catalog state.
+				String hash = SchemeIO.contentHash(r.base());
+				if (diskLookup.findByHash(r.base().n, r.base().m, r.base().p, hash).isPresent()) {
+					baseNode = new Lineage.Atom(r.base().n + "x" + r.base().m + "x" + r.base().p + "@" + hash);
+				} else {
+					baseNode = new Lineage.Atom(r.baseLabel());
+					log.warn("recombination base ⟨{},{},{}⟩ '{}' has no origin lineage and no catalog match"
+							+ " — writing an UNPINNED label ref (stub will not be explicitable)",
+							r.base().n, r.base().m, r.base().p, r.baseLabel());
+				}
+			}
 			// CYCLE PREVENTION: the base's origin lineage can itself carry inherited cycle corruption
 			// (an "@ref?:L0" fallback read from a legacy cyclic disk scheme). Embedding it spreads the
 			// corruption into the parent recombination (the ⟨17,19,20⟩ ⟨2,3,3⟩ base case). Pin the base

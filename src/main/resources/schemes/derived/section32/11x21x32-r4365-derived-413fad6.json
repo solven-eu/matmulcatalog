@@ -1,9 +1,16 @@
 {
-  "lineage_str": "Recombination(base=base<3x7x4>=63, allocA=[4, 4, 3], allocB=[3, 3, 3, 3, 3, 3, 3], allocC=[8, 8, 8, 8], leaves=[OrientAs(3x4x8-r73-perminov_Z-89c37df, ⟨4,3,8⟩), ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), 3x3x6-r40-smirnov13-d246191)])",
-  "lineage_compact": "R[base<3x7x4>=63; 4,4,3 | 3,3,3,3,3,3,3 | 8,8,8,8]",
+  "lineage_str": "Recombination(base=OrientAs(3x4x7, ⟨3,7,4⟩), allocA=[4, 4, 3], allocB=[3, 3, 3, 3, 3, 3, 3], allocC=[8, 8, 8, 8], leaves=[OrientAs(3x4x8-r73-perminov_Z-89c37df, ⟨4,3,8⟩), ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), 3x3x6-r40-smirnov13-d246191)])",
+  "lineage_compact": "R[3x4x7→⟨3,7,4⟩; 4,4,3 | 3,3,3,3,3,3,3 | 8,8,8,8]",
   "lineage": {
     "op": "Recombination",
-    "base": {"op": "Atom", "ref": "base<3x7x4>=63"},
+    "base": {
+      "op": "OrientAs",
+      "n": 3,
+      "m": 7,
+      "p": 4,
+      "axisMap": "npm",
+      "child": {"op": "Atom", "ref": "3x4x7@ac0e1ad89643fa7e0bacda21c38e173a36c63334ab067ca1cce61a5b1b794914"}
+    },
     "allocA": [4, 4, 3],
     "allocB": [3, 3, 3, 3, 3, 3, 3],
     "allocC": [8, 8, 8, 8],

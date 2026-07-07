@@ -54,6 +54,25 @@ a curated dim-6/7 base list without the full cost of raising maxBaseDim.
 since the default pool's maxBaseDim=5 cannot re-derive these; a CSV-row guard was
 tried first and burned 70 min before failing at 3004).
 
+**Lineage pinning (2026-07-07, user request):** the original stubs recorded the
+outer base as the `--base` pool label (`base<3x4x7>=63`) — a best-at-shape ref
+that re-resolves against future catalogs (`explicitable:false`). Fixed
+`SchemeSweep.userBasePool` to stamp `originLineage` = `{storedShape}@{contentHash}`
+(OrientAs-wrapped for non-native orientations), deleted + re-swept the 12 stubs
+(identical ranks, base now `3x4x7@ac0e1ad…`), all re-verified exact and now
+`explicitable:true`. Guard: `TestSchemeSweepUserBasePool`. **Going-forward pinning is now total**
+(user 2026-07-07): rootPool's six synthetic AxisSplit/Naive entries pin as
+`naive-NxMxP` (content-hash-identical to the naive schemes —
+`TestRootPoolOrigins.axis_split_bases_are_content_identical_to_naive`), and
+`RecursiveMaterialiser`'s null-origin fallback now pins by content hash when the
+base resolves in the catalog, else WARNs loudly before writing a label ref.
+Guards: `TestRootPoolOrigins` (root/default/thorough pools all carry origins).
+The ~2.1k OLDER derived stubs with unpinned refs (bare `base=NxMxP`,
+`ext[...] :: CANONICAL` labels) remain; agreed plan: a later **re-sweep driven by
+the current partial lineage** — replay each stub's recorded base-shape/alloc/leaf
+structure as search hints so the full pinned lineage regenerates quickly rather
+than from scratch.
+
 ---
 
 ## 2026-07-06 — fmm-react ⟨20,24,25⟩: gap +8 NOT closed (FMM 6466 vs our 6474); 28 collateral serendipitous wins landed in the 20–25 band

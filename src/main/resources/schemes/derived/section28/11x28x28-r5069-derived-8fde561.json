@@ -1,9 +1,9 @@
 {
-  "lineage_str": "Recombination(base=base<3x4x7>=63, allocA=[4, 4, 3], allocB=[7, 7, 7, 7], allocC=[4, 4, 4, 4, 4, 4, 4], leaves=[OrientAs(4x4x7-r85-alphaevolve-d4e8670, ⟨4,7,4⟩), OrientAs(3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad, ⟨3,7,4⟩)])",
-  "lineage_compact": "R[base<3x4x7>=63; 4,4,3 | 7,7,7,7 | 4,4,4,4,4,4,4]",
+  "lineage_str": "Recombination(base=3x4x7, allocA=[4, 4, 3], allocB=[7, 7, 7, 7], allocC=[4, 4, 4, 4, 4, 4, 4], leaves=[OrientAs(4x4x7-r85-alphaevolve-d4e8670, ⟨4,7,4⟩), OrientAs(3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad, ⟨3,7,4⟩)])",
+  "lineage_compact": "R[3x4x7; 4,4,3 | 7,7,7,7 | 4,4,4,4,4,4,4]",
   "lineage": {
     "op": "Recombination",
-    "base": {"op": "Atom", "ref": "base<3x4x7>=63"},
+    "base": {"op": "Atom", "ref": "3x4x7@ac0e1ad89643fa7e0bacda21c38e173a36c63334ab067ca1cce61a5b1b794914"},
     "allocA": [4, 4, 3],
     "allocB": [7, 7, 7, 7],
     "allocC": [4, 4, 4, 4, 4, 4, 4],

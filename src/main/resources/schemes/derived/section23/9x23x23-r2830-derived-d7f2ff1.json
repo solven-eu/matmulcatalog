@@ -1,9 +1,9 @@
 {
-  "lineage_str": "Recombination(base=base<3x4x7>=63, allocA=[3, 3, 3], allocB=[6, 5, 6, 6], allocC=[3, 3, 3, 4, 4, 3, 3], leaves=[OrientAs(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ⟨3,6,3⟩), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨3,5,3⟩)])",
-  "lineage_compact": "R[base<3x4x7>=63; 3,3,3 | 6,5,6,6 | 3,3,3,4,4,3,3]",
+  "lineage_str": "Recombination(base=3x4x7, allocA=[3, 3, 3], allocB=[6, 5, 6, 6], allocC=[3, 3, 3, 4, 4, 3, 3], leaves=[OrientAs(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), ⟨3,6,3⟩), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨3,6,4⟩), OrientAs(3x3x5-r36-alphatensor_Z-3895b40, ⟨3,5,3⟩)])",
+  "lineage_compact": "R[3x4x7; 3,3,3 | 6,5,6,6 | 3,3,3,4,4,3,3]",
   "lineage": {
     "op": "Recombination",
-    "base": {"op": "Atom", "ref": "base<3x4x7>=63"},
+    "base": {"op": "Atom", "ref": "3x4x7@ac0e1ad89643fa7e0bacda21c38e173a36c63334ab067ca1cce61a5b1b794914"},
     "allocA": [3, 3, 3],
     "allocB": [6, 5, 6, 6],
     "allocC": [3, 3, 3, 4, 4, 3, 3],
