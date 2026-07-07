@@ -7,6 +7,86 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-06 — fmm-react ⟨20,24,25⟩: gap +8 NOT closed (FMM 6466 vs our 6474); 28 collateral serendipitous wins landed in the 20–25 band
+
+**Target:** `Q⟨20,24,25⟩:m` — ours 6474 (stub `Serendipitous(⟨5,12,5⟩ ⊗ˢ ⟨4,2,5⟩)` = 204·32−54),
+FMM 6466 (+8). Closure-gap diagnosis (max-dim 25, cross-check "small gaps = 0").
+
+**What was tried (all Q, all failed to close the target):**
+- `ProjectFmmGaps --shapes=20x24x25 --passes=2` → 0 wins (7 parent replays margin-pruned;
+  all FMM parents ≥ 6924, projection hopeless — math confirms).
+- `SchemeSweep --mode=materialize --field=Q --shape=20x24x25 --config=thorough
+  --strategies=recomb,serendip,proj` → no improvement (18-base recomb pool; predictor
+  correctly prunes ⟨2,2,2⟩: brute-force over ALL uneven Strassen block splits with
+  today's catalog ranks bottoms out at 6750 = 5·⟨10,12,13⟩:990 + 2·⟨10,12,12⟩:900).
+- `SerendipitousSweep --baseCap=12 --secondCap=5 --targetMin=20 --targetCap=25 --field=Q`
+  → no ⟨20,24,25⟩ win, but 35 collateral target-wins (see below).
+- `VerifyGLCandidate 20 24 25` (GL×GL×GL frontier of ⟨2,2,2⟩, 36 members) → tie:
+  best eval 6528, materialises back to catalog 6474. No GL win here.
+
+**FMM's 6466 construction (site came back mid-session — from their 20x24x25.html):**
+`⟨20,24,25⟩:6466 = (⟨5,12,5⟩:204 − 42) ⊗ ⟨4,2,5⟩:32 + ⟨16,2,5⟩:126 + 2·⟨4,6,5⟩:90
++ 16·⟨4,4,5⟩:61` — the SAME serendipitous pairing as ours, cut deeper. In bud
+language the removed 42 terms form `1×⟨4,1,1⟩ + 2×⟨1,3,1⟩ + 16×⟨1,2,1⟩` sub-matmuls
+= bud profile **16×W2 + 2×W3 + 1×V4** (σ = 16·3 + 2·6 + 1·2 = 62; ours: 18×W2 → 54;
+the σ-arithmetic reproduces both numbers exactly).
+
+**Key finding — it's a bud-REPRESENTATIVE gap, not an engine gap:** we imported FMM's
+own published ⟨5,5,12⟩:204 tensor (their page attributes it to Perminov FMM GitHub,
+Feb 2026; verified `isExactNonCubic=true`; **0 shared triads** with our
+`perminov_ZT-61a6cb7` 204) into
+`bud-bases/section12/fmm-lille_5x5x12_r204_a2326.json`. Direction-class scans (Java
+`SerendipitousBudProduct.findBuds`/`independentClassSizes` under ALL_ORDERINGS +
+an independent Python up-to-scaling scan) agree: **both** 204 representatives carry
+only 18×(size-2) classes — no size-3, no size-4, no second axis. Direction classes
+are axis-permutation-invariant, so the representative FMM actually composed with is a
+THIRD rank-204 scheme (flip/GL-moved) whose bud profile is richer than either
+published one. Probe: `docs.explore.ProbeFmmSerendip202425`.
+
+**Flip-walk follow-up (RAN, no win at this budget):**
+`docs.explore.ProbeFlipWalkSerendip202425 30000 4` — flip-graph walk from both 204
+seeds under the DIRECT objective `FlipObjectives.serendipitous(Q, 4,2,5)`. All
+8 walks (2 seeds × 4 rngs × 30k steps, ~30 s each) plateaued at predicted 6474.
+Bounded negative — NOT proof the richer representative is flip-unreachable. Next
+escalations, in order: (a) longer walks / more seeds / larger `maxRankAbove`,
+(b) seed from OTHER 204-adjacent schemes (5x5x12 at 207/208/213…, walking rank back
+down), (c) parse FMM's composed `20x24x25_tensor.mpl` (site is back up) and factor
+the base representative out of it directly — the 42 cut terms and their patch
+blocks are identifiable in the composed scheme's term structure.
+The imported base `bud-bases/section12/fmm-lille_5x5x12_r204_a2326.json` is retained
+as the seed for these escalations (PURGE_REFCOUNT_POLICY: delete it if the follow-up
+is abandoned).
+
+**Collateral wins (LANDED, bounds not optima):** 28 serendipitous stubs persisted via
+`MaterialiseSerendipitousWins --shapes=…` (driver extended this session to accept
+`--shapes=NxMxP,…`), sections 20/21/24/25, e.g. `Q⟨20,20,25⟩:m` 5614→5611,
+`Q⟨21,25,25⟩:m` 7304→7293, `Q⟨14,25,25⟩:m` 5039→5030, `Q⟨9,9,21⟩:m` 1060→1058,
+`Q⟨4,20,14⟩:m` 755→736 (biggest single drop, −19). All spot-check-verified at compose
+time; 7 further sweep hits resolved through orientation twins landed in the same run.
+`TestSweepSpotsSota` green after landing.
+
+**Repro:** commands above; the win list is the `< sota` lines of the
+SerendipitousSweep run (baseCap=12 secondCap=5 targetMin=20 targetCap=25, field=Q).
+
+**Stamper side-effect cleanup (2026-07-07):** the tree-wide stamper pass run for
+the FMM import's backfill exposed two silent bugs, both fixed + regression-tested:
+(1) `StampSource` on NEW-convention filenames (shape-first) fell back to the whole
+stem and stamped 7,681 filename echoes (`"source": "10x3x3-R69-Derived-79abb2c"`) —
+reverted by `docs.migrate.FixFilenameEchoSources`, stamper now skips shape-first
+stems (`TestStampSource`); (2) `NarrowFields.expandFromBase` returned a hardcoded
+chain for the strongest base tag, stripping VERIFIED F3 from 3,730 Q schemes with
+power-of-2 denominators above the verify cap — files restored from HEAD, expansion
+is now a union (`TestNarrowFields`). Kept: the legitimate widening of 88 Z-only
+Perminov CI imports to `[F2,F3,Z,Q,R,C]`. Catalog count moved 9283→9233 (+28
+session stubs, −78 `known/` duplicates that the widening exposed to the by-design
+per-(format,field,comm,rank) dedup election — files remain on disk as witnesses).
+
+**Status:** target OPEN (+8). Blocked on FMM site availability for their construction;
+our in-scope closure mechanisms (projection / recomb / serendip / GL-frontier) are
+exhausted at 6474.
+
+---
+
 ## 2026-06-25 — VERIFIED R⟨17,19,20⟩=3780 (−17 vs catalog 3797) via GL-orbit frontier of ⟨2,2,2⟩
 
 **Claim:** `R⟨17,19,20⟩ = 3780`, beating the catalog's 3797 by 17. The win comes

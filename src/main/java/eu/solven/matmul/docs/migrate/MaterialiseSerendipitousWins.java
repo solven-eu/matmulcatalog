@@ -35,6 +35,27 @@ public final class MaterialiseSerendipitousWins {
 			{ 8, 9, 9 },
 	};
 
+	/**
+	 * Parses {@code --shapes=NxMxP,NxMxP,…} into a target list; without the flag,
+	 * falls back to the hardcoded {@link #TARGETS} (the historical ⟨8,9,9⟩ case).
+	 * Lets a SerendipitousSweep run feed its win list straight into persistence.
+	 */
+	private static int[][] targetsFrom(String[] args) {
+		for (String a : args) {
+			if (a.startsWith("--shapes=")) {
+				String[] shapes = a.substring("--shapes=".length()).split(",");
+				int[][] out = new int[shapes.length][];
+				for (int i = 0; i < shapes.length; i++) {
+					String[] d = shapes[i].trim().toLowerCase().split("x");
+					if (d.length != 3) throw new IllegalArgumentException("bad shape: " + shapes[i]);
+					out[i] = new int[] { Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]) };
+				}
+				return out;
+			}
+		}
+		return TARGETS;
+	}
+
 	public static void main(String[] args) {
 		FieldAwareLookup lookup = new FieldAwareLookup("Q");
 		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.defaultPool();
@@ -47,7 +68,7 @@ public final class MaterialiseSerendipitousWins {
 		// recombination B&B keeps the run fast and the lineage clean.
 		mat.setStrategies(Set.of(RecursiveMaterialiser.STRAT_SERENDIPITOUS));
 
-		for (int[] t : TARGETS) {
+		for (int[] t : targetsFrom(args)) {
 			int n = t[0], m = t[1], p = t[2];
 			int before = lookup.findRank(n, m, p);
 			Optional<RecursiveMaterialiser.Result> r = mat.materialise(n, m, p);

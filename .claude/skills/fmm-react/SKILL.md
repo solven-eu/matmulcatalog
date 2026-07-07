@@ -23,6 +23,16 @@ optimality tiers, math-first, long-run process hygiene).
 
 ## 1. Refresh the diff and pick the target
 
+0. **Compile first** — every command below is `mvn exec:java`, which
+   runs whatever sits in `target/classes` WITHOUT recompiling. Stale
+   classes silently change driver behaviour (real case: `ProjectFmmGaps`
+   ran with a `FieldAwareLookup(R)` from an old build while the source
+   said `Q`). One compile up front covers the whole session:
+
+   ```bash
+   mvn -q -ntp compile
+   ```
+
 1. Refresh the FMM rank digest (fault-tolerant; on network failure it
    keeps the committed digest and exits non-zero — then just reuse the
    committed one and say so):
@@ -55,7 +65,26 @@ optimality tiers, math-first, long-run process hygiene).
 
 ## 2. Diagnose the gap BEFORE running anything heavy
 
-Math/structure first (CLAUDE.md "Math first"). Classify the gap:
+**Always fetch the per-shape FMM page first** — it states the
+construction outright, which usually settles the diagnosis in one read:
+
+```bash
+curl -sS --compressed "https://fmm.univ-lille.fr/{n}x{m}x{p}.html"
+```
+
+The "Algorithm definition" section names the mechanism and its exact
+recipe, e.g. `⟨20×24×25:6466⟩ is serendipitous tensor product
+(⟨5×12×5:204⟩ − 42) ⊗ ⟨4×2×5:32⟩ + ⟨16×2×5:126⟩ + 2⟨4×6×5:90⟩ +
+16⟨4×4×5:61⟩`, or a block decomposition `⟨…⟩ = ⟨12×12×13:1184⟩ + …`.
+That tells you (a) which engine to react with, (b) which ingredient
+scheme to compare against ours (their base may be bud-richer), and
+(c) whether the arithmetic re-prices with today's catalog ranks. If
+the site is down (it happens — TLS handshake failures), try the
+Wayback Machine (`https://web.archive.org/web/2026id_/<url>`), note
+the snapshot date (an old snapshot describes an old rank), and record
+a "re-check when the site is back" action in the research log.
+
+Then classify the gap (math/structure first, CLAUDE.md "Math first"):
 
 - **Closure gap** (typical for max-dim > 12): FMM's rank is reachable
   from schemes we already hold — our on-disk best is just a stale
@@ -189,7 +218,34 @@ The point of importing an FMM base is often its **bud structure**
 
    Set the caps so base×second covers the target shape (and its
    neighbours — an imported base often improves *other* shapes too).
-3. Persist wins: `eu.solven.matmul.docs.migrate.MaterialiseSerendipitousWins`.
+3. Persist wins: `eu.solven.matmul.docs.migrate.MaterialiseSerendipitousWins`
+   (takes `--shapes=NxMxP,…` to land a sweep's win list directly).
+4. **Bud-representative caveat**: two same-rank schemes for the same shape
+   can carry different bud profiles (direction classes are
+   axis-permutation-invariant but NOT flip/GL-invariant). If FMM's recipe
+   implies a bud partition that neither our base nor their published base
+   shows (σ-arithmetic tells you: a size-k axis-class saves
+   `k·R(inner) − R(enlarged)`), the composed representative is a third
+   scheme in the rank orbit — react with a flip-graph walk from the base
+   under the direct objective `FlipObjectives.serendipitous(Q, n2,m2,p2)`
+   (pattern: `docs.explore.ProbeFlipWalkSerendip202425`).
+
+### d) GL-orbit frontier probe (closure gaps the others miss)
+
+The recombination pool's `AXIS_FLIP` orbit only does row-reversals; a
+full `GL×GL×GL` change-of-basis member of the ⟨2,2,2⟩ base can reach
+strictly better allocations (precedent: ⟨17,19,20⟩=3780, −17 vs the
+AXIS_FLIP closure — see `research/DISCOVERIES_PENDING_ANALYSIS.md`
+2026-06-25). Cheap single-shape probe, worth firing whenever §4a/§4b
+come back empty on a closure gap:
+
+```bash
+mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.verify.VerifyGLCandidate \
+    -Dexec.args="N M P"
+```
+
+Band-sweep variant: `docs.explore.GLLargeSweep`. Persist a verified win
+with `docs.migrate.RegisterGLWin N M P`.
 
 ## 5. Land the results
 

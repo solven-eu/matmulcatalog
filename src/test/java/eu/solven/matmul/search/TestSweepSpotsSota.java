@@ -64,6 +64,8 @@ public class TestSweepSpotsSota {
 			"8, 9, 9,  430",   // serendipitous bud-product (σ-aware V-bud base)
 			"4, 8, 12, 272",   // serendipitous
 			"8, 8, 12, 504",   // serendipitous
+			"4, 20, 14, 736",  // serendipitous ⟨2,4,7⟩-base band-20 win (fmm-react 2026-07-06, was 755)
+			"9, 9, 21, 1058",  // serendipitous ⟨3,3,7⟩⊗⟨3,3,3⟩ band-21 win (fmm-react 2026-07-06)
 	})
 	public void materialise_spots_sota(int n, int m, int p, int sota) {
 		Optional<RecursiveMaterialiser.Result> r = mat.materialise(n, m, p);

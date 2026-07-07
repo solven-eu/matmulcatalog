@@ -132,15 +132,23 @@ public final class NarrowFields {
 		return out;
 	}
 
-	/** Mechanical expansion from the structural base tag (no verification). */
+	/**
+	 * Mechanical expansion from the structural base tags (no verification): the
+	 * UNION of every current tag's containment chain. Expansion must never drop a
+	 * tag — a verified F2/F3 membership on a Q scheme (e.g. [F3,Q,R,C] from ½-only
+	 * denominators) is not derivable from Q and must survive. (2026-07-07: the
+	 * pre-fix version returned a hardcoded chain for the strongest base tag, which
+	 * silently stripped verified F3 from 3.7k Q schemes above the verify cap.)
+	 */
 	static List<String> expandFromBase(List<String> cur) {
-		if (cur.contains("Z")) return List.of("F2", "F3", "Z", "Q", "R", "C");
-		if (cur.contains("Q")) return List.of("Q", "R", "C");
-		if (cur.contains("R")) return List.of("R", "C");
-		if (cur.contains("C")) return List.of("C");
-		if (cur.contains("F2")) return List.of("F2");
-		if (cur.contains("F3")) return List.of("F3");
-		return cur;
+		java.util.Set<String> out = new java.util.HashSet<>(cur);
+		if (cur.contains("Z")) out.addAll(List.of("F2", "F3", "Q", "R", "C"));
+		if (cur.contains("Q")) out.addAll(List.of("R", "C"));
+		if (cur.contains("R")) out.add("C");
+		java.util.List<String> ordered = new java.util.ArrayList<>();
+		for (String f : ALL) if (out.contains(f)) ordered.add(f);
+		for (String f : cur) if (!ordered.contains(f)) ordered.add(f);
+		return ordered;
 	}
 
 	private static boolean allIntegers(NonCubicBilinearAlgorithm alg) {
