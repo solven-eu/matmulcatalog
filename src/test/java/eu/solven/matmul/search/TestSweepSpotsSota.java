@@ -220,6 +220,11 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(28, 29, 31))
 				.as("⟨28,29,31⟩ must retain the 13091 chain result (ties FMM)")
 				.isLessThanOrEqualTo(13091);
+		// fmm-gap 2026-07-07 (3rd run): ⟨3,4,6⟩=54 outer (dim-6, also above the
+		// maxBaseDim=5 pool cap) with BOTH A and C deficient (14=[5,5,4], 29=[5×5,4]).
+		assertThat(lookup.findRank(14, 28, 29))
+				.as("⟨14,28,29⟩ must retain the ⟨3,4,6⟩-outer-base 6494 stub (beats FMM 6498)")
+				.isLessThanOrEqualTo(6494);
 	}
 
 	/**

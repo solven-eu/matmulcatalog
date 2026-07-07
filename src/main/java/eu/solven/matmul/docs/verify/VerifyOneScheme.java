@@ -49,9 +49,16 @@ public final class VerifyOneScheme {
 
 		for (int rep = 0; rep < repeat; rep++) {
 			long s = System.nanoTime();
-			boolean ok = Verifier.isExactNonCubic(alg);
+			// Size-aware: exact symbolic proof when the term-map fits, else the O(dim)
+			// randomised spot-check — the Verdict says which tier ran (optimality
+			// discipline: never report a spot-check as a proof). Unconditional
+			// isExactNonCubic OOM'd on dense dim-28+ composites (22 GB term maps;
+			// see Verifier.DEFAULT_MAX_EXACT_TERMS and the ⟨30,32,32⟩ precedent).
+			Verifier.Verdict v = Verifier.verifyAuto(alg);
 			long ms = (System.nanoTime() - s) / 1_000_000L;
-			log.info("isExactNonCubic[{}/{}] = {}   ({} ms)", rep + 1, repeat, ok, ms);
+			log.info("{}[{}/{}] = {}   (estTerms={}, {} ms){}",
+					v.strategy(), rep + 1, repeat, v.ok(), v.estimatedTerms(), ms,
+					v.isProof() ? "" : "  [spot-check, NOT an algebraic proof]");
 		}
 	}
 }

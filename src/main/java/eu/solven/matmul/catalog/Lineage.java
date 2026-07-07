@@ -585,11 +585,123 @@ public final class Lineage {
 			}
 			case Project pr -> {
 				renderCompact(pr.child, sb);
-				sb.append(" ↓[").append(joinInts(pr.keepN)).append("|")
-						.append(joinInts(pr.keepM)).append("|")
-						.append(joinInts(pr.keepP)).append("]");
+				// A projection usually DROPS a few coordinates and keeps many — render the
+				// short complement (`∖[dropped]`) when the child's source shape is derivable
+				// and the drop-list is strictly shorter; else the legacy keep-form (`↓[kept]`).
+				int[] src = shapeOfNode(pr.child);
+				int keepLen = pr.keepN.length + pr.keepM.length + pr.keepP.length;
+				int dropLen = src == null ? -1 : (src[0] + src[1] + src[2]) - keepLen;
+				if (src != null && dropLen >= 0 && dropLen < keepLen) {
+					sb.append(" ∖[").append(joinInts(complementOf(pr.keepN, src[0]))).append("|")
+							.append(joinInts(complementOf(pr.keepM, src[1]))).append("|")
+							.append(joinInts(complementOf(pr.keepP, src[2]))).append("]");
+				} else {
+					sb.append(" ↓[").append(joinInts(pr.keepN)).append("|")
+							.append(joinInts(pr.keepM)).append("|")
+							.append(joinInts(pr.keepP)).append("]");
+				}
 			}
 		}
+	}
+
+	private static final java.util.regex.Pattern REF_SHAPE =
+			java.util.regex.Pattern.compile("(\\d+)x(\\d+)x(\\d+)");
+
+	/**
+	 * Best-effort shape of a lineage node, for DISPLAY purposes only (the compact
+	 * projection complement). Returns {@code null} when not cheaply derivable —
+	 * callers must fall back, never guess.
+	 */
+	static int[] shapeOfNode(Node n) {
+		switch (n) {
+			case Atom a -> {
+				java.util.regex.Matcher m = REF_SHAPE.matcher(a.ref);
+				if (m.find()) {
+					return new int[] { Integer.parseInt(m.group(1)),
+							Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)) };
+				}
+				return null;
+			}
+			case OrientAs o -> {
+				return new int[] { o.n(), o.m(), o.p() };
+			}
+			case Transpose t -> {
+				int[] src = shapeOfNode(t.child);
+				if (src == null || t.perm == null || t.perm.length() != 8) return null;
+				String rhs = t.perm.substring(5);  // "ABC->CAB" → "CAB"
+				int[] out = new int[3];
+				for (int i = 0; i < 3; i++) {
+					int ax = rhs.charAt(i) - 'A';
+					if (ax < 0 || ax > 2) return null;
+					out[i] = src[ax];
+				}
+				return out;
+			}
+			case AxisFlip af -> {
+				return shapeOfNode(af.child);
+			}
+			case AxisPermute ap -> {
+				return shapeOfNode(ap.child);  // within-axis index perms keep dims
+			}
+			case Dce d -> {
+				return shapeOfNode(d.child);
+			}
+			case Project p -> {
+				return new int[] { p.keepN.length, p.keepM.length, p.keepP.length };
+			}
+			case RecombinationN r -> {
+				return new int[] { sumOf(r.allocA()), sumOf(r.allocB()), sumOf(r.allocC()) };
+			}
+			case KronProduct kp -> {
+				int[] a = shapeOfNode(kp.outer), b = shapeOfNode(kp.inner);
+				if (a == null || b == null) return null;
+				return new int[] { a[0] * b[0], a[1] * b[1], a[2] * b[2] };
+			}
+			case ConcatCols cc -> {
+				int[] a = shapeOfNode(cc.left), b = shapeOfNode(cc.right);
+				if (a == null || b == null) return null;
+				return new int[] { a[0], a[1], a[2] + b[2] };
+			}
+			case ConcatRows cr -> {
+				int[] a = shapeOfNode(cr.top), b = shapeOfNode(cr.bottom);
+				if (a == null || b == null) return null;
+				return new int[] { a[0] + b[0], a[1], a[2] };
+			}
+			case SumInner si -> {
+				int[] a = shapeOfNode(si.left), b = shapeOfNode(si.right);
+				if (a == null || b == null) return null;
+				return new int[] { a[0], a[1] + b[1], a[2] };
+			}
+			case SerendipitousProduct sp -> {
+				int[] a = shapeOfNode(sp.base);
+				if (a == null) return null;
+				return new int[] { a[0] * sp.n2(), a[1] * sp.m2(), a[2] * sp.p2() };
+			}
+			default -> {
+				return null;
+			}
+		}
+	}
+
+	private static int sumOf(int[] a) {
+		int s = 0;
+		for (int x : a) s += x;
+		return s;
+	}
+
+	/** Indices of {@code [0,dim)} NOT present in {@code keep} (the dropped coordinates). */
+	static int[] complementOf(int[] keep, int dim) {
+		boolean[] kept = new boolean[dim];
+		int keptCount = 0;
+		for (int k : keep) {
+			if (k >= 0 && k < dim && !kept[k]) { kept[k] = true; keptCount++; }
+		}
+		int[] out = new int[dim - keptCount];
+		int i = 0;
+		for (int x = 0; x < dim; x++) {
+			if (!kept[x]) out[i++] = x;
+		}
+		return out;
 	}
 
 	private static String joinInts(int[] a) {

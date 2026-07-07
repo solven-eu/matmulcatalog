@@ -7,6 +7,44 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-07 — fmm-gap ⟨14,28,29⟩: CLOSED and beaten (6506 → 6494, FMM 6498); 66-stub collateral harvest drops WORSE 187 → 128
+
+**Target:** `Q⟨14,28,29⟩:m` — ours was 6506, FMM 6498 (+8). All bounds.
+
+**Diagnosis (from FMM's 14x28x29.html, leaf-multiset arithmetic):** their 6498 =
+outer **⟨3,4,6⟩:54** block-recursive with TWO deficient axes — 14=[5,5,4],
+28=[7,7,7,7], 29=[5,5,5,5,5,4] — leaves 40×⟨5,7,5⟩:127 + 10×⟨4,7,5⟩:104 +
+2×⟨5,7,4⟩:104 + 2×⟨4,7,4⟩:85. A dim-6 outer base: FOURTH instance of the
+`maxBaseDim=5` pool-cap pattern. We held every ingredient at identical ranks.
+
+**Reaction:** `SchemeSweep --shape=14x28x29 --base=3x4x6,3x4x7,2x5x7` → **6494**
+(same splits, our AlphaEvolve ⟨3,4,6⟩ representative prices richer isolation:
+saving 364 vs FMM's 360). Exact-verified, born-pinned. **Beats FMM by 4.**
+
+**Collateral (3 sweep passes over the 187-row WORSE list with
+`--base=3x4x6,2x5x7[,3x4x7]`):** 66 further stubs. Pass 1 (recomb-only, 4g):
+32 wins — 12 BEAT FMM (⟨15,28,31⟩ 7269→7134 vs 7266 = −132(!), ⟨9,31,32⟩ −63,
+⟨9,32,32⟩ −61, ⟨13,25,28⟩ −49, ⟨13,19,28⟩ −34, ⟨13,18,24⟩ −26, ⟨14,18,24⟩ −18,
+⟨11,16,26⟩ −15, ⟨21,26,28⟩ −12, ⟨13,18,23⟩ −6, ⟨11,28,29⟩ −3, ⟨11,16,23⟩ −1),
+18 exact ties, 2 narrowed. Pass 2 (all strategies, 4g): 12 cascade wins but 92
+worker OOMs (17 parallel proj/serendip workers at 4g — heap dump
+java_pid62063.hprof). Pass 3 (same, 10g): 22 more wins, 0 errors (recovered the
+OOM-aborted shapes, e.g. ⟨28,28,32⟩ 12503, ⟨22,23,23⟩ 6476, ⟨20,25,29⟩ 8024).
+
+**Net cross-check: WORSE 187 → 128 (−59), BETTER 1437 → 1460 (+23).**
+Guard row added (⟨14,28,29⟩≤6494). Verification (batch `verifyAuto`-tiered):
+**40 exact symbolic proofs + 26 randomised spot-checks, 0 failures** over the 66
+stubs (spot-check = dense dim-28+ composites whose exact term-map exceeds
+`DEFAULT_MAX_EXACT_TERMS`; a real proof for those needs a streaming verifier).
+
+**Verifier OOM lesson (same session):** unconditional `isExactNonCubic` on dense
+dim-28+ composites builds a `HashMap<Long,BigInteger>` term-map of
+`Σₖ|Uₖ||Vₖ||Wₖ|` entries → OOM even at 20g (22 GB dumps in target/oom-dumps/).
+`Verifier.verifyAuto` (already existed) gates on `estimateExactTerms` and reports
+the tier honestly; `VerifyOneScheme` now routes through it.
+
+---
+
 ## 2026-07-07 — fmm-gap ⟨28,29,31⟩: CLOSED (tie 13091) via a 3-level upstream chain; 4 upstream WORSE rows closed too
 
 **Target:** `Q⟨28,29,31⟩:m` — ours was 13097, FMM 13091 (+6). All ranks are bounds.

@@ -1,0 +1,33 @@
+{
+  "lineage_str": "Recombination(base=OrientAs(3x4x6, ⟨3,6,4⟩), allocA=[4, 4, 5], allocB=[4, 4, 4, 5, 4, 4], allocC=[7, 7, 7, 7], leaves=[4x5x7-r104-perminov_ZT-4a1b410, 4x4x7-r85-alphaevolve-d4e8670, 5x5x7-r127-perminov_ZT-9d68374])",
+  "lineage_compact": "R[3x4x6→⟨3,6,4⟩; 4,4,5 | 4,4,4,5,4,4 | 7,7,7,7]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "OrientAs",
+      "n": 3,
+      "m": 6,
+      "p": 4,
+      "axisMap": "npm",
+      "child": {"op": "Atom", "ref": "3x4x6@c1978684ff0f1dfec470f9b9e468e0874af004bc698ade1ebde8ecd21a160447"}
+    },
+    "allocA": [4, 4, 5],
+    "allocB": [4, 4, 4, 5, 4, 4],
+    "allocC": [7, 7, 7, 7],
+    "leaves": [
+      {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"},
+      {"op": "Atom", "ref": "4x4x7-r85-alphaevolve-d4e8670"},
+      {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"}
+    ]
+  },
+  "n": [13, 25, 28],
+  "m": 5290,
+  "hash": "49665dde5ee1d1e90451f12a560ac697800f755b179a2f3a10707f1708b03889",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
