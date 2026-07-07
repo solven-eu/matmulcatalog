@@ -225,6 +225,11 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(14, 28, 29))
 				.as("⟨14,28,29⟩ must retain the ⟨3,4,6⟩-outer-base 6494 stub (beats FMM 6498)")
 				.isLessThanOrEqualTo(6494);
+		// fmm-gap 2026-07-07 (4th run): ⟨2,5,6⟩=47 outer, deficient A-split 3=2+1 with
+		// 17 of 47 products isolating the width-1 block (thin-A ⟨3,·,·⟩ band opener).
+		assertThat(lookup.findRank(3, 20, 30))
+				.as("⟨3,20,30⟩ must retain the ⟨2,5,6⟩-outer-base 1300 stub (ties FMM)")
+				.isLessThanOrEqualTo(1300);
 	}
 
 	/**

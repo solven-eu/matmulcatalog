@@ -1,0 +1,54 @@
+{
+  "lineage_str": "Recombination(base=2x5x6, allocA=[1, 2], allocB=[6, 6, 6, 6, 7], allocC=[5, 5, 6, 5, 6, 5], leaves=[naive-1x7x5, OrientAs(2x6x7-r66-perminov_ZT-ed57436, ⟨2,7,6⟩), naive-1x6x5, 2x6x6-r56-perminov_ZT-5791b42, OrientAs(2x5x6-r47-alphaevolve-7387644, ⟨2,6,5⟩), OrientAs(2x5x7-r55-perminov_Z-258f126, ⟨2,7,5⟩), naive-1x7x6, naive-1x6x6])",
+  "lineage_compact": "R[2x5x6; 1,2 | 6,6,6,6,7 | 5,5,6,5,6,5]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x5x6@7387644c00edd448523048dd673ee5164f6c61482e949675759d2b55339c20dd"},
+    "allocA": [1, 2],
+    "allocB": [6, 6, 6, 6, 7],
+    "allocC": [5, 5, 6, 5, 6, 5],
+    "leaves": [
+      {"op": "Atom", "ref": "naive-1x7x5"},
+      {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 7,
+        "p": 6,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x6x7-r66-perminov_ZT-ed57436"}
+      },
+      {"op": "Atom", "ref": "naive-1x6x5"},
+      {"op": "Atom", "ref": "2x6x6-r56-perminov_ZT-5791b42"},
+      {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 6,
+        "p": 5,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 2,
+        "m": 7,
+        "p": 5,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x5x7-r55-perminov_Z-258f126"}
+      },
+      {"op": "Atom", "ref": "naive-1x7x6"},
+      {"op": "Atom", "ref": "naive-1x6x6"}
+    ]
+  },
+  "n": [3, 31, 32],
+  "m": 2164,
+  "hash": "d2949f701530c606725671aba7561c24e1616667c94a47ee033798f039bde3df",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

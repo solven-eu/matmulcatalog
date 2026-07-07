@@ -7,6 +7,29 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-07 — fmm-gap ⟨3,20,30⟩: CLOSED (tie 1300); dim-6/7 base battery drops WORSE 128 → 95
+
+**Target:** `Q⟨3,20,30⟩:m` — ours was 1320, FMM 1300 (+20). All bounds.
+
+**Diagnosis:** FMM's 1300 = outer **⟨2,5,6⟩:47** with deficient A-split 3=2+1
+(30×⟨2,4,5⟩:32 + 17×⟨1,4,5⟩:20 — 17 of 47 products isolate the width-1 A-block).
+Fifth pool-cap instance; ⟨2,5,6⟩ was a base never yet swept across the list.
+
+**Reaction:** target closed at **1300 (tie)** via `--base=2x5x6`
+(`R[2x5x6; 2,1 | 4×5 | 5×6]`, our 47 carries the same 17-isolation profile).
+Then the full 8-base battery of previously-unswept dim-6/7 bases
+(`2x5x6,3x3x6,2x4x7,3x3x7,2x6x6,2x5x8,2x6x7,4x4x6`) + cascade pass with all
+strategies over the 128-row WORSE list at 10g: **39 collateral wins** (pass 1:
+20 — mostly the thin-A ⟨3,·,·⟩/⟨5,·,·⟩ band, incl. ⟨7,20,24⟩ 2088→2086 closing a
+leftover; pass 2: 19 cascades; pass 3: fixpoint, 0). Zero errors.
+
+**Net cross-check: WORSE 128 → 95 (−33), BETTER 1460 → 1476 (+16).** Guard row
+⟨3,20,30⟩≤1300 added. Verification (`verifyAuto`-tiered batch over the 40 stubs):
+**39 exact symbolic proofs + 1 spot-check, 0 failures** (thin-A stubs are sparse
+enough for the exact term-map).
+
+---
+
 ## 2026-07-07 — fmm-gap ⟨14,28,29⟩: CLOSED and beaten (6506 → 6494, FMM 6498); 66-stub collateral harvest drops WORSE 187 → 128
 
 **Target:** `Q⟨14,28,29⟩:m` — ours was 6506, FMM 6498 (+8). All bounds.

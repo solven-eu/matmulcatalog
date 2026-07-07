@@ -1,0 +1,25 @@
+{
+  "lineage_str": "Recombination(base=2x6x6, allocA=[2, 1], allocB=[4, 4, 4, 4, 4, 4], allocC=[5, 5, 5, 5, 5, 5], leaves=[2x4x5-r32-alphaevolve-6216e15, naive-1x4x5])",
+  "lineage_compact": "R[2x6x6; 2,1 | 4,4,4,4,4,4 | 5,5,5,5,5,5]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x6x6@5791b427f07f2e6988005a43cd1fe33f5cacdbad2a76b85a75c354a075455f3f"},
+    "allocA": [2, 1],
+    "allocB": [4, 4, 4, 4, 4, 4],
+    "allocC": [5, 5, 5, 5, 5, 5],
+    "leaves": [
+      {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+      {"op": "Atom", "ref": "naive-1x4x5"}
+    ]
+  },
+  "n": [3, 24, 30],
+  "m": 1552,
+  "hash": "b6f0fed9399c04ce65e8ab41baab175e500f81d18c80bd0e43ca2db756426608",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

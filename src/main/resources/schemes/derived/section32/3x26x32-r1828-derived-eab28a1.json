@@ -1,0 +1,19 @@
+{
+  "lineage_str": "SumInner(3x6x32, 3x20x32)",
+  "lineage_compact": "3x6x32 +m 3x20x32",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "3x6x32@cd2ea7377fb58b83aa2355a9ba059de8e20a74f805d067bd06a249210d17ca95"},
+    "right": {"op": "Atom", "ref": "3x20x32@4e1d34752dd45121d043af3955bf36cb1f4ab24eea2eb6e06a879ba124afb91c"}
+  },
+  "n": [3, 26, 32],
+  "m": 1828,
+  "hash": "eab28a14edd32468650b314c7a9122115fdc7b5dd5793587238a7a15c6700a8d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
