@@ -163,6 +163,11 @@ public final class ComputeExplicitable {
 			}
 			// marker-suffixed or prefixed naive (naive-NxMxP / NxMxP-naive)
 			if (ref.contains("naive")) return true;
+			// Parametric-constructor leaf (TA_lita(n=N), DIS09Lemma4(n=N)): rebuilt
+			// deterministically from the formula, no catalog resolution — as precise as
+			// @naive. Without this, one TA-cube ancestor poisoned every downstream
+			// composite (the whole 28-band read explicitable:false).
+			if (eu.solven.matmul.search.LineageReplayer.isParametricRef(ref)) return true;
 			// bare shape or "-direct"  → best-at-shape cited bound
 			if (ref.endsWith("-direct") || ref.matches("\\d+x\\d+x\\d+")) {
 				reason = Reason.CITED;

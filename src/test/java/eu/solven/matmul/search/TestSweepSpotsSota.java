@@ -211,6 +211,15 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(11, 16, 28))
 				.as("⟨11,16,28⟩ must retain the ⟨3,4,7⟩-outer-base 2894 stub (ties FMM)")
 				.isLessThanOrEqualTo(2894);
+		// fmm-gap 2026-07-07 (2nd run): the ⟨28,29,31⟩ chain. ⟨3,25,28⟩=1520 is the
+		// ⟨2,5,7⟩-outer deficient-A recomb (3=2+1) — another dim-7 base the default
+		// pool cannot re-derive; ⟨28,29,31⟩=13091 concat-cascades from it.
+		assertThat(lookup.findRank(3, 25, 28))
+				.as("⟨3,25,28⟩ must retain the ⟨2,5,7⟩-outer-base 1520 stub (ties FMM)")
+				.isLessThanOrEqualTo(1520);
+		assertThat(lookup.findRank(28, 29, 31))
+				.as("⟨28,29,31⟩ must retain the 13091 chain result (ties FMM)")
+				.isLessThanOrEqualTo(13091);
 	}
 
 	/**

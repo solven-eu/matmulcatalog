@@ -439,6 +439,17 @@ public final class LineageReplayer {
 	 * non-commutative cubic ⟨N,N,N⟩). Add further families here as their stubs
 	 * appear (e.g. RosowskiTheorem2(…), commutative).</p>
 	 */
+	/**
+	 * Is {@code ref} a parametric-constructor leaf this replayer can rebuild
+	 * deterministically ({@code TA_lita(n=N)}, {@code DIS09Lemma4(n=N)})? Such refs are
+	 * self-contained — no catalog resolution involved — so downstream classifiers
+	 * (e.g. {@code ComputeExplicitable}) treat them as precise, like {@code @naive}.
+	 * Keep in sync with {@link #resolveParametric}.
+	 */
+	public static boolean isParametricRef(String ref) {
+		return DIS09_LEMMA4.matcher(ref).matches() || TA_LITA.matcher(ref).matches();
+	}
+
 	private NonCubicBilinearAlgorithm resolveParametric(String ref) {
 		Matcher d = DIS09_LEMMA4.matcher(ref);
 		if (d.matches()) {

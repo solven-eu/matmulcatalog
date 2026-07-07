@@ -7,6 +7,50 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-07 — fmm-gap ⟨28,29,31⟩: CLOSED (tie 13091) via a 3-level upstream chain; 4 upstream WORSE rows closed too
+
+**Target:** `Q⟨28,29,31⟩:m` — ours was 13097, FMM 13091 (+6). All ranks are bounds.
+FMM's 13091 is an INDEX-ONLY bound (`rank == naive_rank`, no refs, no tensor; their
+detail page documents a stale 13134) — nothing to import, pure closure gap.
+
+**Diagnosis (math-first, from both catalogs' neighbour ranks):**
+`FMM 13091 = ⟨28,28,29⟩:11319 + ⟨3,28,29⟩:1772` (p-concat 31=28+3). We lagged on
+both ingredients, each with its own cause:
+- `⟨28,28,29⟩` ours 11334 vs 11319 = `⟨28,28,28⟩:10535 + 784`: we HOLD 10535 (tie)
+  — our concat closure was simply **stale** after 10535 landed. Same for
+  `⟨28,28,31⟩` (12256 vs 12241 = 10535+1706).
+- `⟨3,28,29⟩` ours 1782 vs 1772 = `252 + ⟨3,25,28⟩:1520`; the real root is
+  `⟨3,25,28⟩` ours 1540 vs 1520 = **outer ⟨2,5,7⟩:55 with deficient A-split 3=2+1**
+  (35×⟨2,5,4⟩:32 + 20×⟨1,5,4⟩:20) — ANOTHER dim-7 base the `maxBaseDim=5` pool
+  cap excludes (the ⟨12,16,27⟩ pattern, third instance).
+
+**Reaction:** 3-pass fixpoint sweep over the 5-shape chain with
+`--base=2x5x7,3x4x7 --strategies=kron,concat,recomb,serendip,proj`:
+pass 1 → ⟨3,25,28⟩ 1520, ⟨28,28,29⟩ 11319, ⟨28,28,31⟩ 12241; pass 2 → ⟨3,28,29⟩
+1772; pass 3 → **⟨28,29,31⟩ 13091 (tie)**. All 5 stubs born-pinned; the two small
+ones exact-verified; the three dim-28+ ones replay+spot-check verified (compose-time
+write-gate) — exact `isExactNonCubic` OOMs at 16g on r≥11k dim-28 schemes (heap
+attempt escalation recorded). Explicitable caveat: ⟨3,28,29⟩/⟨28,29,31⟩ read
+`explicitable:false` because their DAG crosses the LEGACY stub `3x28x4-r252-a097e49`
+(pre-pinning `ext[...] :: CANONICAL` base ref — replays as best-at-shape, so the
+classifier is RIGHT to flag it). They flip to true when the planned legacy re-pin
+pass rewrites that ancestor. Related classifier fix landed: parametric constructor
+refs (`TA_lita(n=N)`, `DIS09Lemma4(n=N)`) are deterministic formula rebuilds and now
+count as explicit (`LineageReplayer.isParametricRef`, shared with
+`ComputeExplicitable`; guard `TestComputeExplicitableParametric`) — that alone
+flipped ~130 TA-descendant stubs to true (⟨28,28,28⟩=10535 among them). Beating 13091 was checked and priced out: the m-split route
+(10535+1706+868=13109) and all other 31-splits land at ≥13091; a strict win needs a
+strictly better ⟨28,28,29⟩ or ⟨28,29,30⟩≤12278.
+
+**Repro:** chain shapes in `tmp/chain-shapes.txt` pattern above; guards extended in
+`TestSweepSpotsSota.retains_fmm_gap_dim7_base_wins` (⟨3,25,28⟩≤1520,
+⟨28,29,31⟩≤13091). Lesson recorded: FMM index-only bounds come from their
+combination generator over ingredients — when a gap has `rank==naive_rank`+no refs,
+diff the NEIGHBOUR ranks first; the gap is usually upstream, and fixing the
+deepest ingredient cascades for free.
+
+---
+
 ## 2026-07-07 — fmm-gap ⟨12,16,27⟩: CLOSED and beaten (2988 → 2964, FMM 2984); 11 collateral wins via the dim-7 outer base ⟨3,4,7⟩
 
 **Target:** `Q⟨12,16,27⟩:m` — ours was 2988, FMM 2984 (+4). All ranks below are
