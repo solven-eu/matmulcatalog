@@ -7,6 +7,55 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-07 — fmm-gap ⟨12,16,27⟩: CLOSED and beaten (2988 → 2964, FMM 2984); 11 collateral wins via the dim-7 outer base ⟨3,4,7⟩
+
+**Target:** `Q⟨12,16,27⟩:m` — ours was 2988, FMM 2984 (+4). All ranks below are
+**bounds** (recomb closure output), not proven optima.
+
+**Diagnosis (from FMM's 12x16x27.html, one read):** their 2984 = outer ⟨3,4,7⟩:63
+block-recursive with uneven p-split 27=6·4+3 — 59×⟨4,4,4⟩:48 + 4×⟨4,4,3⟩:38
+leaves (4 of 63 outer products isolate the deficient p-block; 3024−4·10). Our
+2988 was the SAME mechanism mirrored — `Recombination(base=⟨4,4,4⟩:48,
+allocC=[7,7,7,6], leaves ⟨3,4,7⟩:63/⟨3,4,6⟩:54)` = 3024−4·9 — because
+`RecombinationPoolConfig` caps NON-cubic pool bases at `maxBaseDim=5`, so
+⟨3,4,7⟩ (dim 7) could never be the OUTER base. Root cause: pool cap, not a
+missing scheme or a representative gap.
+
+**Reaction:** `SchemeSweep --mode=materialize --field=Q --shape=12x16x27
+--config=thorough --strategies=recomb --base=3x4x7` → WIN 2964
+(`Recombination(base=⟨3,4,7⟩:63 [DPS ac0e1ad], allocC=[4,4,4,4,4,4,3],
+leaves ⟨4,4,3⟩:38/⟨4,4,4⟩:48)` = 3024−6·10). Exact-verified
+(`VerifyOneScheme` → `isExactNonCubic=true`). **Beats FMM by 20.**
+
+**Math-first support census of DPS ⟨3,4,7⟩:63** (one-sided isolation: a product
+needs only a ⟨4,4,3⟩ leaf if EITHER its V p-support OR its W p-support sits in
+the deficient block — V-side ⇒ zero padded column, W-side ⇒ truncated output):
+per-axis one-sided counts n:15(!) m:3 p:7. The engine priced 6 of the 7
+p-axis candidates → possible extra −10 (2954) if its isolation rule is the
+one-sided OR; worth checking `AllocationOptimizer`'s leaf-pricing rule. The
+n-axis count 15 is why the ⟨11,·,·⟩ shapes below fell so hard.
+
+**Collateral (same base over the 203-shape WORSE list; 11 further wins, all
+exact-verified):** ⟨16,28,28⟩ 6905→6860 (FMM 6902, −42), ⟨9,28,29⟩ 4221→4161
+(FMM 4202, −41), ⟨12,18,20⟩ 2494→2460 (FMM 2493, −33), ⟨11,21,32⟩ 4383→4365
+(−17), ⟨12,18,23⟩ 2854→2842 (−11), ⟨9,23,23⟩ 2841→2830 (−5), ⟨11,16,31⟩
+3289→3287 (−1), ties with FMM at ⟨11,28,28⟩ 5069, ⟨11,16,28⟩ 2894, ⟨14,16,28⟩
+3674; ⟨11,16,30⟩ 3174→3158 narrows (FMM 3126 still ahead, gap 48→32).
+Net: 8 WORSE rows flipped to BETTER, 3 tied, 1 narrowed.
+
+**Follow-ups:** (a) the same `--base` probe with other dim-6/7 non-cubic bases
+the maxBaseDim=5 pool excludes (⟨3,3,6⟩, ⟨2,5,6⟩, ⟨3,4,8⟩, ⟨4,4,7⟩…) over the
+WORSE list; (b) check whether the recomb leaf-pricing implements one-sided
+isolation (potential ⟨12,16,27⟩ 2954); (c) consider a pool preset that admits
+a curated dim-6/7 base list without the full cost of raising maxBaseDim.
+
+**Repro:** commands above; guard `TestSweepSpotsSota.retains_fmm_gap_dim7_base_wins`
+(disk-presence: lookup ⟨12,16,27⟩≤2964, ⟨11,16,28⟩≤2894 — NOT compute-pipeline rows,
+since the default pool's maxBaseDim=5 cannot re-derive these; a CSV-row guard was
+tried first and burned 70 min before failing at 3004).
+
+---
+
 ## 2026-07-06 — fmm-react ⟨20,24,25⟩: gap +8 NOT closed (FMM 6466 vs our 6474); 28 collateral serendipitous wins landed in the 20–25 band
 
 **Target:** `Q⟨20,24,25⟩:m` — ours 6474 (stub `Serendipitous(⟨5,12,5⟩ ⊗ˢ ⟨4,2,5⟩)` = 204·32−54),

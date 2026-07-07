@@ -1,9 +1,9 @@
 ---
-name: fmm-react
+name: fmm-gap
 description: React to an FMM-Lille catalog gap — refresh the FMM cross-check, pick a random shape where our catalog is worse than FMM (or take an explicit ⟨n,m,p⟩), analyze the FMM scheme, and try to close the gap via projection, targeted sweep, or serendipitous bud product. Use when asked to "react to FMM", close FMM gaps, or work a shape from the FMM diff.
 ---
 
-# fmm-react — close a gap against the FMM-Lille catalog
+# fmm-gap — close a gap against the FMM-Lille catalog
 
 Recurrent methodology: given a diff against FMM
 (https://fmm.univ-lille.fr/), pick a shape where we lag, understand

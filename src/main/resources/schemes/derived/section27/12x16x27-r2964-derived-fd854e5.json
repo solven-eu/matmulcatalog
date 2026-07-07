@@ -1,0 +1,32 @@
+{
+  "lineage_str": "Recombination(base=base<3x4x7>=63, allocA=[4, 4, 4], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4, 4, 4, 3], leaves=[OrientAs(3x4x4-r38-alphatensor_Z-644bd5e, ⟨4,4,3⟩), 4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e])",
+  "lineage_compact": "R[base<3x4x7>=63; 4,4,4 | 4,4,4,4 | 4,4,4,4,4,4,3]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "base<3x4x7>=63"},
+    "allocA": [4, 4, 4],
+    "allocB": [4, 4, 4, 4],
+    "allocC": [4, 4, 4, 4, 4, 4, 3],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 4,
+        "p": 3,
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "3x4x4-r38-alphatensor_Z-644bd5e"}
+      },
+      {"op": "Atom", "ref": "4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e"}
+    ]
+  },
+  "n": [12, 16, 27],
+  "m": 2964,
+  "hash": "fd854e5407feaebed2b9c712c5fe8f306de2dd06f12571cc20026896a8a0c135",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

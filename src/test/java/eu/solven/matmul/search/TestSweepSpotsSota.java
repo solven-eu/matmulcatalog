@@ -195,6 +195,25 @@ public class TestSweepSpotsSota {
 	}
 
 	/**
+	 * Disk-presence guards for the fmm-gap 2026-07-07 dim-7-outer-base wins
+	 * (`Recombination(base=⟨3,4,7⟩:63 DPS, deficient block)`). The default pool
+	 * caps non-cubic bases at maxBaseDim=5, so the COMPUTE pipeline cannot
+	 * re-derive these — they exist only as exact-verified on-disk stubs reached
+	 * via {@code SchemeSweep --base=3x4x7}. Losing the stubs (folder reorg,
+	 * over-eager purge) would silently regress ⟨12,16,27⟩ to 2988+ (FMM: 2984)
+	 * and ⟨11,16,28⟩ to 2925.
+	 */
+	@Test
+	public void retains_fmm_gap_dim7_base_wins() {
+		assertThat(lookup.findRank(12, 16, 27))
+				.as("⟨12,16,27⟩ must retain the ⟨3,4,7⟩-outer-base 2964 stub (beats FMM 2984)")
+				.isLessThanOrEqualTo(2964);
+		assertThat(lookup.findRank(11, 16, 28))
+				.as("⟨11,16,28⟩ must retain the ⟨3,4,7⟩-outer-base 2894 stub (ties FMM)")
+				.isLessThanOrEqualTo(2894);
+	}
+
+	/**
 	 * The extended template pool must see the whole catalog tree. A
 	 * {@code listFiles("section*")} on the schemes root (pre-2026-06-10 bug)
 	 * silently returned an empty pool after the known/derived/curated split,

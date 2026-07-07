@@ -1,0 +1,49 @@
+{
+  "lineage_str": "Recombination(base=base<3x7x4>=63, allocA=[4, 4, 3], allocB=[3, 3, 3, 3, 3, 3, 3], allocC=[8, 8, 8, 8], leaves=[OrientAs(3x4x8-r73-perminov_Z-89c37df, ⟨4,3,8⟩), ConcatCols(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), 3x3x6-r40-smirnov13-d246191)])",
+  "lineage_compact": "R[base<3x7x4>=63; 4,4,3 | 3,3,3,3,3,3,3 | 8,8,8,8]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "base<3x7x4>=63"},
+    "allocA": [4, 4, 3],
+    "allocB": [3, 3, 3, 3, 3, 3, 3],
+    "allocC": [8, 8, 8, 8],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 3,
+        "p": 8,
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"}
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Recombination",
+          "base": {
+            "op": "Transpose",
+            "perm": "ABC->CBA",
+            "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+          },
+          "allocA": [1, 1, 1],
+          "allocB": [1, 1, 1],
+          "allocC": [1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "right": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"}
+      }
+    ]
+  },
+  "n": [11, 21, 32],
+  "m": 4365,
+  "hash": "413fad65552885d19256b628b299b3f2a8f3ed1d1272da8fceea48c78a6d1081",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
