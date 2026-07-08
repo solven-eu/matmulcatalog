@@ -7,6 +7,62 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-08 — fmm-gap ⟨20,28,28⟩: CLOSED and beaten (8440 → 8434, FMM 8438) — NEW root cause: STUB-BLIND serendipitous search; WORSE 86 → 57
+
+**Target:** `Q⟨20,28,28⟩:m` — ours was 8440, FMM 8438 (+2). All bounds.
+
+**Diagnosis:** FMM's page states `⟨20,28,28⟩:8438 = (⟨5,7,7⟩:176 − 5) ⊗
+⟨4,4,4⟩:48 + ⟨4,4,20⟩:230` — a serendipitous product whose base (Kauers–Wood
+2025, arXiv:2505.05896) carries a size-5 ⟨1,1,5⟩ U-bud (5·48 − 230 = 10 saved).
+Our catalog's rank-176 representative (perminov_c2535_ZT) tops out at
+`U⟨1,1,4⟩` (saving 4 → 8444): the bud-representative caveat. Imported the FMM
+base to `bud-bases/section7/fmm-lille_5x7x7_r176_a3315.json` (exact-verified;
+discovery:false, attribution Kauers–Wood). Its profile prices **8434 < 8438**:
+the U×5 bud (−10) PLUS a V×4 bud FMM's own recipe leaves unfused (−4 via
+⟨4,4,16⟩:188, surfaced by the V-first orderings).
+
+**Root cause (engine, silent):** even fed the base, `SerendipitousSearch`
+returned EMPTY. It priced candidates with a `findWithSource`-based oracle and
+built through `findWithSource` — both blind to lineage-only STUBS, so any
+candidate whose enlarged fusion target exists only as a stub (⟨4,4,20⟩=230 is
+a ConcatCols stub) was silently dropped (predict = −1) or threw at build.
+Serendipitous search has been quietly weakened catalog-wide since stubs became
+the norm for derived shapes. **Fix:** predict via `findRank` (stub-inclusive,
+= `costOf`'s oracle); build via a new `SerendipitousBudProduct.InnerResolver`
+hook — `RecursiveMaterialiser` passes its stub-replaying `resolveParentHit`,
+`LineageReplayer` passes `resolveShape` (so serendip stubs with stub inners
+replay), Phase-2 catches unbuildable candidates and falls through. Two
+supporting fixes: `StampImportHashes` (NEW driver — stamps content `hash` on
+8 hash-less old-convention imports so `durableLeafRef` can pin them) and
+content-hash fallbacks in the persist audit's `findFileByHash` + the manifest's
+`existingPinnedKeys` (both were filename-token-only → resolvable pins flagged
+DANGLING). Guards: `TestSerendipitousStubInner` (3 tests: bestFor builds
+through the stub inner ≤8434; default resolver doesn't crash; the persisted
+stub replays to exactly 8434) + rows ⟨20,28,28⟩≤8434, ⟨21,25,28⟩≤8118 in
+`TestSweepSpotsSota`.
+
+**Collateral (serendip harvest over 141 candidates = perm(5,7,7)-multiples ∪
+WORSE list, then full-strategy recomb/serendip/proj sweep over the 86-row
+WORSE list, both to fixpoint at pass 2):** 37 collateral wins. Serendip pass 1:
+10 (⟨10,21,28⟩ −36, ⟨21,25,28⟩ −24, ⟨21,28,30⟩ −13, ⟨16,27,32⟩ −10, ⟨20,21,28⟩
+−9, ⟨14,20,28⟩ −7, … — several from PRE-EXISTING bases the stub-blindness had
+been suppressing, e.g. 2x4x7 → ⟨10,21,28⟩). Full sweep pass 1: 27 more (the
+⟨19,2x,2x⟩ recomb family en bloc, ⟨28,31,31⟩ 14028, ⟨25,29,31⟩ 12064,
+⟨25,29,32⟩ 12410, ⟨3,29,29⟩ 1843, ⟨12,12,29⟩ 2404, ⟨9,15,28⟩ 2232, …).
+Pass 2 both engines: 0 (fixpoint). Zero errors.
+
+**Net cross-check: WORSE 86 → 57 (−29), BETTER 1482 → 1493 (+11).**
+Verification over all 38 new stubs: **14 exact symbolic proofs + 24
+spot-checks (dense, above the 30M-term exact cap), 0 failures.** All stubs
+born-pinned (base = `5x7x7@a88ab92…` content hash).
+
+**Follow-up:** `VerifyOneScheme` batch mode — verifying 38 stubs cost 38 JVM
+starts × ~15s lookup-index builds (monothreaded, user flagged it); a
+multi-file mode building the index once (+ optional thread pool) would cut
+the batch ~10×.
+
+---
+
 ## 2026-07-07 — fmm-gap ⟨7,14,24⟩: CLOSED (tie 1514) — NEW root cause: pool starvation of the per-base alloc budget; WORSE 95 → 86
 
 **Target:** `Q⟨7,14,24⟩:m` — ours was 1519, FMM 1514 (+5). All bounds.

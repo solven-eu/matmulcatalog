@@ -236,6 +236,16 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(7, 14, 24))
 				.as("⟨7,14,24⟩ must retain the ⟨2,4,4⟩-outer-base 1514 stub (ties FMM)")
 				.isLessThanOrEqualTo(1514);
+		// fmm-gap 2026-07-08: serendipitous ⟨5,7,7⟩:176 (Kauers–Wood, bud-bases
+		// import — size-5 U-bud + size-4 V-bud) ⊗ ⟨4,4,4⟩:48. Only reachable once
+		// the serendipitous search resolves STUB fusion targets (the ⟨4,4,20⟩=230
+		// ConcatCols stub) — see TestSerendipitousStubInner for the mechanism guard.
+		assertThat(lookup.findRank(20, 28, 28))
+				.as("⟨20,28,28⟩ must retain the serendipitous 8434 stub (beats FMM 8438)")
+				.isLessThanOrEqualTo(8434);
+		assertThat(lookup.findRank(21, 25, 28))
+				.as("⟨21,25,28⟩ must retain the serendipitous 8118 collateral")
+				.isLessThanOrEqualTo(8118);
 	}
 
 	/**

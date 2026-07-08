@@ -35,6 +35,22 @@ public final class SerendipitousSearch {
 	 */
 	public static Optional<Hit> bestFor(int n, int m, int p,
 			List<NonCubicBilinearAlgorithm> bases, FieldAwareLookup lookup, long upperBound) {
+		return bestFor(n, m, p, bases, lookup, upperBound,
+				SerendipitousBudProduct.InnerResolver.of(lookup));
+	}
+
+	/**
+	 * {@link #bestFor} with an explicit build-time {@link SerendipitousBudProduct.InnerResolver}.
+	 * Prediction prices via {@code findRank} (stub-inclusive, same oracle as
+	 * {@code SerendipitousBudProduct.costOf}); the resolver is what fetches the
+	 * actual enlarged inners at build time. Pass a replaying resolver (e.g.
+	 * RecursiveMaterialiser's) so a candidate whose fusion target is a
+	 * lineage-only stub — like ⟨4,4,20⟩=230 pricing ⟨20,28,28⟩=8434 — is built
+	 * rather than silently dropped.
+	 */
+	public static Optional<Hit> bestFor(int n, int m, int p,
+			List<NonCubicBilinearAlgorithm> bases, FieldAwareLookup lookup, long upperBound,
+			SerendipitousBudProduct.InnerResolver resolver) {
 		// Phase 1 — PREDICT only (cheap): collect every viable (base, inner)
 		// factorization with its predicted serendipitous rank, WITHOUT building or
 		// verifying. Building the dense scheme + verifying is the expensive part, so
@@ -79,9 +95,16 @@ public final class SerendipitousSearch {
 		// EXACT verification is reserved for promote-time, not the hot search loop.
 		cands.sort(Comparator.comparingLong(Candidate::predicted));
 		for (Candidate c : cands) {
-			NonCubicBilinearAlgorithm built = SerendipitousBudProduct.productFromDecomposition(
-					c.base(), c.dec(), lookup, c.n2(), c.m2(), c.p2(),
-					java.util.EnumSet.allOf(SerendipitousBudProduct.BudType.class));
+			NonCubicBilinearAlgorithm built;
+			try {
+				built = SerendipitousBudProduct.productFromDecomposition(
+						c.base(), c.dec(), resolver, c.n2(), c.m2(), c.p2(),
+						java.util.EnumSet.allOf(SerendipitousBudProduct.BudType.class));
+			} catch (RuntimeException e) {
+				// A fusion target priced by findRank turned out unbuildable (e.g. a
+				// corrupt / non-replayable stub) — fall through to the next candidate.
+				continue;
+			}
 			if (built.r != c.predicted()) continue;                 // sanity
 			if (!Verifier.passesRandomMatmulSpotCheck(built)) continue;
 			return Optional.of(new Hit(built, c.base(), c.n2(), c.m2(), c.p2(), built.r));
@@ -112,7 +135,15 @@ public final class SerendipitousSearch {
 		return total;
 	}
 
+	/**
+	 * Rank oracle for PREDICTION — {@code findRank}, which prices lineage-only
+	 * stubs too (same oracle as {@link SerendipitousBudProduct#costOf}). The
+	 * historical {@code findWithSource}-based oracle returned −1 for any shape
+	 * whose best (or only) entry was a stub, silently dropping candidates the
+	 * catalog could actually build via replay (⟨20,28,28⟩=8434's ⟨4,4,20⟩=230).
+	 */
 	private static long rank(FieldAwareLookup lookup, int n, int m, int p) {
-		return lookup.findWithSource(n, m, p).map(ws -> (long) ws.alg().r).orElse(-1L);
+		int r = lookup.findRank(n, m, p);
+		return r >= eu.solven.matmul.recombination.Recombination.SotaResolver.UNKNOWN_RANK ? -1L : r;
 	}
 }

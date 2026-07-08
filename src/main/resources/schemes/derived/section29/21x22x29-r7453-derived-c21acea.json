@@ -1,0 +1,71 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 12], allocB=[10, 12], allocC=[15, 14], leaves=[KronProduct(2x4x5-r32-alphaevolve-6216e15, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), 9x10x15-r861-perminov_Q-118674a, OrientAs(Serendipitous(OrientAs(3x4x5, ⟨4,3,5⟩) ⊗ ⟨3,3,3⟩), ⟨9,12,15⟩), OrientAs(10x12x14-r1048-perminov_ZT-107b016, ⟨12,10,14⟩), 9x12x14-r940-perminov_Q-ffecb1f])",
+  "lineage_compact": "R[2x2x2; 9,12 | 10,12 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [9, 12],
+    "allocB": [10, 12],
+    "allocC": [15, 14],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "9x10x15-r861-perminov_Q-118674a"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 12,
+        "p": 15,
+        "axisMap": "mnp",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 3,
+          "m2": 3,
+          "p2": 3,
+          "base": {
+            "op": "OrientAs",
+            "n": 4,
+            "m": 3,
+            "p": 5,
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+          }
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 10,
+        "p": 14,
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "10x12x14-r1048-perminov_ZT-107b016"}
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"}
+    ]
+  },
+  "n": [21, 22, 29],
+  "m": 7453,
+  "hash": "c21acea650b6254e77cb2d5fd6c880433856146dbcbd2ad1e1882aacefe87645",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

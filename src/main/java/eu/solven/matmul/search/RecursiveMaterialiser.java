@@ -621,8 +621,16 @@ public final class RecursiveMaterialiser {
 			}
 		}
 		if (bases.isEmpty()) return null;
+		// Stub-capable build resolver: an enlarged fusion target (e.g. ⟨4,4,20⟩=230)
+		// often exists only as a lineage stub — resolveParentHit replays it (cached,
+		// corrupt-over-claim-guarded), where the default findWithSource resolver
+		// would throw and the candidate would be silently dropped.
+		eu.solven.matmul.catalog.SerendipitousBudProduct.InnerResolver resolver = (a, b, c) -> {
+			ParentHit ph = resolveParentHit(a, b, c);
+			return Optional.ofNullable(ph == null ? null : ph.alg());
+		};
 		var hit = eu.solven.matmul.catalog.SerendipitousSearch.bestFor(
-				n, m, p, bases, diskLookup, upper);
+				n, m, p, bases, diskLookup, upper, resolver);
 		if (hit.isEmpty()) return null;
 		var h = hit.get();
 		if (!verifies(h.scheme())) return null;
@@ -2082,7 +2090,20 @@ public final class RecursiveMaterialiser {
 				derivedMatch = f;
 			}
 		}
-		return derivedMatch;
+		if (derivedMatch != null) return derivedMatch;
+		// Filename token is cosmetic — old-convention files (fmm-lille_5x7x7_r176_a3315)
+		// carry the hash ONLY in the stamped JSON "hash" field, which is also what
+		// LineageReplayer resolves pins by. Fall back to content so the audit agrees
+		// with the replayer instead of flagging a resolvable pin as DANGLING.
+		for (Path f : diskLookup.findFiles(sn, sm, sp)) {
+			try {
+				String stamped = SchemeIO.readHash(SchemeIO.parseJson(f.toFile()));
+				if (stamped != null && stamped.startsWith(hash7)) return f;
+			} catch (Exception e) {
+				// unreadable candidate — keep scanning
+			}
+		}
+		return null;
 	}
 
 	private void writeToDisk(int n, int m, int p, Result r) {

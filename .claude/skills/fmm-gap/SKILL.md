@@ -147,7 +147,16 @@ it before landing.
    mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.StampSource    -Dexec.args=--execute
    mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.StampAdditions -Dexec.args=--execute
    mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.NarrowFields   -Dexec.args=--apply
+   mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.BackfillMissingFields -Dexec.args=--execute
+   mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.StampImportHashes     -Dexec.args=--execute
    ```
+
+   `BackfillMissingFields` is what actually stamps `fields[]` on a fresh
+   import (StampFields is lineage-driven and skips imports; NarrowFields
+   only narrows an existing `fields[]`). `StampImportHashes` stamps the
+   content `hash` old-convention import filenames don't carry — without
+   it `durableLeafRef` REFUSES to pin the base when a reaction wins
+   (the ⟨20,28,28⟩=8434 persist failure, 2026-07-08).
 
 4. **Attribution**: FMM is a catalog, not (usually) the discoverer. Set
    `discovery: false | "TBD"` and `attribution_for_rank` from FMM's

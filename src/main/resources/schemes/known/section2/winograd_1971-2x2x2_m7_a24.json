@@ -4,6 +4,7 @@
   "lineage": {"op": "Atom", "ref": "winograd-1971-7mult"},
   "n": [2, 2, 2],
   "m": 7,
+  "hash": "511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a",
   "scheduled_additions": 15,
   "scheduled_additions_note": "Strassen-Winograd 1971 schedule: 15 additions when intermediates s1..s4, t1..t4 (CSE) are shared; raw bilinear additionCount from U/V/W is 24. See MaterializeStrassenWinograd.java for the explicit schedule.",
   "commutative": false,

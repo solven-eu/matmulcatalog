@@ -6,6 +6,7 @@
   "discovery_note": "Improved upper bound for ⟨17,17,17⟩ at the (9,8)^3 Strassen-base allocation: this Winograd cousin produces sub-shape distribution 1×⟨9,9,9⟩ + 4×⟨8,9,9⟩-cyc + 1×⟨8,8,9⟩ + 1×⟨8,8,8⟩ = 486 + 4·430 + 388 + 336 = 2930, beating canonical Strassen (2940) and the FMM-Lille published bound (2934). Found by TestStrassenCousinHunt in src/test/java/eu/solven/matmul/search/.",
   "n": [2, 2, 2],
   "m": 7,
+  "hash": "cb16ec61363527b4b07d8df2dcf4e49d60b0c1b83caa0a6b97c770d7ec8f77a1",
   "commutative": false,
   "fields": [
     "F2",

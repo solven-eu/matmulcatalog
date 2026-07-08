@@ -1,0 +1,42 @@
+{
+  "lineage_str": "RecombinationTa(base=naive-1x2x2, allocA=[28], allocB=[3, 28], allocC=[3, 28], leaves=[OrientAs(ConcatRows(OrientAs(3x3x4-r29-alphatensor_Z-a5da05f, ⟨4,3,3⟩), 24x3x3), ⟨3,3,28⟩), TA_lita(n=28)])",
+  "lineage_compact": "Rta[naive-1x2x2; 28 | 3,28 | 3,28]",
+  "lineage": {
+    "op": "RecombinationTa",
+    "base": {"op": "Atom", "ref": "naive-1x2x2"},
+    "allocA": [28],
+    "allocB": [3, 28],
+    "allocC": [3, 28],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 3,
+        "p": 28,
+        "axisMap": "mpn",
+        "child": {
+          "op": "ConcatRows",
+          "top": {
+            "op": "OrientAs",
+            "n": 4,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x4-r29-alphatensor_Z-a5da05f"}
+          },
+          "bottom": {"op": "Atom", "ref": "24x3x3@90fa562f25f79fa2ef39c23de2fef26f8cda22f43d66fd10904bd086a4b6a21c"}
+        }
+      },
+      {"op": "Atom", "ref": "TA_lita(n=28)"}
+    ]
+  },
+  "n": [28, 31, 31],
+  "m": 14028,
+  "hash": "c98fb1fb02b403ad79392d811b51a401291f6753f61d74c0e39bdd9218889aa2",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

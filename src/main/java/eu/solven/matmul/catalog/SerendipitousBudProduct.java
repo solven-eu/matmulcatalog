@@ -278,6 +278,14 @@ public final class SerendipitousBudProduct {
 	 */
 	public static NonCubicBilinearAlgorithm productViaBudsBest(
 			NonCubicBilinearAlgorithm t1, FieldAwareLookup lookup, int n2, int m2, int p2) {
+		return productViaBudsBest(t1, InnerResolver.of(lookup), n2, m2, p2);
+	}
+
+	/** {@link #productViaBudsBest} against an explicit {@link InnerResolver} —
+	 *  stub-capable callers (LineageReplayer, RecursiveMaterialiser) pass a
+	 *  replaying resolver so stub-only fusion targets stay buildable. */
+	public static NonCubicBilinearAlgorithm productViaBudsBest(
+			NonCubicBilinearAlgorithm t1, InnerResolver resolver, int n2, int m2, int p2) {
 		java.util.Set<BudType> allow = java.util.EnumSet.allOf(BudType.class);
 		NonCubicBilinearAlgorithm best = null;
 		for (BudType[] order : ALL_ORDERINGS) {
@@ -287,7 +295,7 @@ public final class SerendipitousBudProduct {
 			}
 			try {
 				NonCubicBilinearAlgorithm built =
-						productFromDecomposition(t1, dec, lookup, n2, m2, p2, allow);
+						productFromDecomposition(t1, dec, resolver, n2, m2, p2, allow);
 				if (best == null || built.r < best.r) {
 					best = built;
 				}
@@ -296,7 +304,8 @@ public final class SerendipitousBudProduct {
 			}
 		}
 		// No ordering yielded a buildable bud decomposition → default (term-by-term Kron).
-		return best != null ? best : productViaBuds(t1, lookup, n2, m2, p2);
+		return best != null ? best : productFromDecomposition(
+				t1, findBuds(t1), resolver, n2, m2, p2, java.util.EnumSet.noneOf(BudType.class));
 	}
 
 	/**
@@ -312,6 +321,25 @@ public final class SerendipitousBudProduct {
 	}
 
 	/**
+	 * Resolves an explicit (buildable, ORIENTED) scheme at {@code ⟨n,m,p⟩} — the
+	 * build-time ingredient fetch for serendipitous products. The default
+	 * ({@link #of}) is {@code findWithSource}, which SKIPS lineage-only stubs; a
+	 * stub-capable caller (RecursiveMaterialiser, LineageReplayer) passes a
+	 * replaying resolver so a stub-only enlarged shape (e.g. the ⟨4,4,20⟩=230
+	 * ConcatCols stub that prices ⟨20,28,28⟩=8434) is still buildable. Without
+	 * this hook the search silently dropped every candidate whose fusion target
+	 * had no dense file — predict saw the stub's rank via findRank, build threw.
+	 */
+	public interface InnerResolver {
+		java.util.Optional<NonCubicBilinearAlgorithm> find(int n, int m, int p);
+
+		/** Dense-file-only resolver (no stub replay) — the historical behaviour. */
+		static InnerResolver of(FieldAwareLookup lookup) {
+			return (n, m, p) -> lookup.findWithSource(n, m, p).map(FieldAwareLookup.WithSource::alg);
+		}
+	}
+
+	/**
 	 * Build the serendipitous product from a <strong>precomputed</strong>
 	 * decomposition, so the built scheme matches the ordering whose cost was
 	 * predicted (the greedy ordering changes which buds are chosen).
@@ -319,7 +347,15 @@ public final class SerendipitousBudProduct {
 	public static NonCubicBilinearAlgorithm productFromDecomposition(
 			NonCubicBilinearAlgorithm t1, BudDecomposition dec, FieldAwareLookup lookup,
 			int n2, int m2, int p2, java.util.Set<BudType> allow) {
-		NonCubicBilinearAlgorithm s2 = lookup.findWithSource(n2, m2, p2).orElseThrow().alg();
+		return productFromDecomposition(t1, dec, InnerResolver.of(lookup), n2, m2, p2, allow);
+	}
+
+	/** {@link #productFromDecomposition} against an explicit {@link InnerResolver}. */
+	public static NonCubicBilinearAlgorithm productFromDecomposition(
+			NonCubicBilinearAlgorithm t1, BudDecomposition dec, InnerResolver resolver,
+			int n2, int m2, int p2, java.util.Set<BudType> allow) {
+		NonCubicBilinearAlgorithm s2 = resolver.find(n2, m2, p2).orElseThrow(
+				() -> new IllegalStateException("no buildable ⟨" + n2 + "," + m2 + "," + p2 + "⟩"));
 		List<NonCubicBilinearAlgorithm> parts = new ArrayList<>();
 		for (int i : dec.trivial()) parts.add(Compose.kroneckerGeneral(rankOne(t1, i), s2));
 		for (Bud bud : dec.buds()) {
@@ -331,11 +367,12 @@ public final class SerendipitousBudProduct {
 				continue;
 			}
 			int k = bud.terms().length;
-			NonCubicBilinearAlgorithm s3 = switch (bud.type()) {
-				case U -> lookup.findWithSource(n2, m2, k * p2).orElseThrow().alg();
-				case V -> lookup.findWithSource(k * n2, m2, p2).orElseThrow().alg();
-				case W -> lookup.findWithSource(n2, k * m2, p2).orElseThrow().alg();
-			};
+			int en = bud.type() == BudType.V ? k * n2 : n2;
+			int em = bud.type() == BudType.W ? k * m2 : m2;
+			int ep = bud.type() == BudType.U ? k * p2 : p2;
+			NonCubicBilinearAlgorithm s3 = resolver.find(en, em, ep).orElseThrow(
+					() -> new IllegalStateException("no buildable enlarged ⟨" + en + "," + em + ","
+							+ ep + "⟩ (stub-only? pass a replaying InnerResolver)"));
 			parts.add(buildBudBlock(t1, bud, s3, n2, m2, p2));
 		}
 		return concatColumns(parts, t1.n * n2, t1.m * m2, t1.p * p2);

@@ -198,7 +198,8 @@ public final class LineageReplayer {
 			// SerendipitousSearch.bestFor — NOT the DEFAULT_ORDER of productViaBuds, which
 			// could build at a higher rank than predicted and get the win discarded.
 			case Lineage.SerendipitousProduct sp -> eu.solven.matmul.catalog.SerendipitousBudProduct
-					.productViaBudsBest(replayInternal(sp.base(), memo), lookup, sp.n2(), sp.m2(), sp.p2());
+					.productViaBudsBest(replayInternal(sp.base(), memo), this::resolveInner,
+							sp.n2(), sp.m2(), sp.p2());
 			case Lineage.Project pr -> eu.solven.matmul.catalog.Compose.project(
 					replayInternal(pr.child(), memo), pr.keepN(), pr.keepM(), pr.keepP());
 			// Rectangular Pan-TA peel: re-run the deterministic constructor on the
@@ -474,6 +475,25 @@ public final class LineageReplayer {
 	 * all reference the same ⟨16,16,16⟩ leaf doesn't re-materialise it
 	 * per call. The cache is a bounded LRU.</p>
 	 */
+	/**
+	 * Stub-capable {@link eu.solven.matmul.catalog.SerendipitousBudProduct.InnerResolver}
+	 * for replaying {@code SerendipitousProduct} nodes: an enlarged fusion target that
+	 * exists only as a lineage stub (e.g. ⟨4,4,20⟩=230 ConcatCols) resolves via
+	 * {@link #resolveShape} where the default findWithSource resolver would fail —
+	 * without this, a serendipitous stub built through a stub inner could never replay.
+	 */
+	private java.util.Optional<NonCubicBilinearAlgorithm> resolveInner(int n, int mm, int p) {
+		try {
+			if (n == 1 || mm == 1 || p == 1) {
+				return java.util.Optional.of(naiveScheme(n, mm, p));
+			}
+			return java.util.Optional.of(resolveShape(n, mm, p))
+					.flatMap(a -> a.orientAs(n, mm, p));
+		} catch (RuntimeException e) {
+			return java.util.Optional.empty();
+		}
+	}
+
 	private NonCubicBilinearAlgorithm resolveShape(int n, int mm, int p) {
 		Optional<FieldAwareLookup.WithSource> hit = lookup.findWithSource(n, mm, p);
 		Optional<Path> bestPath = lookup.findFile(n, mm, p);

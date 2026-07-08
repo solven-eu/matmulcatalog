@@ -1,0 +1,65 @@
+{
+  "lineage_str": "Recombination(base=AxisPermute[approximate](2x5x5, permA=[1, 0], permB=[0, 1, 2, 3, 4], permC=[0, 1, 2, 3, 4]), allocA=[3, 4], allocB=[3, 3, 3, 2, 3], allocC=[6, 6, 6, 6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), OrientAs(ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7), ⟨3,2,6⟩), OrientAs(2x4x6-r39-hk71-bddc04d, ⟨4,2,6⟩)])",
+  "lineage_compact": "R[2x5x5^π([1, 0],[0, 1, 2, 3, 4],[0, 1, 2, 3, 4]); 3,4 | 3,3,3,2,3 | 6,6,6,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "AxisPermute",
+      "permA": [1, 0],
+      "permB": [0, 1, 2, 3, 4],
+      "permC": [0, 1, 2, 3, 4],
+      "approximate": true,
+      "child": {"op": "Atom", "ref": "2x5x5@5e3b69e8989d3ac4c5bd80eb8f6c01e25797d0be4096286bc5fa0f762c281e2f"}
+    },
+    "allocA": [3, 4],
+    "allocB": [3, 3, 3, 2, 3],
+    "allocC": [6, 6, 6, 6, 6],
+    "leaves": [
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 3,
+        "p": 6,
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 2,
+        "p": 6,
+        "axisMap": "mnp",
+        "child": {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+          "right": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"}
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 2,
+        "p": 6,
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "2x4x6-r39-hk71-bddc04d"}
+      }
+    ]
+  },
+  "n": [7, 14, 30],
+  "m": 1865,
+  "hash": "67ce027dc8852743bf53edf73b4779dacbe249f2e40583ba5ddd8d1d5c105bea",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -107,6 +107,22 @@ public class GenerateCatalogManifest {
 			java.util.regex.Matcher m = pinnedFn.matcher(stem);
 			if (m.matches()) {
 				existingPinnedKeys.add(m.group(1) + "@" + m.group(2).substring(0, Math.min(7, m.group(2).length())));
+				continue;
+			}
+			// Old-convention names (fmm-lille_5x7x7_r176_a3315) carry no hash token —
+			// but StampImportHashes stamps the content hash INTO the JSON, and that is
+			// what durableLeafRef pins / LineageReplayer resolves. Read it from content
+			// so a resolvable pin isn't flagged dangling (filename is a pure label).
+			try {
+				var rootNode = eu.solven.matmul.catalog.SchemeIO.parseJson(af);
+				String stamped = eu.solven.matmul.catalog.SchemeIO.readHash(rootNode);
+				var nNode = rootNode.get("n");
+				if (stamped != null && stamped.length() >= 7 && nNode != null && nNode.isArray()) {
+					String shape = nNode.get(0).asInt() + "x" + nNode.get(1).asInt() + "x" + nNode.get(2).asInt();
+					existingPinnedKeys.add(shape + "@" + stamped.substring(0, 7));
+				}
+			} catch (Exception e) {
+				// unreadable candidate — not a pin target
 			}
 		}
 		java.util.Set<String> danglingBaseFiles = new java.util.TreeSet<>();

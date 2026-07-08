@@ -1,0 +1,64 @@
+{
+  "lineage_str": "Recombination(base=AxisPermute[approximate](2x5x5, permA=[1, 0], permB=[0, 1, 2, 3, 4], permC=[0, 1, 2, 3, 4]), allocA=[2, 3], allocB=[6, 6, 6, 5, 6], allocC=[6, 6, 6, 6, 6], leaves=[2x6x6-r56-perminov_ZT-5791b42, ConcatCols(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2])), 2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3])",
+  "lineage_compact": "R[2x5x5^π([1, 0],[0, 1, 2, 3, 4],[0, 1, 2, 3, 4]); 2,3 | 6,6,6,5,6 | 6,6,6,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "AxisPermute",
+      "permA": [1, 0],
+      "permB": [0, 1, 2, 3, 4],
+      "permC": [0, 1, 2, 3, 4],
+      "approximate": true,
+      "child": {"op": "Atom", "ref": "2x5x5@5e3b69e8989d3ac4c5bd80eb8f6c01e25797d0be4096286bc5fa0f762c281e2f"}
+    },
+    "allocA": [2, 3],
+    "allocB": [6, 6, 6, 5, 6],
+    "allocC": [6, 6, 6, 6, 6],
+    "leaves": [
+      {"op": "Atom", "ref": "2x6x6-r56-perminov_ZT-5791b42"},
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        },
+        "right": {
+          "op": "Project",
+          "keepN": [0, 1, 2],
+          "keepM": [1, 2, 3, 4, 5, 6],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+      {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+    ]
+  },
+  "n": [5, 29, 30],
+  "m": 2771,
+  "hash": "c7bdc2da483c80a0a3e93fd7e18190d15c066aff59ebd6883f2c495329c7777c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
