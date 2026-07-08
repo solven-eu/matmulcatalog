@@ -1,0 +1,55 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[8, 12], allocB=[9, 9, 9], allocC=[9, 9, 9], leaves=[KronProduct(2x3x3, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), Serendipitous(OrientAs(3x3x4, ⟨4,3,3⟩) ⊗ ⟨2,3,3⟩)])",
+  "lineage_compact": "R[2x3x3; 8,12 | 9,9,9 | 9,9,9]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+    "allocA": [8, 12],
+    "allocB": [9, 9, 9],
+    "allocC": [9, 9, 9],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 2,
+        "m2": 3,
+        "p2": 3,
+        "base": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 3,
+          "p": 3,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "3x3x4@fed2992"}
+        }
+      }
+    ]
+  },
+  "n": [20, 27, 27],
+  "m": 7980,
+  "hash": "b5080793576971dbe2fa84f214372250f885cfaa6613a48d1ac6bb1ecf5b8315",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

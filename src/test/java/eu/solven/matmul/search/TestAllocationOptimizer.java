@@ -86,4 +86,35 @@ public class TestAllocationOptimizer {
 		assertThat(dropped.nodes()).as("root LB ≥ bound → sweep skipped").isZero();
 		assertThat(dropped.improvedOnBound()).isFalse();
 	}
+
+	/**
+	 * Regression (fmm-gap 2026-07-08, ⟨14,27,27⟩): a stagnation-capped run must
+	 * still find any optimum that deviates from balanced on a SINGLE axis. The
+	 * nested A→B→C sweep burns its whole stagnation window inside the FIRST
+	 * A-subtree whenever one axis's completion space exceeds the window
+	 * (here |uB|·|uC| ≈ 105k > the sweep's 100k default), so FMM's plain grid
+	 * [8,6 | 9,9,9 | 9,9,9] = 9·R(8,9,9) + 6·R(6,9,9) was NEVER reached and the
+	 * anytime cut returned the balanced [7,7|…] = 5940. The coordinate-descent
+	 * seeding pass (one-axis deviations, |uA|+|uB|+|uC| evaluations) guarantees
+	 * such optima are the incumbent before the nested sweep starts.
+	 */
+	@Test
+	public void stagnation_capped_run_finds_single_axis_unbalanced_optimum() throws Exception {
+		NonCubicBilinearAlgorithm hk = SchemeIO.read(new File(
+				"src/main/resources/schemes/constructed/section3/2x3x3-r15-hk71-d169dc7.json"));
+		FieldAwareLookup lk = new FieldAwareLookup("Q");
+		SotaResolver disk = (p, q, r) -> {
+			if (p == 1) return q * r;
+			if (q == 1) return p * r;
+			if (r == 1) return p * q;
+			return lk.findRank(p, q, r);
+		};
+		// Tiny stagnation window — far below the ⟨14,27,27⟩ B/C completion space —
+		// so this only passes via the seeding pass, exactly the failure mode.
+		AllocationOptimizer.Result res = AllocationOptimizer.optimize(hk, disk, 14, 27, 27,
+				new eu.solven.matmul.search.SearchBudget(Long.MAX_VALUE, Long.MAX_VALUE, 10_000L), null);
+		// SOTA-or-better, never equality: 5862 = 9·430 + 6·332 with today's catalog.
+		assertThat(res.rank()).as("⟨2,3,3⟩ grid over ⟨14,27,27⟩ under a capped budget")
+				.isLessThanOrEqualTo(9L * lk.findRank(8, 9, 9) + 6L * lk.findRank(6, 9, 9));
+	}
 }

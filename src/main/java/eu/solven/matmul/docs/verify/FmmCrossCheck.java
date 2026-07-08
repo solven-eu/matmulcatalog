@@ -132,9 +132,15 @@ public final class FmmCrossCheck {
 				better.add(new Row(d[0], d[1], d[2], our, fmm, refs));
 			}
 		}
-		worse.sort(Comparator.comparingInt(Row::delta).reversed());      // biggest gap first
-		better.sort(Comparator.comparingInt((Row r) -> r.fmm - r.ours).reversed());
-		missing.sort(Comparator.comparingLong(Row::vol));
+		// Shape-lexicographic (n,m,p) so families cluster (⟨27,28,·⟩ reads as a run)
+		// and a given shape is findable by scan; the gap column still carries the
+		// triage signal (--worst = max over the gap column, order-independent).
+		Comparator<Row> byShape = Comparator.comparingInt((Row r) -> r.n)
+				.thenComparingInt(r -> r.m)
+				.thenComparingInt(r -> r.p);
+		worse.sort(byShape);
+		better.sort(byShape);
+		missing.sort(byShape);
 
 		try (PrintWriter pw = new PrintWriter(OUT)) {
 			pw.println("# Catalog vs FMM-Lille digest cross-check");

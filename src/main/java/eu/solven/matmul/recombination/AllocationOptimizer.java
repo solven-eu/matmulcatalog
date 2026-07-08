@@ -158,6 +158,31 @@ public final class AllocationOptimizer {
 		long bestCost = cost(sup, sota, balA, balB, balC);
 		int[] bestA = balA, bestB = balB, bestC = balC;
 
+		// Coordinate-descent seeding: evaluate every ONE-AXIS deviation from the
+		// (greedily updated) incumbent — |uA|+|uB|+|uC| cheap evaluations — BEFORE
+		// the nested sweep. Purpose: the nested loop burns its whole stagnation
+		// window inside the FIRST A-subtree whenever an axis's completion space
+		// exceeds the window (⟨14,27,27⟩ over ⟨2,3,3⟩: |uB|·|uC| ≈ 105k > the 100k
+		// cap), so an optimum that differs from balanced on ONE axis — FMM's
+		// bread-and-butter grid, e.g. [8,6 | 9,9,9 | 9,9,9] = 5862 — was NEVER
+		// reached and the anytime cut returned the balanced 5940. Seeding finds
+		// every single-axis optimum within the first few hundred nodes and
+		// tightens the prune threshold for the exact sweep that follows. Pure
+		// seeding — the B&B below stays exact when it runs to completion.
+		for (int pass = 0; pass < 3; pass++) {
+			List<AxisClass> classes = pass == 0 ? uA : pass == 1 ? uB : uC;
+			for (AxisClass cand : classes) {
+				int[] a = pass == 0 ? cand.alloc() : bestA;
+				int[] b = pass == 1 ? cand.alloc() : bestB;
+				int[] c = pass == 2 ? cand.alloc() : bestC;
+				long cc = cost(sup, sota, a, b, c);
+				if (cc < bestCost) {
+					bestCost = cc;
+					bestA = a; bestB = b; bestC = c;
+				}
+			}
+		}
+
 		// Root lower bound: the most optimistic recombination — every free axis
 		// at its forced minimum (⌈T/b⌉ for a full-support product, else 1).
 		long rootLB = 0;

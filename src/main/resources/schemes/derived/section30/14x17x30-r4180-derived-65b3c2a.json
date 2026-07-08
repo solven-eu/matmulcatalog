@@ -1,0 +1,80 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 6], allocB=[9, 8], allocC=[12, 18], leaves=[8x9x18, OrientAs(12x8x9, ⟨8,9,12⟩), OrientAs(Serendipitous(OrientAs(2x3x4, ⟨3,2,4⟩) ⊗ ⟨4,4,2⟩), ⟨8,8,12⟩), OrientAs(6x18x9, ⟨6,9,18⟩), 8x8x18, OrientAs(KronProduct(2x2x2, OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,4,3⟩)), ⟨6,8,12⟩)])",
+  "lineage_compact": "R[2x2x2; 8,6 | 9,8 | 12,18]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [8, 6],
+    "allocB": [9, 8],
+    "allocC": [12, 18],
+    "leaves": [
+      {"op": "Atom", "ref": "8x9x18@3c2277cbe575cde9981ea489c7ccc7f9d50b04ceebe8e268b5e2550b57f0fd01"},
+      {
+        "op": "OrientAs",
+        "n": 8,
+        "m": 9,
+        "p": 12,
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "12x8x9@bca473a"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 8,
+        "m": 8,
+        "p": 12,
+        "axisMap": "mpn",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 4,
+          "m2": 4,
+          "p2": 2,
+          "base": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 2,
+            "p": 4,
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+          }
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 9,
+        "p": 18,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "6x18x9@5e4e93346bd30800646d7fc0752dd95bda49e7e46718634480ef6673ece61424"}
+      },
+      {"op": "Atom", "ref": "8x8x18@0f19ba17ea638d159d2779ed4db25bc957ffe51e881de8d5eb7b344331f7ef23"},
+      {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 8,
+        "p": 12,
+        "axisMap": "pmn",
+        "child": {
+          "op": "KronProduct",
+          "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+          "inner": {
+            "op": "OrientAs",
+            "n": 6,
+            "m": 4,
+            "p": 3,
+            "axisMap": "pmn",
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          }
+        }
+      }
+    ]
+  },
+  "n": [14, 17, 30],
+  "m": 4180,
+  "hash": "65b3c2a080c833e889917f94fdef260fa111d6c9db1b8e501624dade24a7532b",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,70 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[12, 10], allocC=[15, 14], leaves=[OrientAs(Serendipitous(OrientAs(3x4x5, ⟨4,3,5⟩) ⊗ ⟨3,3,3⟩), ⟨9,12,15⟩), 9x12x14-r940-perminov_Q-ffecb1f, 9x10x15-r861-perminov_Q-118674a, OrientAs(ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨10,9,2⟩), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])), ⟨9,10,14⟩)])",
+  "lineage_compact": "R[2x2x2; 9,9 | 12,10 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [9, 9],
+    "allocB": [12, 10],
+    "allocC": [15, 14],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 12,
+        "p": 15,
+        "axisMap": "mnp",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 3,
+          "m2": 3,
+          "p2": 3,
+          "base": {
+            "op": "OrientAs",
+            "n": 4,
+            "m": 3,
+            "p": 5,
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+      {"op": "Atom", "ref": "9x10x15-r861-perminov_Q-118674a"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 10,
+        "p": 14,
+        "axisMap": "mnp",
+        "child": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 10,
+            "m": 9,
+            "p": 2,
+            "axisMap": "pmn",
+            "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+          }
+        }
+      }
+    ]
+  },
+  "n": [18, 22, 29],
+  "m": 6402,
+  "hash": "90211b924e80c0f3eaa0cb3f056ae03958c35d3502e520ef4145d62690465092",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

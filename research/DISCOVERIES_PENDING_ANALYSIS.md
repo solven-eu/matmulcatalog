@@ -7,6 +7,160 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-08 — fmm-gap ⟨16,20,29⟩→⟨16,20,28⟩: NOT closed — needs SPAN-COMPRESSED bud support in the serendipitous engine
+
+**Target:** `Q⟨16,20,29⟩:m` (ours 5272, FMM 5264) = naive ⟨16,20,1⟩:320 +
+`Q⟨16,20,28⟩:m` (ours 4986, FMM 4944, +42) — the whole gap is the ingredient.
+
+**Diagnosis:** FMM's ⟨16,20,28⟩:4944 = `(⟨4,5,7⟩:104 − 17) ⊗ ⟨4,4,4⟩:48 +
+8·⟨4,4,8⟩:96` (base = Kauers–Wood arXiv:2505.05896). 17 terms absorbed into
+8 blocks of ⟨4,4,8⟩ — since size-2 buds save ZERO here (⟨4,4,8⟩=96=2·48), the
+48-saving requires at least one 3-term class fused into a ⟨4,4,8⟩ block:
+**span compression** (the class's enlarged width collapses below k·p₂ via
+linear dependence among the factor vectors). Our `findBuds`/`costOf` are
+span-BLIND (enlarged width = class SIZE × p₂), so: imported base's best
+greedy σ → 4989; both catalog 104s → 4989; flip-graph walk (§4c.4 playbook,
+3 seeds × 4 rngs × 30k steps, `FlipObjectives.serendipitous(Q,4,4,4)`)
+plateaued at 4986 = incumbent. KEY NEGATIVE INSIGHT: the walk CANNOT succeed
+while the objective itself is span-blind — even on FMM's exact representative
+it would price 4989. Imported bud base purged per PURGE_REFCOUNT_POLICY
+(produced nothing); `ProbeFlipWalkSerendip162028` kept as the negative record.
+
+**Future work (well-defined engine feature):** span-compressed buds in
+`SerendipitousBudProduct` — findBuds detects classes whose enlarged block
+collapses (rank of the spanned factor subspace < class size), costOf prices
+the collapsed width, productFromDecomposition builds the recombined block.
+Would re-open ⟨16,20,28⟩ (−42), cascade to ⟨16,20,29⟩ (−8), and likely other
+serendip-census rows.
+
+---
+
+## 2026-07-08 — fmm-gap ⟨7,14,32⟩ + ⟨14,17,30⟩: CLOSED (ties 2017 / 4180) — TWO more stub-blindness holes: diskBest leaf fetch + the overlay's oriented-hash pin; WORSE 46 → 44
+
+**Targets:** `Q⟨7,14,32⟩:m` (ours 2020, FMM 2017) and collateral
+`Q⟨14,17,30⟩:m` (4184 → 4180). All bounds. Re-scoped from ⟨17,17,19⟩ after
+the overlap census (see the ⟨19,19,22⟩ entry below).
+
+**Root cause #1 (diskBest stub-blind):** FMM's ⟨7,14,32⟩ = plain concat
+`⟨7,14,2⟩:152 + ⟨7,14,30⟩:1865` — both ingredients ours (1865 is a round-7
+stub). The scorer priced it (search incumbent 2018 visible in the round-7
+logs) but the composed build threw `construct: missing sub-algorithm for
+⟨7,14,30⟩`: `RecursiveLookup.find → diskBest → findWithSource` skips
+lineage-only stubs — pricing includes stubs, the build couldn't fetch them
+(the recombination-builder sibling of the serendipitous stub-blindness).
+**Fix:** `diskBest` now detects stub-is-best (`findRank <` best dense file)
+and resolves via the stub-replaying `resolveParentHit`, pinning the leaf with
+`durableLeafRef`. Guards: `TestDiskBestStubLeaf` + row ⟨7,14,32⟩≤2017 in
+`TestSweepSpotsSota`.
+
+**Root cause #2 (dangling oriented-hash pin):** with #1 fixed, ⟨14,17,30⟩
+built at 4180 but persist REFUSED: the overlay's corrupt-lineage fallback
+pinned the ⟨8,9,12⟩ leaf by `contentHash(oriented alg)` — stamped on NO file
+→ DANGLING (exactly the anti-pattern trySerendipitous's comment documents).
+**Fix:** `diskBest` re-pins corrupt-lineage files by FILE hash via
+`durableLeafRef` before the overlay ever sees them.
+
+**Sweep to fixpoint over the 46-row list:** ⟨7,14,32⟩=2017 (tie, leaf
+born-pinned to the 7x14x30 stub by full content hash), ⟨14,17,30⟩=4180
+(tie); final pass 0 wins, 0 errors. Verification: **1 exact symbolic proof
+(⟨7,14,32⟩) + 1 spot-check (⟨14,17,30⟩, dense), 0 failures**.
+
+**Net cross-check: WORSE 46 → 44 (−2), BETTER 1474 (unchanged).**
+
+**Addendum — overlap sub-census of the 31 block rows** (extends the census
+below): 21 ZERO-overlap (plain leaf sums; after this round's fixes the
+survivors are genuine INGREDIENT gaps — our best rank for some leaf exceeds
+FMM's; each needs its own neighbour-diff chase). 10 POSITIVE-overlap
+(sub-additive: the ⟨2,2t,3t⟩ t=6…10 run is the unported Hopcroft–Kerr
+⟨2,m,n⟩ closed-form parities — porting them would close 5 rows at once;
+⟨17,17,19⟩ / ⟨7,11,30⟩ are 1–2-saving overlaps of the same flavour as the
+TA-family rows).
+
+---
+
+## 2026-07-08 — fmm-gap ⟨19,19,22⟩: NOT closed (gap 2 stands) — needs an ABSORBING-PAD Pan-pair builder; mechanism census of the WORSE list
+
+**Target:** `Q⟨19,19,22⟩:m` — ours 4538, FMM 4536 (+2). All bounds.
+
+**Diagnosis (decoded, construction not attempted):** FMM's 4536 =
+`⟨9,9,12⟩:600 + ⟨9,9,10⟩:534 + ⟨10,10,12⟩:766 + ⟨10,9,12⟩:668 + ⟨9,10,12⟩:668
++ TA(⟨10,10,10⟩,⟨10,10,10⟩):1300` — 7 terms for a 2×2×2 grid's 8 blocks
+(A=[9,10], B=[9,10], C=[12,10]). Our leaf ranks match ALL five explicit leaves
+exactly. The TA pair (10³+3·10²=1300) covers the two cross-blocks
+⟨9,10,10⟩/⟨10,9,10⟩ *padded to cubes with REAL data* such that the
+over-computation absorbs the eighth block ⟨10,10,10⟩ — plain-sum accounting
+(pair 1180 + solo 651) prices 5067, so the padding-absorption isload-bearing.
+Note ⟨19,19,22⟩ = ⟨2n−1,2n−1,2n+2⟩ at n=10 — a parametric family.
+
+**Why our engines can't reach it:** `PairFusedRecombination` is explicitly an
+all-cubic MVP (uniform ⟨k,k,k⟩ leaves over cubic targets); the naive-grid
+pairing sweep (`PairedSubProducts.applyPairing`) prices exact-rotation pairs
+only — no padding, no absorption. `buildPeeledViaTa` covers only the
+⟨N,N+s,N+s⟩ peel. Fired the cheap engines anyway: GL-orbit probe → tie 4538;
+projection scatter → 0; recomb/serendip/proj thorough sweeps already visited
+this shape twice in the 2026-07-08 rounds. Our 4538 = Strassen-style
+`R[2x2x2; 9,10|10,9|12,10]`.
+
+**Future work (logged, not started):** generalise
+`RectangularTrilinearAggregation.build` to the deficient 2×2×2 grid
+(absorbing-pad Pan pair) and register it as a `ConstructiveMethod`.
+**Mechanism census of the 46-row WORSE list** (per-shape FMM pages):
+**3 TA-family** (⟨19,19,22⟩, ⟨20,23,23⟩, ⟨22,23,23⟩ — all need this builder),
+**32 block decompositions** (engine-reachable in principle; each needs
+individual ingredient diagnosis), **10 serendipitous**, 1 other. Census
+script + results: `$CLAUDE_JOB_DIR/tmp/worse8-mechanisms.txt` (job-local).
+
+---
+
+## 2026-07-08 — fmm-gap ⟨14,27,27⟩: CLOSED (tie 5862) — NEW root cause: allocation B&B STAGNATION-STARVED on wide axes; WORSE 85 → 46
+
+**Target:** `Q⟨14,27,27⟩:m` — ours was 5889, FMM 5862 (+27). All bounds.
+(Context: the CI merge `994d0bb3` refreshed the FMM digest — 80 shapes improved
+UPSTREAM, which moved the cross-check from 57 to 85 WORSE / 1493→1469 BETTER
+with no regression on our side. FmmCrossCheck now orders sections
+shape-lexicographically, per user request — families read as runs.)
+
+**Diagnosis:** FMM's 5862 = plain ⟨2,3,3⟩:15 grid `[8,6 | 9,9,9 | 9,9,9]` =
+9·⟨8,9,9⟩:430 + 6·⟨6,9,9⟩:332 — and BOTH ingredients were already ours (the
+332 arrived in the same CI merge). Pure closure gap, yet thorough AND
+`--baseFilter=2x3x3` sweeps returned "no materialisable strategy".
+
+**Root cause (engine, systematic):** `AllocationOptimizer`'s nested A→B→C
+sweep with balance-first per-axis order + `ALLOC_STAGNATION=100k`. For a
+⟨·,27,27⟩ target the B×C completion space under a SINGLE A-allocation is
+C(26,2)² ≈ 105k nodes > the whole stagnation window — the B&B dies inside the
+balanced A=[7,7] subtree (returns 5940) and A=[6,8] is NEVER tried. Every
+target with two ~27-wide 3-part axes was starved the same way; the fresh
+FMM ranks in the ⟨17–18,·,·⟩ band were exactly such grids. Diagnosis method
+(fast, after the user pushed back on slow probing): call
+`AllocationOptimizer.optimize` directly with a disk-only SotaResolver —
+uncapped finds `[6,8|9³|9³]=5862 exhaustive=true` (1.38M nodes ≈ full space);
+the sweep's stagnation budget stops at 100k with balanced 5940.
+
+**Fix:** coordinate-descent SEEDING in `AllocationOptimizer.optimize` —
+before the nested sweep, price every one-axis deviation from the greedily
+updated incumbent (|uA|+|uB|+|uC| ≈ hundreds of cost() calls). Single-axis-
+unbalanced optima (FMM's standard grid shape) become the incumbent regardless
+of the stagnation cap, and the tightened threshold sharpens all downstream
+pruning. The exact B&B is unchanged (pure seeding). NOT implemented (noted as
+the principled alternative): global total-imbalance ordering via lazy
+sorted-sums heap — it would break the nested-prefix lower-bound structure.
+Guards: `TestAllocationOrdering` (hermetic, 0.07s — spells the per-axis visit
+order literally + proves seeding finds a single-axis optimum under a 1-node
+sweep budget), `TestAllocationOptimizer.stagnation_capped_run_finds_single_axis_unbalanced_optimum`,
+rows ⟨14,27,27⟩≤5862 / ⟨17,22,29⟩≤6125 in `TestSweepSpotsSota`.
+
+**Collateral (full-strategy sweep over the 85-row WORSE list, fixpoint at
+pass 2):** target + **39 pass-1 wins** — the seeding-unlocked ⟨17–18,·,·⟩ band
+en bloc (⟨17,22,29⟩ 6125, ⟨15,22,31⟩ 5844, ⟨22,27,31⟩ 9936, …), re-taking the
+upstream-refreshed FMM ranks at parity. Pass 2: 0 (fixpoint). Zero errors.
+
+**Net cross-check: WORSE 85 → 46 (−39), BETTER 1469 → 1474 (+5).**
+Verification over the 40 new stubs: **3 exact symbolic proofs + 37
+spot-checks (dense dim-27+ composites), 0 failures.** All born-pinned.
+
+---
+
 ## 2026-07-08 — fmm-gap ⟨20,28,28⟩: CLOSED and beaten (8440 → 8434, FMM 8438) — NEW root cause: STUB-BLIND serendipitous search; WORSE 86 → 57
 
 **Target:** `Q⟨20,28,28⟩:m` — ours was 8440, FMM 8438 (+2). All bounds.

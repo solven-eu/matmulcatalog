@@ -246,6 +246,23 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(21, 25, 28))
 				.as("⟨21,25,28⟩ must retain the serendipitous 8118 collateral")
 				.isLessThanOrEqualTo(8118);
+		// fmm-gap 2026-07-08 (2nd run): ⟨2,3,3⟩:15 grid [6,8|9,9,9|9,9,9] — only
+		// reachable since the AllocationOptimizer coordinate-descent seeding (the
+		// stagnation cap starved single-axis-unbalanced allocs on ≥27-wide axes;
+		// see TestAllocationOrdering / TestAllocationOptimizer for the mechanism).
+		assertThat(lookup.findRank(14, 27, 27))
+				.as("⟨14,27,27⟩ must retain the [6,8|9×3|9×3] grid 5862 stub (ties FMM)")
+				.isLessThanOrEqualTo(5862);
+		assertThat(lookup.findRank(17, 22, 29))
+				.as("⟨17,22,29⟩ must retain the seeding-unlocked 6125 collateral")
+				.isLessThanOrEqualTo(6125);
+		// fmm-gap 2026-07-08 (3rd run): concat ⟨7,14,2⟩:152 + ⟨7,14,30⟩:1865 — only
+		// buildable since diskBest resolves stub-only leaves by replay (the composed
+		// build threw "missing sub-algorithm" on the ⟨7,14,30⟩ stub; see
+		// TestDiskBestStubLeaf for the mechanism guard).
+		assertThat(lookup.findRank(7, 14, 32))
+				.as("⟨7,14,32⟩ must retain the stub-leaf concat 2017 (ties FMM)")
+				.isLessThanOrEqualTo(2017);
 	}
 
 	/**

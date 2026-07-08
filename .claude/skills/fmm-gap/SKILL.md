@@ -249,6 +249,14 @@ The point of importing an FMM base is often its **bud structure**
    scheme in the rank orbit — react with a flip-graph walk from the base
    under the direct objective `FlipObjectives.serendipitous(Q, n2,m2,p2)`
    (pattern: `docs.explore.ProbeFlipWalkSerendip202425`).
+   **BUT check the σ-arithmetic is even expressible first**: if FMM's saving
+   requires a k-term class fused into a block NARROWER than k·(inner dim) —
+   span compression, e.g. ⟨16,20,28⟩'s `(⟨4,5,7⟩−17) ⊗ ⟨4,4,4⟩ + 8·⟨4,4,8⟩`
+   where size-2 buds save zero — then `findBuds`/`costOf` (span-BLIND) can
+   neither price nor build it, and the flip walk CANNOT succeed either (its
+   objective is the same span-blind cost; 2026-07-08 negative result,
+   `ProbeFlipWalkSerendip162028`). That class needs the span-compressed-bud
+   engine feature (see the DISCOVERIES log) — log and move on.
 
 ### d) GL-orbit frontier probe (closure gaps the others miss)
 

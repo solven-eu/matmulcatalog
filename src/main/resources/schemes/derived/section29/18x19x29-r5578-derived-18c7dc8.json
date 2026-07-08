@@ -1,0 +1,70 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 9], allocB=[10, 9], allocC=[15, 14], leaves=[9x10x15-r861-perminov_Q-118674a, OrientAs(ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨10,9,2⟩), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])), ⟨9,10,14⟩), 9x9x15-r760-perminov_Q-19f51a1, OrientAs(Serendipitous(OrientAs(3x3x7, ⟨3,7,3⟩) ⊗ ⟨3,2,3⟩), ⟨9,9,14⟩)])",
+  "lineage_compact": "R[2x2x2; 9,9 | 10,9 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [9, 9],
+    "allocB": [10, 9],
+    "allocC": [15, 14],
+    "leaves": [
+      {"op": "Atom", "ref": "9x10x15-r861-perminov_Q-118674a"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 10,
+        "p": 14,
+        "axisMap": "mnp",
+        "child": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 10,
+            "m": 9,
+            "p": 2,
+            "axisMap": "pmn",
+            "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "9x9x15-r760-perminov_Q-19f51a1"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 9,
+        "p": 14,
+        "axisMap": "pnm",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 3,
+          "m2": 2,
+          "p2": 3,
+          "base": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@4dd5dcb"}
+          }
+        }
+      }
+    ]
+  },
+  "n": [18, 19, 29],
+  "m": 5578,
+  "hash": "18c7dc8dc26b910f3ca1ad0b80d930ccf5810f0f304aeb9aab5b9430022ad5cb",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

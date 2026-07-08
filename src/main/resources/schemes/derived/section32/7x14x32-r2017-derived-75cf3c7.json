@@ -1,0 +1,36 @@
+{
+  "lineage_str": "Recombination(base=naive-1x1x2, allocA=[7], allocB=[14], allocC=[2, 30], leaves=[OrientAs(SumInner(2x7x7-r76-perminov_Z-f028f76, 2x7x7-r76-perminov_Z-f028f76), ⟨7,14,2⟩), 7x14x30])",
+  "lineage_compact": "R[naive-1x1x2; 7 | 14 | 2,30]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "naive-1x1x2"},
+    "allocA": [7],
+    "allocB": [14],
+    "allocC": [2, 30],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 7,
+        "m": 14,
+        "p": 2,
+        "axisMap": "pmn",
+        "child": {
+          "op": "SumInner",
+          "left": {"op": "Atom", "ref": "2x7x7-r76-perminov_Z-f028f76"},
+          "right": {"op": "Atom", "ref": "2x7x7-r76-perminov_Z-f028f76"}
+        }
+      },
+      {"op": "Atom", "ref": "7x14x30@67ce027dc8852743bf53edf73b4779dacbe249f2e40583ba5ddd8d1d5c105bea"}
+    ]
+  },
+  "n": [7, 14, 32],
+  "m": 2017,
+  "hash": "75cf3c71c8954246fb1fb94ae000568d99fc33f5ac70a77ea173cb8fd1b70a8d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

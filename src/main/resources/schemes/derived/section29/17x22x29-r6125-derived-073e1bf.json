@@ -1,0 +1,77 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 8], allocB=[12, 10], allocC=[15, 14], leaves=[OrientAs(Serendipitous(OrientAs(3x4x5, ⟨4,3,5⟩) ⊗ ⟨3,3,3⟩), ⟨9,12,15⟩), 9x10x15-r861-perminov_Q-118674a, Serendipitous(2x3x7 ⊗ ⟨4,4,2⟩), OrientAs(ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨10,9,2⟩), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])), ⟨9,10,14⟩), 8x10x15-r778-perminov_Q-f76b305])",
+  "lineage_compact": "R[2x2x2; 9,8 | 12,10 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [9, 8],
+    "allocB": [12, 10],
+    "allocC": [15, 14],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 12,
+        "p": 15,
+        "axisMap": "mnp",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 3,
+          "m2": 3,
+          "p2": 3,
+          "base": {
+            "op": "OrientAs",
+            "n": 4,
+            "m": 3,
+            "p": 5,
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "9x10x15-r861-perminov_Q-118674a"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 4,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x3x7@129ebee"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 10,
+        "p": 14,
+        "axisMap": "mnp",
+        "child": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 10,
+            "m": 9,
+            "p": 2,
+            "axisMap": "pmn",
+            "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+          },
+          "right": {
+            "op": "Project",
+            "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "8x10x15-r778-perminov_Q-f76b305"}
+    ]
+  },
+  "n": [17, 22, 29],
+  "m": 6125,
+  "hash": "073e1bff36f9587b8a03b3a794453f91e5ceab9650712e206f425f842d1ad4eb",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

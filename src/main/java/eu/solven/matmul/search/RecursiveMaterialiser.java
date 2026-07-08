@@ -175,11 +175,28 @@ public final class RecursiveMaterialiser {
 	 *  default leaf resolver (LOAD mode); the catalog is filled by re-deriving bands
 	 *  bottom-up so the leaf is already present. Mirrors the direct-hit branch of
 	 *  {@link #materialise} without the compose fall-through. */
-	private Optional<Result> diskBest(int n, int m, int p) {
+	// Package-visible for TestDiskBestStubLeaf (the ⟨7,14,32⟩ stub-blindness guard).
+	Optional<Result> diskBest(int n, int m, int p) {
 		if (n == 1 || m == 1 || p == 1) {
 			return Optional.of(trivialOneAxis(n, m, p));
 		}
 		Optional<FieldAwareLookup.WithSource> disk = diskLookup.findWithSource(n, m, p);
+		// Stub-blindness (fmm-gap 2026-07-08, ⟨7,14,32⟩): findWithSource SKIPS
+		// lineage-only stubs, so when the rank-best entry at this shape is a stub
+		// (findRank strictly below the best dense file) the scorer prices a leaf the
+		// build then can't fetch — Recombination.constructFromResult throws "missing
+		// sub-algorithm for ⟨7,14,30⟩" and the whole strategy is discarded. Resolve
+		// through the stub-replaying parent path instead (cached, corrupt-over-claim
+		// guarded) and pin the leaf durably to the resolved file.
+		int claimed = diskLookup.findRank(n, m, p);
+		boolean stubIsBest = claimed < eu.solven.matmul.recombination.Recombination.SotaResolver.UNKNOWN_RANK
+				&& (disk.isEmpty() || claimed < disk.get().alg().r);
+		if (stubIsBest) {
+			ParentHit hit = resolveParentHit(n, m, p);
+			if (hit != null && (disk.isEmpty() || hit.alg().r < disk.get().alg().r)) {
+				return Optional.of(new Result(hit.alg(), durableLeafRef(hit.path(), n, m, p), true));
+			}
+		}
 		if (disk.isEmpty()) {
 			return Optional.empty();
 		}
@@ -194,6 +211,13 @@ public final class RecursiveMaterialiser {
 		int[] nat = shapeFromName(disk.get().path().getFileName().toString());
 		if (nat != null && (nat[0] != n || nat[1] != m || nat[2] != p)) {
 			leaf = Lineage.orientAs(leaf, nat[0], nat[1], nat[2], n, m, p);
+		}
+		// Corrupt (cyclic) embedded lineage: pin by the FILE's durable hash (+
+		// OrientAs), NOT contentHash(oriented alg) — the oriented hash is stamped on
+		// no file, so the overlay's old fallback wrote a DANGLING pin persist then
+		// refused (⟨14,17,30⟩=4180 rejected over its ⟨8,9,12⟩ leaf, 2026-07-08).
+		if (hasFallbackRef(leaf)) {
+			leaf = durableLeafRef(disk.get().path(), n, m, p);
 		}
 		return Optional.of(new Result(disk.get().alg(), leaf, true));
 	}
