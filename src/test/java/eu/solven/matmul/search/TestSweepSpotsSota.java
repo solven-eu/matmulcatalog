@@ -298,6 +298,9 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(19, 19, 22))
 				.as("⟨19,19,22⟩ must retain the leaf-paired 4536 (ties FMM)")
 				.isLessThanOrEqualTo(4536);
+		assertThat(lookup.findRank(9, 11, 22))
+				.as("⟨9,11,22⟩ must retain the support-rep ⟨3,4,4⟩ recomb 1374 (ties FMM)")
+				.isLessThanOrEqualTo(1374);
 	}
 
 	/**

@@ -7,6 +7,35 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-09 — v2 pairing PROVABLY UNPROFITABLE for the ±1 family (checked before building); ⟨9,11,22⟩ CLOSED via support-rep import; WORSE 7 → 6
+
+**v2 transpose-pairing arithmetic check (saved a wasted build):** for every
+candidate pair on the ±1 rows the Pan pair LOSES — ⟨8,9,9⟩ pair 873 vs 860
+separate, ⟨9,9,10⟩ 1071 vs 1068, ⟨8,8,15⟩ 1264 vs 1256, ⟨9,9,15⟩ 1566 vs
+1520, ⟨10,10,16⟩ 2020 vs 2016; ⟨13,19,29⟩'s repeats aren't pairable at all
+(3 distinct dims). Pairing wins only when R(leaf) > (abc+ab+bc+ca)/2 — true
+for the 11-cubes, false for all near-cubic ±1 leaves. Their −1 is the
+DIFFUSE sharing the ⟨17,17,19⟩ fingerprint measured (84-for-83 across six
+leaves), not a pair. Also tested the cheapest alternative device on our own
+replayed 3267 — coinciding u⊗v products across leaves (mergeable, −1 free):
+ZERO found (`ProbeDuplicateProducts`, kept). The ±1 family therefore needs
+representative-level search or the SZ-style construction — parked with
+precise arithmetic this time.
+
+**⟨9,11,22⟩ = 1374 (exact tie, exact symbolic proof):** decoded as base
+⟨3,4,4⟩:38 with allocs [3,3,3 | 3,3,3,2 | 6,6,6,4] (the display's sorted-leaf
+ambiguity resolved); our 38-reps lack the support profile — imported FMM's
+(bud-bases/section4, attribution TBD), `--baseFilter=3x4x4` closed it
+immediately. Third instance of the SUPPORT-REPRESENTATIVE pattern
+(⟨2,5,5⟩→⟨3,29,29⟩, ⟨3,4,4⟩→⟨9,11,22⟩). Guard row added. **WORSE 7 → 6.**
+
+**Remaining 6 (campaign endgame):** ⟨17,17,19⟩/⟨13,19,29⟩/⟨14,14,29⟩/
+⟨19,19,31⟩ (−1 each, diffuse sharing) + ⟨7,11,30⟩ (−2, same family) +
+⟨8,27,30⟩ (−6, FMM display broken — upstream report). Total remaining
+deficit: 12 ranks across 6 shapes, vs 1476 shapes where we lead.
+
+---
+
 ## 2026-07-09 — LEAF-LEVEL PAN PAIRING SHIPPED: ⟨20,23,23⟩ 5945→5906 (the −39, exact tie) and ⟨19,19,22⟩ 4538→4536 CLOSED; WORSE 9 → 7
 
 **The decode that unlocked it (user pushback on my "naive-8" claim):** FMM's
