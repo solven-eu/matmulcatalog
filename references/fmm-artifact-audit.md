@@ -60,6 +60,20 @@ calibrated exact on ⟨2,12,18⟩=334:
 
 **Updated tally: 19 PHANTOM, 3 recipe-only placeholders, 22 attains-index.**
 
+### CORRECTION (2026-07-09, user catch): the two "base-level mismatches" were OUR importer's mirror-preference artifacts, NOT FMM errors
+
+`tools/import_fmm_maple.py` prefers the Perminov GitHub mirror and falls back
+to FMM only on 404. The claimed base-level mismatches ⟨4,9,10⟩ "250 vs 255"
+and ⟨4,7,8⟩ "161 vs 164" were counts of PERMINOV'S mirror copies; FMM's own
+artifacts, re-downloaded directly, are **250 and 161 — exactly their index
+ranks** (⟨4,9,10⟩ page correctly credits Perminov Feb 2026). Retract both
+from the report. Provenance re-check of all 14 non-parametric PHANTOM rows:
+every one 404s on the mirror, so their audit counts came from FMM's own
+files — the phantom classifications STAND (the 5 parametric rows were
+curl'd from FMM directly). Residual note: Perminov's own
+`known/tensor/4x9x10_tensor.mpl` (255) lags the 250 FMM credits him with —
+an upstream-of-upstream curiosity, not an FMM issue.
+
 ### REVISION (2026-07-09): "phantom" ≠ "index wrong" — two are now REPRODUCED
 
 The INDEX-page `<td content="description">` recipes (not audited above — the

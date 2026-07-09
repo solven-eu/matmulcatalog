@@ -7,6 +7,69 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-09 — CORRECTION (user catch): ⟨4,9,10⟩/⟨4,7,8⟩ "base-level mismatches" were OUR mirror artifacts; ⟨8,27,30⟩ recipe found unrealizable from FMM's published base
+
+**User checked fmm.univ-lille.fr/4x9x10.html** (Perminov-credited, rank 250)
+against our claim of an FMM artifact at 255. The 255 was PERMINOV'S GitHub
+mirror copy — `tools/import_fmm_maple.py` prefers the mirror and only falls
+back to FMM on 404. FMM's own artifacts, re-downloaded directly: ⟨4,9,10⟩ =
+**250** and ⟨4,7,8⟩ = **161**, both exactly their index ranks — both
+"base-level mismatch" lines RETRACTED from the report
+(`fmm-artifact-audit.md` CORRECTION section). Provenance re-check: all 14
+non-parametric PHANTOM rows 404 on the mirror → their audit counts came from
+FMM's own files; the phantom classifications STAND. (Residual upstream-of-
+upstream note: Perminov's own tensor/ mirror carries a 255 where FMM credits
+him with 250.)
+
+**⟨8,27,30⟩ follow-up with the genuine 250:** bud census (exact directions)
+= **6 size-2 U-classes, zero V, zero W**. The index recipe
+`(⟨4,9,10⟩:250 − 12) ⊗ ⟨2,3,3⟩:15 + 6·⟨4,3,3⟩:29 = 3744` needs six
+shared-B (V-direction) classes — ⟨4,3,3⟩ is an n-axis enlargement; the
+artifact's U-classes fuse to ⟨2,3,6⟩:34, a LOSS (vs 2·15=30). And no
+orientation can swap the roles (all dims distinct; only (4,9,10) divides
+(8,27,30) per-axis). So the display recipe is NOT realizable from FMM's own
+published base — the ⟨16,20,28⟩ display-inconsistency class, sneakier
+variant: the "−12" COUNT matches the artifact's bud census but the AXIS
+doesn't. ⟨8,27,30⟩ moves from "flip-walk viable" to the dubious-display
+report list. Bucket-3 remainder: ⟨20,24,25⟩, ⟨16,20,29⟩ only.
+
+---
+
+## 2026-07-09 — ABSORBING-CLASS ANATOMY: the device is CROSS-LEAF CORRECTION SHARING (first quantified witness, ⟨17,17,19⟩:3266)
+
+**Method:** block-support fingerprint of downloaded FMM artifacts
+(`tools/fingerprint_fmm_artifact.py`, NEW): partition a scheme's products by
+which 2×2 blocks their U/V/W supports touch under the display's axis splits.
+
+**⟨17,17,19⟩:3266 (display: 7 leaves summing 3267, so a 1-saving):** under
+splits A=8/B=8/C=9 the artifact IS display-faithful — **7 main clusters**
+sized 519/499/482/422×3/417, each at or BELOW its standalone leaf rank
+(422 vs R(8,9,9)=430 ×3; 417 vs R(8,8,10)=427; 499/519 vs R(9,9,10)=534 ×2;
+482 = R(8,9,10) exactly), plus **83 residue products** with cross/subset
+signatures. The books close exactly: Σ(leafRank − clusterSize) = 24+10+35+15
+= 84 products of leaf work replaced by 83 shared corrections — **saving
+exactly the 1** separating 3267 from 3266. THE DEVICE: recombination whose
+leaves are NOT independent sub-schemes; a small correction set is shared
+across leaves (our engine prices leaves independently, hence can never
+express this class). Some clusters combine 3 blocks per operand (not plain
+Strassen — likely a GL-orbit/flip variant of a ⟨2,2,2⟩:7 base).
+
+**⟨19,19,22⟩:4536:** NOT display-faithful under any split order (largest
+class: 1460 products spanning 3 blocks on every operand) — basis-mixed
+flip-graph output; the display is a post-hoc description. Artifact-anatomy
+extraction only works on the faithful ones — fingerprint FIRST.
+
+**Status / next steps (dedicated session):** (1) proper residue→leaf
+attribution needs bilinear algebra (W-output attribution), not support
+masks (my containment heuristic left 16 products ambiguous); (2) recover
+the outer base (which ⟨2,2,2⟩:7 orbit member) and the per-cluster basis;
+(3) formulate the sharing identity; (4) generic builder + search
+integration ("shared-correction recombination"). Also drafted the user's
+upstream report note for the inconsistent ⟨16,20,28⟩ display:
+`references/fmm-report-16x20x28.md`.
+
+---
+
 ## 2026-07-09 — fmm-gap INDEX-RECIPE sweep: SIX closed at exact ties (⟨6,25,32⟩ 2870, ⟨9,30,32⟩ 4851, ⟨8,21,21⟩ 2156, ⟨12,20,28⟩ 3782, ⟨18,20,21⟩ 4259, ⟨20,21,21⟩ 4967); WORSE 42 → 36; 20× sweep concurrency
 
 **Method:** parsed FMM's INDEX-page `<td content=description>` cells (unquoted
