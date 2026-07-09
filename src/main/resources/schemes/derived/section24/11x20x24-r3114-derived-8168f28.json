@@ -1,0 +1,25 @@
+{
+  "lineage_str": "Recombination(base=3x5x6, allocA=[3, 4, 4], allocB=[4, 4, 4, 4, 4], allocC=[4, 4, 4, 4, 4, 4], leaves=[4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e, 3x4x4-r38-alphatensor_Z-644bd5e])",
+  "lineage_compact": "R[3x5x6; 3,4,4 | 4,4,4,4,4 | 4,4,4,4,4,4]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "3x5x6@14be9c3dfa770a18656d8a9d2a6fd1a44160be1d35357a3a25f63bb657dde36a"},
+    "allocA": [3, 4, 4],
+    "allocB": [4, 4, 4, 4, 4],
+    "allocC": [4, 4, 4, 4, 4, 4],
+    "leaves": [
+      {"op": "Atom", "ref": "4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e"},
+      {"op": "Atom", "ref": "3x4x4-r38-alphatensor_Z-644bd5e"}
+    ]
+  },
+  "n": [11, 20, 24],
+  "m": 3114,
+  "hash": "8168f2835caebb530148afc8425146ed0b6550365eead4ce8b5cfb9a3363447b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

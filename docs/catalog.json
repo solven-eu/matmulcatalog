@@ -1,5 +1,5 @@
 {
-  "total": 9457,
+  "total": 9465,
   "schemes": [
     {
       "format": [2, 9, 10],
@@ -191,6 +191,189 @@
       "external_cited": true,
       "bud_score": 14,
       "pareto_rank_buds": true
+    },
+    {
+      "format": [2, 5, 5],
+      "max_dim": 5,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": true,
+      "rank": 40,
+      "additions": 208,
+      "multiplications": [
+        "m1 = (a21)*(b11 - b13 - b21 - b51)",
+        "m2 = (a12)*(-b12 + b22 - b23 + b41 - b42)",
+        "m3 = (a13)*(-b13 + b25 - b32 + b33 - b35 - b43)",
+        "m4 = (a23)*(-b23 - b31 + b33 - b34 + b52 - b53)",
+        "m5 = (a24)*(b14 - b24 + b41 - b43 + b44 - b54)",
+        "m6 = (a15)*(-b15 + b25 - b45 + b52 - b53 + b55)",
+        "m7 = (a11 + a12)*(b12 + b41)",
+        "m8 = (a11 + a13)*(b13)",
+        "m9 = (a11 + a15)*(b15)",
+        "m10 = (a11 - a21)*(b11 - b12 - b15 - b31)",
+        "m11 = (a12 + a21)*(-b12 + b21)",
+        "m12 = (a21 + a22)*(b14 + b21)",
+        "m13 = (a15 + a21)*(-b15 + b51)",
+        "m14 = (a21 + a25)*(b51)",
+        "m15 = (a12 + a14)*(-b41 + b42)",
+        "m16 = (a12 - a22)*(-b14 + b21 - b22 + b24 + b32)",
+        "m17 = (a22 + a23)*(b23 + b52)",
+        "m18 = (a22 + a24)*(-b14 + b24)",
+        "m19 = (a23 + a25)*(-b52 + b53)",
+        "m20 = (a13 + a14)*(b43)",
+        "m21 = (a14 - a24)*(b14 - b34 + b41 - b42 + b44 - b45)",
+        "m22 = (a14 + a15)*(b45)",
+        "m23 = (a12 + a24)*(-b14 + b24 + b41 - b42)",
+        "m24 = (a15 + a24)*(-b45 + b54)",
+        "m25 = (a24 + a25)*(b54)",
+        "m26 = (a15 - a25)*(-b25 + b35 + b51 - b52 + b54 - b55)",
+        "m27 = (a11 + a13 - a21)*(-b13 + b31)",
+        "m28 = (-a15 + a22 + a23)*(b25 - b52)",
+        "m29 = (a12 - a22 - a23)*(b23 - b32)",
+        "m30 = (a15 - a23 - a25)*(b25 - b35 - b52 + b53)",
+        "m31 = (a13 + a14 - a24)*(b34 - b43)",
+        "m32 = (a12 + a13 - a22 - a23)*(b25 + b32)",
+        "m33 = (a13 + a15 - a23 - a25)*(-b25 + b35)",
+        "m34 = (a11 + a12 - a14 + a24)*(b14 - b41)",
+        "m35 = (a11 + a12 - a14 - a21 - a22 + a24)*(b14)",
+        "m36 = (-a11 - a12 + a14)*(b41)",
+        "m37 = (-a22 - a23 + a25)*(b52)",
+        "m38 = (-a12 - a13 + a15)*(b25)",
+        "m39 = (-a11 - a13 + a21 + a23)*(b31)",
+        "m40 = (-a13 - a14 + a23 + a24)*(b34)"
+      ],
+      "elements": [
+        "c11 = m1 + m7 + m8 + m9 + m10 + m11 + m13 + m27 + m36",
+        "c12 = m2 + m7 + m15 + m17 + m28 + m29 + m32 + m36 + m38",
+        "c13 = m3 + m8 + m17 + m19 + m20 + m28 + m29 + m30 + m32 + m33 + m38",
+        "c14 = m5 + m15 + m20 + m21 + m22 + m23 + m24 + m31 + m34 - m36",
+        "c15 = m6 + m9 + m19 + m22 + m30 + m33 - m38",
+        "c21 = m1 + m8 + m12 + m14 + m27 - m34 + m35 + m36 + m39",
+        "c22 = m2 - m11 + m12 + m16 + m17 + m18 - m23 + m29 - m34 + m35 + m36 + m37",
+        "c23 = m4 + m8 + m17 + m19 + m20 + m27 + m31 + m37 + m39 + m40",
+        "c24 = m5 + m18 + m20 + m25 + m31 + m34 - m35 - m36 + m40",
+        "c25 = m6 - m13 + m14 + m19 - m24 + m25 + m26 + m28 + m30 - m37"
+      ],
+      "projection_margin": 15,
+      "source": "Hopcroft 1971",
+      "year": 1971,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "bud-bases/section5/fmm-lille_2x5x5_r40_a208.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 40,
+        "details_url": "https://fmm.univ-lille.fr/2x5x5.html",
+        "references": [
+          "hopcroft:1971"
+        ]
+      },
+      "external_best_rank": 40,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0
+    },
+    {
+      "format": [2, 5, 5],
+      "max_dim": 5,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": true,
+      "rank": 40,
+      "additions": 273,
+      "min_additions": 164,
+      "multiplications": [
+        "m1 = (a11 + a15 - a21 - a25)*(-b24 - b54)",
+        "m2 = (-a11 + a14)*(b12 - b22 - b52)",
+        "m3 = (a11 + a12 - a14)*(-b22 + b24)",
+        "m4 = (-a11 + a14 - a22)*(-b11 + b12 - b22 - b52)",
+        "m5 = (-a14)*(-b12 - b32 - b42 + b52)",
+        "m6 = (-a11 - a15 + a21)*(-b13 - b24 + b35 - b52 - b55)",
+        "m7 = (a11 - a21)*(-b11 + b12 + b15 - b24 + b35 - b52 - b55)",
+        "m8 = (-a12 + a13 + a15 + a22 - a24 - a25)*(b24 - b43)",
+        "m9 = (a23)*(-b11 - b24 - b31 + b33 + b35 - b41 + b43)",
+        "m10 = (-a22)*(-b25 - b45)",
+        "m11 = (a11 - a21)*(-b11 + b14 - b24 - b41 + b43 + b44 - b54)",
+        "m12 = (-a13 + a14)*(-b24 - b32 + b43)",
+        "m13 = (-a22)*(-b11 + b12 + b21 - b22 - b23 - b24 - b52)",
+        "m14 = (a14 - a23)*(-b11 - b24 - b32 - b41 + b43)",
+        "m15 = (-a12 + a13 + a15 + a22 - a23 - a25)*(b24 - b43 + b51)",
+        "m16 = (-a12 + a22)*(b21 + b51)",
+        "m17 = (-a21)*(-b13 - b14)",
+        "m18 = (-a11 + a14 + a21 - a23)*(-b11 - b41 + b43 + b44)",
+        "m19 = (-a11 - a15)*(-b13 - b24 - b52)",
+        "m20 = (-a25)*(-b51 + b52 + b53 + b55)",
+        "m21 = (-a14 + a24)*(b41 - b42 - b43 - b45)",
+        "m22 = (-a21 - a22 + a24)*(-b24 - b45 - b52)",
+        "m23 = (a23 - a24)*(b24 + b44)",
+        "m24 = (a13 - a23)*(b32 - b34)",
+        "m25 = (-a12 + a13 + a15 + a22 - a23)*(-b24 + b33 + b35 + b43 - b51)",
+        "m26 = (-a14 + a21 + a22)*(-b11 + b12 - b24 - b45 - b52)",
+        "m27 = (a12 - a13 - a15 - a22)*(b23 + b33 + b35 + b43)",
+        "m28 = (a11 - a14 - a21 + a24)*(b41 - b43 - b44)",
+        "m29 = (a23 + a25)*(b52 - b54 + b55)",
+        "m30 = (a11 + a15 + a22 - a24 - a25)*(-b24 - b52)",
+        "m31 = (a11 + a15 - a21 + a23)*(b35 - b52 + b54 - b55)",
+        "m32 = (a23)*(-b24 - b34 + b35 - b44 - b52 + b54 - b55)",
+        "m33 = (-a22 + a24 + a25)*(-b52)",
+        "m34 = (-a13 + a23)*(-b24 + b31 - b34 + b43 - b51)",
+        "m35 = (a12 - a22)*(b22 + b23 - b24 + b25 + b33 + b35 + b43)",
+        "m36 = (-a21)*(-b13 - b15 - b24 - b45 - b52)",
+        "m37 = (-a15)*(b13 + b33 + b43 - b53)",
+        "m38 = (a13 + a15)*(b23 + b33 + b43)",
+        "m39 = (-a12 + a13 + a15)*(-b23 - b24)",
+        "m40 = (a12 - a14 - a15 - a22 + a24 + a25)*(-b43)"
+      ],
+      "elements": [
+        "c11 = -m2 + m4 - m9 + m12 - m13 - m14 - m16 - m24 - m25 - m27 - m34 + m39",
+        "c12 = -m2 - m3 + m5 - m8 + m12 - m30 - m33 - m40",
+        "c13 = m8 + m19 + m30 + m33 + m37 + m38 + m39 + m40",
+        "c14 = m6 - m8 + m11 + m12 - m14 + m17 + m18 - m19 - m24 - m30 + m31 - m32 - m33 - m40",
+        "c15 = m3 + m4 + m6 + m7 + m10 - m19 + m26 - m27 + m35 + m36 - m38",
+        "c21 = -m2 + m4 + m8 - m9 - m13 - m15 - m18 - m23 - m25 - m27 + m28 + m39",
+        "c22 = -m2 + m4 + m5 + m14 - m18 - m21 + m22 - m23 + m26 + m28 - m33",
+        "c23 = -m1 - m6 + m8 - m15 + m19 - m20 - m25 - m27 - m29 + m30 - m31 + m33 + m39",
+        "c24 = m1 + m6 + m17 - m19 - m23 - m30 + m31 - m32 - m33",
+        "c25 = m1 + m6 + m10 - m19 - m22 + m29 - m30 + m31 + m36"
+      ],
+      "has_buds": true,
+      "buds": "6×U⟨1,1,2⟩ + 28×⟨1,1,1⟩",
+      "projection_margin": 15,
+      "buds_certainty": "exact",
+      "source": "AlphaTensor 2022",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/known/alpha_tensor/2x5x5_m40_ZT.json",
+      "year": 2022,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section5/2x5x5-r40-perminov_ZT-8aea8c8.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 40,
+        "details_url": "https://fmm.univ-lille.fr/2x5x5.html",
+        "references": [
+          "hopcroft:1971"
+        ]
+      },
+      "external_best_rank": 40,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 12,
+      "pareto_rank_buds": true,
+      "used_as_base": {"by_serendipitous": 30, "total": 30}
     },
     {
       "format": [3, 5, 7],
@@ -82639,6 +82822,31 @@
       "format": [11, 20, 23],
       "max_dim": 23,
       "fields": [
+        "F3",
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 3035,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[3x5x6; 3,4,4 | 4,4,4,4,4 | 4,4,4,4,3,4]",
+      "file": "derived/section23/11x20x23-r3035-derived-1e13b6f.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 3039, "details_url": "https://fmm.univ-lille.fr/11x20x23.html"},
+      "external_best_rank": 3039,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "solven_discovery": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [11, 20, 23],
+      "max_dim": 23,
+      "fields": [
         "F2",
         "F3",
         "Z",
@@ -83119,6 +83327,30 @@
       "external_best_source": "fmm-lille",
       "external_cited": false,
       "bud_score": 530,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [12, 20, 23],
+      "max_dim": 23,
+      "fields": [
+        "F3",
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 3184,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[3x5x6; 4,4,4 | 4,4,4,4,4 | 4,4,4,4,4,3]",
+      "file": "derived/section23/12x20x23-r3184-derived-1326675.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 3184, "details_url": "https://fmm.univ-lille.fr/12x20x23.html"},
+      "external_best_rank": 3184,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
@@ -91967,6 +92199,30 @@
         "R",
         "C"
       ],
+      "rank": 3114,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[3x5x6; 3,4,4 | 4,4,4,4,4 | 4,4,4,4,4,4]",
+      "file": "derived/section24/11x20x24-r3114-derived-8168f28.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 3114, "details_url": "https://fmm.univ-lille.fr/11x20x24.html"},
+      "external_best_rank": 3091,
+      "external_best_source": "perminov-serendipitous",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [11, 20, 24],
+      "max_dim": 24,
+      "fields": [
+        "F3",
+        "Q",
+        "R",
+        "C"
+      ],
       "rank": 3126,
       "source": "unknown",
       "verified": true,
@@ -91979,8 +92235,7 @@
       "external_best_rank": 3091,
       "external_best_source": "perminov-serendipitous",
       "external_cited": false,
-      "bud_score": 0,
-      "pareto_rank_buds": true
+      "bud_score": 0
     },
     {
       "format": [11, 20, 24],
@@ -127270,6 +127525,31 @@
       "format": [20, 20, 27],
       "max_dim": 27,
       "fields": [
+        "F3",
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 5986,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[5x5x7; 4,4,4,4,4 | 4,4,4,4,4 | 4,4,4,4,4,4,3]",
+      "file": "derived/section27/20x20x27-r5986-derived-9102e71.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 6006, "details_url": "https://fmm.univ-lille.fr/20x20x27.html"},
+      "external_best_rank": 6006,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "solven_discovery": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [20, 20, 27],
+      "max_dim": 27,
+      "fields": [
         "Q",
         "R",
         "C"
@@ -139793,6 +140073,30 @@
         "R",
         "C"
       ],
+      "rank": 7100,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[5x6x7; 4,4,4,4,4 | 4,4,4,4,3,4 | 4,4,4,4,4,4,4]",
+      "file": "derived/section28/20x23x28-r7100-derived-1f5de0b.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 7100, "details_url": "https://fmm.univ-lille.fr/20x23x28.html"},
+      "external_best_rank": 7100,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [20, 23, 28],
+      "max_dim": 28,
+      "fields": [
+        "F3",
+        "Q",
+        "R",
+        "C"
+      ],
       "rank": 7108,
       "additions": 831480,
       "has_buds": true,
@@ -151983,6 +152287,32 @@
       "format": [15, 25, 29],
       "max_dim": 29,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 6188,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[3x5x6; 5,5,5 | 5,5,5,5,5 | 5,5,5,5,5,4]",
+      "file": "derived/section29/15x25x29-r6188-derived-d78984c.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 6188, "details_url": "https://fmm.univ-lille.fr/15x25x29.html"},
+      "external_best_rank": 6188,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [15, 25, 29],
+      "max_dim": 29,
+      "fields": [
         "F3",
         "Q",
         "R",
@@ -158379,6 +158709,32 @@
         "R",
         "C"
       ],
+      "rank": 1840,
+      "source": "unknown",
+      "verified": true,
+      "atom": false,
+      "complex": false,
+      "lineage_compact": "R[2x5x5; 2,1 | 6,6,6,5,6 | 6,6,6,6,5]",
+      "file": "derived/section29/3x29x29-r1840-derived-886aae3.json",
+      "explicitable": false,
+      "fmm_lille": {"best_rank": 1840, "details_url": "https://fmm.univ-lille.fr/3x29x29.html"},
+      "external_best_rank": 1840,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [3, 29, 29],
+      "max_dim": 29,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "rank": 1843,
       "source": "unknown",
       "verified": true,
@@ -158391,8 +158747,7 @@
       "external_best_rank": 1840,
       "external_best_source": "fmm-lille",
       "external_cited": false,
-      "bud_score": 0,
-      "pareto_rank_buds": true
+      "bud_score": 0
     },
     {
       "format": [3, 29, 29],
@@ -295416,7 +295771,7 @@
       "external_cited": true,
       "bud_score": 0,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_recombination": 137, "by_kronecker": 185, "by_concat": 88, "by_sum": 2, "total": 412}
+      "used_as_base": {"by_recombination": 142, "by_kronecker": 185, "by_concat": 88, "by_sum": 2, "total": 417}
     },
     {
       "format": [4, 4, 4],
@@ -296592,101 +296947,6 @@
       },
       "bud_score": 0,
       "pareto_rank_buds": true
-    },
-    {
-      "format": [2, 5, 5],
-      "max_dim": 5,
-      "fields": [
-        "F2",
-        "F3",
-        "Z",
-        "Q",
-        "R",
-        "C"
-      ],
-      "zt": true,
-      "rank": 40,
-      "additions": 273,
-      "min_additions": 164,
-      "multiplications": [
-        "m1 = (a11 + a15 - a21 - a25)*(-b24 - b54)",
-        "m2 = (-a11 + a14)*(b12 - b22 - b52)",
-        "m3 = (a11 + a12 - a14)*(-b22 + b24)",
-        "m4 = (-a11 + a14 - a22)*(-b11 + b12 - b22 - b52)",
-        "m5 = (-a14)*(-b12 - b32 - b42 + b52)",
-        "m6 = (-a11 - a15 + a21)*(-b13 - b24 + b35 - b52 - b55)",
-        "m7 = (a11 - a21)*(-b11 + b12 + b15 - b24 + b35 - b52 - b55)",
-        "m8 = (-a12 + a13 + a15 + a22 - a24 - a25)*(b24 - b43)",
-        "m9 = (a23)*(-b11 - b24 - b31 + b33 + b35 - b41 + b43)",
-        "m10 = (-a22)*(-b25 - b45)",
-        "m11 = (a11 - a21)*(-b11 + b14 - b24 - b41 + b43 + b44 - b54)",
-        "m12 = (-a13 + a14)*(-b24 - b32 + b43)",
-        "m13 = (-a22)*(-b11 + b12 + b21 - b22 - b23 - b24 - b52)",
-        "m14 = (a14 - a23)*(-b11 - b24 - b32 - b41 + b43)",
-        "m15 = (-a12 + a13 + a15 + a22 - a23 - a25)*(b24 - b43 + b51)",
-        "m16 = (-a12 + a22)*(b21 + b51)",
-        "m17 = (-a21)*(-b13 - b14)",
-        "m18 = (-a11 + a14 + a21 - a23)*(-b11 - b41 + b43 + b44)",
-        "m19 = (-a11 - a15)*(-b13 - b24 - b52)",
-        "m20 = (-a25)*(-b51 + b52 + b53 + b55)",
-        "m21 = (-a14 + a24)*(b41 - b42 - b43 - b45)",
-        "m22 = (-a21 - a22 + a24)*(-b24 - b45 - b52)",
-        "m23 = (a23 - a24)*(b24 + b44)",
-        "m24 = (a13 - a23)*(b32 - b34)",
-        "m25 = (-a12 + a13 + a15 + a22 - a23)*(-b24 + b33 + b35 + b43 - b51)",
-        "m26 = (-a14 + a21 + a22)*(-b11 + b12 - b24 - b45 - b52)",
-        "m27 = (a12 - a13 - a15 - a22)*(b23 + b33 + b35 + b43)",
-        "m28 = (a11 - a14 - a21 + a24)*(b41 - b43 - b44)",
-        "m29 = (a23 + a25)*(b52 - b54 + b55)",
-        "m30 = (a11 + a15 + a22 - a24 - a25)*(-b24 - b52)",
-        "m31 = (a11 + a15 - a21 + a23)*(b35 - b52 + b54 - b55)",
-        "m32 = (a23)*(-b24 - b34 + b35 - b44 - b52 + b54 - b55)",
-        "m33 = (-a22 + a24 + a25)*(-b52)",
-        "m34 = (-a13 + a23)*(-b24 + b31 - b34 + b43 - b51)",
-        "m35 = (a12 - a22)*(b22 + b23 - b24 + b25 + b33 + b35 + b43)",
-        "m36 = (-a21)*(-b13 - b15 - b24 - b45 - b52)",
-        "m37 = (-a15)*(b13 + b33 + b43 - b53)",
-        "m38 = (a13 + a15)*(b23 + b33 + b43)",
-        "m39 = (-a12 + a13 + a15)*(-b23 - b24)",
-        "m40 = (a12 - a14 - a15 - a22 + a24 + a25)*(-b43)"
-      ],
-      "elements": [
-        "c11 = -m2 + m4 - m9 + m12 - m13 - m14 - m16 - m24 - m25 - m27 - m34 + m39",
-        "c12 = -m2 - m3 + m5 - m8 + m12 - m30 - m33 - m40",
-        "c13 = m8 + m19 + m30 + m33 + m37 + m38 + m39 + m40",
-        "c14 = m6 - m8 + m11 + m12 - m14 + m17 + m18 - m19 - m24 - m30 + m31 - m32 - m33 - m40",
-        "c15 = m3 + m4 + m6 + m7 + m10 - m19 + m26 - m27 + m35 + m36 - m38",
-        "c21 = -m2 + m4 + m8 - m9 - m13 - m15 - m18 - m23 - m25 - m27 + m28 + m39",
-        "c22 = -m2 + m4 + m5 + m14 - m18 - m21 + m22 - m23 + m26 + m28 - m33",
-        "c23 = -m1 - m6 + m8 - m15 + m19 - m20 - m25 - m27 - m29 + m30 - m31 + m33 + m39",
-        "c24 = m1 + m6 + m17 - m19 - m23 - m30 + m31 - m32 - m33",
-        "c25 = m1 + m6 + m10 - m19 - m22 + m29 - m30 + m31 + m36"
-      ],
-      "has_buds": true,
-      "buds": "6×U⟨1,1,2⟩ + 28×⟨1,1,1⟩",
-      "projection_margin": 15,
-      "buds_certainty": "exact",
-      "source": "AlphaTensor 2022",
-      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/known/alpha_tensor/2x5x5_m40_ZT.json",
-      "year": 2022,
-      "verified": true,
-      "atom": true,
-      "complex": false,
-      "file": "known/section5/2x5x5-r40-perminov_ZT-8aea8c8.json",
-      "explicitable": true,
-      "fmm_lille": {
-        "best_rank": 40,
-        "details_url": "https://fmm.univ-lille.fr/2x5x5.html",
-        "references": [
-          "hopcroft:1971"
-        ]
-      },
-      "external_best_rank": 40,
-      "external_best_source": "fmm-lille",
-      "external_cited": true,
-      "bud_score": 12,
-      "pareto_rank_buds": true,
-      "used_as_base": {"by_serendipitous": 30, "total": 30}
     },
     {
       "format": [3, 3, 5],
@@ -299740,7 +300000,7 @@
       "external_cited": true,
       "bud_score": 2,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_concat": 334, "by_sum": 203, "by_recombination": 362, "by_kronecker": 67, "by_serendipitous": 15, "total": 981}
+      "used_as_base": {"by_concat": 334, "by_sum": 203, "by_recombination": 363, "by_kronecker": 67, "by_serendipitous": 15, "total": 982}
     },
     {
       "format": [2, 5, 6],
@@ -300051,7 +300311,7 @@
       "external_cited": true,
       "bud_score": 6,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_sum": 7, "by_concat": 8, "by_recombination": 18, "by_serendipitous": 5, "total": 38}
+      "used_as_base": {"by_sum": 7, "by_concat": 8, "by_recombination": 19, "by_serendipitous": 5, "total": 39}
     },
     {
       "format": [2, 6, 6],
@@ -301366,7 +301626,7 @@
       "external_cited": true,
       "bud_score": 16,
       "pareto_rank_buds": true,
-      "used_as_base": {"by_recombination": 376, "by_concat": 169, "by_sum": 127, "by_kronecker": 57, "by_serendipitous": 9, "total": 738}
+      "used_as_base": {"by_recombination": 380, "by_concat": 169, "by_sum": 127, "by_kronecker": 57, "by_serendipitous": 9, "total": 742}
     },
     {
       "format": [3, 5, 6],
@@ -306618,7 +306878,7 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 22,
-      "used_as_base": {"by_sum": 4, "by_concat": 9, "by_recombination": 148, "by_kronecker": 28, "by_serendipitous": 20, "total": 209}
+      "used_as_base": {"by_sum": 4, "by_concat": 9, "by_recombination": 149, "by_kronecker": 28, "by_serendipitous": 20, "total": 210}
     },
     {
       "format": [5, 5, 7],

@@ -272,6 +272,22 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(4, 18, 30))
 				.as("⟨4,18,30⟩ must retain the 1394 collateral (beats FMM's artifact)")
 				.isLessThanOrEqualTo(1394);
+		// fmm-gap 2026-07-09 (index-recipe decode): most "absorbing-class" rows were
+		// plain recombinations over CAP-EXCLUDED dim-6/7 bases (leafCount = base
+		// rank!) — ⟨3,5,6⟩:68, ⟨5,5,7⟩:127, ⟨5,6,7⟩:150 via --base, plus FMM's
+		// support-rich ⟨2,5,5⟩:40 rep (bud-bases import) for ⟨3,29,29⟩.
+		assertThat(lookup.findRank(11, 20, 23))
+				.as("⟨11,20,23⟩ must retain the ⟨3,5,6⟩-base 3035 (BEATS FMM 3039)")
+				.isLessThanOrEqualTo(3035);
+		assertThat(lookup.findRank(20, 20, 27))
+				.as("⟨20,20,27⟩ must retain the ⟨5,5,7⟩-base 5986 (BEATS FMM 6006)")
+				.isLessThanOrEqualTo(5986);
+		assertThat(lookup.findRank(20, 23, 28))
+				.as("⟨20,23,28⟩ must retain the ⟨5,6,7⟩-base 7100 (ties FMM)")
+				.isLessThanOrEqualTo(7100);
+		assertThat(lookup.findRank(3, 29, 29))
+				.as("⟨3,29,29⟩ must retain the support-rep ⟨2,5,5⟩ recomb 1840 (ties FMM)")
+				.isLessThanOrEqualTo(1840);
 	}
 
 	/**

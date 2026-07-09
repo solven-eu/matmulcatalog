@@ -7,6 +7,34 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-09 — INDEX-RECIPE decode #2: SEVEN more closed (two BEAT FMM) — most of the "absorbing class" was the POOL-CAP pattern in disguise; WORSE 16 → 9
+
+**Key decode:** in FMM's sum displays, **leaf count = outer base rank**. The
+"unreadable" 40/68/127/150-leaf displays are plain heterogeneous
+recombinations over bases our `maxBaseDim=5` pool cap excludes:
+⟨3,5,6⟩:68 (four rows!), ⟨5,5,7⟩:127, ⟨5,6,7⟩:150 — NOT shared-mul devices.
+Closed via `--base` runs, all exact-verified where in term-cap:
+- ⟨11,20,23⟩ **3035 — BEATS FMM 3039** (their own recipe re-priced with our
+  leaves lands below their index!), exact proof;
+- ⟨20,20,27⟩ **5986 — BEATS FMM 6006 by 20**, spot-check;
+- ⟨12,20,23⟩ 3184 (tie, proof), ⟨11,20,24⟩ 3114 (tie, proof),
+  ⟨15,25,29⟩ 6188 (tie, proof), ⟨20,23,28⟩ 7100 (tie, spot);
+- ⟨3,29,29⟩ **1840** (tie, exact proof) — base ⟨2,5,5⟩:40 is in-pool but our
+  hk71 rep has the wrong SUPPORT profile (per-product leaf dims); imported
+  FMM's rep to bud-bases/section5 (the support-representative sibling of the
+  bud-representative caveat). Guard rows for all four base families.
+Cascade pass: 0 further (fixpoint). **WORSE 16 → 9, BETTER 1474 → 1476.**
+Verification: 5 exact proofs + 2 spot-checks, 0 failures.
+
+**The REAL remaining 9:** ⟨17,17,19⟩/⟨13,19,29⟩/⟨14,14,29⟩/⟨19,19,31⟩
+(overlap-1 shared-mul family — the quantified ⟨17,17,19⟩ witness class),
+⟨19,19,22⟩/⟨20,23,23⟩ (TA-family), ⟨7,11,30⟩ (overlap-2), ⟨8,27,30⟩
+(dubious display, axis-mismatched recipe), ⟨9,11,22⟩ (display leaf-sorting
+ambiguity, base undecoded — 38 leaves, sum exact; possibly ⟨3,4,4⟩:38 with
+axis-permuted leaves, concentration run found nothing).
+
+---
+
 ## 2026-07-09 — FmmCrossCheck now splits WORSE into artifact-backed (16) vs UPSTREAM-UNVERIFIED (20)
 
 `FmmCrossCheck` consumes the new curated `references/fmm-artifact-audit.json`
