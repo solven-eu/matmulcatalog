@@ -138,8 +138,14 @@ public final class Lineage {
 	public record RecombinationTaN(Node base, int[] allocA, int[] allocB,
 			int[] allocC, List<Node> leaves) implements Node {}
 
-	public record RecombinationWithPairN(Node base, int[][] pairs, int[] solo,
-			List<Node> leaves) implements Node {}
+	/** Recombination whose {@code pairs} of slots are fused via the Pan pair
+	 *  ({@code RecombinationWithPair.constructWithPairing}); {@code solo} slots
+	 *  take ordinary leaves (deduped by DISTINCT shape, resolved by sorted-shape
+	 *  key at replay, like {@link RecombinationTaN}). Allocs are REQUIRED for
+	 *  replay (they determine each slot's sub-shape); alloc-less legacy nodes
+	 *  (none live in the catalog, 2026-07) fail replay with a clear error. */
+	public record RecombinationWithPairN(Node base, int[] allocA, int[] allocB,
+			int[] allocC, int[][] pairs, int[] solo, List<Node> leaves) implements Node {}
 
 	public record AugmentSquareDiscard(int p, int n, Node square) implements Node {}
 
@@ -540,8 +546,10 @@ public final class Lineage {
 			case RecombinationWithPairN r -> {
 				sb.append("R*[");
 				renderCompact(r.base, sb);
+				sb.append("; ").append(joinInts(r.allocA));
+				sb.append(" | ").append(joinInts(r.allocB));
+				sb.append(" | ").append(joinInts(r.allocC));
 				sb.append("; pairs=").append(java.util.Arrays.deepToString(r.pairs));
-				sb.append(", solo=").append(java.util.Arrays.toString(r.solo));
 				sb.append("]");
 			}
 			case AugmentSquareDiscard a -> {
@@ -705,6 +713,7 @@ public final class Lineage {
 	}
 
 	private static String joinInts(int[] a) {
+		if (a == null) return "?"; // legacy alloc-less RecombinationWithPairN
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < a.length; i++) {
 			if (i > 0) sb.append(",");
@@ -818,6 +827,9 @@ public final class Lineage {
 			case RecombinationWithPairN r -> {
 				sb.append("{\"op\":\"RecombinationWithPair\"").append(idBinding).append(",\"base\":");
 				renderJson(r.base, sb, seen, sameIds, nextId);
+				sb.append(",\"allocA\":").append(java.util.Arrays.toString(r.allocA));
+				sb.append(",\"allocB\":").append(java.util.Arrays.toString(r.allocB));
+				sb.append(",\"allocC\":").append(java.util.Arrays.toString(r.allocC));
 				sb.append(",\"pairs\":").append(java.util.Arrays.deepToString(r.pairs));
 				sb.append(",\"solo\":").append(java.util.Arrays.toString(r.solo));
 				sb.append(",\"leaves\":[");

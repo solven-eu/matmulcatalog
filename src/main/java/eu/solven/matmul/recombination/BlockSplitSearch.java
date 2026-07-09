@@ -97,13 +97,24 @@ public class BlockSplitSearch {
 			String baseLabel,
 			int[] allocA, int[] allocB, int[] allocC,
 			long rank,
-			eu.solven.matmul.catalog.Lineage.Node baseOriginLineage) {
+			eu.solven.matmul.catalog.Lineage.Node baseOriginLineage,
+			/** Non-null when {@code rank} is only achievable by fusing the listed
+			 *  slot pairs via {@code RecombinationWithPair.constructWithPairing}
+			 *  (leaf-level Pan pairing, fmm-gap 2026-07-09). Null = plain build. */
+			PairedSubProducts.Matching pairing) {
+
+		public MultiBaseSplitCandidate(int n, int m, int p,
+				NonCubicBilinearAlgorithm base, String baseLabel,
+				int[] allocA, int[] allocB, int[] allocC, long rank,
+				eu.solven.matmul.catalog.Lineage.Node baseOriginLineage) {
+			this(n, m, p, base, baseLabel, allocA, allocB, allocC, rank, baseOriginLineage, null);
+		}
 
 		/** Back-compat: when the search isn't pool-aware (no NamedBase available). */
 		public MultiBaseSplitCandidate(int n, int m, int p,
 				NonCubicBilinearAlgorithm base, String baseLabel,
 				int[] allocA, int[] allocB, int[] allocC, long rank) {
-			this(n, m, p, base, baseLabel, allocA, allocB, allocC, rank, null);
+			this(n, m, p, base, baseLabel, allocA, allocB, allocC, rank, null, null);
 		}
 
 		public String breakdown() {
@@ -898,12 +909,21 @@ public class BlockSplitSearch {
 			// by PAIRING_SWEEP_COMBO_BUDGET per base so a grid degrades to balanced enumeration
 			// rather than exploding.
 			recomb = opt;
-			List<NamedBase> grids = basePool.stream()
-					.filter(nb -> eu.solven.matmul.recombination.Recombination.isNaiveGrid(nb.base()))
+			// Pairing-aware sweep. Historically restricted to naive-grid bases on the
+			// belief that combining bases "cannot carry" a fusable pair — FALSE
+			// (fmm-gap 2026-07-09, ⟨20,23,23⟩=5906): a recombination's leaves are
+			// formally independent bilinear problems, and bilinear schemes are closed
+			// under input substitution, so ANY two same-shape cubic leaves fuse via
+			// PanPairProduct regardless of which blocks feed them. Extended to every
+			// SMALL base (rank cap keeps the alloc enumeration affordable; naive grids
+			// keep their historical inclusion regardless of rank).
+			List<NamedBase> pairables = basePool.stream()
+					.filter(nb -> eu.solven.matmul.recombination.Recombination.isNaiveGrid(nb.base())
+							|| nb.base().r <= PAIRING_SWEEP_MAX_BASE_RANK)
 					.toList();
-			if (!grids.isEmpty()) {
+			if (!pairables.isEmpty()) {
 				Optional<MultiBaseSplitCandidate> paired = findBestMultiBaseSplit(
-						n, m, p, grids, sota, false, PAIRING_SWEEP_COMBO_BUDGET,
+						n, m, p, pairables, sota, false, PAIRING_SWEEP_COMBO_BUDGET,
 						maxImbalance, maxCombinations, 0, cheapUpperBound);
 				if (paired.isPresent() && (recomb.isEmpty() || paired.get().rank() < recomb.get().rank())) {
 					recomb = paired;
@@ -1068,6 +1088,11 @@ public class BlockSplitSearch {
 	 *  exceeds this degrades to balanced-only allocations there (its un-paired optimum
 	 *  is still covered by the optimizer), bounding the broad sweep's added cost. */
 	public static final long PAIRING_SWEEP_COMBO_BUDGET = 200_000L;
+	/** Rank cap for COMBINING bases admitted to the pairing-aware sweep (naive
+	 *  grids are always admitted). ⟨2,2,2⟩:7/8 and ⟨2,3,3⟩:15-class bases are
+	 *  where same-shape cubic leaf pairs actually arise; the cap bounds the
+	 *  extra alloc enumeration the sweep pays on top of the optimizer. */
+	public static volatile int PAIRING_SWEEP_MAX_BASE_RANK = 16;
 	/** Per-base node budget for the assignment optimizer (safety against the slow
 	 *  large-base case). Beyond this it returns best-found rather than the proven
 	 *  optimum. */
@@ -1344,12 +1369,17 @@ public class BlockSplitSearch {
 											continue;
 										}
 									}
-									long paired = PairedSubProducts.applyPairing(r.smallMatrixSizes, sota);
-									long rk = Math.min(r.totalRank, paired);
+									// BUILDABLE pairing only (same-shape cubic — what
+									// constructWithPairing realises), so predicted == built.
+									PairedSubProducts.Matching match =
+											PairedSubProducts.applyPairingWithMatching(r.smallMatrixSizes, sota);
+									boolean usePairs = match.pairs().length > 0 && match.cost() < r.totalRank;
+									long rk = usePairs ? match.cost() : r.totalRank;
 									if (rk < bestRank) {
 										bestRank = rk;
 										best = new MultiBaseSplitCandidate(n, m, p, base, nb.label,
-												aA.clone(), aB.clone(), aC.clone(), rk, nb.originLineage());
+												aA.clone(), aB.clone(), aC.clone(), rk, nb.originLineage(),
+												usePairs ? match : null);
 									}
 									allocsExplored++;
 									allocsExploredSinceEmit++;

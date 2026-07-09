@@ -88,6 +88,66 @@ public final class PairedSubProducts {
 		return total;
 	}
 
+	/** A concrete pairing decision over a slot multiset: total cost, fused slot
+	 *  pairs, and leftover solo slots. Unlike {@link #applyPairing} (a pricing
+	 *  bound over ALL pan-pairable shapes), {@link #applyPairingWithMatching}
+	 *  restricts to SAME-SHAPE CUBIC pairs — exactly what
+	 *  {@code RecombinationWithPair.constructWithPairing} can build — so a
+	 *  candidate priced with it always builds at the predicted rank. */
+	public record Matching(long cost, int[][] pairs, int[] solo) {}
+
+	/**
+	 * Greedy max-savings matching restricted to BUILDABLE pairs (same-shape
+	 * cubic ⟨k,k,k⟩+⟨k,k,k⟩ — the cyclic permutation is trivial, so
+	 * {@code PanPairProduct.build} applies directly). Returns the full slot
+	 * assignment for the constructor, not just the price. Leaf-level pairing is
+	 * valid for ANY two slots of a recombination regardless of which blocks feed
+	 * them: slots are formally independent bilinear problems and bilinear
+	 * schemes are closed under input substitution (fmm-gap 2026-07-09,
+	 * the ⟨20,23,23⟩ decode).
+	 */
+	public static Matching applyPairingWithMatching(int[][] subShapes, Recombination.SotaResolver sota) {
+		int n = subShapes.length;
+		long[] individualCost = new long[n];
+		for (int i = 0; i < n; i++) {
+			int[] s = subShapes[i];
+			individualCost[i] = (s[0] == 0 || s[1] == 0 || s[2] == 0) ? 0
+					: sota.getRank(s[0], s[1], s[2]);
+		}
+		java.util.List<int[]> cand = new java.util.ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			int[] si = subShapes[i];
+			if (si[0] == 0 || si[0] != si[1] || si[1] != si[2]) continue; // cubic only
+			for (int j = i + 1; j < n; j++) {
+				if (!Arrays.equals(si, subShapes[j])) continue;          // same shape only
+				long pair = pairCost(si[0], si[1], si[2]);
+				long savings = individualCost[i] + individualCost[j] - pair;
+				if (savings > 0) cand.add(new int[] { i, j, (int) Math.min(savings, Integer.MAX_VALUE) });
+			}
+		}
+		cand.sort((a, b) -> Integer.compare(b[2], a[2]));
+		boolean[] used = new boolean[n];
+		java.util.List<int[]> pairs = new java.util.ArrayList<>();
+		long total = 0;
+		for (int[] c : cand) {
+			if (used[c[0]] || used[c[1]]) continue;
+			used[c[0]] = used[c[1]] = true;
+			pairs.add(new int[] { c[0], c[1] });
+			int[] s = subShapes[c[0]];
+			total += pairCost(s[0], s[1], s[2]);
+		}
+		java.util.List<Integer> solo = new java.util.ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			if (!used[i]) {
+				solo.add(i);
+				total += individualCost[i];
+			}
+		}
+		return new Matching(total,
+				pairs.toArray(new int[0][]),
+				solo.stream().mapToInt(Integer::intValue).toArray());
+	}
+
 	/**
 	 * {@code true} iff {@code b} is one of the three cyclic rotations of
 	 * {@code a}: {@code (x,y,z)}, {@code (y,z,x)}, or {@code (z,x,y)}. Pure

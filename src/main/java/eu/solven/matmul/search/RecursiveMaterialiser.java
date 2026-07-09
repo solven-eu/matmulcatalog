@@ -1773,6 +1773,19 @@ public final class RecursiveMaterialiser {
 		// at the un-fused rank, never realising the scored saving — route through
 		// Recombination.constructWithTaFusion so the BUILT scheme matches the SCORED rank
 		// and is replayable (Lineage.RecombinationTaN).
+		// Leaf-level Pan pairing (fmm-gap 2026-07-09): the candidate's rank is only
+		// achievable by fusing the recorded slot pairs via PanPairProduct — every other
+		// build path realises a different (higher) rank and gets rejected by the
+		// built≠predicted sanity. MUST come before the TA path: a paired candidate's
+		// score is the pairing's, not the TA fusion's.
+		if (r.pairing() != null) {
+			Result paired = tryBuildLeafPairs(n, m, p, r);
+			if (paired != null) {
+				return paired;
+			}
+			log.warn("⟨{},{},{}⟩ paired candidate (rank {}) failed to build — falling through "
+					+ "to TA/glue paths", n, m, p, r.rank());
+		}
 		Result taFused = tryBuildTaFusion(n, m, p, r);
 		if (taFused != null) {
 			return taFused;
@@ -1857,6 +1870,81 @@ public final class RecursiveMaterialiser {
 	 * as an NC leaf and not what scoring priced). Building via replay guarantees
 	 * build ≡ replay, so the registered rank is reproducible.</p>
 	 */
+	/**
+	 * Leaf-level Pan pairing build (fmm-gap 2026-07-09, the ⟨20,23,23⟩=5906 decode):
+	 * fuse the candidate's recorded same-shape-cubic slot pairs via
+	 * {@link eu.solven.matmul.recombination.RecombinationWithPair#constructWithPairing}.
+	 * Valid for ANY base (leaves are formally independent bilinear problems; bilinear
+	 * schemes are closed under input substitution). Solo leaves resolve NC-pinned and
+	 * are recorded (deduped by sorted shape) so replay re-resolves identically; the
+	 * pair slots are formula-deterministic ({@code PanPairProduct.build}) and carry no
+	 * leaf ref. Lineage: {@link Lineage.RecombinationWithPairN} with explicit allocs.
+	 */
+	private Result tryBuildLeafPairs(int n, int m, int p, BlockSplitSearch.MultiBaseSplitCandidate r) {
+		eu.solven.matmul.isotropy.PairedSubProducts.Matching match = r.pairing();
+		if (replayer == null) {
+			replayer = LineageReplayer.withDefaultPool(diskLookup);
+		}
+		// Solo-leaf resolver: NC-pinned nodes, replay-built, deduped by sorted shape.
+		java.util.LinkedHashMap<String, Lineage.Node> leafNodes = new java.util.LinkedHashMap<>();
+		java.util.Map<String, NonCubicBilinearAlgorithm> leafAlgs = new java.util.HashMap<>();
+		Recombination.AlgorithmLookup soloLookup = (a, b, c) -> {
+			int[] s = { a, b, c };
+			java.util.Arrays.sort(s);
+			String key = s[0] + "x" + s[1] + "x" + s[2];
+			NonCubicBilinearAlgorithm alg = leafAlgs.get(key);
+			if (alg == null) {
+				Lineage.Node node = ncLeafNode(s[0], s[1], s[2]);
+				if (node == null) return Optional.empty();
+				try {
+					alg = replayer.replay(node);
+				} catch (RuntimeException e) {
+					return Optional.empty();
+				}
+				leafNodes.put(key, node);
+				leafAlgs.put(key, alg);
+			}
+			return alg.orientAs(a, b, c);
+		};
+		NonCubicBilinearAlgorithm alg;
+		try {
+			alg = eu.solven.matmul.recombination.RecombinationWithPair.constructWithPairing(
+					r.base(), soloLookup, r.allocA(), r.allocB(), r.allocC(),
+					new eu.solven.matmul.recombination.RecombinationWithPair.Pairing(
+							match.pairs(), match.solo()));
+		} catch (RuntimeException e) {
+			log.info("⟨{},{},{}⟩ leaf-pair build failed: {}", n, m, p, e.toString());
+			return null;
+		}
+		if (alg.n != n || alg.m != m || alg.p != p) {
+			log.warn("⟨{},{},{}⟩ leaf-pair build produced ⟨{},{},{}⟩ — discarding",
+					n, m, p, alg.n, alg.m, alg.p);
+			return null;
+		}
+		if (!verifies(alg)) {
+			log.warn("⟨{},{},{}⟩ leaf-pair build r={} FAILED spot-check — discarding", n, m, p, alg.r);
+			return null;
+		}
+		// Base pin: origin lineage when the pool stamped one; else durable hash pin.
+		Lineage.Node baseNode = r.baseOriginLineage();
+		if (baseNode == null || hasFallbackRef(baseNode)) {
+			String hash = SchemeIO.contentHash(r.base());
+			baseNode = new Lineage.Atom(
+					r.base().n + "x" + r.base().m + "x" + r.base().p + "@" + hash);
+			if (diskLookup.findByHash(r.base().n, r.base().m, r.base().p, hash).isEmpty()) {
+				log.warn("leaf-pair base ⟨{},{},{}⟩ has no catalog match for its hash — the pin"
+						+ " may dangle; prefer pool bases with origin lineage",
+						r.base().n, r.base().m, r.base().p);
+			}
+		}
+		Lineage.Node tree = new Lineage.RecombinationWithPairN(baseNode,
+				r.allocA().clone(), r.allocB().clone(), r.allocC().clone(),
+				match.pairs(), match.solo(), new java.util.ArrayList<>(leafNodes.values()));
+		log.info("⟨{},{},{}⟩ leaf-pair fusion via base ⟨{},{},{}⟩: {} pair(s) → r={}",
+				n, m, p, r.base().n, r.base().m, r.base().p, match.pairs().length, alg.r);
+		return new Result(alg, tree, false);
+	}
+
 	private Result tryBuildTaFusion(int n, int m, int p, BlockSplitSearch.MultiBaseSplitCandidate r) {
 		NonCubicBilinearAlgorithm base = r.base();
 		if (!Recombination.isNaiveGrid(base)) {

@@ -826,6 +826,9 @@ public final class SchemeIO {
 						parseLineageNode(node.get("base"), idMap), aA, aB, aC, leaves);
 			}
 			case "RecombinationWithPair", "RecombinationWithPairN" -> {
+				int[] aA = parseIntArray(node.get("allocA"));
+				int[] aB = parseIntArray(node.get("allocB"));
+				int[] aC = parseIntArray(node.get("allocC"));
 				int[][] pairs = parseInt2DArray(node.get("pairs"));
 				int[] solo = parseIntArray(node.get("solo"));
 				List<Lineage.Node> leaves = new java.util.ArrayList<>();
@@ -834,7 +837,7 @@ public final class SchemeIO {
 					for (JsonNode child : lvs) leaves.add(parseLineageNode(child, idMap));
 				}
 				yield new Lineage.RecombinationWithPairN(
-						parseLineageNode(node.get("base"), idMap), pairs, solo, leaves);
+						parseLineageNode(node.get("base"), idMap), aA, aB, aC, pairs, solo, leaves);
 			}
 			case "AugmentSquareDiscard" -> new Lineage.AugmentSquareDiscard(
 					node.path("p").asInt(0), node.path("n").asInt(0),

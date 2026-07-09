@@ -186,8 +186,7 @@ public final class LineageReplayer {
 			}
 			case Lineage.AxisFlip af -> applyAxisFlip(af, memo);
 			case Lineage.AxisPermute ap -> applyAxisPermute(ap, memo);
-			case Lineage.RecombinationWithPairN ignored -> throw new UnsupportedOperationException(
-					"RecombinationWithPairN replay not implemented (no live usage in catalog as of 2026-05)");
+			case Lineage.RecombinationWithPairN r -> replayRecombinationWithPair(r, memo);
 			case Lineage.AugmentSquareDiscard ignored -> throw new UnsupportedOperationException(
 					"AugmentSquareDiscard replay not implemented");
 			case Lineage.Dce ignored -> throw new UnsupportedOperationException(
@@ -241,6 +240,37 @@ public final class LineageReplayer {
 		eu.solven.matmul.recombination.Recombination.SotaResolver sota = (a, b, c) -> lookup.findRank(a, b, c);
 		return eu.solven.matmul.recombination.Recombination.constructWithTaFusion(
 				baseAlg, resolveSub, sota, r.allocA(), r.allocB(), r.allocC()).alg();
+	}
+
+	/** Replay of a leaf-paired recombination (fmm-gap 2026-07-09): re-run
+	 *  {@code constructWithPairing} on the replayed base + the recorded pairing;
+	 *  solo leaves resolve by sorted-shape key from the recorded (deduped) leaf
+	 *  nodes, exactly as they were built. Pair slots are formula-deterministic
+	 *  ({@code PanPairProduct.build}) so build ≡ replay. */
+	private NonCubicBilinearAlgorithm replayRecombinationWithPair(Lineage.RecombinationWithPairN r,
+			IdentityHashMap<Lineage.Node, NonCubicBilinearAlgorithm> memo) {
+		if (r.allocA() == null || r.allocB() == null || r.allocC() == null) {
+			throw new IllegalStateException("RecombinationWithPairN without allocs is not replayable"
+					+ " (legacy alloc-less node — re-derive the scheme)");
+		}
+		NonCubicBilinearAlgorithm baseAlg = replayInternal(r.base(), memo);
+		Map<String, NonCubicBilinearAlgorithm> leafByShape = new java.util.HashMap<>();
+		for (Lineage.Node lf : r.leaves()) {
+			NonCubicBilinearAlgorithm la = replayInternal(lf, memo);
+			int[] s = { la.n, la.m, la.p };
+			java.util.Arrays.sort(s);
+			leafByShape.put(s[0] + "x" + s[1] + "x" + s[2], la);
+		}
+		eu.solven.matmul.recombination.Recombination.AlgorithmLookup soloLookup = (a, b, c) -> {
+			int[] k = { a, b, c };
+			java.util.Arrays.sort(k);
+			NonCubicBilinearAlgorithm la = leafByShape.get(k[0] + "x" + k[1] + "x" + k[2]);
+			if (la == null) return java.util.Optional.empty();
+			return la.orientAs(a, b, c);
+		};
+		return eu.solven.matmul.recombination.RecombinationWithPair.constructWithPairing(
+				baseAlg, soloLookup, r.allocA(), r.allocB(), r.allocC(),
+				new eu.solven.matmul.recombination.RecombinationWithPair.Pairing(r.pairs(), r.solo()));
 	}
 
 	private NonCubicBilinearAlgorithm kronChain(List<Lineage.Node> factors,

@@ -84,6 +84,7 @@ public final class MaterializeViaPanPair {
 			Files.createDirectories(out.getParent());
 			Lineage.Node lineage = new Lineage.RecombinationWithPairN(
 					new Lineage.Atom("Strassen<2,2,2>=7"),
+					new int[] { k, k }, new int[] { k, k }, new int[] { k, k },
 					pairing.pairs(),
 					pairing.solo(),
 					List.of(new Lineage.Atom(k + "x" + k + "x" + k + "-direct")));

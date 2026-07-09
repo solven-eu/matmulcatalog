@@ -7,6 +7,116 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-09 — LEAF-LEVEL PAN PAIRING SHIPPED: ⟨20,23,23⟩ 5945→5906 (the −39, exact tie) and ⟨19,19,22⟩ 4538→4536 CLOSED; WORSE 9 → 7
+
+**The decode that unlocked it (user pushback on my "naive-8" claim):** FMM's
+⟨20,23,23⟩:5906 is a plain ⟨2,2,2⟩:7 recombination — 5 explicit leaves + TWO
+⟨11,11,11⟩ leaves computed jointly as a Pan pair (1694 vs 2·873 = 1746);
+display sums reconcile: 6676 naive-8 > 5958 this variant unpaired > 5945 our
+old best > 5906 paired. KEY THEORY POINT: leaf-level pairing is valid for ANY
+two slots of ANY recombination — leaves are formally independent bilinear
+problems and bilinear schemes are closed under input substitution — so the
+engine's naive-grid-only pairing gate rested on a false belief ("a combining
+base cannot carry a pair"). My earlier chain-aggregation/absorption reading
+(and the "certifies naive-8" argument) were WRONG for this row; retracted.
+The Schwartz–Zwecher port remains future work only if rows survive pairing.
+
+**Implementation (all guarded green):**
+- `PairedSubProducts.applyPairingWithMatching` — buildable (same-shape CUBIC)
+  pairs only, returns the full slot assignment so predicted ≡ built;
+- pairing sweep in `findBestStrategy` extended from naive grids to every
+  base with rank ≤ `PAIRING_SWEEP_MAX_BASE_RANK` (16); the candidate carries
+  its `Matching`;
+- `RecursiveMaterialiser.tryBuildLeafPairs` — builds via the pre-existing
+  `RecombinationWithPair.constructWithPairing` (solo leaves NC-pinned +
+  recorded; pair slots formula-deterministic); elected BEFORE the TA path;
+- `Lineage.RecombinationWithPairN` extended with allocs (no legacy usage —
+  verified zero such nodes in the catalog); SchemeIO parse/serialize updated;
+  `LineageReplayer.replayRecombinationWithPair` implemented (build ≡ replay).
+Two legacy research drivers updated for the new record shape.
+
+**Results:** ⟨20,23,23⟩ = 5906 (tie, was the biggest remaining gap at −39);
+⟨19,19,22⟩ = 4536 (tie — the round-8 white whale). Both replay exactly and
+spot-check (dense); guards: `TestLeafPairFusion` (matching unit test +
+replay-exact tests) + 2 rows in `TestSweepSpotsSota`. **WORSE 9 → 7,
+BETTER 1476.** Remaining 7: ⟨17,17,19⟩/⟨13,19,29⟩/⟨14,14,29⟩/⟨19,19,31⟩
+(pairs are TWO-EQUAL-DIMS, e.g. ⟨8,9,9⟩+⟨9,9,8⟩ — panPairable via transpose
+but v1 builds same-shape-cubic only → **v2: extend constructWithPairing to
+transposed cyclic pairs**), ⟨7,11,30⟩, ⟨8,27,30⟩ (dubious display),
+⟨9,11,22⟩ (undecoded).
+
+---
+
+## 2026-07-09 — DEVICE DECODED FROM SOURCE (KMW 2026): "recursive calls sharing an input/output are treated as a SINGLE larger multiplication"; ⟨20,23,23⟩ needs the Schwartz–Zwecher staggered TA
+
+**Primary source found** (we hold the PDF): Kauers–Moosbauer–Wood 2026
+(arXiv:2602.11041, §1): *"If some recursive calls share one of the inputs or
+have an output that is used in multiple positions, then they are treated as a
+single matrix multiplication of larger size."* — the FMM display semantics,
+verbatim. The block-operand sharing that blocked every hand-derivation IS the
+mechanism: shared-input leaves merge along the free axis, shared-output
+leaves merge along the contraction axis (SumInner). Lineage-wise, merges are
+plain concat/SumInner — the GUILLOTINE subset of box tilings is exactly our
+existing concat closure (already fixpointed), so pure merging adds nothing
+new: verified on ⟨20,23,23⟩ — best merge-tiling with our ranks (e.g.
+⟨20,11,11⟩=1529 covering the two cube cells) totals 6617, far above our
+combining-base 5945.
+
+**The remaining device** (⟨20,23,23⟩ 5906, ⟨19,19,22⟩ 4536, and the ±1
+family): TA(⟨k,k,k⟩,⟨k,k,k⟩) = the DISJOINT-SUM rank
+`R(⟨k,k,k⟩⊕⟨k,k,k⟩) ≤ k³+3k² (pairCost)` — confirmed numerically: no merged
+shape prices 1694; 1694 = 11³+3·11² exactly — with REAL-DATA pads staggering
+three grid blocks (⟨9,11,11⟩+⟨11,11,11⟩+⟨11,11,12⟩ ≈ 2510 worth) through the
+two cube slots. Provenance chain: Schönhage 1981 observed Pan's algorithm
+admits this; **Schwartz–Zwecher 2025 (arXiv:2508.01748, PDF held) is the
+explicit modern construction** KMW cite — the ⟨20,23,23⟩-class FMM entries
+are its outputs. Merged-shape rank hunt also showed ⟨11,11,22⟩: ours 1647 <
+fmm 1666 (already a BETTER row).
+
+**Next session (well-defined port):** read SZ 2025 §3/appendices; port the
+staggered/disjoint-sum TA pair as a ConstructiveMethod
+(`buildStaggeredPair(blocks…)`) with exact-verify gates (buildPeeledViaTa
+port pattern); integrate as a recombination candidate (a "pair-slot" device
+the alloc search can elect). Closes up to 6 rows incl. the −39.
+
+---
+
+## 2026-07-09 — ⟨20,23,23⟩ investigation (gap 39, biggest remaining): absorbing-pad TA at full scale; artifact flip-soup; implementation spec
+
+**Display decode** (`⟨9,12,12⟩:800 + 2·⟨9,11,12⟩:738 + 2·⟨11,12,12⟩:968 +
+TA(⟨11,11,11⟩,⟨11,11,11⟩):1694 = 5906`): 2×2×2 grid [9,11 | 11,12 | 11,12] —
+SEVEN terms covering EIGHT blocks. With our leaf ranks (all match FMM's):
+independent blocks = 6676; our current 5945 = same grid over a
+⟨2,2,2⟩:7 combining base (`R[2x2x2; 11,9|11,12|11,12]`); FMM 5906. The
+device: (a) TA-pair the two near-cubes — pad ⟨9,11,11⟩→⟨11,11,11⟩, pair with
+the native cube at pairCost(11)=1694 (saves 52 vs 2·873); (b) the pads carry
+REAL data so the aggregation's cross-terms compute the absorbed eighth block
+⟨11,11,12⟩:922 for free; (c) one ⟨11,11,12⟩ padded to ⟨11,12,12⟩:968.
+Combined worth ≈ 770 vs the independent grid — absorption dominates, the
+TA-vs-2-cubes saving is minor. NOT closable by zero-padded pairing (checked:
+padded pairCosts 1837/1992 exceed the leaf sums they'd replace) — the
+real-data pads are the entire game.
+
+**Artifact:** flip-soup under every split ordering tested (80/5906 pure
+products; classes touching all four blocks of every operand) — not minable,
+like ⟨19,19,22⟩. The ⟨17,17,19⟩ witness remains the only readable specimen
+of the family.
+
+**Implementation spec (the one remaining engine feature, now fully scoped):**
+`PanPairProduct.build(a,b,c)` already constructs the exact fused pair
+⟨a,b,c⟩+⟨b,c,a⟩; `RectangularTrilinearAggregation.buildPeeledViaTa` already
+does absorbing-pads for the ⟨N,N+s,N+s⟩ peel (cube + corner + TA cross-pair).
+The needed generalisation: the DEFICIENT 2×2×2 grid — TA pair over padded
+near-cubes where pad rows/cols are the adjacent blocks' real operands, and
+the aggregation corrections route the pad cross-terms into the absorbed
+block's outputs. Port pattern: buildPeeledViaTa (deterministic in the block
+dims + the two sub-schemes; verify exact at every step). Targets it would
+close: ⟨20,23,23⟩ (−39), ⟨19,19,22⟩ (−2), likely ⟨13,19,29⟩/⟨14,14,29⟩/
+⟨19,19,31⟩/⟨17,17,19⟩ (−1 each) and the ⟨27,28,·⟩ family if their index
+ranks are real. Est. 1–2 focused days with verification gates.
+
+---
+
 ## 2026-07-09 — INDEX-RECIPE decode #2: SEVEN more closed (two BEAT FMM) — most of the "absorbing class" was the POOL-CAP pattern in disguise; WORSE 16 → 9
 
 **Key decode:** in FMM's sum displays, **leaf count = outer base rank**. The

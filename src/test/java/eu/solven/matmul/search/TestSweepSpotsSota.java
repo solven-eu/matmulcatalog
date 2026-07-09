@@ -288,6 +288,16 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(3, 29, 29))
 				.as("⟨3,29,29⟩ must retain the support-rep ⟨2,5,5⟩ recomb 1840 (ties FMM)")
 				.isLessThanOrEqualTo(1840);
+		// fmm-gap 2026-07-09 (leaf-level Pan pairing): two same-shape cubic leaves
+		// of a ⟨2,2,2⟩:7 recombination fused via PanPairProduct — leaves are
+		// formally independent bilinear problems, so pairing is base-agnostic
+		// (RecombinationWithPairN; the KMW-2026 "merged recursive calls" device).
+		assertThat(lookup.findRank(20, 23, 23))
+				.as("⟨20,23,23⟩ must retain the leaf-paired 5906 (ties FMM; was the −39 gap)")
+				.isLessThanOrEqualTo(5906);
+		assertThat(lookup.findRank(19, 19, 22))
+				.as("⟨19,19,22⟩ must retain the leaf-paired 4536 (ties FMM)")
+				.isLessThanOrEqualTo(4536);
 	}
 
 	/**

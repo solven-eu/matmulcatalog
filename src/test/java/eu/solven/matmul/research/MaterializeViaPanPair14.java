@@ -60,6 +60,7 @@ public final class MaterializeViaPanPair14 {
 		// rank 1 + 2 inner + 1 inner = 1719 total when ⟨7,7,7⟩ = 249.
 		Lineage.Node lineage = new Lineage.RecombinationWithPairN(
 				new Lineage.Atom("Strassen<2,2,2>=7"),
+				new int[] { 7, 7 }, new int[] { 7, 7 }, new int[] { 7, 7 },
 				pairing.pairs(),
 				pairing.solo(),
 				List.of(new Lineage.Atom("7x7x7-direct")));

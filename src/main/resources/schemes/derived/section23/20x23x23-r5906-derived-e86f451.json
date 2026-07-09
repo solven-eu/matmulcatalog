@@ -1,0 +1,115 @@
+{
+  "lineage_str": "RecombinationWithPair(base=AxisPermute[approximate](2x2x2, permA=[0, 1], permB=[0, 1], permC=[1, 0]), pairs=[[3, 4]], solo=[0, 1, 2, 5, 6], leaves=[11x12x12-r968-perminov_Q-501db78, 9x11x12-r738-perminov_Q-435e5a3, OrientAs(KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->ACB\"), allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), ⟨9,12,12⟩), Recombination(base=2x2x2, allocA=[6, 5], allocB=[6, 5], allocC=[6, 5], leaves=[6x6x6-r153-kauers_2026-5bba1c9, ConcatCols(ConcatRows(SumInner(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7), OrientAs(3x3x6-r40-smirnov13-d246191, ⟨3,6,3⟩)), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨5,6,3⟩)), ConcatRows(2x5x6-r47-alphaevolve-7387644, 3x5x6-r68-alphaevolve-14be9c3)])])",
+  "lineage_compact": "R*[2x2x2^π([0, 1],[0, 1],[1, 0]); 9,11 | 11,12 | 11,12; pairs=[[3, 4]]]",
+  "lineage": {
+    "op": "RecombinationWithPair",
+    "base": {
+      "op": "AxisPermute",
+      "permA": [0, 1],
+      "permB": [0, 1],
+      "permC": [1, 0],
+      "approximate": true,
+      "child": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"}
+    },
+    "allocA": [9, 11],
+    "allocB": [11, 12],
+    "allocC": [11, 12],
+    "pairs": [
+      [3, 4]
+    ],
+    "solo": [0, 1, 2, 5, 6],
+    "leaves": [
+      {"op": "Atom", "ref": "11x12x12-r968-perminov_Q-501db78"},
+      {"op": "Atom", "ref": "9x11x12-r738-perminov_Q-435e5a3"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 12,
+        "p": 12,
+        "axisMap": "pnm",
+        "child": {
+          "op": "KronProduct",
+          "outer": {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->ACB",
+              "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+            },
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          "inner": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          }
+        }
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+        "allocA": [6, 5],
+        "allocB": [6, 5],
+        "allocC": [6, 5],
+        "leaves": [
+          {"op": "Atom", "ref": "6x6x6-r153-kauers_2026-5bba1c9"},
+          {
+            "op": "ConcatCols",
+            "left": {
+              "op": "ConcatRows",
+              "top": {
+                "op": "SumInner",
+                "left": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+                "right": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"}
+              },
+              "bottom": {
+                "op": "OrientAs",
+                "n": 3,
+                "m": 6,
+                "p": 3,
+                "axisMap": "mpn",
+                "child": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"}
+              }
+            },
+            "right": {
+              "op": "OrientAs",
+              "n": 5,
+              "m": 6,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+            }
+          },
+          {
+            "op": "ConcatRows",
+            "top": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
+            "bottom": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+          }
+        ]
+      }
+    ]
+  },
+  "n": [20, 23, 23],
+  "m": 5906,
+  "hash": "e86f4512f8cd6af3172f83d6098597afbec258ff8dc970f7682ec3cea3fafe5c",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
