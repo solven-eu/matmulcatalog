@@ -263,6 +263,15 @@ public class TestSweepSpotsSota {
 		assertThat(lookup.findRank(7, 14, 32))
 				.as("⟨7,14,32⟩ must retain the stub-leaf concat 2017 (ties FMM)")
 				.isLessThanOrEqualTo(2017);
+		// fmm-gap 2026-07-09: ⟨7,7,5⟩-oriented Kauers–Wood base ⊗ ⟨3,4,6⟩ — only
+		// reachable once budBasesAt offers ALL S₃ orientations on dims-repeat
+		// shapes (see TestSerendipitousStubInner.ambiguous_orientation_*).
+		assertThat(lookup.findRank(21, 28, 30))
+				.as("⟨21,28,30⟩ must retain the orientation-unmasked 9473 (ties FMM index)")
+				.isLessThanOrEqualTo(9473);
+		assertThat(lookup.findRank(4, 18, 30))
+				.as("⟨4,18,30⟩ must retain the 1394 collateral (beats FMM's artifact)")
+				.isLessThanOrEqualTo(1394);
 	}
 
 	/**

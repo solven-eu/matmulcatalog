@@ -1019,20 +1019,39 @@ public class BlockSplitSearch {
 	public static Optional<MultiBaseSplitCandidate> bestViaAllocationOptimizer(
 			int n, int m, int p, List<NamedBase> basePool,
 			Recombination.SotaResolver sota, long upperBound) {
-		MultiBaseSplitCandidate best = null;
-		long bestRank = upperBound;
-		for (NamedBase nb : basePool) {
-			NonCubicBilinearAlgorithm b = nb.base();
-			if (b.n > n || b.m > m || b.p > p) continue;
-			AllocationOptimizer.Result r = AllocationOptimizer.optimize(
-					b, sota, n, m, p, new SearchBudget(bestRank, ALLOC_MAX_NODES, ALLOC_STAGNATION), null);
-			if (r.rank() < bestRank) {
-				bestRank = r.rank();
-				best = new MultiBaseSplitCandidate(n, m, p, b, nb.label(),
-						r.allocA(), r.allocB(), r.allocC(), r.rank(), nb.originLineage());
-			}
-		}
-		return Optional.ofNullable(best);
+		// PARALLEL per-base B&B (2026-07-09): the ~3.3k-entry thorough pool was walked
+		// sequentially, leaving one core busy while a heavy shape stalled a whole sweep
+		// (the straggler-tail CPU dip). Each base's optimize() is independent; the
+		// cross-base incumbent is shared through an AtomicLong so later bases still
+		// prune against the best-so-far (slightly weaker pruning than strict sequential
+		// — a base may start before a better incumbent lands — but never a worse
+		// RESULT: the final pick is the min over all bases). Deterministic pick: min by
+		// (rank, pool index), so a rank tie resolves to the same base the sequential
+		// loop chose. Requires a thread-safe SotaResolver — FieldAwareLookup-backed
+		// resolvers are read-only; RecursiveClosureSota was made concurrent-safe.
+		java.util.concurrent.atomic.AtomicLong bestRank =
+				new java.util.concurrent.atomic.AtomicLong(upperBound);
+		record Scored(int idx, NamedBase nb, AllocationOptimizer.Result r) {}
+		Scored best = java.util.stream.IntStream.range(0, basePool.size()).parallel()
+				.mapToObj(i -> {
+					NamedBase nb = basePool.get(i);
+					NonCubicBilinearAlgorithm b = nb.base();
+					if (b.n > n || b.m > m || b.p > p) return null;
+					AllocationOptimizer.Result r = AllocationOptimizer.optimize(
+							b, sota, n, m, p,
+							new SearchBudget(bestRank.get(), ALLOC_MAX_NODES, ALLOC_STAGNATION), null);
+					bestRank.accumulateAndGet(r.rank(), Math::min);
+					return new Scored(i, nb, r);
+				})
+				.filter(java.util.Objects::nonNull)
+				.min(java.util.Comparator
+						.comparingLong((Scored s) -> s.r().rank())
+						.thenComparingInt(Scored::idx))
+				.orElse(null);
+		if (best == null || best.r().rank() >= upperBound) return Optional.empty();
+		AllocationOptimizer.Result r = best.r();
+		return Optional.of(new MultiBaseSplitCandidate(n, m, p, best.nb().base(), best.nb().label(),
+				r.allocA(), r.allocB(), r.allocC(), r.rank(), best.nb().originLineage()));
 	}
 
 	/** Opt-in: route recombination through the partition+assignment exact B&B

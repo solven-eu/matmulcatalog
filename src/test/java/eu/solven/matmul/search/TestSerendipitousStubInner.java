@@ -90,6 +90,41 @@ public class TestSerendipitousStubInner {
 	}
 
 	/**
+	 * Orientation-ambiguity guard (fmm-gap 2026-07-09, ⟨21,28,30⟩): a ⟨5,7,7⟩
+	 * file reaches ⟨7,7,5⟩ by TWO distinct S₃ orientations with different bud
+	 * profiles — budBasesAt must offer BOTH (the σ-paying one is the second;
+	 * single-orientation offering priced 9477 instead of FMM's 9473), and the
+	 * persisted pin must carry the EXACT axisMap so replay is deterministic.
+	 */
+	@Test
+	public void ambiguous_orientation_offers_both_bud_profiles() {
+		NonCubicBilinearAlgorithm fmm = base; // native ⟨5,7,7⟩
+		long best = Long.MAX_VALUE;
+		java.util.Set<Long> costs = new java.util.TreeSet<>();
+		for (int[] perm : NonCubicBilinearAlgorithm.ORIENT_PERMS) {
+			NonCubicBilinearAlgorithm o = fmm.orientByPerm(perm);
+			if (o.n != 7 || o.m != 7 || o.p != 5) continue;
+			long c = SerendipitousBudProduct.serendipitousCost(o, lookup, 3, 4, 6);
+			costs.add(c);
+			best = Math.min(best, c);
+		}
+		assertThat(costs).as("two orientations reach ⟨7,7,5⟩ with DIFFERENT σ").hasSizeGreaterThan(1);
+		assertThat(best).as("the σ-best orientation prices FMM's ⟨21,28,30⟩ recipe").isLessThanOrEqualTo(9473);
+	}
+
+	/** The persisted ⟨21,28,30⟩=9473 stub carries an explicit axisMap pin and
+	 *  replays to exactly the claimed rank (dim-repeat-safe orientation). */
+	@Test
+	public void ambiguous_orientation_stub_replays_exactly() {
+		File stub = new File(
+				"src/main/resources/schemes/derived/section30/21x28x30-r9473-derived-f794828.json");
+		assertThat(stub).exists();
+		NonCubicBilinearAlgorithm replayed =
+				LineageReplayer.withDefaultPool(lookup).replayFromFile(stub);
+		assertThat(replayed.r).isEqualTo(9473);
+	}
+
+	/**
 	 * The persisted ⟨20,28,28⟩=8434 stub replays through its stub inner
 	 * (LineageReplayer.resolveInner) to exactly the claimed rank.
 	 */

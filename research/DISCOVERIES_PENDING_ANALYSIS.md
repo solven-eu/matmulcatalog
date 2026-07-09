@@ -7,6 +7,135 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-09 — fmm-gap INDEX-RECIPE sweep: SIX closed at exact ties (⟨6,25,32⟩ 2870, ⟨9,30,32⟩ 4851, ⟨8,21,21⟩ 2156, ⟨12,20,28⟩ 3782, ⟨18,20,21⟩ 4259, ⟨20,21,21⟩ 4967); WORSE 42 → 36; 20× sweep concurrency
+
+**Method:** parsed FMM's INDEX-page `<td content=description>` cells (unquoted
+attrs; fresher than the detail pages) for all 42 WORSE rows and priced every
+recipe with OUR ingredient ranks. 9 serendipitous recipes priced exactly
+FMM's rank; 7 plain sums priced consistent. Engine attempts: the 9 serendip
+rows all failed on OUR base representatives (bud-representative gap) →
+imported the 5 distinct FMM bases; TWO were useless (⟨4,9,10⟩ artifact 255
+vs recipe's 250, ⟨4,7,8⟩ 164 vs 161 — MORE index-vs-artifact staleness, added
+to the report material; our own catalog already holds 250/161). The THREE
+matching bases (⟨3,5,8⟩:90, ⟨4,7,7⟩:144, ⟨3,5,7⟩:79 — bud-bases/, Kauers–Wood
+era, attribution TBD from biblio) closed SIX rows at exact ties, one
+(⟨20,21,21⟩) again requiring the ambiguous-orientation fix
+(OrientAs(⟨5,3,7⟩)). ⟨3,5,7⟩:79 alone pays for three rows. The 7 sum rows: 0
+wins (absorbing-class structures, as before). ⟨20,24,25⟩/⟨16,20,28⟩ still
+blocked (known bud-representative / inconsistent-recipe cases). Verification:
+1 exact proof (⟨8,21,21⟩) + 5 spot-checks (dense), 0 failures. Cascade pass:
+0 (fixpoint). **WORSE 42 → 36.**
+
+**Concurrency (user flagged low CPU):** three fixes, all guarded green —
+(1) `bestViaAllocationOptimizer` now fans the per-base B&B over a parallel
+stream (AtomicLong shared incumbent for cross-base pruning; deterministic
+(rank, pool-index) pick); (2) `RecursiveClosureSota` made concurrent-safe
+(ConcurrentHashMap cache — getRank is pure so duplicate computes are benign;
+cycle-guard moved to ThreadLocal so sibling computations don't false-positive
+to directRank); (3) `SchemeSweep.runMaterialize` submits heaviest-volume
+shapes FIRST (the dim-27+ stragglers ran the tail near-single-threaded).
+Measured: 72% → ~1700% CPU (0.7 → 17 of 18 cores) on the same 36-row sweep.
+
+---
+
+## 2026-07-09 — fmm-gap ⟨21,28,30⟩ + ⟨4,18,30⟩: CLOSED (ties 9473 / 1394) — NEW root cause: AMBIGUOUS-ORIENTATION masking in budBasesAt; ⟨16,20,28⟩ recipe proven inconsistent; WORSE 44 → 42
+
+**Trigger:** user pointed at FMM's INDEX-page description for ⟨21,28,30⟩:
+`(⟨7,7,5⟩:176 − 21) ⊗ ⟨3,4,6⟩:54 + ⟨15,4,6⟩:263 + 8·⟨6,4,6⟩:105 = 9473` —
+arithmetic exact with OUR ingredient ranks (all match), base = the round-6
+Kauers–Wood ⟨5,7,7⟩:176 import. Yet the engine stopped at 9477.
+
+**Root cause (engine, silent):** ⟨7,7,5⟩ is reachable from a ⟨5,7,7⟩ file by
+TWO distinct S₃ orientations (dims repeat) with DIFFERENT bud profiles —
+probe: BCA orientation prices 9487, CBA prices **9473**. `budBasesAt` offered
+only `orientAs`'s first match (BCA), so the σ-paying sibling was never fed to
+the search. **Fix:** budBasesAt now offers EVERY S₃ orientation reaching the
+target dims (`ORIENT_PERMS` loop); `BudBase` carries the exact perm; the pin
+records an explicit `axisMap` OrientAs (new `durableLeafRef(…, exactPerm)`
+overload) so replay is dim-repeat-deterministic — stub
+`21x28x30-r9473-f794828` pins `OrientAs(axisMap=pmn, 5x7x7@a88ab92…)`.
+Guards: `TestSerendipitousStubInner.ambiguous_orientation_offers_both_bud_profiles`
++ `…_stub_replays_exactly`; rows ⟨21,28,30⟩≤9473, ⟨4,18,30⟩≤1394.
+Broad re-harvest (WORSE ∪ perm-multiples, 185 shapes): +1 collateral,
+**⟨4,18,30⟩ = 1394** (tie with FMM index, BEATS their published artifact
+1397). Verification: 1 exact proof (⟨4,18,30⟩) + 1 spot-check (⟨21,28,30⟩,
+dense), 0 failures. **WORSE 44 → 42.**
+
+**Audit revision:** "phantom" rows split — where an INDEX-page recipe
+verifies, the right upstream report is "stale artifact", not "index
+over-claim" (⟨21,28,30⟩ and ⟨4,18,30⟩ now reproduced by us; artifacts 9782 /
+1397 are stale). See `references/fmm-artifact-audit.md` REVISION section.
+
+**⟨16,20,28⟩ dig (user suggestion — recipe despite placeholder artifact):**
+slice-rank analysis of FMM's published ⟨4,5,7⟩:104 base (exact rationals):
+U-classes = 7×size-2 + 1×size-3 = **exactly 17 terms** (matches the "−17"),
+but every class is slice-rank-TIGHT (the size-3 class's M_u has rank 3 → no
+⟨1,1,2⟩ embedding exists), and 8×⟨4,4,8⟩ can hold at most 16 terms. So the
+displayed recipe `(104−17)⊗48 + 8·96 = 4944` is TERM-COUNT INCONSISTENT and
+unattainable from this base under bud semantics (best expressible: 4989 via
+7×⟨4,4,8⟩ + 1×⟨4,4,12⟩). Either the display is corrupted (add to the FMM
+report — its artifact is also a placeholder) or the true device fuses in the
+PRODUCT space (base⊗inner term level — a finer mechanism than base-level
+buds; unexplored).
+
+---
+
+## 2026-07-08 — fmm-gap BATCH: full WORSE-list gap-tree census; the ⟨2,2t,3t⟩ "HK family" rows are FMM INDEX-ONLY OVER-CLAIMS (their artifacts match or LOSE to ours)
+
+**Scope:** user directive "more FMM gaps until all gaps are done" → recursive
+gap-tree diagnosis of all 44 WORSE rows (leaves fetched from per-shape FMM
+pages, compared to our ranks, deficient chains followed).
+**Census tally (by root class): 23 OVERLAP** (sub-additive constructions —
+absorbing-pad / staircase family, incl. the ⟨27,·,·⟩ run whose 2-leaf concats
+save 18–26 below plain sums), **11 SERENDIP** (mostly span-compressed-bud
+blocked, see previous entry), **4 TA-family, 4 unparsed (⟨27,28,·⟩ family
+pages), 2 mis-classified "closable"** (⟨3,29,29⟩/⟨9,11,22⟩ — their 38/40-leaf
+lists cannot come from any partition grid: an all-single-A-support rank-40
+⟨2,5,5⟩ would direct-sum to ≥50; absorbing family again).
+
+**The ⟨2,2t,3t⟩ t=6…10 + ⟨2,24,30⟩ rows (6 rows) — RESOLVED as
+NOT-OUR-GAP:** all six FMM index ranks (333/452/588/743/915/1095) are exactly
+the HK71 closed form `⌈(3pn+max)/2⌉`; their page "decompositions" are
+fallback displays summing 1–5 HIGHER. Downloaded FMM's actual maple tensor
+artifacts: `⟨2,12,18⟩` artifact = **334 = ours** (+1 over index);
+`⟨2,16,24⟩` artifact = **592, WORSE than our 590** (+4 over index). Perminov
+carries none of the six. So the index ranks are UNATTAINED formula citations
+— consistent with our task-#9 impossibility results
+(`research/hopcroft-kerr-2np/CONSTRUCTIVE_METHOD.md`: the g ≥ 6 triangle
+family is formula-impossible within the local-atom framework; the arc-sum +
+(3,3,bridge) theorems). FMM's own artifacts sitting at exactly our ranks is
+empirical corroboration. **Action items:** (1) these six rows should be
+EXCLUDED from actionable-WORSE (or FmmCrossCheck should annotate index-vs-
+artifact discrepancies — extend `fmm-lille-discrepancies.md` tooling);
+(2) worth reporting upstream to Sedoglavic (user's contact) — either the
+index cites HK's paper bound optimistically, or an unpublished attaining
+scheme exists and the artifact link is stale; (3) task #9's "resume points"
+gain urgency only if upstream confirms an attaining scheme exists.
+
+**Conclusion of the batch pass:** ZERO remaining WORSE rows are closable
+with current engines — every row is blocked on one of: (a) absorbing-pad /
+overlap constructions (~27+2 rows, biggest class), (b) span-compressed buds
+(~11), (c) TA-family builder (4), (d) the 6 index-only HK rows (not real
+gaps). "All gaps done" now means: build (a) and (b) as engine features, and
+reclassify (d). Analysis imports were kept OUT of the catalog trees and
+deleted after use per policy.
+
+**Follow-up (same session) — FULL ARTIFACT AUDIT of all 44 rows**
+(`references/fmm-artifact-audit.md`): downloaded every row's FMM tensor
+artifact and compared its true rank to the index. **14 rows are PHANTOM**
+(artifact ≥ ours; e.g. ⟨21,28,30⟩ artifact 9782 vs our 9477; the three
+⟨27,28,·⟩ artifacts equal ours exactly) — the index over-claims and the
+cross-check overstates our deficit. **≥3 rows are recipe-only placeholders**
+(`Tensor:=Tensor:`, no data: ⟨16,20,28⟩/⟨16,20,29⟩/⟨20,24,25⟩). **≈25 rows
+are REAL** (artifact attains index — explicit schemes exist that our engines
+can't derive; the downloaded artifacts are the raw material for extracting
+the absorbing-pad/overlap device). 5 downloads failed (⟨27,·,3x⟩ family +
+⟨4,18,30⟩, likely placeholders too — re-check). Action items in the audit
+doc: annotate phantoms in FmmCrossCheck, report upstream, mine the real
+artifacts for the device.
+
+---
+
 ## 2026-07-08 — fmm-gap ⟨16,20,29⟩→⟨16,20,28⟩: NOT closed — needs SPAN-COMPRESSED bud support in the serendipitous engine
 
 **Target:** `Q⟨16,20,29⟩:m` (ours 5272, FMM 5264) = naive ⟨16,20,1⟩:320 +

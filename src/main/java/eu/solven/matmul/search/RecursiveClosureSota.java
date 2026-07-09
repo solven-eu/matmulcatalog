@@ -36,10 +36,17 @@ public final class RecursiveClosureSota implements Recombination.SotaResolver {
 	private final List<BlockSplitSearch.NamedBase> pool;
 	private final boolean balancedOnly;
 	private final boolean useFormulaBounds;
-	private final Map<Long, Integer> cache = new HashMap<>();
+	// CONCURRENT (2026-07-09): bestViaAllocationOptimizer now fans the per-base B&B
+	// across threads, all sharing this resolver. getRank is a pure function of
+	// (a,b,c), so a racy duplicate compute is benign (same value cached twice);
+	// what must not break is the map itself → ConcurrentHashMap.
+	private final Map<Long, Integer> cache = new java.util.concurrent.ConcurrentHashMap<>();
 	// Guard against re-entrant cycles (shouldn't happen — shape strictly decreases —
-	// but defensive).
-	private final java.util.Set<Long> inProgress = new java.util.HashSet<>();
+	// but defensive). PER-THREAD: the cycle relation is a property of one computation
+	// chain; a cross-thread shared set would false-positive on concurrent SIBLING
+	// computations of the same shape and silently degrade them to directRank.
+	private final ThreadLocal<java.util.Set<Long>> inProgress =
+			ThreadLocal.withInitial(java.util.HashSet::new);
 
 	public RecursiveClosureSota(Recombination.AlgorithmLookup lookup,
 			List<BlockSplitSearch.NamedBase> pool,
@@ -57,18 +64,19 @@ public final class RecursiveClosureSota implements Recombination.SotaResolver {
 		long key = key(a, b, c);
 		Integer hit = cache.get(key);
 		if (hit != null) return hit;
-		if (inProgress.contains(key)) {
+		java.util.Set<Long> chain = inProgress.get();
+		if (chain.contains(key)) {
 			// Shouldn't happen with monotonically-shrinking shape, but if it does,
 			// bail out to direct lookup to break the cycle.
 			return directRank(a, b, c);
 		}
-		inProgress.add(key);
+		chain.add(key);
 		try {
 			int best = computeBest(a, b, c);
 			cache.put(key, best);
 			return best;
 		} finally {
-			inProgress.remove(key);
+			chain.remove(key);
 		}
 	}
 

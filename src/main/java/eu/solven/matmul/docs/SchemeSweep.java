@@ -663,8 +663,16 @@ public final class SchemeSweep {
 		System.out.printf("%-12s  %-8s  %-8s  %s%n", "shape", "predict", "catalog", "outcome");
 		System.out.println("-".repeat(60));
 
+		// Heaviest shapes FIRST: per-shape wall-clock grows superlinearly with volume
+		// (alloc space, leaf sizes, stub replays), so submitting in list order left the
+		// dim-27+ stragglers for last and the sweep tail ran near-single-threaded
+		// (observed 2026-07-09: one busy core for the final ~15 min of a 42-shape run).
+		// Big-first keeps all workers busy until the cheap shapes drain the queue.
+		List<Shape> byVolumeDesc = new ArrayList<>(shapes);
+		byVolumeDesc.sort(java.util.Comparator.comparingLong(
+				(Shape s) -> (long) s.n() * s.m() * s.p()).reversed());
 		List<Future<?>> futures = new ArrayList<>();
-		for (Shape sk : shapes) {
+		for (Shape sk : byVolumeDesc) {
 			final int n = sk.n(), m = sk.m(), p = sk.p();
 			futures.add(exec.submit(() -> {
 				RecursiveMaterialiser worker = mats.poll();

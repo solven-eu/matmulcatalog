@@ -615,6 +615,11 @@ public final class RecursiveMaterialiser {
 		// durably — by the file's stamped hash + an OrientAs, NOT contentHash(orientedAlg),
 		// which is stamped on no file and replays to nothing (the 747 dangling stubs).
 		java.util.IdentityHashMap<NonCubicBilinearAlgorithm, Path> basePaths = new java.util.IdentityHashMap<>();
+		// Exact file→oriented axis perm per bud base — needed to pin an UNAMBIGUOUS
+		// OrientAs when the oriented dims repeat (⟨7,7,5⟩ has two valid orientations
+		// from one ⟨5,7,7⟩ file, with different bud profiles). Null perm (the plain
+		// findWithSource entries) → legacy first-match inference in durableLeafRef.
+		java.util.IdentityHashMap<NonCubicBilinearAlgorithm, int[]> basePerms = new java.util.IdentityHashMap<>();
 		for (int n1 = 1; n1 <= n; n1++) {
 			if (n % n1 != 0) continue;
 			for (int m1 = 1; m1 <= m; m1++) {
@@ -640,6 +645,7 @@ public final class RecursiveMaterialiser {
 					for (BudBase b : budBasesAt(n1, m1, p1)) {
 						bases.add(b.alg());
 						basePaths.put(b.alg(), b.path());
+						basePerms.put(b.alg(), b.perm());
 					}
 				}
 			}
@@ -667,15 +673,19 @@ public final class RecursiveMaterialiser {
 		if (basePath == null) {
 			return null;
 		}
-		Lineage.Node baseNode = durableLeafRef(basePath, h.base().n, h.base().m, h.base().p);
+		Lineage.Node baseNode = durableLeafRef(basePath, h.base().n, h.base().m, h.base().p,
+				basePerms.get(h.base()));
 		Lineage.Node tree = new Lineage.SerendipitousProduct(baseNode, h.n2(), h.m2(), h.p2());
 		return new Result(h.scheme(), tree, false);
 	}
 
 	/** A bud-rich base together with the SOURCE FILE it was loaded+oriented from — the
 	 *  file is needed to pin the serendipitous base DURABLY (file-hash + OrientAs), not by
-	 *  the oriented alg's content-hash, which matches NO file → a dangling lineage ref. */
-	private record BudBase(NonCubicBilinearAlgorithm alg, Path path) {}
+	 *  the oriented alg's content-hash, which matches NO file → a dangling lineage ref.
+	 *  {@code perm} is the EXACT axis-role permutation (file→oriented) so the pin records
+	 *  an unambiguous OrientAs when the target dims repeat (⟨7,7,5⟩ from a ⟨5,7,7⟩ file
+	 *  has TWO distinct orientations with different bud profiles — 2026-07-09). */
+	private record BudBase(NonCubicBilinearAlgorithm alg, Path path, int[] perm) {}
 
 	/** Per-shape cache of ALL bud-bearing bases, for serendipitous bases. */
 	private final Map<String, List<BudBase>> budBasesCache =
@@ -704,12 +714,18 @@ public final class RecursiveMaterialiser {
 				} catch (Exception e) {
 					continue;
 				}
-				Optional<NonCubicBilinearAlgorithm> oriented = a.orientAs(n, m, p);
-				if (oriented.isEmpty()) {
-					continue;
-				}
-				if (budScore(oriented.get()) > 0) {
-					out.add(new BudBase(oriented.get(), path));
+				// Offer EVERY distinct S₃ orientation reaching ⟨n,m,p⟩, not just
+				// orientAs's first match: when target dims repeat (⟨7,7,5⟩ from a
+				// ⟨5,7,7⟩ file) the two valid orientations carry DIFFERENT bud
+				// profiles, and the σ-paying one can be the second (the ⟨21,28,30⟩
+				// 9477-vs-9473 masking, 2026-07-09). Dedup identical perms only —
+				// bestFor's predict phase prices extras for ~free.
+				for (int[] perm : NonCubicBilinearAlgorithm.ORIENT_PERMS) {
+					NonCubicBilinearAlgorithm oriented = a.orientByPerm(perm);
+					if (oriented.n != n || oriented.m != m || oriented.p != p) continue;
+					if (budScore(oriented) > 0) {
+						out.add(new BudBase(oriented, path, perm.clone()));
+					}
 				}
 			}
 			return out;
@@ -1611,6 +1627,27 @@ public final class RecursiveMaterialiser {
 		java.util.regex.Matcher m = java.util.regex.Pattern
 				.compile("-([0-9a-f]{4,})\\.json$").matcher(src.getFileName().toString());
 		return m.find() ? m.group(1) : null;
+	}
+
+	/** {@link #durableLeafRef} with an EXPLICIT file→target axis perm: when the target
+	 *  dims repeat (⟨7,7,5⟩) the legacy first-match inference can pick the WRONG of two
+	 *  valid orientations and the replayed base carries a different bud profile than the
+	 *  search priced (the ⟨21,28,30⟩ 9477-vs-9473 masking). Null perm → legacy inference. */
+	private Lineage.Node durableLeafRef(Path src, int n, int m, int p, int[] exactPerm) {
+		Lineage.Node legacy = durableLeafRef(src, n, m, p);
+		if (exactPerm == null) return legacy;
+		// Rebuild the OrientAs (if any) with the exact axisMap; a bare Atom (native
+		// orientation) needs no wrapper — exactPerm is identity there by construction.
+		if (legacy instanceof Lineage.OrientAs oa) {
+			return new Lineage.OrientAs(oa.child(), oa.n(), oa.m(), oa.p(), exactPerm.clone());
+		}
+		if (java.util.Arrays.equals(exactPerm, NonCubicBilinearAlgorithm.ORIENT_PERMS[0])) {
+			return legacy; // identity perm, native orientation — Atom is exact already
+		}
+		// Native dims equal target dims but the winning orientation is a NON-identity
+		// self-permutation (e.g. a ⟨7,7,5⟩ file used as ⟨7,7,5⟩ with axes 0↔1 swapped):
+		// the legacy path emits a bare Atom which would replay the UN-swapped scheme.
+		return new Lineage.OrientAs(legacy, n, m, p, exactPerm.clone());
 	}
 
 	private Lineage.Node durableLeafRef(Path src, int n, int m, int p) {
