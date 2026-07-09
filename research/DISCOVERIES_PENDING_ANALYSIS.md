@@ -7,6 +7,21 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-09 — FmmCrossCheck now splits WORSE into artifact-backed (16) vs UPSTREAM-UNVERIFIED (20)
+
+`FmmCrossCheck` consumes the new curated `references/fmm-artifact-audit.json`
+(17 index_only + 3 placeholder shapes from the artifact audit) and moves those
+rows out of `## WORSE` into a `## UPSTREAM-UNVERIFIED` section — named without
+the word "WORSE" so the fmm-gap skill's section-scoped random picker never
+selects them. Headline now honest: **WORSE=16 (real, artifact-backed),
+UNVERIFIED=20, BETTER=1474**. Guard: `TestFmmArtifactAudit` (audit JSON
+well-formed, keys sorted n≤m≤p — an unsorted key would silently fail to match
+and fall back into WORSE). Skill §1 updated (re-audit rule on digest refresh).
+The 16 real rows are the shared-correction-recombination frontier (see the
+ANATOMY entry below) minus the already-blocked serendip stragglers.
+
+---
+
 ## 2026-07-09 — CORRECTION (user catch): ⟨4,9,10⟩/⟨4,7,8⟩ "base-level mismatches" were OUR mirror artifacts; ⟨8,27,30⟩ recipe found unrealizable from FMM's published base
 
 **User checked fmm.univ-lille.fr/4x9x10.html** (Perminov-credited, rank 250)

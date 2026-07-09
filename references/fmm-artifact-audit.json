@@ -1,0 +1,30 @@
+{
+  "audited": "2026-07-09",
+  "method": "Per-shape download of FMM's own tensor artifact (mirror-provenance verified 2026-07-09) and triad count vs index rank; placeholders detected by trailing 'Tensor:=Tensor:' with no data. See references/fmm-artifact-audit.md.",
+  "classes": {
+    "index_only": "FMM index rank is NOT attained by their published artifact (artifact rank >= our catalog rank); treat as an unverified upstream claim, not an actionable gap",
+    "placeholder": "FMM's tensor artifact contains no data; index rank rests on a page recipe only"
+  },
+  "shapes": {
+    "2x12x18": { "class": "index_only", "artifact_rank": 334 },
+    "2x14x21": { "class": "index_only", "artifact_rank": 453 },
+    "2x16x24": { "class": "index_only", "artifact_rank": 592 },
+    "2x18x27": { "class": "index_only", "artifact_rank": 747 },
+    "2x20x30": { "class": "index_only", "artifact_rank": 920 },
+    "2x24x30": { "class": "index_only", "artifact_rank": 1104 },
+    "21x28x32": { "class": "index_only", "artifact_rank": 10477 },
+    "22x23x23": { "class": "index_only", "artifact_rank": 6501 },
+    "22x28x28": { "class": "index_only", "artifact_rank": 9552 },
+    "22x30x30": { "class": "index_only", "artifact_rank": 10705 },
+    "27x28x28": { "class": "index_only", "artifact_rank": 10442 },
+    "27x28x29": { "class": "index_only", "artifact_rank": 11198 },
+    "27x28x30": { "class": "index_only", "artifact_rank": 11590 },
+    "27x28x31": { "class": "index_only", "artifact_rank": 12117 },
+    "27x28x32": { "class": "index_only", "artifact_rank": 12394 },
+    "27x29x31": { "class": "index_only", "artifact_rank": 12942 },
+    "27x29x32": { "class": "index_only", "artifact_rank": 13234 },
+    "16x20x28": { "class": "placeholder" },
+    "16x20x29": { "class": "placeholder" },
+    "20x24x25": { "class": "placeholder" }
+  }
+}

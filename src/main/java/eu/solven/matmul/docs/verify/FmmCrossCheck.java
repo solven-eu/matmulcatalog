@@ -142,6 +142,30 @@ public final class FmmCrossCheck {
 		better.sort(byShape);
 		missing.sort(byShape);
 
+		// Artifact-audit split (2026-07-09): rows whose FMM index rank is NOT backed
+		// by their published artifact (index_only: artifact ≥ our catalog; placeholder:
+		// artifact has no tensor data) are UPSTREAM-UNVERIFIED claims, not actionable
+		// gaps — they overstated the headline WORSE count by ~⅓ and burned fmm-gap
+		// rounds on phantoms. Curated in references/fmm-artifact-audit.json (manual
+		// audit, see the .md for method); rows absent from the audit stay in WORSE.
+		// The unverified section deliberately avoids the word "WORSE" so the fmm-gap
+		// skill's section-scoped random picker never selects from it.
+		Map<String, String> audit = new java.util.HashMap<>();
+		java.io.File auditFile = new java.io.File("references/fmm-artifact-audit.json");
+		if (auditFile.isFile()) {
+			tools.jackson.databind.JsonNode auditRoot =
+					new tools.jackson.databind.ObjectMapper().readTree(auditFile);
+			auditRoot.get("shapes").properties().forEach(e ->
+					audit.put(e.getKey(), e.getValue().get("class").asText()));
+		}
+		List<Row> unverified = new ArrayList<>();
+		worse.removeIf(r -> {
+			String cls = audit.get(r.n + "x" + r.m + "x" + r.p);
+			if (cls == null) return false;
+			unverified.add(r);
+			return true;
+		});
+
 		try (PrintWriter pw = new PrintWriter(OUT)) {
 			pw.println("# Catalog vs FMM-Lille digest cross-check");
 			pw.println();
@@ -150,7 +174,9 @@ public final class FmmCrossCheck {
 			pw.println("(`references/catalogs/fmm-lille-catalog.json`, over Q). Capped at max-dim "
 					+ MAX_DIM + ".");
 			pw.println();
-			pw.printf("- WORSE (we lag FMM): **%d**%n", worse.size());
+			pw.printf("- WORSE (we lag FMM, artifact-backed): **%d**%n", worse.size());
+			pw.printf("- UPSTREAM-UNVERIFIED (FMM index not backed by their artifact): **%d**%n",
+					unverified.size());
 			pw.printf("- BETTER (we beat FMM): **%d**%n", better.size());
 			pw.printf("- MISSING (FMM has, we don't): **%d**%n", missing.size());
 			pw.println();
@@ -177,6 +203,25 @@ public final class FmmCrossCheck {
 			}
 			pw.println();
 
+			if (!unverified.isEmpty()) {
+				// Section name intentionally does NOT contain "WORSE" — the fmm-gap
+				// skill's picker is section-scoped on that word.
+				pw.println("## UPSTREAM-UNVERIFIED — FMM index rank not backed by their published artifact");
+				pw.println();
+				pw.println("Audited per-shape (references/fmm-artifact-audit.{md,json}): either the");
+				pw.println("downloaded artifact's rank is no better than our catalog (index_only) or");
+				pw.println("the artifact is a data-less placeholder. Not actionable gaps; report");
+				pw.println("upstream and re-audit when the digest refreshes.");
+				pw.println();
+				pw.println("| shape | ours | FMM index | audit class |");
+				pw.println("| --- | ---: | ---: | --- |");
+				for (Row r : unverified) {
+					pw.printf("| ⟨%d,%d,%d⟩ | %d | %d | %s |%n",
+							r.n, r.m, r.p, r.ours, r.fmm, audit.get(r.n + "x" + r.m + "x" + r.p));
+				}
+				pw.println();
+			}
+
 			pw.println("## MISSING — FMM has a scheme we lack");
 			pw.println();
 			pw.println("| shape | FMM | FMM source |");
@@ -194,7 +239,7 @@ public final class FmmCrossCheck {
 				pw.printf("| ⟨%d,%d,%d⟩ | %d | %d |%n", r.n, r.m, r.p, r.ours, r.fmm);
 			}
 		}
-		log.info("FmmCrossCheck: WORSE={} BETTER={} MISSING={} (FMM shapes ≤dim{}: {}). Wrote {}",
-				worse.size(), better.size(), missing.size(), MAX_DIM, fmmBest.size(), OUT);
+		log.info("FmmCrossCheck: WORSE={} UNVERIFIED={} BETTER={} MISSING={} (FMM shapes ≤dim{}: {}). Wrote {}",
+				worse.size(), unverified.size(), better.size(), missing.size(), MAX_DIM, fmmBest.size(), OUT);
 	}
 }

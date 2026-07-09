@@ -58,6 +58,12 @@ optimality tiers, math-first, long-run process hygiene).
 
    Output: `n,m,p ours fmm gap`. Also glance at `## MISSING` — a
    MISSING shape is a valid target too (treat as an import gap).
+   The `## UPSTREAM-UNVERIFIED` section (rows whose FMM index rank is NOT
+   backed by their published artifact — audited in
+   `references/fmm-artifact-audit.{md,json}`) is deliberately EXCLUDED from
+   the picker's section: those are report-to-FMM material, not targets. If a
+   digest refresh changes an audited shape's index rank, re-audit it
+   (download the artifact, count triads) before trusting either side.
 
 4. **State the target** to the user before computing: shape, our rank,
    FMM's rank, gap, and FMM's source column if present. Field context is
