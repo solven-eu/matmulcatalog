@@ -7,6 +7,71 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-10 — FUSION-KERNEL PROGRAM session 1: ⟨8,27,30⟩'s kernel = FIVE two-slot "joint-tail" units (8+8+13 = 29 vs 30) — full anatomy extracted
+
+**Confirmed base attribution:** the 3736 artifact is EXACTLY FMM's
+⟨4,9,10⟩:250 ⊗ ⟨2,3,3⟩:15 with: 229 slots at full plain 15; the base's
+U-pair directions plain; and a kernel of 65 products organised as **five
+13-product units**, each tied to a slot pair — (19,238), (23,129), (25,202),
+(42,36), (138,175). Unit anatomy (exact, from Kron-rank fingerprinting —
+reshape U as (base 4×9)×(inner 2×3), likewise V/W):
+- both slots keep 8 of their 15 plain inner products (7 missing each; the
+  9 partial slots do NOT miss the same 7 — per-slot inner variants, 24
+  distinct inner U-directions across the artifact);
+- 13 mixed products cover the missing 7+7: **U-side rank-2** (combines
+  u_s⊗inner and u_t⊗inner; 9 of 13 span both slots), **V-side rank-1 and
+  attributed to the CENTER slot only**, W-side ~5/13 cross-mixed (leaks to
+  neighbour slots like 48);
+- net: 29 products where independent inners cost 30 — σ=1 per unit ×5,
+  plus pair-direction bookkeeping → σ=14 total ✓.
+
+**Two competing readings, one decisive experiment left:**
+(a) *self-contained joint-tail pair*: the 29 products compute the disjoint
+sum of two ⟨2,3,3⟩ slot-problems — would give a reusable primitive
+"R(⟨2,3,3⟩⊕⟨2,3,3⟩) ≤ 29" (a constructive additivity violation at minimal
+scale — extraordinary; treat with suspicion) directly pluggable into our
+leaf-pairing machinery (any two same-shape ⟨2,3,3⟩ leaves: 29 not 30);
+(b) *cross-slot cancellation*: the W-leakage to neighbour slots cancels
+against terms of OTHER units/plain products — the diffuse-sharing device,
+requiring whole-kernel (not pairwise) construction.
+**Decisive test (next session):** slot-frame projection — express the unit's
+29 products in the dual basis of (u_s,u_t)⊗inner etc. and check external
+components cancel WITHIN the unit. If (a): implement the 29-scheme as a
+constant (extract once, verify exactly, embed like PanPairProduct — the
+⟨17,17,19⟩-class ±1 rows likely fall to the analogous ⟨8,9,9⟩-level units).
+If (b): the builder must instantiate whole kernels; parameterization unclear.
+
+Probes for this session: Kron-rank fingerprint + base attribution + unit
+decomposition (throwaway python over the cached artifacts; fold into tools/
+if the program continues).
+
+---
+
+## 2026-07-09 — ⟨8,27,30⟩ artifact DECODED (Kron-rank fingerprint): a 13-base-product FUSION KERNEL at the base⊗inner level, σ=14 — the last-6 rows are one research program
+
+**Method (new, reusable):** reshape each product's U-column as a
+(base 4×9) × (inner 2×3) matrix and rank-test — Kron-rank 1 = plain
+base⊗inner product. FMM's ⟨8,27,30⟩:3736 (real artifact, BEATS both its own
+broken display 3744 and our 3750 = plain ⟨4,9,10⟩:250 ⊗ ⟨2,3,3⟩:15 Kron):
+**3676 rank-1 + 60 rank-2 products.** Clusters: 229 clean Kron blocks of 15
++ 4 proportional-u base pairs (plain) + an irregular FUSION KERNEL covering
+the remaining 13 base products with 181 products instead of 195 (σ=14);
+the 60 rank-2 products have STRUCTURED base footprints ({3,4,9,12} cells).
+This is the round-10 "product-space fusion" hypothesis made concrete: the
+device mixes base⊗inner terms across ~13 base products — beyond bud/pair
+semantics, but this artifact is far more readable than the flip-soup ones.
+
+**Conclusion on "gaps we can still fill":** the remaining 6 rows (four −1
+diffuse-sharing, ⟨7,11,30⟩ −2, ⟨8,27,30⟩ −6) are ONE research program:
+extract a product-level fusion kernel from a readable artifact
+(⟨8,27,30⟩ = best specimen: biggest σ, cleanest structure; ⟨17,17,19⟩ =
+smallest), formulate the identity, build+search. No remaining row is
+closable by existing engines or their parameterizations — verified
+exhaustively across this campaign. Kron-rank fingerprint probe worth
+folding into tools/ if the program proceeds.
+
+---
+
 ## 2026-07-09 — v2 pairing PROVABLY UNPROFITABLE for the ±1 family (checked before building); ⟨9,11,22⟩ CLOSED via support-rep import; WORSE 7 → 6
 
 **v2 transpose-pairing arithmetic check (saved a wasted build):** for every
