@@ -1,6 +1,6 @@
-% Notation and field-discipline section. Should be short and
-% self-contained — it's both a reading aid for the rest of the paper
-% and a normative statement of the catalog's conventions.
+% Notation, field discipline, the commutative axis, and the glossary.
+% Single home for the paper's conventions — both a reading aid for the
+% rest of the paper and a normative statement of the catalog's rules.
 
 A bilinear algorithm computing the product of an \(n \times m\)
 matrix \(A\) by an \(m \times p\) matrix \(B\) consists of three
@@ -21,7 +21,7 @@ multiplications, with conventions following Probert--Fischer 1976.
 sufficient -- the rank depends on the algebra. We adopt:
 \begin{itemize}[itemsep=2pt]
   \item \(\nmpfield{K}{n}{m}{p}\): non-commutative matmul over the
-    field \(K\). E.g.\ \(\nmpfield{\Reals}{7}{7}{7} = 250\).
+    field \(K\). E.g.\ \(\nmpfield{\Reals}{7}{7}{7} = 249\).
   \item \(\nmpfieldc{K}{n}{m}{p}\) (superscript-\(c\)): commutative
     matmul over \(K\). E.g.\ \(\nmpfieldc{\Reals}{3}{3}{3} = 21\)
     (Rosowski).
@@ -29,10 +29,7 @@ sufficient -- the rank depends on the algebra. We adopt:
 The value after \(=\) is always the \emph{rank} --- the number of
 scalar multiplications, which is the quantity that compounds into an
 \(\omega\) bound under recursion. Addition counts are tracked
-separately (Section~\ref{sec:architecture}); on disk the rank appears
-as the \code{r\{rank\}} filename token (a cosmetic label --- the
-authoritative rank is the JSON content; additions are recomputed from
-the factor matrices, not encoded in the name).
+separately (Section~\ref{sec:architecture}).
 
 \paragraph{The fields we track.}
 \begin{description}[itemsep=2pt]
@@ -52,9 +49,9 @@ the factor matrices, not encoded in the name).
     field-separation examples are date-stamped claims.
   \item[\Ftwo] Characteristic-2. AlphaTensor's
     \(\nmpfield{\Ftwo}{4}{4}{4} = 47\) lives here. Integer-valid
-    schemes \emph{do} reduce mod 2 to give \Ftwo\ schemes, but our
-    current widening sweep does not yet surface that exhaustively
-    -- see Section \ref{sec:openquestions}.
+    schemes reduce mod 2 to give \Ftwo\ schemes; the field stampers
+    grant this systematically (the promotion made \({\sim}8000\)
+    integer schemes visible under the \Ftwo/\Fthree\ selectors).
   \item[\Fthree] Characteristic-3 (GF(3)) --- ``ternary modular'',
     not to be confused with the ternary-\emph{integer} ZT sub-class of
     \Integers. We track it so the discipline is genuinely
@@ -68,25 +65,16 @@ commute. Commutative-only schemes (Waksman, Rosowski, Makarov 1986)
 do \emph{not} lift to recursive matmul over non-commutative rings:
 they save bilinear products by exploiting the freedom \(ab = ba\)
 that disappears as soon as \(A\) and \(B\) are themselves matrix
-blocks. They remain valid for scalar matmul. Rosowski 2019 makes the
-recursive side of this explicit: a commutative scheme \emph{can} be
-applied recursively, but only while the base ring stays commutative
-(the linear combinations of products are themselves bilinear, which is
-what permits the recursion). His cubic bound is
-\(\nmpfieldc{K}{n}{n}{n} \le n(n+1)(n+2)/2 \approx n^3/2\)
-(Theorem~5, \(n\) odd) --- about half the \(n^3\) scalar products, and
-below the best non-commutative rank at small sizes
-(\(\nmpfieldc{\Reals}{3}{3}{3}=21\) versus Laderman's
-\(\nmpfield{\Reals}{3}{3}{3}=23\)). The win is only this constant
-factor: because the recursion never leaves the commutative ring it
-does \emph{not} lift to matrix-block recursion, so unlike Strassen's
-\(\nmpfield{K}{2}{2}{2}=7\) it does not lower \(\omega\) over
-non-commutative rings. The catalog flags every
-commutative scheme with \code{"commutative": true} in the JSON; the
-comparison tables of Section \ref{sec:tables} carry a separate
-commutative column for each field. Cross-contamination silently
-produces wrong ``wins'' against historical non-commutative tables;
-the canonical example is comparing
+blocks, though they remain valid for scalar matmul. Rosowski 2019
+(Theorem~5, \(n\) odd) reaches
+\(\nmpfieldc{K}{n}{n}{n} \le n(n+1)(n+2)/2 \approx n^3/2\) --- about
+half the \(n^3\) scalar products, but a constant-factor saving that
+does not lower \(\omega\) over non-commutative rings. The catalog
+flags every commutative scheme with a \code{"commutative": true} tag,
+and the comparison tables of Section \ref{sec:tables} carry a
+separate commutative column for each field, because
+cross-contamination silently produces wrong ``wins'' against
+historical non-commutative tables; the canonical example is comparing
 \(\nmpfieldc{\Reals}{3}{3}{3} = 21\) (Rosowski, commutative) to
 \(\nmpfield{\Reals}{3}{3}{3} = 23\) (Laderman, non-commutative)
 as if they were the same metric.
@@ -94,3 +82,100 @@ as if they were the same metric.
 We require every rank claim in the paper to carry both a field tag
 and a commutativity tag. The reader can recover the metric from the
 shape.
+
+\subsection{Glossary}
+
+The paper uses the following vocabulary consistently; variants from
+the cited literature (``base'', ``factorisation'') are noted inline.
+
+\begin{description}[itemsep=4pt, leftmargin=2em]
+
+  \item[MM.] Matrix multiplication. Throughout this paper, an MM
+    \emph{scheme} for shape \(\nmpshape{n}{m}{p}\) is a bilinear
+    algorithm \((U, V, W)\) computing \(C = A \cdot B\) for
+    \(A \in K^{n \times m}, B \in K^{m \times p}, C \in K^{n \times p}\)
+    over an algebra \(K\).
+
+  \item[Atom.] A primitive MM scheme not derived from other schemes
+    in our framework --- imported from upstream (FMM-Lille, Perminov,
+    AlphaTensor, AlphaEvolve), produced by a closed-form constructor
+    (Waksman, Rosowski, Pan TA), or declared as such (Strassen,
+    Laderman). Atoms are the leaves of the lineage DAG; some
+    literature calls them \emph{base} schemes, but the same scheme
+    can be a base for one search round and a derived result of
+    another.
+
+  \item[Lineage.] An expression describing in a constructive,
+    replayable way how to build an MM scheme from atoms via the
+    derivation operators (recombination, Kronecker, concatenation,
+    axis-flip, permutation). Large schemes (any dimension above 16)
+    are stored as lineage only; the concrete \((U, V, W)\) is
+    reconstructed by replaying the lineage against the atoms it
+    references.
+
+  \item[Allocation.] One way to partition a product of shape
+    \(\nmpshape{n}{m}{p}\) into blocks compatible with an atom of
+    shape \(\nmpshape{n'}{m'}{p'}\): a per-axis composition
+    \((a_1, \ldots, a_{n'})\) with \(\sum a_i = n\) on axis A, and
+    analogously on B and C. The atom is applied at the outer level,
+    with sub-products carried by the blocks of the resulting
+    Cartesian-product decomposition.
+
+  \item[Shape \(\nmpshape{n}{m}{p}\).] A matrix-product shape with
+    \(A \in K^{n \times m}, B \in K^{m \times p}\), giving
+    \(C \in K^{n \times p}\). We always tag the algebra:
+    \(K\nmpshape{n}{m}{p}\) for non-commutative,
+    \(K\nmpshape{n}{m}{p}^c\) for commutative; the bare
+    \(\nmpshape{n}{m}{p}\) form is reserved for contexts where the
+    algebra has just been named.
+
+  \item[Optimisation target.] This catalog does \emph{not} aim to
+    minimise additions per scheme: two schemes of equal rank at the
+    same shape (Strassen-18 vs Strassen--Winograd-15) induce the same
+    recursion structure and the same \(\omega\), so addition count is
+    metadata, not a quality measure. What we \emph{do} minimise is
+    the multiset of distinct sub-shapes \(\nmpshape{n'}{m'}{p'}\) the
+    recursion induces --- fewer distinct shapes means a simpler block
+    decomposition, less catalog dependency, and easier verification.
+    An illustration from the 2026-06 snapshot: our then-best
+    \(\nmpshape{17}{17}{17}{=}2940\) used three distinct sub-shapes
+    where FMM-Lille's then-best \(2934\) used two --- the two-sub-shape
+    recipe is structurally preferred regardless of addition counts.
+    (Both catalogs have since reached \(2930\) at this shape; the
+    criterion is unchanged.) One caveat on addition figures: the
+    Strassen--Winograd ``15'' is a \emph{scheduled} count (after
+    common-subexpression sharing), while flat-counting the \((U, V,
+    W)\) forms gives \(\sim\)22--24 --- so raw addition counts are an
+    unreliable cross-scheme comparison
+    (Section~\ref{ssec:strassen-vs-winograd}).
+
+  \item[Kronecker product.] Composition of a scheme at
+    \(\nmpshape{n_1}{m_1}{p_1}\) with a scheme at
+    \(\nmpshape{n_2}{m_2}{p_2}\) into a scheme at
+    \(\nmpshape{n_1 n_2}{m_1 m_2}{p_1 p_2}\) of rank exactly
+    \(r_1 \cdot r_2\) (Section~\ref{ssec:kronecker}).
+
+  \item[Permutation.] Rewrite of a scheme under an \(S_3\)
+    permutation of its three axes, yielding a rank-preserving
+    six-element orbit of equivalent shapes of which the catalog
+    stores only the sorted representative \(n \le m \le p\)
+    (Section~\ref{sec:strategies}).
+
+  \item[Axis-flip.] Rewrite that reverses the row order on any
+    subset of the three axes, yielding a rank-preserving orbit of
+    eight variants per scheme with generally distinct addition
+    counts (Section~\ref{ssec:axis-flip}).
+
+  \item[Isotropy + coordinate change.] The symmetry actions on a
+    bilinear-algorithm tensor: coordinate changes
+    \(GL_n(K) \times GL_m(K) \times GL_p(K)\) plus the discrete axis
+    symmetries, and the isotropy group of a decomposition as the
+    sub-group fixing it~\cite{burichenko2014}; de Groote's uniqueness
+    theorem for \(\nmpshape{2}{2}{2}\)~\cite{degroote1978} is
+    treated in Section~\ref{sec:multisets}.
+
+  \item[Commutative vs non-commutative.] Defined in the
+    commutative-axis paragraph of this section; every rank claim
+    carries the tag.
+
+\end{description}

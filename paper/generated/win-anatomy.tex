@@ -1,0 +1,23 @@
+% AUTO-GENERATED — DO NOT EDIT (machine-owned: paper/generated/).
+% Pipeline: GenerateSourceComparison (Java) -> render_tables.py
+% Input: docs/comparison/us-vs-fmm-vs-perminov-Q.json  (sha256:996cb19)
+% Input: docs/catalog.json  (sha256:c5e3014)
+% Regenerate: mvn exec:java -Dexec.mainClass=eu.solven.matmul.docs.generate.GenerateSourceComparison && python3 paper/tools/render_tables.py
+
+\begin{table}[h]
+\centering
+\caption{Anatomy of the 908 strict wins over $\mathbb{Q}$ (Table~\ref{tab:us-vs-catalogs}): root operator of the winning scheme's lineage, and the most frequent combining bases among winning recombinations (orientation variants folded). Of the recombination-rooted wins, 762 use \emph{unbalanced} allocations and 7 balanced ones. Margins over the best external holding: 20801 ranks in total, median 14, maximum 199.}
+\label{tab:win-anatomy}
+\begin{tabular}{lr@{\qquad}lr}
+\hline
+root operator & wins & top combining base & wins \\
+\hline
+recombination with allocation & 769 & $\langle 2,2,2 \rangle$ & 295 \\
+axis concatenation & 48 & $\langle 2,4,4 \rangle$ & 150 \\
+downward projection & 39 & $\langle 2,3,3 \rangle$ & 70 \\
+serendipitous product & 29 & $\langle 2,5,5 \rangle$ & 68 \\
+contraction sum & 22 & $\langle 3,4,5 \rangle$ & 22 \\
+Kronecker product & 1 & $\langle 4,4,5 \rangle$ & 20 \\
+\hline
+\end{tabular}
+\end{table}

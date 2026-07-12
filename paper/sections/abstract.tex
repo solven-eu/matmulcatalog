@@ -1,33 +1,30 @@
 % Abstract — keep ≤ 250 words for typical conference submission.
 
 The 2022--2026 burst of activity in small-format matrix multiplication
-(AlphaTensor 2022, AlphaEvolve 2025, Schwartz--Zwecher 2025) has
-produced striking individual results but scattered them across
-different fields, attribution conventions, and serialisation formats.
-A complementary line of work --- Perminov's open-source flip-graph
-framework~\cite{perminov2026fast,perminov2025fast} --- instead drives
-existing construction methods, notably flip-graph and
-\emph{meta-flip-graph} search, at scale across large format spaces,
-discovering many new low-rank schemes (including ternary-integer ones)
-that further enrich the landscape this catalog must unify.
+(AlphaTensor 2022, AlphaEvolve 2025, Schwartz--Zwecher 2025, and
+Perminov's open-source flip-graph
+framework~\cite{perminov2026fast,perminov2025fast}) has produced
+striking results but scattered them across fields, attribution
+conventions, and serialisation formats.
 We present a unified, machine-checkable catalog covering shapes up to
 \nmpshape{32}{32}{32} over \Rationals, \Integers, \Reals, \Complex,
 \Ftwo, and \Fthree, with a separate axis for commutative algorithms
-(Waksman 1970, Makarov 1986, Rosowski 2019).
-
-Derivation over this catalog is performed by a \emph{frontier-closure
-search} that recombines catalog entries by axis-flip, Kronecker, axis
-concatenation, serendipitous products, recombination-with-allocation
-(with optional output peeling and pair fusion), and downward projection.
+(Waksman 1970, Makarov 1986, Rosowski 2019). Derivation over the
+catalog uses a \emph{frontier-closure search} that recombines
+entries by axis-flip, Kronecker, axis concatenation,
+serendipitous products, recombination-with-allocation (with optional
+output peeling and leaf-level pair fusion), and downward projection.
 
 A central methodological point is the \emph{non-overlap property}: our
-recombination does not, and cannot, rediscover the shared bilinear
-products that hand-crafted constructions (Strassen, Laderman, Smirnov,
-AlphaTensor) are built around. This draws a clean line between the
-``find a cleverer bilinear core'' and ``compose known cores'' axes
-of progress, and resolves several attribution puzzles in the
-literature.
+composition cannot rediscover the shared bilinear products that
+hand-crafted constructions are built around --- a clean
+line between ``find a cleverer bilinear core'' and ``compose known
+cores'' that resolves several attribution puzzles. Empirically, over
+\Rationals (2026-07-12 snapshot), our derived schemes strictly beat
+every external holding on 908 shapes and trail on six audited ones ---
+all six explained by a single sharing device (fusion kernels) that our
+composition deliberately forgoes.
 
-We refresh the DIS09 comparison tables, split per field and with a
-commutative column, and provide the tooling to regenerate them
-automatically as the catalog evolves.
+We refresh the DIS09 comparison tables, split per field with a
+commutative column, and provide tooling to regenerate them as the
+catalog evolves.

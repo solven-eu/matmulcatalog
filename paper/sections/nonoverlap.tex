@@ -1,9 +1,5 @@
-% Non-overlap property — promote the methodological observation from
-% docs/notes/materialisation-and-overlap.md into a paper section.
-% Keep the salt warning here too — it documents which steps need to
-% stay pure for the invariant to hold.
-
-\emph{[TO BE REWORDED]}
+% Non-overlap property — the structural invariant of the composition
+% operators, its scope, its measured boundary, and the salt caveat.
 
 The composition operators of Sections \ref{ssec:axis-flip} through
 \ref{ssec:peel} are subject to the following structural invariant.
@@ -11,8 +7,9 @@ The composition operators of Sections \ref{ssec:axis-flip} through
 \begin{theorem}[Non-overlap]\label{thm:nonoverlap}
 Let \(O\) be an outer bilinear scheme of shape
 \(\nmpshape{n_o}{m_o}{p_o}\) with \(r_o\) products, and let
-\(L_1, \ldots, L_{r_o}\) be sub-schemes assigned via
-\code{Recombination.constructWithAllocation} to a target shape
+\(L_1, \ldots, L_{r_o}\) be sub-schemes assigned by block-substitution
+(the recombination-with-allocation operator,
+Section~\ref{ssec:recombination}) to a target shape
 \(\nmpshape{n}{m}{p}\) with allocations \((\mathbf{a}_A, \mathbf{a}_B,
 \mathbf{a}_C)\) and an optional output peel pattern. The resulting
 algorithm has rank exactly \(\sum_k r_{L_k}\), and no two of its
@@ -36,27 +33,21 @@ the rank or the column-distinctness.
 \end{proof}
 
 \paragraph{Scope: the operations that \emph{reduce} below the sum.} The
-theorem is about pure block-substitution, so it governs Kronecker,
-concatenation, recombination-with-allocation, the axis-flip orbit and the
-peel. Three operations deliberately fall \emph{outside} it by producing
-fewer than \(\sum_k r_{L_k}\) products --- and none is a counterexample,
-because none \emph{discovers} sharing; each applies a known,
-\emph{predict-time} reduction.
+theorem governs pure block-substitution: Kronecker, concatenation,
+recombination-with-allocation, axis-flip, peel. Three operations
+deliberately produce fewer than \(\sum_k r_{L_k}\) products, and none is a
+counterexample, because each applies a \emph{known} reduction at predict
+time; nothing is discovered during materialisation.
 \begin{itemize}[itemsep=2pt]
-  \item \textbf{Pair fusion (Pan TA)} is not a composition operator at
-    all: it is an optimisation on a decomposition's product set, fusing
-    complementary pairs through Pan's trilinear-aggregation
-    \emph{identity}. The saving is a property of that fixed identity,
-    counted before materialisation --- TA does not break the invariant,
-    it just is not a \(\sum_k r_{L_k}\) construction.
-  \item \textbf{The serendipitous product} replaces an enlarged sub-block
-    by its catalogued best rank --- again a lookup performed at predict
-    time.
-  \item \textbf{Downward projection} restricts a materialised parent and
-    runs DCE; the resulting rank \(R-\mu\) is exactly what the
-    projection-margin score (Section~\ref{sec:search}) \emph{predicts}
-    from the parent's support. The DCE is the same deterministic step in
-    both the prediction and the materialisation, so nothing is discovered.
+  \item \textbf{Pair fusion (Pan TA)}: an optimisation of a fixed
+    decomposition's product set through Pan's trilinear-aggregation
+    identity (Section~\ref{ssec:pair-fusion}); the saving is a property of
+    that identity, counted before materialisation.
+  \item \textbf{The serendipitous product}: replaces an enlarged sub-block
+    by its catalogued best rank --- a predict-time lookup.
+  \item \textbf{Downward projection}: restricts a materialised parent and
+    runs the same deterministic dead-code elimination that the
+    projection-margin score (Section~\ref{sec:search}) already predicted.
 \end{itemize}
 So the deeper invariant below --- \emph{predicted rank equals materialised
 rank, with no sharing found during materialisation} --- holds for these
@@ -94,13 +85,16 @@ see the scope remark above.)
 
 This makes a ``composition matches hand-crafted rank'' outcome a
 \emph{co-existence} claim, not a re-discovery claim. When the search
-reaches \(\nmpfield{\Rationals}{17}{17}{17} = 2930\) via a Winograd
-recombination at \((9,8)^3\), it does so by a route structurally
-distinct from the hand-crafted disjoint-sum construction for the same
-shape (FMM-Lille, rank \(2934\)): our scheme is a plain sum of
-independent sub-products and reproduces none of that construction's
-shared bilinear identities. The catalog records both with distinct
-lineages and distinct \code{attribution\_for\_rank}.
+reached \(\nmpfield{\Rationals}{17}{17}{17} = 2930\) (2026-06) via a
+Winograd recombination at \((9,8)^3\), FMM-Lille's then-best for the
+same shape stood at \(2934\), by a route structurally distinct from
+ours (on inspection, itself a plain recombination --- not the disjoint
+sum its description suggested; see Section~\ref{ssec:disjoint-sum});
+FMM has since matched \(2930\). Our scheme is a plain sum of
+independent sub-products and reproduces none of any hand-crafted
+construction's shared bilinear identities. The catalog records
+distinct routes with distinct lineages and distinct
+\code{attribution\_for\_rank}.
 
 The two approaches are complementary, not redundant. Composition
 expands the SOTA frontier without finding new bilinear identities;
@@ -108,26 +102,68 @@ hand-crafted constructions find new bilinear identities that can be
 ingested as new outer schemes, immediately expanding what
 composition can do.
 
-\paragraph{The invariant is current-state, not eternal.}
-Theorem \ref{thm:nonoverlap} depends on \code{constructWithAllocation}
-being pure block-substitution. Several extensions would break it:
-post-construction column fusion that identifies duplicate bilinear
-forms; random sign salting of sub-blocks that enriches the symmetry
-orbit; coefficient mixing between outer products that share a
-sub-shape. Any of these would let materialised rank be \emph{lower}
-than predicted rank, which would be a feature -- but would also
-break the search-rank-equals-materialised-rank invariant that the
-two-phase search of Section \ref{sec:search} relies on. The
-implementor of any such ``salt'' must either restrict it to the
-final materialisation step (so the search keeps its pure prediction)
-or re-derive predictions to account for the salt. The catalog
-documents this in \code{docs/notes/materialisation-and-overlap.md}.
+\paragraph{The boundary, measured.} The 2026-07 cross-catalog
+campaign (Section~\ref{sec:tables}) turned this methodological line
+into an empirical one, in both directions.
 
-We have considered whether to add such salt and decided against it
-for now: a pure search-time prediction is easier to reason about,
-easier to cache, and avoids a class of subtle correctness bugs at
-the search/materialise boundary. Hand-crafted-style sharing
-discoveries are deferred to the one dedicated constructor we have ---
-pair fusion (Section \ref{ssec:pair-fusion}) --- rather than emerging
-from generic recombination; the disjoint-sum / $\tau$ route
-(Section \ref{ssec:disjoint-sum}) remains future work.
+\emph{Our schemes contain no accidental sharing.} The theorem leaves
+one loophole open in principle: two \emph{independently built} leaves
+of a recombination could, by coincidence, feed identical bilinear
+forms over the target's variables --- a coinciding \(u \otimes v\) pair
+would merge into one product (the \(W\)-columns add) for a free rank
+\(-1\). We probed our largest contested scheme
+(\(\nmpfield{\Rationals}{17}{17}{19} = 3267\), 3267 products) for such
+pairs: \emph{zero} coinciding \(u \otimes v\) directions. The
+invariant holds not only by construction within each substitution but
+empirically across independent leaves.
+
+\emph{What separates us from hand-crafted catalogs is exactly the
+sharing the theorem forgoes.} At campaign end the catalog led or tied
+FMM-Lille everywhere except six shapes (twelve ranks in total, out of
+thousands of compared shapes). Every one of the six deficits traces to
+the same device in the external artifact: a \emph{fusion kernel} ---
+a set of products shared \emph{across} recursion slots. The simplest
+worked specimen, from FMM's \(\nmpshape{8}{27}{30}\) artifact
+(rank 3736, which we decoded as
+\(\nmpshape{4}{9}{10}{:}250 \otimes \nmpshape{2}{3}{3}{:}15\) with a
+modified kernel): the plain Kronecker product computes 250 independent
+``slots'', each an instance of \(\nmpshape{2}{3}{3}\) costing 15
+products. In the artifact, 229 slots are plain --- but five
+\emph{pairs} of slots \((s,t)\) are computed jointly:
+\[
+  \underbrace{8}_{\text{plain products of } s}
+  \;+\; \underbrace{8}_{\text{plain products of } t}
+  \;+\; \underbrace{13}_{\text{mixed products serving both}}
+  \;=\; 29
+  \qquad\text{versus}\qquad
+  15 + 15 = 30 \text{ independently.}
+\]
+Each mixed product's \(U\)-column combines contributions of both
+slots (its column, reshaped as a base\(\times\)inner matrix, has rank
+2 instead of the rank 1 of every plain Kronecker product --- this
+``Kron-rank fingerprint'' is also how the device is detected, since
+nothing at the lineage or rank-arithmetic level reveals it: the
+sharing is visible only after expanding the scheme to explicit
+\((U,V,W)\) and rank-testing each product). One rank saved per pair,
+five pairs, plus related bookkeeping: rank 3736 where plain
+composition gives 3750. This is Theorem~\ref{thm:nonoverlap}'s
+boundary made concrete --- the external catalog's residual edge over
+our composition closure is \emph{only} this cross-slot sharing device,
+and conversely no engine of Section~\ref{sec:strategies} can reproduce
+it without a new, dedicated constructor
+(Section~\ref{sec:openquestions}).
+
+\paragraph{The invariant is current-state, not eternal.}
+Theorem \ref{thm:nonoverlap} depends on the materialiser being pure
+block-substitution: post-construction column fusion, random sign-salting
+of sub-blocks, or coefficient mixing between outer products sharing a
+sub-shape would each let materialised rank drop \emph{below} predicted
+rank --- a feature, but one that breaks the invariant the two-phase
+search of Section \ref{sec:search} relies on, so any such ``salt'' must
+be confined to the final materialisation step or come with re-derived
+predictions. We decided against salt for now: a pure search-time
+prediction is easier to reason about and to cache, and avoids subtle
+correctness bugs at the search/materialise boundary; sharing-style
+discoveries are deferred to pair fusion (Section \ref{ssec:pair-fusion}),
+and the disjoint-sum / $\tau$ route (Section \ref{ssec:disjoint-sum})
+remains future work.

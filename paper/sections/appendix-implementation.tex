@@ -1,0 +1,64 @@
+\label{app:implementation}
+
+Concept-to-code map and engineering notes for the search engine of
+Section~\ref{sec:search}.
+
+\paragraph{Concept-to-class map.} The main concepts of
+Section~\ref{sec:search} correspond to the following classes and
+flags in the reference implementation:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+concept & class / flag \\
+\midrule
+frontier driver (impact-DAG priority queue) & \code{FrontierClosure} \\
+recombination materialiser & \code{Recombination.constructWithAllocation} \\
+composed sub-product lookup (overlay + disk) & \code{AlgorithmLookup}, \code{FieldAwareLookup} \\
+allocation branch-and-bound & \code{AllocationOptimizer} \\
+search budget & \code{SearchBudget}: \code{EXACT}, \code{upTo}, \code{maxNodes} \\
+allocation filters & \code{maxImbalance}, \code{maxCombinations} \\
+axis-flip orbit mask evaluation & \code{AnalyticalMaskSearch} \\
+seed ranking by \(\omega\) & \code{docs/bases-by-omega.md} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Pool configuration.} The default pool
+(\code{PoolConfig.simple}) carries a small number of high-value outer
+schemes --- Strassen, Winograd, Smirnov 3-row templates, and a few
+imported Pan / AT / FMM bases. An \code{extendedPool} mode adds every
+\code{Leaf}-tagged catalog entry as an outer template; that pool is
+large enough that the \code{maxCombinations}-capped allocation
+enumerator becomes load-bearing.
+
+\paragraph{Budget flags.} \code{AllocationOptimizer} runs under a
+\code{SearchBudget}: \code{EXACT} (no cap), \code{upTo} a known upper
+bound (e.g.\ the Kronecker rank), or a \code{maxNodes} anytime cap.
+The result carries an \code{exhaustive} flag --- propagated to the
+optimality tier of Section~\ref{sec:intro} --- and reports the
+\code{nodes} visited against the \code{fullSpace} of allocations.
+
+\paragraph{Seed ranking.} \code{docs/bases-by-omega.md} is an
+automatically-regenerated table ranking every pool-eligible base by
+its raw \(\omega\), its \(\omega\) after imbalance-\(\le 3\)
+restriction, and its \(\omega\) after axis-flip-canonical and
+S\(_3\)-canonical orbit reductions, evaluated at the reference target
+\(\nmpshape{17}{17}{17}\).
+
+\paragraph{Caching.} Caching exists at two layers. The first is
+per-scheme \emph{symbolic templates}: for each outer scheme we extract
+once a tuple of six block-support bitmasks per product (\(U\)-row,
+\(U\)-col, \(V\)-row, \(V\)-col, \(W\)-row, \(W\)-col), and per-call
+sub-shape extraction reduces from \(O(r \cdot \text{dim}^2)\) to
+\(O(r \cdot \text{dim})\). The second is a per-(scheme, allocation,
+peel) cache of the resulting sub-shape multiset; this is a
+hashing-overhead trade and is currently capped at 200k entries per
+scheme. A symbolic-template-at-allocation-pattern layer would
+generalise the second cache; the current implementation captures the
+common cases without paying the templating cost.
+
+\paragraph{Progress.} A frontier closure over the entire catalog up to
+dim 32 takes hours of wall-clock; long runs emit periodic progress
+lines and ETAs at three nested levels (per-round, per-shape, and
+intra-search).

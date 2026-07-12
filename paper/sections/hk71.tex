@@ -9,40 +9,31 @@
 Hopcroft and Kerr~\cite{hopcroftkerr1971} proved
 \(R(\nmpshape{2}{p}{n}) \le \lceil (3pn + \max(p,n))/2 \rceil\)
 over any field, by an explicit construction (their Theorem~1). The published
-proof, however, compresses its hardest steps, and it is worth recording
-precisely \emph{what the 1971 paper makes explicit and what it does not}:
+proof, however, compresses its hardest steps. Explicit in the 1971 paper:
+the three diagonal methods; Lemma~2's three \emph{different}-method pair
+cases; \emph{one} same-method pair case, \((1,1,\mathrm{bridge}\text{-}2)\);
+the non-constructive existence proofs of Lemmas~1 and~3; and the Case-2
+outline with the \(Z\)-aggregation identities. Not in the paper: the
+remaining \emph{five} same-method cases (``the other cases follow by
+symmetry'' --- they do not: the natural involutions swap methods 1 and 2
+but fix method~3); any concrete augmentation matrix; and the fact that
+Lemma~3's own sequence forces \((3,3)\)-same-method pairs, a case for which
+no derivation is given and --- as we show below --- none exists within the
+natural product family.
 
-\begin{itemize}\itemsep1pt
-  \item \textbf{Explicit in the paper}: the three diagonal methods (their
-    p.~9); Lemma~2 with worked formulas for the three different-method pair
-    cases \((1,2), (1,3), (2,3)\) (p.~7); ONE same-method pair case,
-    \((1,1,\mathrm{bridge}\text{-}2)\) (p.~10); Lemma~1's augmentation-matrix
-    existence proof (pp.~5--6); Lemma~3's method-sequence existence (pp.~7--8);
-    the Case-2 Step~1/2/3 outline with the \(Z\)-aggregation identities
-    (pp.~11--13).
-  \item \textbf{Not in the paper}: the remaining five same-method cases
-    (``the other cases follow by symmetry'' — they do not: the natural
-    involutions swap methods 1 and 2 but fix method~3); any concrete
-    augmentation matrix (the existence proof is non-constructive about
-    conditioning); the fact that Lemma~3's own sequence forces
-    \((3,3)\)-same-method pairs, a case for which no derivation is given and
-    — as we show below — none exists within the natural product family.
-\end{itemize}
-
-For five decades the bound has effectively been a black box. The empirical
-record is telling: the community catalogs (FMM-Lille~\cite{fmmlille},
-Perminov~\cite{perminov}) credit Hopcroft--Kerr for many
-\(\nmpshape{2}{p}{n}\) entries, yet at several shapes — as of our 2026-06
-full synchronisation of both catalogs — \emph{neither holds a scheme
-attaining the formula, nor any reference to the formula's value as an
-attainable bound}: at \(\nmpshape{2}{10}{15}\) both publish 234 against the
-formula's 233; at \(\nmpshape{2}{12}{16}\) the best published is 298 against
-296; at \(\nmpshape{2}{10}{16}\) (formula 248) no attaining scheme is
-published at all. If a working constructive reading of the 1971 paper
-existed anywhere, these entries would attain the formula. This section gives
-a complete, machine-verified constructive realisation, identifies precisely
-which ingredient resisted (and why), and produces schemes strictly below
-every published catalog at exactly those shapes.
+For five decades the bound has effectively been a black box. The community
+catalogs (FMM-Lille~\cite{fmmlille}, Perminov~\cite{perminov}) credit
+Hopcroft--Kerr for many \(\nmpshape{2}{p}{n}\) entries, yet at several
+shapes — as of our 2026-06 full synchronisation of both catalogs —
+\emph{neither holds a scheme attaining the formula, nor any reference to
+its value as an attainable bound}: at \(\nmpshape{2}{10}{15}\) both publish
+234 against the formula's 233; at \(\nmpshape{2}{12}{16}\) the best
+published is 298 against 296; at \(\nmpshape{2}{10}{16}\) (formula 248) no
+attaining scheme is published at all. If a working constructive reading of
+the 1971 paper existed anywhere, these entries would attain the formula.
+This section gives a complete, machine-verified constructive realisation,
+identifies precisely which ingredient resisted (and why), and produces
+schemes strictly below every published catalog at exactly those shapes.
 
 \subsection{The construction, in blocks}
 
@@ -82,25 +73,22 @@ carry almost all pairs.
 \(M\) needs every cyclic \(p\)-window nonsingular; we strengthen this to
 \emph{unimodular} (every window determinant \(\pm 1\)), which makes the
 back-substituted \(W\) — hence the whole scheme — \emph{integer}, over
-\(\Integers\) rather than \(\Rationals\). (The classical Vandermonde rows
-are computationally toxic — overflowing window determinants, inexact
-double back-substitution from \(n \approx p+2\) — and dense \(\pm1\) rows
-can \emph{never} be unimodular for \(n-p \ge 2\), since every \(2\times2\)
-\(\pm1\)-minor is even: exactly where a first emission's denominators
-\(2, 4, 8, \dots\) came from.) Window determinants of \([I_p; B]\) reduce
-to three minor families of the augmented block \(B\) (\(m = n-p\) rows):
-leading, trailing, and sliding \(m\)-column minors. These are satisfied by
-a \emph{Euclidean construction}: a period-\(m\) comb body
-(\(B_{u,c} = 1 \iff c \equiv u \bmod m\) on the first \(p - (p \bmod m)\)
-columns; its sliding windows are permutation matrices), and — for
+\(\Integers\) rather than \(\Rationals\) (the classical Vandermonde rows
+are numerically unusable here, and dense \(\pm1\) rows can \emph{never} be
+unimodular for \(n-p \ge 2\), every \(2\times2\) \(\pm1\)-minor being
+even). Window determinants of \([I_p; B]\) reduce to three minor families
+of the augmented block \(B\) (\(m = n-p\) rows): leading, trailing, and
+sliding \(m\)-column minors. A \emph{Euclidean construction} satisfies all
+three with pure \(0/1\) entries and no search: a period-\(m\) comb body
+whose sliding windows are permutation matrices, plus — for
 \(r = p \bmod m > 0\) — a tail of \(r\) columns equal to
-\(B(m, r)^{\!\top}\): eliminating the comb's permutation part shows the
+\(B(m, r)^{\!\top}\). Eliminating the comb's permutation part shows the
 crossing and trailing minors of \(B\) are exactly the same three families
 of the tail transposed, so the recursion descends like the gcd and
-terminates at the pure comb. Pure \(0/1\) entries, no search; every window
-is still certified by fraction-free BigInteger elimination, and the
-back-substitution \(A x_j = M_{\mathrm{win}(j)}^{-1}(\bar A
-X)_{\mathrm{win}(j),j}\) is exact integer arithmetic.
+terminates at the pure comb. Every window is still certified by
+fraction-free BigInteger elimination, and the back-substitution
+\(A x_j = M_{\mathrm{win}(j)}^{-1}(\bar A X)_{\mathrm{win}(j),j}\) is exact
+integer arithmetic.
 
 \paragraph{(vi) Case 2: circulant matching and the repaired Step 3.} For even
 \(p = 2k+2\), the band of half-width \(k\) leaves each column one cell short;
@@ -186,9 +174,8 @@ the \emph{rank-2} virtual diagonal
 \((a_{i1}{+}a_{b1})\otimes(x_{1i}{+}x_{1b}) +
 (a_{i2}{+}a_{b2})\otimes(x_{2i}{+}x_{2b})\) — it contains no rank-1 element,
 so no three-product completion exists, for either bridge method
-(\code{derive\_33bridge\_general.py}; scope: the emitter's nine-product
-reusable set and atoms local to \(\{i,b,j\}\)). This is the robust
-obstruction:
+(scope: the emitter's nine-product reusable set and atoms local to
+\(\{i,b,j\}\)). This is the robust obstruction:
 Hopcroft--Kerr's own Lemma-3 method sequence places method-3 rows at
 spacing~2, forcing \((3,3)\) same-method band pairs — so \emph{the paper's
 Theorem-1 proof, as written, rests on an underivable case}. Our construction
@@ -204,12 +191,13 @@ closes exactly.
 
 \subsection{Results}
 
-All schemes are machine-verified three ways: a 20{,}000-sample randomized
-spot check; the full residual over every tensor cell; and an
-\emph{exact-rational symbolic} verification (every coefficient recovered as
-an exact fraction, the bilinear identity
+Every scheme is machine-verified at emission by a 20{,}000-sample
+randomized spot check, the full residual over every tensor cell, and an
+\emph{exact-rational symbolic} verification (the bilinear identity
 \(\sum_k U_{a k} V_{b k} W_{c k} = T_{abc}\) checked coefficient-wise over
-\(\Rationals\) with no floating point).
+\(\Rationals\), no floating point); beyond that gate, every published file
+was re-verified by an \emph{independent} checker sharing no code with the
+generator: 465/465 verify the bilinear identity exactly over \(\Rationals\).
 
 \begin{center}
 \begin{tabular}{llll}
@@ -224,29 +212,55 @@ chained, \(2p \le n \le 32\) & \(3 \le p \le 16\) & 196/196 & 196/196 \\
 \end{tabular}
 \end{center}
 
-Highlights, all exact-formula and triple-verified:
-\(\nmpfield{\Integers}{2}{10}{15}{=}233\) — \emph{strictly below every
-published catalog} (FMM-Lille and Perminov: 234);
-\(\nmpfield{\Integers}{2}{12}{16}{=}296\) (published best 298);
-\(\nmpfield{\Integers}{2}{10}{16}{=}248\), \(\nmpshape{2}{11}{12}{=}204\),
-\(\nmpshape{2}{11}{13}{=}221\), \(\nmpshape{2}{13}{15}{=}300\) (absent from
-all catalogs); and shapes beyond every catalog's range (e.g.\
-\(\nmpshape{2}{13}{25}{=}500\)). The full sweep
-\(3 \le p \le 32\), \(p \le n \le 32\) — \textbf{465 schemes, 459 at the
-exact formula} (the six exceptions are precisely the \(g \ge 6\) family of
-the geometric limit above, at \(+1\)..\(+3\)) — is emitted into the
-catalog's \code{constructed/} category with per-scheme provenance
-(\code{GenerateHk2npConstructed}); the schemes are regenerable from the
-emitter alone. Of these, 197 strictly improved on the union of all external
-catalogs at first (band-range) emission, and the chained range added 22
-further strict improvements over everything previously held — including our
-own recursive-closure constructions — at \(2p \le n \le 32\) (e.g.\
-\(\nmpfield{\Integers}{2}{15}{32}{=}736\) vs.\ 741,
-\(\nmpfield{\Integers}{2}{14}{31}{=}667\) vs.\ 670). Beyond the
-emission-time quadruple gate, every published file was re-verified by an
-\emph{independent} checker sharing no code with the generator (Python
-standard-library rationals, own parser): 465/465 verify the bilinear
-identity exactly over \(\Rationals\).
+Highlights, all exact-formula:
+\(\nmpfield{\Integers}{2}{10}{15}{=}233\) — at construction time
+(2026-06) \emph{strictly below every published catalog} (FMM-Lille and
+Perminov both listed 234);
+\(\nmpfield{\Integers}{2}{12}{16}{=}296\) (then-published best 298); and
+\(\nmpfield{\Integers}{2}{10}{16}{=}248\) (then absent from all catalogs).
+The full sweep \(3 \le p \le 32\), \(p \le n \le 32\) — \textbf{465
+schemes, 459 at the exact formula} (the six exceptions are precisely the
+\(g \ge 6\) family of the geometric limit above, at \(+1\)..\(+3\)) — is
+emitted into the catalog's constructed tier with per-scheme provenance and
+is regenerable from the emitter alone; at first (band-range) emission 197
+schemes strictly improved on the union of all external catalogs, and the
+chained range added 22 further strict improvements over everything
+previously held, our own closure included
+(e.g.\ \(\nmpfield{\Integers}{2}{15}{32}{=}736\) vs.\ 741).
+
+\paragraph{Checkpoint: propagation into the community catalogs
+(2026-07-12).} The claims above are date-stamped for a reason --- within
+weeks, both catalogs absorbed parts of this program, illustrating the
+attribution dynamics of Section~\ref{ssec:head-to-head}.
+\begin{itemize}[itemsep=2pt]
+  \item \emph{Perminov} now redistributes 14 of the 465 scheme files,
+    across 11 shapes (\(\nmpshape{2}{9}{13}\) through
+    \(\nmpshape{2}{13}{14}\), including
+    \(\nmpshape{2}{10}{15}{=}233\) and
+    \(\nmpshape{2}{12}{16}{=}296\)), credited under
+    \code{schemes/known/matmulcatalog/} --- each of them his catalog's
+    best holding for the field. His ternary-integer 233 at
+    \(\nmpshape{2}{10}{15}\) is derived downstream of the same scheme.
+    Agreement with Perminov at these shapes is our own work
+    round-tripped, not an independent confirmation.
+  \item \emph{FMM-Lille}'s index at \(\nmpshape{2}{10}{15}\) has moved
+    \(234 \to 233\), citing Hopcroft--Kerr 1971 --- i.e.\ the closed
+    form. To our knowledge the 465 files remain the only
+    machine-verified witnesses that the formula is attained at these
+    shapes.
+  \item Conversely, for the \(g \ge 6\) family our impossibility
+    analysis predicts the formula is \emph{not} attainable with local
+    atoms --- and FMM's own artifacts corroborate it: at
+    \(\nmpshape{2}{12}{18}\) the index quotes the formula's 333 while
+    the published artifact realises 334 (we verified it locally rigid:
+    no proportional triads, every factor-direction class span-tight),
+    exactly our formula\(+1\); the same index-versus-artifact pattern
+    holds across the family (\(\nmpshape{2}{14}{21}\),
+    \(\nmpshape{2}{16}{24}\), \ldots). We reported the discrepancies
+    upstream; whether any unpublished scheme attains the index values
+    there is, at this date, an open question precisely aligned with our
+    impossibility boundary.
+\end{itemize}
 
 \subsection{Honesty notes}
 
@@ -260,7 +274,6 @@ couples the block decomposition), admitting non-local atoms, or trading a
 four-product completion against savings elsewhere remain open — these are
 the only identified routes to the six \(g \ge 6\) shapes still at
 \(+1\)..\(+3\) over the formula (themselves below every published catalog).
-Lower bounds beyond Hopcroft--Kerr's own remain out of scope. Sympy
-artifacts (\code{derive\_bridge\_true\_reusables.py},
-\code{extract\_bridge\_identity.py}, \code{derive\_33bridge\_general.py})
-reproduce every claim in minutes.
+Lower bounds beyond Hopcroft--Kerr's own remain out of scope. Short
+computer-algebra scripts accompanying the catalog reproduce every claim in
+minutes.

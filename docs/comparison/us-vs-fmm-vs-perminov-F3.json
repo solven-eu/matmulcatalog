@@ -4,14 +4,14 @@
   "_generator" : "eu.solven.matmul.docs.generate.GenerateSourceComparison",
   "_inputs" : [ "docs/catalog.json", "references/catalogs/fmm-lille-catalog.json", "references/catalogs/perminov-catalog.json" ],
   "_counts" : {
-    "wins" : 205,
-    "tie_derived" : 425,
-    "tie_imported" : 190,
+    "wins" : 278,
+    "tie_derived" : 536,
+    "tie_imported" : 136,
     "loss_derived" : 0,
-    "loss_import" : 553,
-    "carried" : 0,
-    "derived_only" : 2700,
-    "external_only" : 180
+    "loss_import" : 520,
+    "carried" : 3,
+    "derived_only" : 2918,
+    "external_only" : 83
   },
   "rows" : [ {
     "format" : [ 2, 2, 2 ],
@@ -37,10 +37,10 @@
   }, {
     "format" : [ 3, 3, 3 ],
     "us_imported" : 23,
-    "us_derived" : 23,
+    "us_derived" : 24,
     "perminov" : 23,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 4
   }, {
     "format" : [ 2, 2, 4 ],
     "us_derived" : 14,
@@ -64,17 +64,18 @@
     "_status" : 2
   }, {
     "format" : [ 3, 3, 4 ],
+    "us_derived" : 29,
     "us_imported" : 29,
     "perminov" : 29,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 3, 4, 4 ],
-    "us_derived" : 40,
     "us_imported" : 38,
+    "us_derived" : 38,
     "perminov" : 38,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 4, 4 ],
     "us_derived" : 49,
@@ -98,59 +99,60 @@
     "_status" : 2
   }, {
     "format" : [ 2, 4, 5 ],
-    "us_derived" : 33,
+    "us_derived" : 32,
     "us_imported" : 32,
     "perminov" : 33,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 2, 5, 5 ],
-    "us_derived" : 40,
     "us_imported" : 40,
+    "us_derived" : 40,
     "perminov" : 40,
     "perminov_published" : false,
     "_status" : 2
   }, {
     "format" : [ 3, 3, 5 ],
+    "us_derived" : 36,
     "us_imported" : 36,
     "perminov" : 36,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 3, 4, 5 ],
-    "us_derived" : 49,
+    "us_derived" : 47,
     "us_imported" : 47,
     "perminov" : 47,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 3, 5, 5 ],
-    "us_derived" : 60,
+    "us_derived" : 58,
     "us_imported" : 58,
     "perminov" : 58,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 4, 5 ],
-    "us_derived" : 64,
+    "us_derived" : 61,
     "us_imported" : 61,
     "perminov" : 61,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 5, 5 ],
-    "us_derived" : 79,
+    "us_derived" : 76,
     "us_imported" : 76,
     "perminov" : 76,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 5, 5, 5 ],
-    "us_derived" : 93,
+    "us_derived" : 98,
     "us_imported" : 93,
     "perminov" : 93,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 4
   }, {
     "format" : [ 2, 2, 6 ],
     "us_derived" : 21,
@@ -174,11 +176,11 @@
     "_status" : 2
   }, {
     "format" : [ 2, 5, 6 ],
-    "us_derived" : 48,
+    "us_derived" : 47,
     "us_imported" : 47,
     "perminov" : 47,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 2, 6, 6 ],
     "us_derived" : 57,
@@ -188,29 +190,30 @@
     "_status" : 4
   }, {
     "format" : [ 3, 3, 6 ],
+    "us_derived" : 40,
     "us_imported" : 40,
     "perminov" : 42,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 3, 4, 6 ],
-    "us_derived" : 57,
+    "us_derived" : 54,
     "us_imported" : 54,
     "perminov" : 54,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 3, 5, 6 ],
-    "us_derived" : 70,
+    "us_derived" : 68,
     "us_imported" : 68,
     "perminov" : 68,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 3, 6, 6 ],
     "us_derived" : 80,
-    "us_imported" : 83,
-    "perminov" : 83,
+    "us_imported" : 82,
+    "perminov" : 82,
     "perminov_published" : false,
     "_status" : 0
   }, {
@@ -236,14 +239,14 @@
     "_status" : 2
   }, {
     "format" : [ 5, 5, 6 ],
-    "us_derived" : 115,
+    "us_derived" : 110,
     "us_imported" : 110,
     "perminov" : 110,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 5, 6, 6 ],
-    "us_derived" : 136,
+    "us_derived" : 138,
     "us_imported" : 130,
     "perminov" : 130,
     "perminov_published" : false,
@@ -278,11 +281,11 @@
     "_status" : 4
   }, {
     "format" : [ 2, 5, 7 ],
-    "us_derived" : 56,
+    "us_derived" : 55,
     "us_imported" : 55,
     "perminov" : 55,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 2, 6, 7 ],
     "us_derived" : 67,
@@ -306,18 +309,18 @@
     "_status" : 2
   }, {
     "format" : [ 3, 4, 7 ],
-    "us_derived" : 66,
+    "us_derived" : 63,
     "us_imported" : 63,
     "perminov" : 64,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 3, 5, 7 ],
-    "us_derived" : 83,
+    "us_derived" : 79,
     "us_imported" : 79,
     "perminov" : 79,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 3, 6, 7 ],
     "us_derived" : 94,
@@ -334,18 +337,18 @@
     "_status" : 4
   }, {
     "format" : [ 4, 4, 7 ],
-    "us_derived" : 86,
+    "us_derived" : 85,
     "us_imported" : 85,
     "perminov" : 85,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 5, 7 ],
-    "us_derived" : 108,
+    "us_derived" : 104,
     "us_imported" : 104,
     "perminov" : 104,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 6, 7 ],
     "us_derived" : 125,
@@ -355,18 +358,18 @@
     "_status" : 4
   }, {
     "format" : [ 4, 7, 7 ],
-    "us_derived" : 147,
     "us_imported" : 144,
+    "us_derived" : 147,
     "perminov" : 144,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 5, 5, 7 ],
-    "us_derived" : 133,
+    "us_derived" : 127,
     "us_imported" : 127,
     "perminov" : 127,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 5, 6, 7 ],
     "us_derived" : 157,
@@ -376,8 +379,8 @@
     "_status" : 4
   }, {
     "format" : [ 5, 7, 7 ],
-    "us_derived" : 182,
     "us_imported" : 176,
+    "us_derived" : 182,
     "perminov" : 176,
     "perminov_published" : false,
     "_status" : 4
@@ -418,25 +421,25 @@
     "_status" : 2
   }, {
     "format" : [ 2, 4, 8 ],
-    "us_derived" : 52,
+    "us_derived" : 51,
     "us_imported" : 51,
     "perminov" : 51,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 2, 5, 8 ],
-    "us_derived" : 64,
+    "us_derived" : 63,
     "us_imported" : 63,
     "perminov" : 63,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 2, 6, 8 ],
-    "us_derived" : 76,
+    "us_derived" : 75,
     "us_imported" : 75,
     "perminov" : 75,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 2, 7, 8 ],
     "us_derived" : 88,
@@ -447,6 +450,7 @@
   }, {
     "format" : [ 2, 8, 8 ],
     "us_derived" : 100,
+    "us_imported" : 100,
     "perminov" : 100,
     "perminov_published" : false,
     "_status" : 2
@@ -466,11 +470,11 @@
     "_status" : 4
   }, {
     "format" : [ 3, 5, 8 ],
-    "us_derived" : 93,
     "us_imported" : 90,
+    "us_derived" : 90,
     "perminov" : 90,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 3, 6, 8 ],
     "us_derived" : 108,
@@ -509,16 +513,17 @@
   }, {
     "format" : [ 4, 6, 8 ],
     "us_derived" : 140,
+    "us_imported" : 140,
     "perminov" : 140,
     "perminov_published" : false,
     "_status" : 2
   }, {
     "format" : [ 4, 7, 8 ],
-    "us_derived" : 164,
+    "us_derived" : 161,
     "us_imported" : 161,
     "perminov" : 161,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 8, 8 ],
     "us_derived" : 182,
@@ -557,6 +562,7 @@
   }, {
     "format" : [ 6, 6, 8 ],
     "us_derived" : 203,
+    "us_imported" : 203,
     "perminov" : 203,
     "perminov_published" : false,
     "_status" : 2
@@ -570,6 +576,7 @@
   }, {
     "format" : [ 6, 8, 8 ],
     "us_derived" : 266,
+    "us_imported" : 266,
     "perminov" : 266,
     "perminov_published" : false,
     "_status" : 2
@@ -784,7 +791,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 7, 9 ],
-    "us_derived" : 271,
+    "us_derived" : 270,
     "us_imported" : 264,
     "perminov" : 264,
     "perminov_published" : false,
@@ -839,7 +846,7 @@
     "_status" : 0
   }, {
     "format" : [ 9, 9, 9 ],
-    "us_derived" : 505,
+    "us_derived" : 498,
     "us_imported" : 486,
     "perminov" : 486,
     "perminov_published" : false,
@@ -1000,7 +1007,7 @@
     "_status" : 0
   }, {
     "format" : [ 4, 9, 10 ],
-    "us_derived" : 256,
+    "us_derived" : 255,
     "us_imported" : 250,
     "perminov" : 250,
     "perminov_published" : false,
@@ -1061,11 +1068,11 @@
     "_status" : 0
   }, {
     "format" : [ 6, 7, 10 ],
-    "us_derived" : 296,
+    "us_derived" : 293,
     "us_imported" : 293,
     "perminov" : 296,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 6, 8, 10 ],
     "us_derived" : 329,
@@ -1088,11 +1095,11 @@
     "_status" : 2
   }, {
     "format" : [ 7, 7, 10 ],
-    "us_derived" : 346,
+    "us_derived" : 345,
     "us_imported" : 345,
     "perminov" : 346,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 7, 8, 10 ],
     "us_derived" : 385,
@@ -1137,11 +1144,11 @@
     "_status" : 4
   }, {
     "format" : [ 9, 9, 10 ],
-    "us_derived" : 537,
+    "us_derived" : 534,
     "us_imported" : 534,
     "perminov" : 537,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 9, 10, 10 ],
     "us_derived" : 600,
@@ -1172,7 +1179,7 @@
     "_status" : 2
   }, {
     "format" : [ 2, 4, 11 ],
-    "us_derived" : 72,
+    "us_derived" : 71,
     "us_imported" : 70,
     "perminov" : 70,
     "perminov_published" : false,
@@ -1325,7 +1332,7 @@
     "_status" : 0
   }, {
     "format" : [ 4, 9, 11 ],
-    "us_derived" : 283,
+    "us_derived" : 280,
     "us_imported" : 275,
     "perminov" : 275,
     "perminov_published" : false,
@@ -1478,7 +1485,7 @@
     "_status" : 2
   }, {
     "format" : [ 8, 9, 11 ],
-    "us_derived" : 539,
+    "us_derived" : 534,
     "us_imported" : 521,
     "perminov" : 521,
     "perminov_published" : false,
@@ -1492,30 +1499,32 @@
     "_status" : 2
   }, {
     "format" : [ 8, 11, 11 ],
+    "us_derived" : 641,
     "us_imported" : 646,
     "perminov" : 646,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 9, 9, 11 ],
-    "us_derived" : 600,
+    "us_derived" : 576,
     "us_imported" : 594,
     "perminov" : 594,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 9, 10, 11 ],
+    "us_derived" : 651,
     "us_imported" : 661,
     "perminov" : 661,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 9, 11, 11 ],
-    "us_derived" : 726,
+    "us_derived" : 715,
     "us_imported" : 721,
     "perminov" : 721,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 10, 10, 11 ],
     "us_derived" : 719,
@@ -1745,8 +1754,8 @@
     "_status" : 2
   }, {
     "format" : [ 5, 5, 12 ],
-    "us_derived" : 214,
     "us_imported" : 204,
+    "us_derived" : 214,
     "perminov" : 204,
     "perminov_published" : false,
     "_status" : 4
@@ -1822,11 +1831,11 @@
     "_status" : 2
   }, {
     "format" : [ 6, 9, 12 ],
-    "us_derived" : 434,
+    "us_derived" : 429,
     "us_imported" : 433,
     "perminov" : 433,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 6, 10, 12 ],
     "us_derived" : 476,
@@ -1836,7 +1845,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 11, 12 ],
-    "us_derived" : 524,
+    "us_derived" : 530,
     "us_imported" : 521,
     "perminov" : 521,
     "perminov_published" : false,
@@ -1864,11 +1873,11 @@
     "_status" : 4
   }, {
     "format" : [ 7, 9, 12 ],
-    "us_derived" : 516,
+    "us_derived" : 510,
     "us_imported" : 513,
     "perminov" : 513,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 7, 10, 12 ],
     "us_derived" : 564,
@@ -1899,11 +1908,11 @@
     "_status" : 0
   }, {
     "format" : [ 8, 9, 12 ],
-    "us_derived" : 564,
+    "us_derived" : 560,
     "us_imported" : 564,
     "perminov" : 564,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 8, 10, 12 ],
     "us_derived" : 628,
@@ -1913,11 +1922,11 @@
     "_status" : 0
   }, {
     "format" : [ 8, 11, 12 ],
-    "us_derived" : 690,
+    "us_derived" : 680,
     "us_imported" : 690,
     "perminov" : 690,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 8, 12, 12 ],
     "us_derived" : 720,
@@ -1934,18 +1943,17 @@
     "_status" : 0
   }, {
     "format" : [ 9, 10, 12 ],
-    "us_derived" : 668,
     "us_imported" : 702,
     "perminov" : 702,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 9, 11, 12 ],
-    "us_derived" : 768,
+    "us_derived" : 754,
     "us_imported" : 762,
     "perminov" : 762,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 9, 12, 12 ],
     "us_derived" : 800,
@@ -1976,18 +1984,18 @@
     "_status" : 4
   }, {
     "format" : [ 11, 11, 12 ],
-    "us_derived" : 936,
+    "us_derived" : 922,
     "us_imported" : 936,
     "perminov" : 936,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 11, 12, 12 ],
-    "us_derived" : 1002,
+    "us_derived" : 990,
     "us_imported" : 1002,
     "perminov" : 1002,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 12, 12, 12 ],
     "us_derived" : 1040,
@@ -2047,7 +2055,7 @@
   }, {
     "format" : [ 2, 9, 13 ],
     "us_derived" : 182,
-    "us_imported" : 184,
+    "us_imported" : 182,
     "perminov" : 182,
     "perminov_published" : false,
     "_status" : 2
@@ -2205,23 +2213,25 @@
     "_status" : 2
   }, {
     "format" : [ 4, 11, 13 ],
+    "us_derived" : 400,
     "us_imported" : 401,
     "perminov" : 401,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 4, 12, 13 ],
-    "us_derived" : 432,
+    "us_derived" : 426,
     "us_imported" : 430,
     "perminov" : 430,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 4, 13, 13 ],
+    "us_derived" : 466,
     "us_imported" : 472,
     "perminov" : 472,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 5, 5, 13 ],
     "us_derived" : 229,
@@ -2399,7 +2409,7 @@
     "_status" : 2
   }, {
     "format" : [ 8, 9, 13 ],
-    "us_derived" : 631,
+    "us_derived" : 624,
     "us_imported" : 615,
     "perminov" : 615,
     "perminov_published" : false,
@@ -2413,23 +2423,25 @@
     "_status" : 2
   }, {
     "format" : [ 8, 11, 13 ],
+    "us_derived" : 750,
     "us_imported" : 754,
     "perminov" : 754,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 8, 12, 13 ],
-    "us_derived" : 807,
+    "us_derived" : 798,
     "us_imported" : 807,
     "perminov" : 807,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 8, 13, 13 ],
+    "us_derived" : 880,
     "us_imported" : 885,
     "perminov" : 885,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 9, 9, 13 ],
     "us_derived" : 681,
@@ -2439,32 +2451,31 @@
     "_status" : 0
   }, {
     "format" : [ 9, 10, 13 ],
-    "us_derived" : 758,
     "us_imported" : 763,
     "perminov" : 763,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 9, 11, 13 ],
-    "us_derived" : 837,
+    "us_derived" : 835,
     "us_imported" : 843,
     "perminov" : 843,
     "perminov_published" : false,
     "_status" : 0
   }, {
     "format" : [ 9, 12, 13 ],
-    "us_derived" : 900,
+    "us_derived" : 884,
     "us_imported" : 894,
     "perminov" : 878,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 13, 13 ],
-    "us_derived" : 995,
+    "us_derived" : 981,
     "us_imported" : 986,
     "perminov" : 986,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 10, 10, 13 ],
     "us_derived" : 838,
@@ -2502,38 +2513,38 @@
     "_status" : 2
   }, {
     "format" : [ 11, 12, 13 ],
-    "us_derived" : 1100,
     "us_imported" : 1102,
     "perminov" : 1102,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 11, 13, 13 ],
-    "us_derived" : 1206,
+    "us_derived" : 1207,
     "us_imported" : 1205,
     "perminov" : 1205,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 12, 12, 13 ],
-    "us_derived" : 1184,
+    "us_derived" : 1152,
     "us_imported" : 1168,
     "perminov" : 1168,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 12, 13, 13 ],
+    "us_derived" : 1274,
     "us_imported" : 1298,
     "perminov" : 1298,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 13, 13, 13 ],
-    "us_derived" : 1472,
+    "us_derived" : 1421,
     "us_imported" : 1426,
     "perminov" : 1426,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 2, 2, 14 ],
     "us_derived" : 49,
@@ -2586,7 +2597,7 @@
   }, {
     "format" : [ 2, 9, 14 ],
     "us_derived" : 196,
-    "us_imported" : 198,
+    "us_imported" : 196,
     "perminov" : 196,
     "perminov_published" : false,
     "_status" : 2
@@ -2744,11 +2755,11 @@
     "_status" : 2
   }, {
     "format" : [ 4, 9, 14 ],
-    "us_derived" : 351,
+    "us_derived" : 350,
     "us_imported" : 350,
     "perminov" : 350,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 10, 14 ],
     "us_derived" : 385,
@@ -2772,10 +2783,11 @@
     "_status" : 4
   }, {
     "format" : [ 4, 13, 14 ],
+    "us_derived" : 500,
     "us_imported" : 502,
     "perminov" : 502,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 4, 14, 14 ],
     "us_derived" : 532,
@@ -2932,10 +2944,11 @@
     "_status" : 0
   }, {
     "format" : [ 7, 9, 14 ],
+    "us_derived" : 597,
     "us_imported" : 600,
     "perminov" : 600,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 7, 10, 14 ],
     "us_derived" : 653,
@@ -3000,7 +3013,7 @@
     "_status" : 2
   }, {
     "format" : [ 8, 12, 14 ],
-    "us_derived" : 846,
+    "us_derived" : 843,
     "us_imported" : 861,
     "perminov" : 861,
     "perminov_published" : false,
@@ -3021,21 +3034,20 @@
     "_status" : 2
   }, {
     "format" : [ 9, 9, 14 ],
-    "us_derived" : 725,
+    "us_derived" : 720,
     "us_imported" : 725,
     "perminov" : 725,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 9, 10, 14 ],
-    "us_derived" : 808,
     "us_imported" : 820,
     "perminov" : 820,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 9, 11, 14 ],
-    "us_derived" : 892,
+    "us_derived" : 889,
     "us_imported" : 900,
     "perminov" : 900,
     "perminov_published" : false,
@@ -3049,13 +3061,14 @@
     "_status" : 0
   }, {
     "format" : [ 9, 13, 14 ],
+    "us_derived" : 1041,
     "us_imported" : 1050,
     "perminov" : 1050,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 9, 14, 14 ],
-    "us_derived" : 1104,
+    "us_derived" : 1101,
     "us_imported" : 1125,
     "perminov" : 1125,
     "perminov_published" : false,
@@ -3077,17 +3090,17 @@
   }, {
     "format" : [ 10, 12, 14 ],
     "us_derived" : 1050,
-    "us_imported" : 1050,
-    "perminov" : 1050,
+    "us_imported" : 1048,
+    "perminov" : 1048,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 4
   }, {
     "format" : [ 10, 13, 14 ],
     "us_derived" : 1154,
-    "us_imported" : 1154,
-    "perminov" : 1154,
+    "us_imported" : 1152,
+    "perminov" : 1152,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 4
   }, {
     "format" : [ 10, 14, 14 ],
     "us_derived" : 1232,
@@ -3104,11 +3117,10 @@
     "_status" : 2
   }, {
     "format" : [ 11, 12, 14 ],
-    "us_derived" : 1172,
     "us_imported" : 1182,
     "perminov" : 1182,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 11, 13, 14 ],
     "us_derived" : 1292,
@@ -3125,42 +3137,42 @@
     "_status" : 2
   }, {
     "format" : [ 12, 12, 14 ],
-    "us_derived" : 1234,
+    "us_derived" : 1248,
     "us_imported" : 1260,
     "perminov" : 1260,
     "perminov_published" : false,
     "_status" : 0
   }, {
     "format" : [ 12, 13, 14 ],
-    "us_derived" : 1385,
     "us_imported" : 1389,
     "perminov" : 1389,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 12, 14, 14 ],
-    "us_derived" : 1472,
+    "us_derived" : 1449,
     "us_imported" : 1484,
     "perminov" : 1484,
     "perminov_published" : false,
     "_status" : 0
   }, {
     "format" : [ 13, 13, 14 ],
-    "us_derived" : 1529,
+    "us_derived" : 1511,
     "us_imported" : 1511,
     "perminov" : 1511,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 13, 14, 14 ],
-    "us_derived" : 1632,
+    "us_derived" : 1614,
     "us_imported" : 1614,
     "perminov" : 1614,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 14, 14, 14 ],
     "us_imported" : 1725,
+    "us_derived" : 1744,
     "perminov" : 1725,
     "perminov_published" : false,
     "_status" : 4
@@ -3215,14 +3227,14 @@
   }, {
     "format" : [ 2, 9, 15 ],
     "us_derived" : 210,
-    "us_imported" : 212,
+    "us_imported" : 210,
     "perminov" : 210,
     "perminov_published" : false,
     "_status" : 2
   }, {
     "format" : [ 2, 10, 15 ],
     "us_derived" : 233,
-    "us_imported" : 234,
+    "us_imported" : 233,
     "perminov" : 233,
     "perminov_published" : false,
     "_status" : 2
@@ -3312,7 +3324,7 @@
     "_status" : 0
   }, {
     "format" : [ 3, 10, 15 ],
-    "us_derived" : 336,
+    "us_derived" : 337,
     "us_imported" : 335,
     "perminov" : 335,
     "perminov_published" : false,
@@ -3402,11 +3414,11 @@
     "_status" : 2
   }, {
     "format" : [ 4, 11, 15 ],
-    "us_derived" : 463,
+    "us_derived" : 452,
     "us_imported" : 458,
     "perminov" : 458,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 4, 12, 15 ],
     "us_derived" : 480,
@@ -3416,11 +3428,11 @@
     "_status" : 0
   }, {
     "format" : [ 4, 13, 15 ],
-    "us_derived" : 539,
+    "us_derived" : 528,
     "us_imported" : 536,
     "perminov" : 536,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 4, 14, 15 ],
     "us_derived" : 558,
@@ -3493,19 +3505,21 @@
     "_status" : 2
   }, {
     "format" : [ 5, 13, 15 ],
+    "us_derived" : 672,
     "us_imported" : 675,
     "perminov" : 675,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 5, 14, 15 ],
+    "us_derived" : 721,
     "us_imported" : 722,
     "perminov" : 722,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 5, 15, 15 ],
-    "us_derived" : 781,
+    "us_derived" : 762,
     "us_imported" : 761,
     "perminov" : 761,
     "perminov_published" : false,
@@ -3547,7 +3561,7 @@
     "_status" : 4
   }, {
     "format" : [ 6, 11, 15 ],
-    "us_derived" : 663,
+    "us_derived" : 661,
     "us_imported" : 653,
     "perminov" : 653,
     "perminov_published" : false,
@@ -3561,7 +3575,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 13, 15 ],
-    "us_derived" : 776,
+    "us_derived" : 771,
     "us_imported" : 763,
     "perminov" : 763,
     "perminov_published" : false,
@@ -3589,18 +3603,18 @@
     "_status" : 0
   }, {
     "format" : [ 7, 8, 15 ],
-    "us_derived" : 571,
+    "us_derived" : 570,
     "us_imported" : 572,
     "perminov" : 572,
     "perminov_published" : false,
     "_status" : 0
   }, {
     "format" : [ 7, 9, 15 ],
-    "us_derived" : 645,
+    "us_derived" : 634,
     "us_imported" : 639,
     "perminov" : 639,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 7, 10, 15 ],
     "us_derived" : 703,
@@ -3617,32 +3631,32 @@
     "_status" : 0
   }, {
     "format" : [ 7, 12, 15 ],
-    "us_derived" : 836,
+    "us_derived" : 831,
     "us_imported" : 815,
     "perminov" : 815,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 7, 13, 15 ],
-    "us_derived" : 913,
+    "us_derived" : 909,
     "us_imported" : 909,
     "perminov" : 909,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 7, 14, 15 ],
-    "us_derived" : 973,
+    "us_derived" : 969,
     "us_imported" : 952,
     "perminov" : 952,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 7, 15, 15 ],
-    "us_derived" : 1043,
+    "us_derived" : 1032,
     "us_imported" : 1032,
     "perminov" : 1032,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 8, 8, 15 ],
     "us_derived" : 628,
@@ -3666,11 +3680,11 @@
     "_status" : 2
   }, {
     "format" : [ 8, 11, 15 ],
-    "us_derived" : 866,
+    "us_derived" : 859,
     "us_imported" : 859,
     "perminov" : 859,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 8, 12, 15 ],
     "us_derived" : 914,
@@ -3680,11 +3694,11 @@
     "_status" : 2
   }, {
     "format" : [ 8, 13, 15 ],
-    "us_derived" : 1013,
-    "us_imported" : 992,
+    "us_derived" : 1005,
+    "us_imported" : 991,
     "perminov" : 991,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 4
   }, {
     "format" : [ 8, 14, 15 ],
     "us_derived" : 1063,
@@ -3701,7 +3715,7 @@
     "_status" : 0
   }, {
     "format" : [ 9, 9, 15 ],
-    "us_derived" : 783,
+    "us_derived" : 778,
     "us_imported" : 794,
     "perminov" : 794,
     "perminov_published" : false,
@@ -3709,45 +3723,44 @@
   }, {
     "format" : [ 9, 10, 15 ],
     "us_derived" : 867,
-    "us_imported" : 865,
+    "us_imported" : 864,
     "perminov" : 864,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 4
   }, {
     "format" : [ 9, 11, 15 ],
-    "us_derived" : 960,
     "us_imported" : 956,
     "perminov" : 956,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 9, 12, 15 ],
-    "us_derived" : 1000,
+    "us_derived" : 996,
     "us_imported" : 1012,
     "perminov" : 1012,
     "perminov_published" : false,
     "_status" : 0
   }, {
     "format" : [ 9, 13, 15 ],
-    "us_derived" : 1131,
+    "us_derived" : 1119,
     "us_imported" : 1119,
     "perminov" : 1119,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 9, 14, 15 ],
-    "us_derived" : 1180,
+    "us_derived" : 1175,
     "us_imported" : 1179,
     "perminov" : 1179,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 9, 15, 15 ],
-    "us_derived" : 1276,
+    "us_derived" : 1236,
     "us_imported" : 1276,
     "perminov" : 1276,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 10, 10, 15 ],
     "us_derived" : 957,
@@ -3764,14 +3777,14 @@
     "_status" : 4
   }, {
     "format" : [ 10, 12, 15 ],
-    "us_derived" : 1130,
+    "us_derived" : 1122,
     "us_imported" : 1122,
     "perminov" : 1122,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 10, 13, 15 ],
-    "us_derived" : 1250,
+    "us_derived" : 1242,
     "us_imported" : 1230,
     "perminov" : 1230,
     "perminov_published" : false,
@@ -3799,31 +3812,31 @@
     "_status" : 4
   }, {
     "format" : [ 11, 12, 15 ],
-    "us_derived" : 1259,
     "us_imported" : 1234,
     "perminov" : 1234,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 11, 13, 15 ],
-    "us_derived" : 1384,
+    "us_derived" : 1377,
     "us_imported" : 1377,
     "perminov" : 1377,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 11, 14, 15 ],
-    "us_derived" : 1482,
+    "us_derived" : 1460,
     "us_imported" : 1432,
     "perminov" : 1432,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 11, 15, 15 ],
+    "us_derived" : 1540,
     "us_imported" : 1548,
     "perminov" : 1548,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 12, 12, 15 ],
     "us_derived" : 1280,
@@ -3854,21 +3867,21 @@
     "_status" : 0
   }, {
     "format" : [ 13, 13, 15 ],
-    "us_derived" : 1629,
+    "us_derived" : 1605,
     "us_imported" : 1605,
     "perminov" : 1605,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 13, 14, 15 ],
-    "us_derived" : 1740,
+    "us_derived" : 1698,
     "us_imported" : 1681,
     "perminov" : 1681,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 13, 15, 15 ],
-    "us_derived" : 1825,
+    "us_derived" : 1803,
     "us_imported" : 1797,
     "perminov" : 1797,
     "perminov_published" : false,
@@ -3882,18 +3895,18 @@
     "_status" : 4
   }, {
     "format" : [ 14, 15, 15 ],
-    "us_derived" : 1895,
+    "us_derived" : 1890,
     "us_imported" : 1895,
     "perminov" : 1895,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 15, 15, 15 ],
-    "us_derived" : 2066,
+    "us_derived" : 2058,
     "us_imported" : 2058,
     "perminov" : 2058,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 2, 2, 16 ],
     "us_derived" : 56,
@@ -3945,7 +3958,7 @@
   }, {
     "format" : [ 2, 9, 16 ],
     "us_derived" : 224,
-    "us_imported" : 225,
+    "us_imported" : 224,
     "perminov" : 224,
     "perminov_published" : false,
     "_status" : 2
@@ -3965,7 +3978,7 @@
   }, {
     "format" : [ 2, 12, 16 ],
     "us_derived" : 296,
-    "us_imported" : 298,
+    "us_imported" : 296,
     "perminov" : 296,
     "perminov_published" : false,
     "_status" : 2
@@ -4069,7 +4082,7 @@
     "_status" : 0
   }, {
     "format" : [ 3, 13, 16 ],
-    "us_derived" : 464,
+    "us_derived" : 465,
     "us_imported" : 466,
     "perminov" : 466,
     "perminov_published" : false,
@@ -4152,25 +4165,25 @@
     "_status" : 4
   }, {
     "format" : [ 4, 12, 16 ],
-    "us_derived" : 516,
+    "us_derived" : 513,
     "us_imported" : 513,
     "perminov" : 513,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 13, 16 ],
-    "us_derived" : 584,
+    "us_derived" : 570,
     "us_imported" : 560,
     "perminov" : 560,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 4, 14, 16 ],
-    "us_derived" : 612,
+    "us_derived" : 598,
     "us_imported" : 598,
     "perminov" : 598,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 4, 15, 16 ],
     "us_derived" : 632,
@@ -4180,11 +4193,11 @@
     "_status" : 0
   }, {
     "format" : [ 4, 16, 16 ],
-    "us_derived" : 672,
+    "us_derived" : 666,
     "us_imported" : 666,
     "perminov" : 666,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 5, 5, 16 ],
     "us_derived" : 280,
@@ -4215,10 +4228,11 @@
     "_status" : 2
   }, {
     "format" : [ 5, 9, 16 ],
+    "us_derived" : 497,
     "us_imported" : 503,
     "perminov" : 503,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 5, 10, 16 ],
     "us_derived" : 549,
@@ -4242,10 +4256,11 @@
     "_status" : 2
   }, {
     "format" : [ 5, 13, 16 ],
+    "us_derived" : 717,
     "us_imported" : 718,
     "perminov" : 718,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 5, 14, 16 ],
     "us_derived" : 768,
@@ -4255,18 +4270,18 @@
     "_status" : 0
   }, {
     "format" : [ 5, 15, 16 ],
-    "us_derived" : 829,
+    "us_derived" : 813,
     "us_imported" : 813,
     "perminov" : 813,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 5, 16, 16 ],
-    "us_derived" : 880,
+    "us_derived" : 868,
     "us_imported" : 868,
     "perminov" : 868,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 6, 6, 16 ],
     "us_derived" : 385,
@@ -4304,7 +4319,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 11, 16 ],
-    "us_derived" : 702,
+    "us_derived" : 695,
     "us_imported" : 684,
     "perminov" : 684,
     "perminov_published" : false,
@@ -4318,18 +4333,18 @@
     "_status" : 2
   }, {
     "format" : [ 6, 13, 16 ],
-    "us_derived" : 828,
+    "us_derived" : 819,
     "us_imported" : 816,
     "perminov" : 816,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 6, 14, 16 ],
-    "us_derived" : 864,
+    "us_derived" : 880,
     "us_imported" : 864,
     "perminov" : 864,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 4
   }, {
     "format" : [ 6, 15, 16 ],
     "us_derived" : 920,
@@ -4339,11 +4354,11 @@
     "_status" : 2
   }, {
     "format" : [ 6, 16, 16 ],
-    "us_derived" : 982,
+    "us_derived" : 972,
     "us_imported" : 972,
     "perminov" : 972,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 7, 7, 16 ],
     "us_derived" : 539,
@@ -4360,10 +4375,11 @@
     "_status" : 4
   }, {
     "format" : [ 7, 9, 16 ],
+    "us_derived" : 667,
     "us_imported" : 677,
     "perminov" : 677,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 7, 10, 16 ],
     "us_derived" : 742,
@@ -4380,7 +4396,7 @@
     "_status" : 2
   }, {
     "format" : [ 7, 12, 16 ],
-    "us_derived" : 884,
+    "us_derived" : 880,
     "us_imported" : 878,
     "perminov" : 878,
     "perminov_published" : false,
@@ -4395,7 +4411,7 @@
   }, {
     "format" : [ 7, 14, 16 ],
     "us_derived" : 1022,
-    "us_imported" : 1036,
+    "us_imported" : 1028,
     "perminov" : 1028,
     "perminov_published" : false,
     "_status" : 0
@@ -4408,11 +4424,11 @@
     "_status" : 4
   }, {
     "format" : [ 7, 16, 16 ],
-    "us_derived" : 1158,
-    "us_imported" : 1164,
+    "us_derived" : 1148,
+    "us_imported" : 1158,
     "perminov" : 1158,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 8, 8, 16 ],
     "us_derived" : 668,
@@ -4451,27 +4467,27 @@
   }, {
     "format" : [ 8, 13, 16 ],
     "us_derived" : 1064,
-    "us_imported" : 1072,
+    "us_imported" : 1064,
     "perminov" : 1064,
     "perminov_published" : false,
     "_status" : 2
   }, {
     "format" : [ 8, 14, 16 ],
-    "us_derived" : 1127,
+    "us_derived" : 1104,
     "us_imported" : 1127,
     "perminov" : 1127,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 8, 15, 16 ],
-    "us_derived" : 1203,
-    "us_imported" : 1204,
+    "us_derived" : 1198,
+    "us_imported" : 1203,
     "perminov" : 1203,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 8, 16, 16 ],
-    "us_derived" : 1248,
+    "us_derived" : 1230,
     "us_imported" : 1260,
     "perminov" : 1260,
     "perminov_published" : false,
@@ -4485,32 +4501,29 @@
     "_status" : 4
   }, {
     "format" : [ 9, 10, 16 ],
-    "us_derived" : 918,
     "us_imported" : 920,
     "perminov" : 920,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 9, 11, 16 ],
-    "us_derived" : 1012,
     "us_imported" : 996,
     "perminov" : 996,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 9, 12, 16 ],
-    "us_derived" : 1035,
     "us_imported" : 1074,
     "perminov" : 1074,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 9, 13, 16 ],
-    "us_derived" : 1179,
-    "us_imported" : 1188,
+    "us_derived" : 1188,
+    "us_imported" : 1167,
     "perminov" : 1167,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 4
   }, {
     "format" : [ 9, 14, 16 ],
     "us_derived" : 1256,
@@ -4520,11 +4533,11 @@
     "_status" : 0
   }, {
     "format" : [ 9, 15, 16 ],
-    "us_derived" : 1344,
+    "us_derived" : 1320,
     "us_imported" : 1320,
     "perminov" : 1320,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 9, 16, 16 ],
     "us_derived" : 1432,
@@ -4548,11 +4561,11 @@
     "_status" : 2
   }, {
     "format" : [ 10, 12, 16 ],
-    "us_derived" : 1190,
+    "us_derived" : 1176,
     "us_imported" : 1190,
     "perminov" : 1190,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 10, 13, 16 ],
     "us_derived" : 1326,
@@ -4562,18 +4575,18 @@
     "_status" : 2
   }, {
     "format" : [ 10, 14, 16 ],
-    "us_derived" : 1404,
+    "us_derived" : 1423,
     "us_imported" : 1418,
     "perminov" : 1418,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 10, 15, 16 ],
-    "us_derived" : 1484,
+    "us_derived" : 1482,
     "us_imported" : 1484,
     "perminov" : 1484,
     "perminov_published" : false,
-    "_status" : 2
+    "_status" : 0
   }, {
     "format" : [ 10, 16, 16 ],
     "us_derived" : 1578,
@@ -4597,30 +4610,32 @@
     "_status" : 4
   }, {
     "format" : [ 11, 13, 16 ],
-    "us_derived" : 1454,
+    "us_derived" : 1460,
     "us_imported" : 1458,
     "perminov" : 1458,
     "perminov_published" : false,
-    "_status" : 0
+    "_status" : 4
   }, {
     "format" : [ 11, 14, 16 ],
+    "us_derived" : 1548,
     "us_imported" : 1550,
     "perminov" : 1550,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 11, 15, 16 ],
-    "us_derived" : 1672,
+    "us_derived" : 1658,
     "us_imported" : 1629,
     "perminov" : 1629,
     "perminov_published" : false,
     "_status" : 4
   }, {
     "format" : [ 11, 16, 16 ],
+    "us_derived" : 1724,
     "us_imported" : 1752,
     "perminov" : 1752,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 0
   }, {
     "format" : [ 12, 12, 16 ],
     "us_derived" : 1389,
@@ -4665,18 +4680,18 @@
     "_status" : 0
   }, {
     "format" : [ 13, 14, 16 ],
-    "us_derived" : 1822,
+    "us_derived" : 1820,
     "us_imported" : 1820,
     "perminov" : 1820,
     "perminov_published" : false,
-    "_status" : 4
+    "_status" : 2
   }, {
     "format" : [ 13, 15, 16 ],
-    "us_derived" : 1936,
-    "us_imported" : 1908,
+    "us_derived" : 1926,
+    "us_imported" : 1885,
     "perminov" : 1885,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 4
   }, {
     "format" : [ 13, 16, 16 ],
     "us_derived" : 2022,
@@ -4739,6 +4754,12 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 4, 7, 18 ],
+    "us_derived" : 364,
+    "perminov" : 363,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 4, 10, 18 ],
     "us_derived" : 500,
     "perminov" : 498,
@@ -4793,8 +4814,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 6, 10, 18 ],
+    "us_derived" : 684,
+    "perminov" : 668,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 6, 11, 18 ],
-    "us_derived" : 768,
+    "us_derived" : 754,
     "perminov" : 738,
     "perminov_published" : false,
     "_status" : 5
@@ -4806,7 +4833,7 @@
     "_status" : 5
   }, {
     "format" : [ 6, 14, 18 ],
-    "us_derived" : 944,
+    "us_derived" : 942,
     "perminov" : 940,
     "perminov_published" : false,
     "_status" : 5
@@ -4818,7 +4845,7 @@
     "_status" : 2
   }, {
     "format" : [ 7, 10, 18 ],
-    "us_derived" : 834,
+    "us_derived" : 825,
     "perminov" : 815,
     "perminov_published" : false,
     "_status" : 5
@@ -4828,6 +4855,12 @@
     "perminov" : 968,
     "perminov_published" : false,
     "_status" : 2
+  }, {
+    "format" : [ 7, 14, 18 ],
+    "us_derived" : 1153,
+    "perminov" : 1140,
+    "perminov_published" : false,
+    "_status" : 5
   }, {
     "format" : [ 7, 16, 18 ],
     "us_derived" : 1299,
@@ -4842,8 +4875,14 @@
     "_status" : 5
   }, {
     "format" : [ 8, 11, 18 ],
-    "us_derived" : 1032,
+    "us_derived" : 1019,
     "perminov" : 991,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 8, 13, 18 ],
+    "us_derived" : 1191,
+    "perminov" : 1178,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -4854,10 +4893,10 @@
     "_status" : 5
   }, {
     "format" : [ 8, 15, 18 ],
-    "us_derived" : 1350,
+    "us_derived" : 1338,
     "perminov" : 1338,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 8, 18, 18 ],
     "us_derived" : 1574,
@@ -4878,10 +4917,16 @@
     "_status" : 5
   }, {
     "format" : [ 9, 13, 18 ],
-    "us_derived" : 1322,
+    "us_derived" : 1286,
     "perminov" : 1306,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
+  }, {
+    "format" : [ 9, 14, 18 ],
+    "us_derived" : 1380,
+    "perminov" : 1390,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 10, 11, 18 ],
     "us_derived" : 1255,
@@ -4889,8 +4934,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 10, 12, 18 ],
+    "us_derived" : 1328,
+    "perminov" : 1330,
+    "perminov_published" : false,
+    "_status" : 0
+  }, {
     "format" : [ 10, 13, 18 ],
-    "us_derived" : 1495,
+    "us_derived" : 1469,
     "perminov" : 1454,
     "perminov_published" : false,
     "_status" : 5
@@ -4902,7 +4953,7 @@
     "_status" : 5
   }, {
     "format" : [ 10, 15, 18 ],
-    "us_derived" : 1639,
+    "us_derived" : 1638,
     "perminov" : 1634,
     "perminov_published" : false,
     "_status" : 5
@@ -4913,44 +4964,50 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 11, 12, 18 ],
+    "us_derived" : 1450,
+    "perminov" : 1400,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 11, 14, 18 ],
-    "us_derived" : 1743,
+    "us_derived" : 1729,
     "perminov" : 1700,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 11, 16, 18 ],
-    "us_derived" : 1959,
+    "us_derived" : 1944,
     "perminov" : 1890,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 12, 13, 18 ],
-    "us_derived" : 1725,
+    "us_derived" : 1688,
     "perminov" : 1662,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 12, 14, 18 ],
-    "us_derived" : 1823,
+    "us_derived" : 1810,
     "perminov" : 1796,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 13, 14, 18 ],
-    "us_derived" : 2007,
+    "us_derived" : 2005,
     "perminov" : 1989,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 13, 15, 18 ],
-    "us_derived" : 2130,
+    "us_derived" : 2090,
     "perminov" : 2112,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 13, 16, 18 ],
-    "us_derived" : 2276,
+    "us_derived" : 2273,
     "perminov" : 2217,
     "perminov_published" : false,
     "_status" : 5
@@ -4967,6 +5024,12 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 15, 16, 18 ],
+    "us_derived" : 2530,
+    "perminov" : 2523,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 3, 18, 20 ],
     "us_derived" : 802,
     "perminov" : 800,
@@ -4980,10 +5043,10 @@
     "_status" : 5
   }, {
     "format" : [ 4, 10, 20 ],
-    "us_derived" : 553,
+    "us_derived" : 548,
     "perminov" : 548,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 4, 11, 20 ],
     "us_derived" : 609,
@@ -4991,8 +5054,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 4, 12, 20 ],
+    "us_derived" : 640,
+    "perminov" : 638,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 4, 13, 20 ],
-    "us_derived" : 706,
+    "us_derived" : 700,
     "perminov" : 696,
     "perminov_published" : false,
     "_status" : 5
@@ -5046,14 +5115,20 @@
     "_status" : 5
   }, {
     "format" : [ 6, 11, 20 ],
-    "us_derived" : 871,
+    "us_derived" : 853,
     "perminov" : 848,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 6, 12, 20 ],
-    "us_derived" : 908,
+    "us_derived" : 903,
     "perminov" : 895,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 6, 13, 20 ],
+    "us_derived" : 1001,
+    "perminov" : 994,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -5082,8 +5157,14 @@
     "_status" : 5
   }, {
     "format" : [ 7, 12, 20 ],
-    "us_derived" : 1102,
+    "us_derived" : 1098,
     "perminov" : 1081,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 7, 14, 20 ],
+    "us_derived" : 1283,
+    "perminov" : 1265,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -5106,7 +5187,7 @@
     "_status" : 5
   }, {
     "format" : [ 8, 10, 20 ],
-    "us_derived" : 1022,
+    "us_derived" : 1020,
     "perminov" : 1016,
     "perminov_published" : false,
     "_status" : 5
@@ -5114,6 +5195,12 @@
     "format" : [ 8, 11, 20 ],
     "us_derived" : 1138,
     "perminov" : 1124,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 8, 13, 20 ],
+    "us_derived" : 1326,
+    "perminov" : 1318,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -5129,8 +5216,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 9, 13, 20 ],
+    "us_derived" : 1475,
+    "perminov" : 1443,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 9, 14, 20 ],
-    "us_derived" : 1570,
+    "us_derived" : 1568,
     "perminov" : 1564,
     "perminov_published" : false,
     "_status" : 5
@@ -5141,6 +5234,18 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 10, 12, 20 ],
+    "us_derived" : 1482,
+    "perminov" : 1464,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 10, 14, 20 ],
+    "us_derived" : 1739,
+    "perminov" : 1736,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 10, 15, 20 ],
     "us_derived" : 1828,
     "perminov" : 1819,
@@ -5148,10 +5253,10 @@
     "_status" : 5
   }, {
     "format" : [ 10, 16, 20 ],
-    "us_derived" : 1944,
+    "us_derived" : 1904,
     "perminov" : 1904,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 10, 18, 20 ],
     "us_derived" : 2160,
@@ -5160,8 +5265,20 @@
     "_status" : 5
   }, {
     "format" : [ 10, 20, 20 ],
-    "us_derived" : 2418,
+    "us_derived" : 2378,
     "perminov" : 2378,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 11, 14, 20 ],
+    "us_derived" : 1932,
+    "perminov" : 1896,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 12, 13, 20 ],
+    "us_derived" : 1911,
+    "perminov" : 1871,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -5180,6 +5297,12 @@
     "format" : [ 12, 20, 20 ],
     "us_derived" : 2784,
     "perminov" : 2775,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 13, 14, 20 ],
+    "us_derived" : 2254,
+    "perminov" : 2236,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -5208,19 +5331,19 @@
     "_status" : 5
   }, {
     "format" : [ 14, 16, 20 ],
-    "us_derived" : 2661,
+    "us_derived" : 2645,
     "perminov" : 2645,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 14, 18, 20 ],
-    "us_derived" : 3031,
+    "us_derived" : 2958,
     "perminov" : 2949,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 20, 20 ],
-    "us_derived" : 3268,
+    "us_derived" : 3261,
     "perminov" : 3257,
     "perminov_published" : false,
     "_status" : 5
@@ -5244,16 +5367,14 @@
     "_status" : 5
   }, {
     "format" : [ 16, 20, 20 ],
-    "us_derived" : 3648,
+    "us_derived" : 3635,
     "perminov" : 3624,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 18, 20, 20 ],
-    "us_derived" : 4118,
-    "perminov" : 4112,
-    "perminov_published" : false,
-    "_status" : 5
+    "format" : [ 20, 20, 20 ],
+    "us_imported" : 4551,
+    "_status" : 3
   }, {
     "format" : [ 3, 9, 21 ],
     "us_derived" : 422,
@@ -5310,10 +5431,10 @@
     "_status" : 5
   }, {
     "format" : [ 4, 20, 21 ],
-    "us_derived" : 1093,
+    "us_derived" : 1081,
     "perminov" : 1081,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 5, 8, 21 ],
     "us_derived" : 589,
@@ -5328,25 +5449,25 @@
     "_status" : 5
   }, {
     "format" : [ 6, 10, 21 ],
-    "us_derived" : 825,
+    "us_derived" : 818,
     "perminov" : 812,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 6, 11, 21 ],
-    "us_derived" : 916,
+    "us_derived" : 889,
     "perminov" : 882,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 6, 12, 21 ],
-    "us_derived" : 960,
+    "us_derived" : 945,
     "perminov" : 920,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 6, 13, 21 ],
-    "us_derived" : 1071,
+    "us_derived" : 1041,
     "perminov" : 1024,
     "perminov_published" : false,
     "_status" : 5
@@ -5358,7 +5479,7 @@
     "_status" : 5
   }, {
     "format" : [ 6, 15, 21 ],
-    "us_derived" : 1183,
+    "us_derived" : 1181,
     "perminov" : 1180,
     "perminov_published" : false,
     "_status" : 5
@@ -5370,7 +5491,7 @@
     "_status" : 5
   }, {
     "format" : [ 6, 20, 21 ],
-    "us_derived" : 1567,
+    "us_derived" : 1564,
     "perminov" : 1563,
     "perminov_published" : false,
     "_status" : 5
@@ -5388,25 +5509,31 @@
     "_status" : 5
   }, {
     "format" : [ 7, 10, 21 ],
-    "us_derived" : 978,
+    "us_derived" : 969,
     "perminov" : 952,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 7, 12, 21 ],
-    "us_derived" : 1151,
+    "us_derived" : 1143,
     "perminov" : 1140,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 7, 14, 21 ],
-    "us_derived" : 1351,
+    "us_derived" : 1337,
     "perminov" : 1321,
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 7, 16, 21 ],
+    "us_derived" : 1512,
+    "perminov" : 1495,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 7, 20, 21 ],
-    "us_derived" : 1897,
+    "us_derived" : 1880,
     "perminov" : 1846,
     "perminov_published" : false,
     "_status" : 5
@@ -5417,8 +5544,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 8, 11, 21 ],
+    "us_derived" : 1187,
+    "perminov" : 1153,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 8, 12, 21 ],
-    "us_derived" : 1275,
+    "us_derived" : 1248,
     "perminov" : 1242,
     "perminov_published" : false,
     "_status" : 5
@@ -5430,13 +5563,13 @@
     "_status" : 5
   }, {
     "format" : [ 8, 14, 21 ],
-    "us_derived" : 1484,
+    "us_derived" : 1472,
     "perminov" : 1468,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 8, 15, 21 ],
-    "us_derived" : 1557,
+    "us_derived" : 1556,
     "perminov" : 1552,
     "perminov_published" : false,
     "_status" : 5
@@ -5448,28 +5581,34 @@
     "_status" : 5
   }, {
     "format" : [ 8, 21, 21 ],
-    "us_derived" : 2157,
+    "us_derived" : 2156,
     "perminov" : 2150,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 9, 21 ],
-    "us_derived" : 1067,
+    "us_derived" : 1060,
     "perminov" : 1058,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 10, 21 ],
-    "us_derived" : 1185,
+    "us_derived" : 1181,
     "perminov" : 1181,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 9, 12, 21 ],
-    "us_derived" : 1381,
+    "us_derived" : 1367,
     "perminov" : 1367,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
+  }, {
+    "format" : [ 9, 13, 21 ],
+    "us_derived" : 1545,
+    "perminov" : 1547,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 9, 14, 21 ],
     "us_derived" : 1647,
@@ -5514,13 +5653,13 @@
     "_status" : 5
   }, {
     "format" : [ 10, 14, 21 ],
-    "us_derived" : 1813,
+    "us_derived" : 1799,
     "perminov" : 1798,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 10, 15, 21 ],
-    "us_derived" : 1902,
+    "us_derived" : 1901,
     "perminov" : 1899,
     "perminov_published" : false,
     "_status" : 5
@@ -5556,10 +5695,10 @@
     "_status" : 5
   }, {
     "format" : [ 12, 12, 21 ],
-    "us_derived" : 1795,
+    "us_derived" : 1791,
     "perminov" : 1791,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 12, 13, 21 ],
     "us_derived" : 1985,
@@ -5574,7 +5713,7 @@
     "_status" : 5
   }, {
     "format" : [ 13, 14, 21 ],
-    "us_derived" : 2353,
+    "us_derived" : 2352,
     "perminov" : 2331,
     "perminov_published" : false,
     "_status" : 5
@@ -5586,13 +5725,13 @@
     "_status" : 5
   }, {
     "format" : [ 13, 16, 21 ],
-    "us_derived" : 2657,
+    "us_derived" : 2650,
     "perminov" : 2571,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 13, 20, 21 ],
-    "us_derived" : 3306,
+    "us_derived" : 3291,
     "perminov" : 3165,
     "perminov_published" : false,
     "_status" : 5
@@ -5604,28 +5743,28 @@
     "_status" : 5
   }, {
     "format" : [ 14, 14, 21 ],
-    "us_derived" : 2512,
+    "us_derived" : 2508,
     "perminov" : 2492,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 15, 21 ],
-    "us_derived" : 2629,
+    "us_derived" : 2626,
     "perminov" : 2625,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 20, 21 ],
-    "us_derived" : 3538,
+    "us_derived" : 3444,
     "perminov" : 3441,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 21, 21 ],
-    "us_derived" : 3676,
+    "us_derived" : 3644,
     "perminov" : 3644,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 15, 15, 21 ],
     "us_derived" : 2782,
@@ -5633,8 +5772,14 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 15, 16, 21 ],
+    "us_derived" : 2961,
+    "perminov" : 2946,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 15, 20, 21 ],
-    "us_derived" : 3640,
+    "us_derived" : 3633,
     "perminov" : 3612,
     "perminov_published" : false,
     "_status" : 5
@@ -5682,7 +5827,7 @@
     "_status" : 2
   }, {
     "format" : [ 4, 21, 22 ],
-    "us_derived" : 1209,
+    "us_derived" : 1200,
     "perminov" : 1210,
     "perminov_published" : false,
     "_status" : 0
@@ -5706,7 +5851,7 @@
     "_status" : 5
   }, {
     "format" : [ 6, 15, 22 ],
-    "us_derived" : 1251,
+    "us_derived" : 1248,
     "perminov" : 1242,
     "perminov_published" : false,
     "_status" : 5
@@ -5730,7 +5875,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 21, 22 ],
-    "us_derived" : 1719,
+    "us_derived" : 1715,
     "perminov" : 1725,
     "perminov_published" : false,
     "_status" : 0
@@ -5747,6 +5892,12 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 8, 15, 22 ],
+    "us_derived" : 1635,
+    "perminov" : 1630,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 8, 16, 22 ],
     "us_derived" : 1710,
     "perminov" : 1710,
@@ -5754,7 +5905,7 @@
     "_status" : 2
   }, {
     "format" : [ 8, 20, 22 ],
-    "us_derived" : 2156,
+    "us_derived" : 2126,
     "perminov" : 2124,
     "perminov_published" : false,
     "_status" : 5
@@ -5766,34 +5917,34 @@
     "_status" : 5
   }, {
     "format" : [ 8, 22, 22 ],
-    "us_derived" : 2380,
+    "us_derived" : 2368,
     "perminov" : 2372,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 9, 10, 22 ],
-    "us_derived" : 1251,
+    "us_derived" : 1249,
     "perminov" : 1242,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 12, 22 ],
-    "us_derived" : 1456,
+    "us_derived" : 1414,
     "perminov" : 1413,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 9, 14, 22 ],
-    "us_derived" : 1725,
-    "perminov" : 1722,
+    "format" : [ 9, 16, 22 ],
+    "us_derived" : 1889,
+    "perminov" : 1889,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 9, 20, 22 ],
-    "us_derived" : 2352,
+    "us_derived" : 2349,
     "perminov" : 2349,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 9, 21, 22 ],
     "us_derived" : 2478,
@@ -5802,10 +5953,10 @@
     "_status" : 5
   }, {
     "format" : [ 10, 10, 22 ],
-    "us_derived" : 1365,
+    "us_derived" : 1350,
     "perminov" : 1350,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 10, 12, 22 ],
     "us_derived" : 1622,
@@ -5816,6 +5967,12 @@
     "format" : [ 10, 15, 22 ],
     "us_derived" : 1998,
     "perminov" : 1998,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 10, 16, 22 ],
+    "us_derived" : 2126,
+    "perminov" : 2126,
     "perminov_published" : false,
     "_status" : 2
   }, {
@@ -5838,31 +5995,37 @@
     "_status" : 5
   }, {
     "format" : [ 12, 14, 22 ],
-    "us_derived" : 2226,
+    "us_derived" : 2217,
     "perminov" : 2223,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
+  }, {
+    "format" : [ 12, 15, 22 ],
+    "us_derived" : 2348,
+    "perminov" : 2349,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 12, 16, 22 ],
-    "us_derived" : 2499,
+    "us_derived" : 2493,
     "perminov" : 2438,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 12, 20, 22 ],
-    "us_derived" : 3096,
+    "us_derived" : 3061,
     "perminov" : 3061,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 12, 22, 22 ],
-    "us_derived" : 3430,
+    "us_derived" : 3422,
     "perminov" : 3422,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 13, 15, 22 ],
-    "us_derived" : 2630,
+    "us_derived" : 2604,
     "perminov" : 2592,
     "perminov_published" : false,
     "_status" : 5
@@ -5879,26 +6042,14 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 14, 18, 22 ],
-    "us_derived" : 3308,
-    "perminov" : 3296,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 14, 20, 22 ],
     "us_derived" : 3580,
     "perminov" : 3580,
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 14, 21, 22 ],
-    "us_derived" : 3856,
-    "perminov" : 3844,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 15, 15, 22 ],
-    "us_derived" : 2901,
+    "us_derived" : 2897,
     "perminov" : 2888,
     "perminov_published" : false,
     "_status" : 5
@@ -5910,34 +6061,32 @@
     "_status" : 5
   }, {
     "format" : [ 16, 18, 22 ],
-    "us_derived" : 3647,
+    "us_derived" : 3643,
     "perminov" : 3643,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 16, 20, 22 ],
-    "us_derived" : 4116,
+    "us_derived" : 4061,
     "perminov" : 4032,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 16, 21, 22 ],
-    "us_derived" : 4328,
+    "us_derived" : 4222,
     "perminov" : 4222,
     "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 16, 22, 22 ],
-    "us_derived" : 4487,
-    "perminov" : 4468,
-    "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 18, 20, 22 ],
-    "us_derived" : 4557,
+    "us_derived" : 4460,
     "perminov" : 4460,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
+  }, {
+    "format" : [ 22, 22, 22 ],
+    "us_imported" : 5955,
+    "_status" : 3
   }, {
     "format" : [ 3, 15, 24 ],
     "us_derived" : 800,
@@ -5976,7 +6125,7 @@
     "_status" : 5
   }, {
     "format" : [ 4, 14, 24 ],
-    "us_derived" : 897,
+    "us_derived" : 889,
     "perminov" : 888,
     "perminov_published" : false,
     "_status" : 5
@@ -5988,10 +6137,10 @@
     "_status" : 2
   }, {
     "format" : [ 4, 18, 24 ],
-    "us_derived" : 1119,
+    "us_derived" : 1118,
     "perminov" : 1118,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 4, 20, 24 ],
     "us_derived" : 1203,
@@ -6000,10 +6149,10 @@
     "_status" : 2
   }, {
     "format" : [ 4, 21, 24 ],
-    "us_derived" : 1294,
+    "us_derived" : 1288,
     "perminov" : 1288,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 4, 22, 24 ],
     "us_derived" : 1342,
@@ -6018,19 +6167,19 @@
     "_status" : 2
   }, {
     "format" : [ 6, 7, 24 ],
-    "us_derived" : 684,
+    "us_derived" : 672,
     "perminov" : 670,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 6, 10, 24 ],
-    "us_derived" : 930,
+    "us_derived" : 912,
     "perminov" : 910,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 6, 11, 24 ],
-    "us_derived" : 1000,
+    "us_derived" : 990,
     "perminov" : 968,
     "perminov_published" : false,
     "_status" : 5
@@ -6048,10 +6197,10 @@
     "_status" : 5
   }, {
     "format" : [ 6, 14, 24 ],
-    "us_derived" : 1264,
+    "us_derived" : 1240,
     "perminov" : 1240,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 6, 16, 24 ],
     "us_derived" : 1383,
@@ -6072,13 +6221,13 @@
     "_status" : 5
   }, {
     "format" : [ 7, 10, 24 ],
-    "us_derived" : 1104,
+    "us_derived" : 1098,
     "perminov" : 1081,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 7, 15, 24 ],
-    "us_derived" : 1602,
+    "us_derived" : 1588,
     "perminov" : 1582,
     "perminov_published" : false,
     "_status" : 5
@@ -6102,7 +6251,7 @@
     "_status" : 2
   }, {
     "format" : [ 8, 11, 24 ],
-    "us_derived" : 1348,
+    "us_derived" : 1329,
     "perminov" : 1304,
     "perminov_published" : false,
     "_status" : 5
@@ -6120,7 +6269,7 @@
     "_status" : 5
   }, {
     "format" : [ 8, 14, 24 ],
-    "us_derived" : 1681,
+    "us_derived" : 1667,
     "perminov" : 1666,
     "perminov_published" : false,
     "_status" : 5
@@ -6132,22 +6281,34 @@
     "_status" : 2
   }, {
     "format" : [ 8, 24, 24 ],
-    "us_derived" : 2688,
+    "us_derived" : 2682,
     "perminov" : 2682,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 9, 11, 24 ],
+    "us_derived" : 1450,
+    "perminov" : 1400,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 12, 24 ],
-    "us_derived" : 1520,
+    "us_derived" : 1515,
     "perminov" : 1515,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 9, 13, 24 ],
     "us_derived" : 1688,
     "perminov" : 1662,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 9, 14, 24 ],
+    "us_derived" : 1810,
+    "perminov" : 1826,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 9, 15, 24 ],
     "us_derived" : 1880,
@@ -6168,7 +6329,7 @@
     "_status" : 5
   }, {
     "format" : [ 10, 14, 24 ],
-    "us_derived" : 2049,
+    "us_derived" : 2041,
     "perminov" : 2040,
     "perminov_published" : false,
     "_status" : 5
@@ -6209,11 +6370,17 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 13, 15, 24 ],
-    "us_derived" : 2800,
-    "perminov" : 2736,
+    "format" : [ 11, 18, 24 ],
+    "us_derived" : 2820,
+    "perminov" : 2751,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 13, 15, 24 ],
+    "us_derived" : 2720,
+    "perminov" : 2736,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 13, 16, 24 ],
     "us_derived" : 2942,
@@ -6221,8 +6388,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 13, 18, 24 ],
+    "us_derived" : 3252,
+    "perminov" : 3225,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 13, 21, 24 ],
-    "us_derived" : 3819,
+    "us_derived" : 3814,
     "perminov" : 3747,
     "perminov_published" : false,
     "_status" : 5
@@ -6234,22 +6407,22 @@
     "_status" : 5
   }, {
     "format" : [ 14, 15, 24 ],
-    "us_derived" : 2999,
+    "us_derived" : 2940,
     "perminov" : 2940,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
+  }, {
+    "format" : [ 14, 18, 24 ],
+    "us_derived" : 3504,
+    "perminov" : 3522,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 14, 20, 24 ],
     "us_derived" : 3837,
     "perminov" : 3837,
     "perminov_published" : false,
     "_status" : 2
-  }, {
-    "format" : [ 14, 22, 24 ],
-    "us_derived" : 4320,
-    "perminov" : 4267,
-    "perminov_published" : false,
-    "_status" : 5
   }, {
     "format" : [ 15, 15, 24 ],
     "us_derived" : 3040,
@@ -6258,10 +6431,10 @@
     "_status" : 5
   }, {
     "format" : [ 15, 22, 24 ],
-    "us_derived" : 4520,
+    "us_derived" : 4460,
     "perminov" : 4460,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 16, 20, 24 ],
     "us_derived" : 4320,
@@ -6269,11 +6442,17 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 20, 20, 24 ],
-    "us_derived" : 5280,
-    "perminov" : 5232,
+    "format" : [ 16, 21, 24 ],
+    "us_derived" : 4560,
+    "perminov" : 4557,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 20, 20, 24 ],
+    "us_derived" : 5232,
+    "perminov" : 5232,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 20, 21, 24 ],
     "us_derived" : 5589,
@@ -6282,28 +6461,22 @@
     "_status" : 5
   }, {
     "format" : [ 20, 24, 24 ],
-    "us_derived" : 6237,
+    "us_derived" : 6234,
     "perminov" : 6231,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 21, 22, 24 ],
-    "us_derived" : 6214,
-    "perminov" : 6086,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 3, 21, 25 ],
-    "us_derived" : 1167,
+    "us_derived" : 1165,
     "perminov" : 1165,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 4, 15, 25 ],
-    "us_derived" : 985,
+    "us_derived" : 982,
     "perminov" : 982,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 4, 18, 25 ],
     "us_derived" : 1172,
@@ -6324,8 +6497,14 @@
     "_status" : 5
   }, {
     "format" : [ 4, 22, 25 ],
-    "us_derived" : 1484,
+    "us_derived" : 1428,
     "perminov" : 1416,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 4, 24, 25 ],
+    "us_derived" : 1503,
+    "perminov" : 1500,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -6336,10 +6515,10 @@
     "_status" : 2
   }, {
     "format" : [ 5, 15, 25 ],
-    "us_derived" : 1251,
+    "us_derived" : 1249,
     "perminov" : 1249,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 5, 18, 25 ],
     "us_derived" : 1480,
@@ -6348,7 +6527,7 @@
     "_status" : 5
   }, {
     "format" : [ 5, 21, 25 ],
-    "us_derived" : 1726,
+    "us_derived" : 1723,
     "perminov" : 1722,
     "perminov_published" : false,
     "_status" : 5
@@ -6360,7 +6539,7 @@
     "_status" : 0
   }, {
     "format" : [ 6, 20, 25 ],
-    "us_derived" : 1848,
+    "us_derived" : 1847,
     "perminov" : 1819,
     "perminov_published" : false,
     "_status" : 5
@@ -6377,9 +6556,27 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 8, 10, 25 ],
+    "us_derived" : 1265,
+    "perminov" : 1262,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 8, 14, 25 ],
+    "us_derived" : 1739,
+    "perminov" : 1736,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 8, 15, 25 ],
     "us_derived" : 1846,
     "perminov" : 1846,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 8, 16, 25 ],
+    "us_derived" : 1948,
+    "perminov" : 1948,
     "perminov_published" : false,
     "_status" : 2
   }, {
@@ -6402,16 +6599,16 @@
     "_status" : 5
   }, {
     "format" : [ 9, 14, 25 ],
-    "us_derived" : 1965,
+    "us_derived" : 1933,
     "perminov" : 1961,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 9, 16, 25 ],
-    "us_derived" : 2196,
+    "us_derived" : 2160,
     "perminov" : 2188,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 9, 20, 25 ],
     "us_derived" : 2672,
@@ -6425,8 +6622,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 10, 20, 25 ],
+    "us_derived" : 2955,
+    "perminov" : 2952,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 10, 21, 25 ],
-    "us_derived" : 3148,
+    "us_derived" : 3139,
     "perminov" : 3098,
     "perminov_published" : false,
     "_status" : 5
@@ -6437,11 +6640,23 @@
     "perminov_published" : false,
     "_status" : 0
   }, {
+    "format" : [ 10, 24, 25 ],
+    "us_derived" : 3498,
+    "perminov" : 3492,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 10, 25, 25 ],
     "us_derived" : 3672,
     "perminov" : 3672,
     "perminov_published" : false,
     "_status" : 2
+  }, {
+    "format" : [ 11, 18, 25 ],
+    "us_derived" : 2980,
+    "perminov" : 2986,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 11, 21, 25 ],
     "us_derived" : 3493,
@@ -6450,25 +6665,25 @@
     "_status" : 5
   }, {
     "format" : [ 12, 20, 25 ],
-    "us_derived" : 3500,
+    "us_derived" : 3474,
     "perminov" : 3477,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 12, 22, 25 ],
-    "us_derived" : 3859,
+    "us_derived" : 3857,
     "perminov" : 3856,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 12, 25, 25 ],
-    "us_derived" : 4372,
+    "us_derived" : 4362,
     "perminov" : 4348,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 15, 25 ],
-    "us_derived" : 3148,
+    "us_derived" : 3120,
     "perminov" : 3112,
     "perminov_published" : false,
     "_status" : 5
@@ -6480,7 +6695,7 @@
     "_status" : 5
   }, {
     "format" : [ 14, 18, 25 ],
-    "us_derived" : 3702,
+    "us_derived" : 3691,
     "perminov" : 3681,
     "perminov_published" : false,
     "_status" : 5
@@ -6497,26 +6712,32 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 14, 24, 25 ],
+    "us_derived" : 4761,
+    "perminov" : 4763,
+    "perminov_published" : false,
+    "_status" : 0
+  }, {
     "format" : [ 14, 25, 25 ],
-    "us_derived" : 5046,
+    "us_derived" : 5030,
     "perminov" : 5030,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 15, 16, 25 ],
-    "us_derived" : 3534,
+    "us_derived" : 3474,
     "perminov" : 3500,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 15, 20, 25 ],
-    "us_derived" : 4334,
+    "us_derived" : 4300,
     "perminov" : 4294,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 15, 22, 25 ],
-    "us_derived" : 4816,
+    "us_derived" : 4786,
     "perminov" : 4782,
     "perminov_published" : false,
     "_status" : 5
@@ -6528,31 +6749,31 @@
     "_status" : 2
   }, {
     "format" : [ 15, 25, 25 ],
-    "us_derived" : 5354,
+    "us_derived" : 5341,
     "perminov" : 5341,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 16, 20, 25 ],
-    "us_derived" : 4564,
+    "us_derived" : 4510,
     "perminov" : 4510,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 20, 20, 25 ],
-    "us_derived" : 5650,
+    "us_derived" : 5611,
     "perminov" : 5610,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 20, 21, 25 ],
-    "us_derived" : 5925,
+    "us_derived" : 5923,
     "perminov" : 5882,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 20, 22, 25 ],
-    "us_derived" : 6182,
+    "us_derived" : 6179,
     "perminov" : 6160,
     "perminov_published" : false,
     "_status" : 5
@@ -6564,10 +6785,10 @@
     "_status" : 2
   }, {
     "format" : [ 21, 25, 25 ],
-    "us_derived" : 7312,
+    "us_derived" : 7293,
     "perminov" : 7293,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 24, 25, 25 ],
     "us_derived" : 8088,
@@ -6606,7 +6827,7 @@
     "_status" : 5
   }, {
     "format" : [ 4, 24, 26 ],
-    "us_derived" : 1599,
+    "us_derived" : 1587,
     "perminov" : 1580,
     "perminov_published" : false,
     "_status" : 5
@@ -6630,8 +6851,14 @@
     "_status" : 5
   }, {
     "format" : [ 6, 16, 26 ],
-    "us_derived" : 1554,
+    "us_derived" : 1548,
     "perminov" : 1528,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 6, 20, 26 ],
+    "us_derived" : 1915,
+    "perminov" : 1899,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -6641,15 +6868,21 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 8, 21, 26 ],
-    "us_derived" : 2630,
-    "perminov" : 2618,
+    "format" : [ 8, 15, 26 ],
+    "us_derived" : 1916,
+    "perminov" : 1899,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 8, 22, 26 ],
-    "us_derived" : 2800,
-    "perminov" : 2771,
+    "format" : [ 8, 16, 26 ],
+    "us_derived" : 2046,
+    "perminov" : 2024,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 8, 21, 26 ],
+    "us_derived" : 2630,
+    "perminov" : 2618,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -6660,25 +6893,31 @@
     "_status" : 5
   }, {
     "format" : [ 9, 10, 26 ],
-    "us_derived" : 1470,
+    "us_derived" : 1468,
     "perminov" : 1464,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 12, 26 ],
-    "us_derived" : 1688,
+    "us_derived" : 1682,
     "perminov" : 1680,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 16, 26 ],
-    "us_derived" : 2268,
+    "us_derived" : 2247,
     "perminov" : 2236,
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 9, 24, 26 ],
+    "us_derived" : 3240,
+    "perminov" : 3210,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 10, 12, 26 ],
-    "us_derived" : 1936,
+    "us_derived" : 1916,
     "perminov" : 1908,
     "perminov_published" : false,
     "_status" : 5
@@ -6714,49 +6953,61 @@
     "_status" : 5
   }, {
     "format" : [ 10, 24, 26 ],
-    "us_derived" : 3716,
+    "us_derived" : 3700,
     "perminov" : 3628,
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 12, 16, 26 ],
+    "us_derived" : 2888,
+    "perminov" : 2869,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 12, 18, 26 ],
+    "us_derived" : 3210,
+    "perminov" : 3210,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 12, 20, 26 ],
-    "us_derived" : 3634,
+    "us_derived" : 3624,
     "perminov" : 3619,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 12, 21, 26 ],
-    "us_derived" : 3884,
+    "us_derived" : 3768,
     "perminov" : 3751,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 12, 22, 26 ],
-    "us_derived" : 4018,
+    "us_derived" : 3992,
     "perminov" : 4015,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 13, 15, 26 ],
-    "us_derived" : 3074,
+    "us_derived" : 3020,
     "perminov" : 3067,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 13, 24, 26 ],
-    "us_derived" : 4741,
+    "us_derived" : 4718,
     "perminov" : 4724,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 14, 15, 26 ],
-    "us_derived" : 3276,
+    "us_derived" : 3261,
     "perminov" : 3255,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 16, 26 ],
-    "us_derived" : 3472,
+    "us_derived" : 3458,
     "perminov" : 3436,
     "perminov_published" : false,
     "_status" : 5
@@ -6766,12 +7017,6 @@
     "perminov" : 4246,
     "perminov_published" : false,
     "_status" : 2
-  }, {
-    "format" : [ 14, 24, 26 ],
-    "us_derived" : 5008,
-    "perminov" : 4969,
-    "perminov_published" : false,
-    "_status" : 5
   }, {
     "format" : [ 14, 25, 26 ],
     "us_derived" : 5243,
@@ -6785,11 +7030,17 @@
     "perminov_published" : false,
     "_status" : 0
   }, {
-    "format" : [ 15, 20, 26 ],
-    "us_derived" : 4462,
-    "perminov" : 4422,
+    "format" : [ 15, 16, 26 ],
+    "us_derived" : 3624,
+    "perminov" : 3619,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 15, 20, 26 ],
+    "us_derived" : 4422,
+    "perminov" : 4422,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 15, 25, 26 ],
     "us_derived" : 5567,
@@ -6798,34 +7049,10 @@
     "_status" : 0
   }, {
     "format" : [ 16, 18, 26 ],
-    "us_derived" : 4305,
+    "us_derived" : 4296,
     "perminov" : 4296,
     "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 16, 20, 26 ],
-    "us_derived" : 4802,
-    "perminov" : 4776,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 16, 21, 26 ],
-    "us_derived" : 5058,
-    "perminov" : 4969,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 16, 22, 26 ],
-    "us_derived" : 5250,
-    "perminov" : 5182,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 18, 18, 26 ],
-    "us_derived" : 4703,
-    "perminov" : 4680,
-    "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 20, 20, 26 ],
     "us_derived" : 5793,
@@ -6840,25 +7067,25 @@
     "_status" : 5
   }, {
     "format" : [ 20, 22, 26 ],
-    "us_derived" : 6468,
+    "us_derived" : 6448,
     "perminov" : 6464,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 20, 24, 26 ],
-    "us_derived" : 6930,
+    "us_derived" : 6906,
     "perminov" : 6906,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 20, 25, 26 ],
-    "us_derived" : 7298,
+    "us_derived" : 7167,
     "perminov" : 7169,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 20, 26, 26 ],
-    "us_derived" : 7574,
+    "us_derived" : 7566,
     "perminov" : 7563,
     "perminov_published" : false,
     "_status" : 5
@@ -6876,13 +7103,19 @@
     "_status" : 5
   }, {
     "format" : [ 3, 21, 27 ],
-    "us_derived" : 1258,
+    "us_derived" : 1255,
     "perminov" : 1255,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 4, 6, 27 ],
+    "us_derived" : 470,
+    "perminov" : 469,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 4, 15, 27 ],
-    "us_derived" : 1076,
+    "us_derived" : 1068,
     "perminov" : 1065,
     "perminov_published" : false,
     "_status" : 5
@@ -6890,6 +7123,24 @@
     "format" : [ 4, 18, 27 ],
     "us_derived" : 1274,
     "perminov" : 1270,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 4, 20, 27 ],
+    "us_derived" : 1383,
+    "perminov" : 1375,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 4, 24, 27 ],
+    "us_derived" : 1650,
+    "perminov" : 1638,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 4, 25, 27 ],
+    "us_derived" : 1726,
+    "perminov" : 1725,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -6905,8 +7156,20 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 6, 14, 27 ],
+    "us_derived" : 1424,
+    "perminov" : 1436,
+    "perminov_published" : false,
+    "_status" : 0
+  }, {
+    "format" : [ 6, 15, 27 ],
+    "us_derived" : 1480,
+    "perminov" : 1475,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 6, 16, 27 ],
-    "us_derived" : 1597,
+    "us_derived" : 1593,
     "perminov" : 1580,
     "perminov_published" : false,
     "_status" : 5
@@ -6917,20 +7180,20 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 6, 20, 27 ],
+    "us_derived" : 1985,
+    "perminov" : 1980,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 6, 22, 27 ],
-    "us_derived" : 2209,
+    "us_derived" : 2194,
     "perminov" : 2211,
     "perminov_published" : false,
     "_status" : 0
   }, {
-    "format" : [ 8, 10, 27 ],
-    "us_derived" : 1392,
-    "perminov" : 1362,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 8, 14, 27 ],
-    "us_derived" : 1898,
+    "us_derived" : 1838,
     "perminov" : 1829,
     "perminov_published" : false,
     "_status" : 5
@@ -6954,16 +7217,16 @@
     "_status" : 2
   }, {
     "format" : [ 8, 21, 27 ],
-    "us_derived" : 2789,
+    "us_derived" : 2732,
     "perminov" : 2732,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 8, 22, 27 ],
-    "us_derived" : 2908,
+    "us_derived" : 2853,
     "perminov" : 2853,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 8, 24, 27 ],
     "us_derived" : 3072,
@@ -6996,7 +7259,7 @@
     "_status" : 2
   }, {
     "format" : [ 9, 16, 27 ],
-    "us_derived" : 2340,
+    "us_derived" : 2331,
     "perminov" : 2320,
     "perminov_published" : false,
     "_status" : 5
@@ -7013,6 +7276,12 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 10, 11, 27 ],
+    "us_derived" : 1860,
+    "perminov" : 1838,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 10, 12, 27 ],
     "us_derived" : 1976,
     "perminov" : 1974,
@@ -7026,7 +7295,7 @@
     "_status" : 5
   }, {
     "format" : [ 10, 14, 27 ],
-    "us_derived" : 2299,
+    "us_derived" : 2296,
     "perminov" : 2284,
     "perminov_published" : false,
     "_status" : 5
@@ -7038,10 +7307,10 @@
     "_status" : 5
   }, {
     "format" : [ 10, 16, 27 ],
-    "us_derived" : 2600,
+    "us_derived" : 2568,
     "perminov" : 2568,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 10, 18, 27 ],
     "us_derived" : 2888,
@@ -7050,25 +7319,25 @@
     "_status" : 5
   }, {
     "format" : [ 10, 20, 27 ],
-    "us_derived" : 3204,
+    "us_derived" : 3202,
     "perminov" : 3178,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 10, 21, 27 ],
-    "us_derived" : 3397,
+    "us_derived" : 3395,
     "perminov" : 3387,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 10, 22, 27 ],
-    "us_derived" : 3556,
+    "us_derived" : 3543,
     "perminov" : 3542,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 10, 24, 27 ],
-    "us_derived" : 3811,
+    "us_derived" : 3800,
     "perminov" : 3770,
     "perminov_published" : false,
     "_status" : 5
@@ -7080,16 +7349,28 @@
     "_status" : 5
   }, {
     "format" : [ 10, 27, 27 ],
-    "us_derived" : 4392,
+    "us_derived" : 4326,
     "perminov" : 4326,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 11, 16, 27 ],
+    "us_derived" : 2847,
+    "perminov" : 2780,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 11, 22, 27 ],
-    "us_derived" : 3938,
+    "us_derived" : 3913,
     "perminov" : 3908,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 11, 26, 27 ],
+    "us_derived" : 4605,
+    "perminov" : 4609,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 12, 20, 27 ],
     "us_derived" : 3742,
@@ -7103,20 +7384,32 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 12, 22, 27 ],
+    "us_derived" : 4096,
+    "perminov" : 4096,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 13, 16, 27 ],
+    "us_derived" : 3346,
+    "perminov" : 3274,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 13, 18, 27 ],
+    "us_derived" : 3726,
+    "perminov" : 3668,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 13, 20, 27 ],
     "us_derived" : 4160,
     "perminov" : 4035,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 13, 22, 27 ],
-    "us_derived" : 4592,
-    "perminov" : 4478,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 14, 14, 27 ],
-    "us_derived" : 3207,
+    "us_derived" : 3200,
     "perminov" : 3198,
     "perminov_published" : false,
     "_status" : 5
@@ -7128,19 +7421,19 @@
     "_status" : 5
   }, {
     "format" : [ 14, 16, 27 ],
-    "us_derived" : 3600,
+    "us_derived" : 3563,
     "perminov" : 3535,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 18, 27 ],
-    "us_derived" : 3960,
+    "us_derived" : 3929,
     "perminov" : 3921,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 14, 20, 27 ],
-    "us_derived" : 4400,
+    "us_derived" : 4358,
     "perminov" : 4351,
     "perminov_published" : false,
     "_status" : 5
@@ -7154,12 +7447,6 @@
     "format" : [ 14, 22, 27 ],
     "us_derived" : 4795,
     "perminov" : 4787,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 14, 26, 27 ],
-    "us_derived" : 5647,
-    "perminov" : 5629,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7188,7 +7475,7 @@
     "_status" : 2
   }, {
     "format" : [ 15, 22, 27 ],
-    "us_derived" : 5156,
+    "us_derived" : 5148,
     "perminov" : 5138,
     "perminov_published" : false,
     "_status" : 5
@@ -7206,10 +7493,10 @@
     "_status" : 5
   }, {
     "format" : [ 16, 21, 27 ],
-    "us_derived" : 5153,
+    "us_derived" : 5138,
     "perminov" : 5138,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 16, 22, 27 ],
     "us_derived" : 5384,
@@ -7217,14 +7504,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 16, 26, 27 ],
-    "us_derived" : 6420,
-    "perminov" : 6227,
+    "format" : [ 18, 22, 27 ],
+    "us_derived" : 5956,
+    "perminov" : 5956,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 18, 26, 27 ],
-    "us_derived" : 7002,
+    "us_derived" : 6970,
     "perminov" : 6954,
     "perminov_published" : false,
     "_status" : 5
@@ -7236,13 +7523,13 @@
     "_status" : 5
   }, {
     "format" : [ 20, 21, 27 ],
-    "us_derived" : 6426,
+    "us_derived" : 6376,
     "perminov" : 6373,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 20, 22, 27 ],
-    "us_derived" : 6696,
+    "us_derived" : 6631,
     "perminov" : 6608,
     "perminov_published" : false,
     "_status" : 5
@@ -7254,10 +7541,10 @@
     "_status" : 5
   }, {
     "format" : [ 20, 26, 27 ],
-    "us_derived" : 7862,
+    "us_derived" : 7762,
     "perminov" : 7762,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 21, 21, 27 ],
     "us_derived" : 6678,
@@ -7266,10 +7553,10 @@
     "_status" : 5
   }, {
     "format" : [ 21, 22, 27 ],
-    "us_derived" : 7099,
+    "us_derived" : 6970,
     "perminov" : 6970,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 21, 24, 27 ],
     "us_derived" : 7359,
@@ -7301,8 +7588,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 3, 18, 28 ],
+    "us_derived" : 1122,
+    "perminov" : 1118,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 3, 21, 28 ],
-    "us_derived" : 1308,
+    "us_derived" : 1301,
     "perminov" : 1299,
     "perminov_published" : false,
     "_status" : 5
@@ -7310,6 +7603,12 @@
     "format" : [ 4, 9, 28 ],
     "us_derived" : 698,
     "perminov" : 692,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 4, 13, 28 ],
+    "us_derived" : 980,
+    "perminov" : 976,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7343,9 +7642,21 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 4, 25, 28 ],
+    "us_derived" : 1753,
+    "perminov" : 1752,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 4, 26, 28 ],
     "us_derived" : 1865,
     "perminov" : 1860,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 4, 27, 28 ],
+    "us_derived" : 1926,
+    "perminov" : 1922,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7362,13 +7673,13 @@
     "_status" : 5
   }, {
     "format" : [ 6, 10, 28 ],
-    "us_derived" : 1100,
+    "us_derived" : 1084,
     "perminov" : 1084,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 6, 11, 28 ],
-    "us_derived" : 1194,
+    "us_derived" : 1184,
     "perminov" : 1176,
     "perminov_published" : false,
     "_status" : 5
@@ -7380,10 +7691,10 @@
     "_status" : 5
   }, {
     "format" : [ 6, 14, 28 ],
-    "us_derived" : 1484,
+    "us_derived" : 1449,
     "perminov" : 1449,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 6, 16, 28 ],
     "us_derived" : 1617,
@@ -7392,7 +7703,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 18, 28 ],
-    "us_derived" : 1871,
+    "us_derived" : 1852,
     "perminov" : 1788,
     "perminov_published" : false,
     "_status" : 5
@@ -7409,17 +7720,29 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 6, 25, 28 ],
+    "us_derived" : 2516,
+    "perminov" : 2516,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 6, 26, 28 ],
-    "us_derived" : 2706,
+    "us_derived" : 2681,
     "perminov" : 2651,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 6, 27, 28 ],
-    "us_derived" : 2768,
+    "us_derived" : 2754,
     "perminov" : 2734,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 6, 28, 28 ],
+    "us_derived" : 2829,
+    "perminov" : 2829,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 7, 14, 28 ],
     "us_derived" : 1793,
@@ -7439,8 +7762,20 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 7, 21, 28 ],
+    "us_derived" : 2590,
+    "perminov" : 2568,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 8, 9, 28 ],
+    "us_derived" : 1260,
+    "perminov" : 1254,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 8, 10, 28 ],
-    "us_derived" : 1423,
+    "us_derived" : 1418,
     "perminov" : 1413,
     "perminov_published" : false,
     "_status" : 5
@@ -7457,23 +7792,41 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 8, 24, 28 ],
+    "us_derived" : 3141,
+    "perminov" : 3141,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 8, 25, 28 ],
+    "us_derived" : 3310,
+    "perminov" : 3306,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 9, 9, 28 ],
-    "us_derived" : 1385,
+    "us_derived" : 1368,
     "perminov" : 1367,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 10, 28 ],
-    "us_derived" : 1580,
+    "us_derived" : 1554,
     "perminov" : 1554,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 9, 11, 28 ],
+    "us_derived" : 1715,
+    "perminov" : 1666,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 12, 28 ],
-    "us_derived" : 1820,
+    "us_derived" : 1815,
     "perminov" : 1815,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 9, 13, 28 ],
     "us_derived" : 2013,
@@ -7481,26 +7834,32 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 9, 14, 28 ],
+    "us_derived" : 2147,
+    "perminov" : 2133,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 9, 20, 28 ],
-    "us_derived" : 3056,
+    "us_derived" : 2955,
     "perminov" : 2947,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 22, 28 ],
-    "us_derived" : 3286,
+    "us_derived" : 3269,
     "perminov" : 3206,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 26, 28 ],
-    "us_derived" : 3886,
+    "us_derived" : 3794,
     "perminov" : 3751,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 27, 28 ],
-    "us_derived" : 3873,
+    "us_derived" : 3857,
     "perminov" : 3849,
     "perminov_published" : false,
     "_status" : 5
@@ -7512,10 +7871,10 @@
     "_status" : 5
   }, {
     "format" : [ 10, 12, 28 ],
-    "us_derived" : 2052,
+    "us_derived" : 2038,
     "perminov" : 2038,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 10, 13, 28 ],
     "us_derived" : 2244,
@@ -7565,21 +7924,39 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 10, 25, 28 ],
+    "us_derived" : 4045,
+    "perminov" : 4041,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 10, 26, 28 ],
-    "us_derived" : 4266,
+    "us_derived" : 4249,
     "perminov" : 4246,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 10, 27, 28 ],
-    "us_derived" : 4460,
+    "us_derived" : 4446,
     "perminov" : 4389,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 10, 28, 28 ],
-    "us_derived" : 4554,
+    "us_derived" : 4543,
     "perminov" : 4533,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 11, 24, 28 ],
+    "us_derived" : 4302,
+    "perminov" : 4267,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 11, 27, 28 ],
+    "us_derived" : 4934,
+    "perminov" : 4863,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7590,14 +7967,38 @@
     "_status" : 5
   }, {
     "format" : [ 12, 22, 28 ],
-    "us_derived" : 4291,
+    "us_derived" : 4222,
     "perminov" : 4222,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 12, 25, 28 ],
+    "us_derived" : 4777,
+    "perminov" : 4767,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 13, 18, 28 ],
+    "us_derived" : 3870,
+    "perminov" : 3747,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 13, 21, 28 ],
-    "us_derived" : 4527,
+    "us_derived" : 4526,
     "perminov" : 4404,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 13, 25, 28 ],
+    "us_derived" : 5290,
+    "perminov" : 5326,
+    "perminov_published" : false,
+    "_status" : 0
+  }, {
+    "format" : [ 13, 27, 28 ],
+    "us_derived" : 5725,
+    "perminov" : 5685,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7608,14 +8009,14 @@
     "_status" : 2
   }, {
     "format" : [ 14, 20, 28 ],
-    "us_derived" : 4537,
+    "us_derived" : 4523,
     "perminov" : 4520,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 14, 24, 28 ],
-    "us_derived" : 5335,
-    "perminov" : 5307,
+    "format" : [ 14, 25, 28 ],
+    "us_derived" : 5590,
+    "perminov" : 5587,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7625,29 +8026,35 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 14, 28, 28 ],
-    "us_derived" : 6300,
-    "perminov" : 6300,
-    "perminov_published" : false,
-    "_status" : 2
-  }, {
     "format" : [ 15, 15, 28 ],
-    "us_derived" : 3624,
+    "us_derived" : 3621,
     "perminov" : 3634,
     "perminov_published" : false,
     "_status" : 0
   }, {
-    "format" : [ 15, 21, 28 ],
-    "us_derived" : 4985,
-    "perminov" : 4965,
+    "format" : [ 15, 18, 28 ],
+    "us_derived" : 4262,
+    "perminov" : 4254,
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 15, 20, 28 ],
+    "us_derived" : 4734,
+    "perminov" : 4734,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 15, 21, 28 ],
+    "us_derived" : 4965,
+    "perminov" : 4965,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 15, 22, 28 ],
-    "us_derived" : 5379,
+    "us_derived" : 5264,
     "perminov" : 5264,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 15, 24, 28 ],
     "us_derived" : 5601,
@@ -7662,58 +8069,58 @@
     "_status" : 2
   }, {
     "format" : [ 15, 26, 28 ],
-    "us_derived" : 6204,
+    "us_derived" : 6176,
     "perminov" : 6140,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 15, 28, 28 ],
-    "us_derived" : 6537,
+    "us_derived" : 6534,
     "perminov" : 6534,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 16, 16, 28 ],
-    "us_derived" : 4080,
+    "us_derived" : 4060,
     "perminov" : 4060,
     "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 16, 21, 28 ],
-    "us_derived" : 5335,
-    "perminov" : 5322,
-    "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 16, 22, 28 ],
-    "us_derived" : 5628,
+    "us_derived" : 5500,
     "perminov" : 5500,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 16, 24, 28 ],
+    "us_derived" : 5892,
+    "perminov" : 5880,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 16, 25, 28 ],
-    "us_derived" : 6285,
+    "us_derived" : 6283,
     "perminov" : 6272,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 16, 26, 28 ],
-    "us_derived" : 6488,
-    "perminov" : 6545,
-    "perminov_published" : false,
-    "_status" : 0
-  }, {
-    "format" : [ 18, 20, 28 ],
-    "us_derived" : 5614,
-    "perminov" : 5586,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 18, 21, 28 ],
-    "us_derived" : 5909,
+    "us_derived" : 5860,
     "perminov" : 5850,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 18, 22, 28 ],
+    "us_derived" : 6153,
+    "perminov" : 6111,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 18, 24, 28 ],
+    "us_derived" : 6540,
+    "perminov" : 6540,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 18, 27, 28 ],
     "us_derived" : 7355,
@@ -7721,11 +8128,17 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 20, 21, 28 ],
-    "us_derived" : 6525,
-    "perminov" : 6516,
+    "format" : [ 18, 28, 28 ],
+    "us_derived" : 7676,
+    "perminov" : 7662,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 20, 21, 28 ],
+    "us_derived" : 6516,
+    "perminov" : 6516,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 20, 22, 28 ],
     "us_derived" : 6867,
@@ -7734,22 +8147,40 @@
     "_status" : 5
   }, {
     "format" : [ 20, 25, 28 ],
-    "us_derived" : 7700,
+    "us_derived" : 7686,
     "perminov" : 7678,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 20, 26, 28 ],
-    "us_derived" : 7897,
+    "us_derived" : 7866,
     "perminov" : 7870,
+    "perminov_published" : false,
+    "_status" : 0
+  }, {
+    "format" : [ 20, 27, 28 ],
+    "us_derived" : 8192,
+    "perminov" : 8192,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 20, 28, 28 ],
+    "us_derived" : 8434,
+    "perminov" : 8434,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 21, 24, 28 ],
+    "us_derived" : 7710,
+    "perminov" : 7695,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 20, 28, 28 ],
-    "us_derived" : 8440,
-    "perminov" : 8434,
+    "format" : [ 21, 25, 28 ],
+    "us_derived" : 8118,
+    "perminov" : 8118,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 21, 27, 28 ],
     "us_derived" : 8595,
@@ -7758,7 +8189,7 @@
     "_status" : 5
   }, {
     "format" : [ 21, 28, 28 ],
-    "us_derived" : 9200,
+    "us_derived" : 9047,
     "perminov" : 9038,
     "perminov_published" : false,
     "_status" : 5
@@ -7788,7 +8219,7 @@
     "_status" : 5
   }, {
     "format" : [ 4, 10, 30 ],
-    "us_derived" : 826,
+    "us_derived" : 825,
     "perminov" : 822,
     "perminov_published" : false,
     "_status" : 5
@@ -7800,7 +8231,7 @@
     "_status" : 5
   }, {
     "format" : [ 4, 18, 30 ],
-    "us_derived" : 1395,
+    "us_derived" : 1394,
     "perminov" : 1391,
     "perminov_published" : false,
     "_status" : 5
@@ -7824,7 +8255,7 @@
     "_status" : 5
   }, {
     "format" : [ 4, 27, 30 ],
-    "us_derived" : 2057,
+    "us_derived" : 2036,
     "perminov" : 2033,
     "perminov_published" : false,
     "_status" : 5
@@ -7842,8 +8273,20 @@
     "_status" : 5
   }, {
     "format" : [ 5, 21, 30 ],
-    "us_derived" : 2070,
+    "us_derived" : 2045,
     "perminov" : 2066,
+    "perminov_published" : false,
+    "_status" : 0
+  }, {
+    "format" : [ 6, 6, 30 ],
+    "us_derived" : 713,
+    "perminov" : 709,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 6, 20, 30 ],
+    "us_derived" : 2160,
+    "perminov" : 2156,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7854,7 +8297,7 @@
     "_status" : 5
   }, {
     "format" : [ 7, 10, 30 ],
-    "us_derived" : 1380,
+    "us_derived" : 1375,
     "perminov" : 1369,
     "perminov_published" : false,
     "_status" : 5
@@ -7878,8 +8321,20 @@
     "_status" : 5
   }, {
     "format" : [ 8, 14, 30 ],
-    "us_derived" : 2066,
+    "us_derived" : 2029,
     "perminov" : 2020,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 8, 15, 30 ],
+    "us_derived" : 2142,
+    "perminov" : 2142,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 8, 18, 30 ],
+    "us_derived" : 2535,
+    "perminov" : 2526,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7889,15 +8344,33 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 8, 26, 30 ],
-    "us_derived" : 3646,
-    "perminov" : 3640,
+    "format" : [ 8, 21, 30 ],
+    "us_derived" : 2949,
+    "perminov" : 2946,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 8, 24, 30 ],
+    "us_derived" : 3357,
+    "perminov" : 3354,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 8, 28, 30 ],
+    "us_derived" : 3895,
+    "perminov" : 3895,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 8, 30, 30 ],
     "us_derived" : 4166,
     "perminov" : 4158,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 9, 10, 30 ],
+    "us_derived" : 1650,
+    "perminov" : 1638,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7920,10 +8393,16 @@
     "_status" : 5
   }, {
     "format" : [ 10, 11, 30 ],
-    "us_derived" : 2058,
+    "us_derived" : 2055,
     "perminov" : 2045,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 10, 12, 30 ],
+    "us_derived" : 2160,
+    "perminov" : 2165,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 10, 13, 30 ],
     "us_derived" : 2382,
@@ -7943,9 +8422,21 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 10, 16, 30 ],
+    "us_derived" : 2838,
+    "perminov" : 2838,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 10, 18, 30 ],
     "us_derived" : 3181,
     "perminov" : 3146,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 10, 20, 30 ],
+    "us_derived" : 3498,
+    "perminov" : 3492,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -7962,10 +8453,10 @@
     "_status" : 0
   }, {
     "format" : [ 10, 24, 30 ],
-    "us_derived" : 4142,
+    "us_derived" : 4130,
     "perminov" : 4130,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 10, 25, 30 ],
     "us_derived" : 4304,
@@ -7986,7 +8477,7 @@
     "_status" : 5
   }, {
     "format" : [ 11, 16, 30 ],
-    "us_derived" : 3174,
+    "us_derived" : 3126,
     "perminov" : 3077,
     "perminov_published" : false,
     "_status" : 5
@@ -8010,16 +8501,16 @@
     "_status" : 5
   }, {
     "format" : [ 12, 22, 30 ],
-    "us_derived" : 4520,
+    "us_derived" : 4516,
     "perminov" : 4509,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 13, 14, 30 ],
-    "us_derived" : 3322,
+    "us_derived" : 3280,
     "perminov" : 3299,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 13, 18, 30 ],
     "us_derived" : 4107,
@@ -8033,12 +8524,6 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 13, 26, 30 ],
-    "us_derived" : 5925,
-    "perminov" : 5866,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 13, 27, 30 ],
     "us_derived" : 6090,
     "perminov" : 6088,
@@ -8046,16 +8531,28 @@
     "_status" : 5
   }, {
     "format" : [ 14, 14, 30 ],
-    "us_derived" : 3556,
+    "us_derived" : 3515,
     "perminov" : 3515,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 14, 16, 30 ],
+    "us_derived" : 3897,
+    "perminov" : 3893,
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 14, 24, 30 ],
-    "us_derived" : 5705,
-    "perminov" : 5674,
+    "format" : [ 14, 18, 30 ],
+    "us_derived" : 4350,
+    "perminov" : 4342,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 14, 20, 30 ],
+    "us_derived" : 4764,
+    "perminov" : 4765,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 14, 25, 30 ],
     "us_derived" : 5929,
@@ -8064,10 +8561,10 @@
     "_status" : 5
   }, {
     "format" : [ 14, 30, 30 ],
-    "us_derived" : 7014,
+    "us_derived" : 6996,
     "perminov" : 7006,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 15, 18, 30 ],
     "us_derived" : 4400,
@@ -8076,8 +8573,14 @@
     "_status" : 5
   }, {
     "format" : [ 15, 20, 30 ],
-    "us_derived" : 5004,
+    "us_derived" : 4992,
     "perminov" : 4992,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 15, 28, 30 ],
+    "us_derived" : 6846,
+    "perminov" : 6840,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -8093,8 +8596,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 16, 22, 30 ],
+    "us_derived" : 5925,
+    "perminov" : 5853,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 16, 26, 30 ],
-    "us_derived" : 6936,
+    "us_derived" : 6900,
     "perminov" : 6878,
     "perminov_published" : false,
     "_status" : 5
@@ -8105,9 +8614,21 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 16, 30, 30 ],
+    "us_derived" : 7830,
+    "perminov" : 7821,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 18, 20, 30 ],
     "us_derived" : 5919,
     "perminov" : 5903,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 18, 28, 30 ],
+    "us_derived" : 8083,
+    "perminov" : 8076,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -8123,11 +8644,17 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 20, 22, 30 ],
-    "us_derived" : 7350,
-    "perminov" : 7308,
+    "format" : [ 20, 21, 30 ],
+    "us_derived" : 6828,
+    "perminov" : 6825,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 20, 22, 30 ],
+    "us_derived" : 7308,
+    "perminov" : 7308,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 20, 24, 30 ],
     "us_derived" : 7730,
@@ -8136,13 +8663,13 @@
     "_status" : 2
   }, {
     "format" : [ 20, 25, 30 ],
-    "us_derived" : 8286,
+    "us_derived" : 8072,
     "perminov" : 8072,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 20, 26, 30 ],
-    "us_derived" : 8610,
+    "us_derived" : 8590,
     "perminov" : 8567,
     "perminov_published" : false,
     "_status" : 5
@@ -8153,11 +8680,29 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 20, 30, 30 ],
+    "us_derived" : 9573,
+    "perminov" : 9558,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 21, 24, 30 ],
+    "us_derived" : 8070,
+    "perminov" : 8067,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 21, 25, 30 ],
-    "us_derived" : 8590,
+    "us_derived" : 8574,
     "perminov" : 8565,
     "perminov_published" : false,
     "_status" : 5
+  }, {
+    "format" : [ 21, 26, 30 ],
+    "us_derived" : 8858,
+    "perminov" : 8862,
+    "perminov_published" : false,
+    "_status" : 0
   }, {
     "format" : [ 21, 27, 30 ],
     "us_derived" : 9160,
@@ -8166,19 +8711,19 @@
     "_status" : 5
   }, {
     "format" : [ 21, 28, 30 ],
-    "us_derived" : 9490,
+    "us_derived" : 9473,
     "perminov" : 9468,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 21, 30, 30 ],
-    "us_derived" : 10160,
+    "us_derived" : 10090,
     "perminov" : 10075,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 22, 27, 30 ],
-    "us_derived" : 9958,
+    "us_derived" : 9520,
     "perminov" : 9510,
     "perminov_published" : false,
     "_status" : 5
@@ -8190,13 +8735,13 @@
     "_status" : 2
   }, {
     "format" : [ 24, 30, 30 ],
-    "us_derived" : 11200,
+    "us_derived" : 11160,
     "perminov" : 11156,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 25, 30, 30 ],
-    "us_derived" : 11988,
+    "us_derived" : 11962,
     "perminov" : 11945,
     "perminov_published" : false,
     "_status" : 5
@@ -8226,10 +8771,10 @@
     "_status" : 5
   }, {
     "format" : [ 4, 10, 32 ],
-    "us_derived" : 880,
+    "us_derived" : 874,
     "perminov" : 874,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 4, 11, 32 ],
     "us_derived" : 960,
@@ -8244,7 +8789,7 @@
     "_status" : 5
   }, {
     "format" : [ 4, 13, 32 ],
-    "us_derived" : 1120,
+    "us_derived" : 1116,
     "perminov" : 1112,
     "perminov_published" : false,
     "_status" : 5
@@ -8256,10 +8801,10 @@
     "_status" : 5
   }, {
     "format" : [ 4, 15, 32 ],
-    "us_derived" : 1260,
+    "us_derived" : 1256,
     "perminov" : 1256,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 4, 16, 32 ],
     "us_derived" : 1302,
@@ -8273,8 +8818,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 4, 20, 32 ],
+    "us_derived" : 1608,
+    "perminov" : 1608,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 4, 21, 32 ],
-    "us_derived" : 1736,
+    "us_derived" : 1734,
     "perminov" : 1725,
     "perminov_published" : false,
     "_status" : 5
@@ -8291,9 +8842,21 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 4, 25, 32 ],
+    "us_derived" : 2004,
+    "perminov" : 2003,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 4, 26, 32 ],
-    "us_derived" : 2132,
+    "us_derived" : 2130,
     "perminov" : 2112,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 4, 27, 32 ],
+    "us_derived" : 2205,
+    "perminov" : 2188,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -8328,7 +8891,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 11, 32 ],
-    "us_derived" : 1357,
+    "us_derived" : 1347,
     "perminov" : 1326,
     "perminov_published" : false,
     "_status" : 5
@@ -8358,7 +8921,7 @@
     "_status" : 2
   }, {
     "format" : [ 6, 25, 32 ],
-    "us_derived" : 2872,
+    "us_derived" : 2870,
     "perminov" : 2866,
     "perminov_published" : false,
     "_status" : 5
@@ -8375,8 +8938,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 6, 30, 32 ],
+    "us_derived" : 3398,
+    "perminov" : 3398,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 6, 32, 32 ],
-    "us_derived" : 3699,
+    "us_derived" : 3697,
     "perminov" : 3690,
     "perminov_published" : false,
     "_status" : 5
@@ -8408,6 +8977,12 @@
     "format" : [ 8, 8, 32 ],
     "us_derived" : 1302,
     "perminov" : 1302,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 8, 10, 32 ],
+    "us_derived" : 1608,
+    "perminov" : 1608,
     "perminov_published" : false,
     "_status" : 2
   }, {
@@ -8453,6 +9028,12 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 8, 25, 32 ],
+    "us_derived" : 3760,
+    "perminov" : 3755,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 8, 26, 32 ],
     "us_derived" : 3920,
     "perminov" : 3884,
@@ -8496,25 +9077,25 @@
     "_status" : 5
   }, {
     "format" : [ 9, 13, 32 ],
-    "us_derived" : 2332,
+    "us_derived" : 2282,
     "perminov" : 2229,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 16, 32 ],
-    "us_derived" : 2747,
+    "us_derived" : 2745,
     "perminov" : 2676,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 20, 32 ],
-    "us_derived" : 3398,
+    "us_derived" : 3384,
     "perminov" : 3357,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 9, 22, 32 ],
-    "us_derived" : 3738,
+    "us_derived" : 3736,
     "perminov" : 3711,
     "perminov_published" : false,
     "_status" : 5
@@ -8531,8 +9112,14 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 9, 28, 32 ],
+    "us_derived" : 4592,
+    "perminov" : 4592,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 9, 30, 32 ],
-    "us_derived" : 4854,
+    "us_derived" : 4851,
     "perminov" : 4842,
     "perminov_published" : false,
     "_status" : 5
@@ -8562,10 +9149,10 @@
     "_status" : 0
   }, {
     "format" : [ 10, 14, 32 ],
-    "us_derived" : 2721,
+    "us_derived" : 2700,
     "perminov" : 2712,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 10, 15, 32 ],
     "us_derived" : 2784,
@@ -8627,6 +9214,12 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 10, 30, 32 ],
+    "us_derived" : 5420,
+    "perminov" : 5413,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 10, 32, 32 ],
     "us_derived" : 5874,
     "perminov" : 5874,
@@ -8634,8 +9227,14 @@
     "_status" : 2
   }, {
     "format" : [ 11, 14, 32 ],
-    "us_derived" : 3022,
+    "us_derived" : 3020,
     "perminov" : 3012,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 11, 21, 32 ],
+    "us_derived" : 4365,
+    "perminov" : 4267,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -8645,6 +9244,12 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 12, 26, 32 ],
+    "us_derived" : 5572,
+    "perminov" : 5572,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 12, 28, 32 ],
     "us_derived" : 6048,
     "perminov" : 6042,
@@ -8652,14 +9257,32 @@
     "_status" : 5
   }, {
     "format" : [ 13, 15, 32 ],
-    "us_derived" : 3751,
+    "us_derived" : 3710,
     "perminov" : 3594,
     "perminov_published" : false,
     "_status" : 5
   }, {
+    "format" : [ 13, 18, 32 ],
+    "us_derived" : 4324,
+    "perminov" : 4266,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
     "format" : [ 13, 24, 32 ],
-    "us_derived" : 5720,
+    "us_derived" : 5679,
     "perminov" : 5700,
+    "perminov_published" : false,
+    "_status" : 0
+  }, {
+    "format" : [ 13, 27, 32 ],
+    "us_derived" : 6487,
+    "perminov" : 6452,
+    "perminov_published" : false,
+    "_status" : 5
+  }, {
+    "format" : [ 13, 28, 32 ],
+    "us_derived" : 6675,
+    "perminov" : 6672,
     "perminov_published" : false,
     "_status" : 5
   }, {
@@ -8676,10 +9299,10 @@
     "_status" : 5
   }, {
     "format" : [ 14, 15, 32 ],
-    "us_derived" : 3953,
+    "us_derived" : 3947,
     "perminov" : 3947,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 14, 16, 32 ],
     "us_derived" : 4119,
@@ -8693,6 +9316,12 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
+    "format" : [ 14, 20, 32 ],
+    "us_derived" : 5148,
+    "perminov" : 5148,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
     "format" : [ 14, 22, 32 ],
     "us_derived" : 5646,
     "perminov" : 5646,
@@ -8700,10 +9329,10 @@
     "_status" : 2
   }, {
     "format" : [ 14, 24, 32 ],
-    "us_derived" : 6064,
+    "us_derived" : 6048,
     "perminov" : 6048,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 14, 27, 32 ],
     "us_derived" : 6810,
@@ -8711,15 +9340,15 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 14, 28, 32 ],
-    "us_derived" : 7059,
-    "perminov" : 7008,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 14, 32, 32 ],
     "us_derived" : 7827,
     "perminov" : 7827,
+    "perminov_published" : false,
+    "_status" : 2
+  }, {
+    "format" : [ 15, 22, 32 ],
+    "us_derived" : 5948,
+    "perminov" : 5948,
     "perminov_published" : false,
     "_status" : 2
   }, {
@@ -8730,13 +9359,13 @@
     "_status" : 2
   }, {
     "format" : [ 15, 26, 32 ],
-    "us_derived" : 7038,
+    "us_derived" : 7002,
     "perminov" : 6966,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 15, 28, 32 ],
-    "us_derived" : 7426,
+    "us_derived" : 7419,
     "perminov" : 7410,
     "perminov_published" : false,
     "_status" : 5
@@ -8747,11 +9376,11 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 18, 22, 32 ],
-    "us_derived" : 6972,
-    "perminov" : 6888,
+    "format" : [ 18, 26, 32 ],
+    "us_derived" : 8112,
+    "perminov" : 8121,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 0
   }, {
     "format" : [ 18, 27, 32 ],
     "us_derived" : 8240,
@@ -8771,17 +9400,11 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 20, 21, 32 ],
-    "us_derived" : 7472,
-    "perminov" : 7410,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 20, 22, 32 ],
-    "us_derived" : 7784,
+    "us_derived" : 7728,
     "perminov" : 7728,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 20, 24, 32 ],
     "us_derived" : 8157,
@@ -8790,7 +9413,7 @@
     "_status" : 5
   }, {
     "format" : [ 20, 25, 32 ],
-    "us_derived" : 8719,
+    "us_derived" : 8710,
     "perminov" : 8706,
     "perminov_published" : false,
     "_status" : 5
@@ -8801,35 +9424,35 @@
     "perminov_published" : false,
     "_status" : 5
   }, {
-    "format" : [ 20, 28, 32 ],
-    "us_derived" : 9781,
-    "perminov" : 9767,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 21, 22, 32 ],
-    "us_derived" : 8256,
+    "us_derived" : 8083,
     "perminov" : 8083,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
     "format" : [ 21, 26, 32 ],
-    "us_derived" : 9941,
+    "us_derived" : 9527,
     "perminov" : 9522,
     "perminov_published" : false,
     "_status" : 5
   }, {
     "format" : [ 21, 27, 32 ],
-    "us_derived" : 9683,
+    "us_derived" : 9642,
     "perminov" : 9642,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
   }, {
-    "format" : [ 22, 22, 32 ],
-    "us_derived" : 8610,
-    "perminov" : 8448,
+    "format" : [ 21, 30, 32 ],
+    "us_derived" : 10860,
+    "perminov" : 10860,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
+  }, {
+    "format" : [ 22, 24, 32 ],
+    "us_derived" : 8944,
+    "perminov" : 8944,
+    "perminov_published" : false,
+    "_status" : 2
   }, {
     "format" : [ 22, 27, 32 ],
     "us_derived" : 10072,
@@ -8838,7 +9461,7 @@
     "_status" : 2
   }, {
     "format" : [ 24, 27, 32 ],
-    "us_derived" : 11176,
+    "us_derived" : 10764,
     "perminov" : 10737,
     "perminov_published" : false,
     "_status" : 5
@@ -8849,29 +9472,11 @@
     "perminov_published" : false,
     "_status" : 2
   }, {
-    "format" : [ 26, 27, 32 ],
-    "us_derived" : 11896,
-    "perminov" : 11858,
-    "perminov_published" : false,
-    "_status" : 5
-  }, {
     "format" : [ 26, 30, 32 ],
-    "us_derived" : 13532,
+    "us_derived" : 13123,
     "perminov" : 13123,
     "perminov_published" : false,
-    "_status" : 5
-  }, {
-    "format" : [ 26, 32, 32 ],
-    "us_derived" : 13896,
-    "perminov" : 13896,
-    "perminov_published" : false,
     "_status" : 2
-  }, {
-    "format" : [ 27, 27, 32 ],
-    "us_derived" : 12184,
-    "perminov" : 12270,
-    "perminov_published" : false,
-    "_status" : 0
   }, {
     "format" : [ 27, 30, 32 ],
     "us_derived" : 13464,
@@ -8880,9 +9485,13 @@
     "_status" : 2
   }, {
     "format" : [ 27, 32, 32 ],
-    "us_derived" : 14446,
+    "us_derived" : 14160,
     "perminov" : 14160,
     "perminov_published" : false,
-    "_status" : 5
+    "_status" : 2
+  }, {
+    "format" : [ 32, 32, 32 ],
+    "us_imported" : 16807,
+    "_status" : 3
   } ]
 }

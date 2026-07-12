@@ -67,22 +67,17 @@ together with a frontier-closure search that automatically discovers
 recombinations of catalog entries.
 
 \paragraph{Field discipline as load-bearing.} A bare \nmpshape{n}{m}{p}
-is ambiguous: different fields admit different ranks. The canonical
-example is \(\nmpshape{4}{4}{4}\): 47 over \Ftwo\ (AlphaTensor), 48
-over \Complex\ and --- since the Dumas--Pernet--Sedoglavic
-rationalisation \cite{dps2025} --- over \(\Rationals\) and \Reals\ too,
-while the best \emph{integer}-coefficient scheme remains 49
-(Strassen squared). Between AlphaEvolve and \cite{dps2025} the
-landscape was sharper still, with \(\Reals\) standing at 49: a
-field-tag-free ``\(\nmpshape{4}{4}{4}=48\)'' would have been wrong over
-\(\Reals\) for those weeks, and is still wrong over \(\Integers\) and
-\(\Ftwo\) today (where 47 beats it). We refuse to merge across fields
-and require every rank claim in the catalog (and in this paper) to
-carry a field tag. Commutative algorithms (Waksman 1970~\cite{waksman1970}, Makarov
-1986~\cite{makarov1986}, Rosowski 2019~\cite{rosowski2019}) form a
-separate axis: they are valid for scalar matrix
-multiplication but do \emph{not} lift to recursive multiplication over
-non-commutative rings.
+is ambiguous: different fields admit different ranks, as the
+\(\nmpshape{4}{4}{4}\) landscape illustrates --- 47 over \Ftwo, 48
+over \(\Rationals/\Reals/\Complex\) since the
+rationalisation~\cite{dps2025}, 49 over \Integers. We refuse to merge
+across fields and require every rank claim in the catalog (and in
+this paper) to carry a field tag; Section \ref{sec:notation} fixes
+the conventions. Commutative algorithms (Waksman
+1970~\cite{waksman1970}, Makarov 1986~\cite{makarov1986}, Rosowski
+2019~\cite{rosowski2019}) form a separate axis: valid for scalar
+matrix multiplication but not liftable to recursive multiplication
+over non-commutative rings.
 
 \paragraph{What the catalog catalogs.} Each entry encodes either
 \begin{enumerate}[label=(\alph*)]
@@ -104,15 +99,11 @@ existing entries via well-defined operators (Section
 \ref{sec:strategies}): axis-flip, Kronecker product, axis
 concatenation, recombination with allocation (with optional output
 peeling and pair fusion), the serendipitous (bud) product, and
-downward projection. The search is iterated until no further rank
-improvements appear at any catalog shape -- a \emph{frontier closure}
--- and the resulting wins are materialised lazily after the search has
-converged. We stress that none of these operators is a disjoint-sum /
-Sch\"onhage $\tau$-theorem construction: we do not leverage the
-$\tau$-theorem anywhere. The handful of disjoint-sum schemes the
-catalog holds (e.g.\ Schwartz--Zwecher) are imported as raw factor
-matrices, not reconstructed from a $\tau$ decomposition, and no catalog
-entry carries a $\tau$ lineage (Section \ref{ssec:disjoint-sum}).
+downward projection -- none of them a disjoint-sum / Sch\"onhage
+$\tau$-theorem construction (Section \ref{ssec:disjoint-sum}). The
+search is iterated until no further rank improvements appear at any
+catalog shape -- a \emph{frontier closure} -- and the resulting wins
+are materialised lazily after the search has converged.
 
 \paragraph{The non-overlap property.} An observation that we believe is
 underdiscussed: our composition operators cannot produce sharing
@@ -126,13 +117,19 @@ d'être is to find non-obvious sharing. We argue that this makes
 co-existence claim, not a re-discovery claim. Section
 \ref{sec:nonoverlap} develops this.
 
-\paragraph{Outline.} Section \ref{sec:notation} fixes notation and
-the field-discipline conventions. Section \ref{sec:architecture}
-describes the catalog's serialisation, lineage records, and the
-explicit/cited/derived split. Section \ref{sec:strategies} catalogs
-the composition operators. Section \ref{sec:nonoverlap} develops the
-non-overlap property. Section \ref{sec:search} describes the
-frontier-closure search algorithm. Section \ref{sec:tables} presents
-refreshed DIS09-style comparison tables, per field and with a
-commutative column. Section \ref{sec:openquestions} closes with open
-questions, including ones the catalog cannot yet answer.
+\paragraph{Outline.} Section \ref{sec:notation} fixes notation, the
+field-discipline conventions, and the paper's glossary. Section
+\ref{sec:architecture} describes the catalog's serialisation, lineage
+records, and the explicit/cited/derived split. Section
+\ref{sec:strategies} catalogs the derivation operators; Section
+\ref{sec:nonoverlap} develops the non-overlap property and its
+measured boundary (fusion kernels). Sections \ref{sec:multisets}
+and~\ref{sec:hk71} present the two theory contributions ---
+recombination multisets, and the constructive realisation of the
+Hopcroft--Kerr bound. Section \ref{sec:search} describes the
+frontier-closure search, and Section \ref{sec:balance} the empirical
+case for unbalanced splits. Section \ref{sec:tables} gives the
+date-stamped head-to-head against FMM-Lille and Perminov, with an
+anatomy of the wins and losses. Section \ref{sec:openquestions}
+closes with open questions, and Section \ref{sec:aiagent} records the
+human/AI division of labour.

@@ -1,0 +1,51 @@
+\label{app:worked-products}
+% Worked product tables moved out of Section~\ref{ssec:strassen-vs-winograd}.
+
+The seven products of the Strassen and Winograd rank-7 \(\nmpshape{2}{2}{2}\)
+templates over a heterogeneous split
+\(\nmpshape{M_1{+}M_2}{N_1{+}N_2}{P_1{+}P_2}\), with block ``11'' the larger
+part on every axis (real data top-left, any padding at the bottom/right). The
+four \(A\)-blocks have shapes \(A_{11}\!:\!M_1\times N_1\),
+\(A_{12}\!:\!M_1\times N_2\), \(A_{21}\!:\!M_2\times N_1\),
+\(A_{22}\!:\!M_2\times N_2\), and likewise for \(B\) and \(C\); each product
+is a (sum of \(A\)-blocks)\(\,\cdot\,\)(sum of \(B\)-blocks), realised at its
+genuine nonzero overlap under the zero-sparing rule of
+Section~\ref{ssec:decomposition} (``blk'' = single block, ``sum'' = two-block
+sum).
+
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Strassen}} & operands & realised size \\
+\midrule
+\(M_1\) & \((A_{11}{+}A_{22})(B_{11}{+}B_{22})\) & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(M_2\) & \((A_{21}{+}A_{22})\,B_{11}\)          & sum\(\cdot\)blk & \(\nmpshape{M_2}{N_1}{P_1}\) \\
+\(M_3\) & \(A_{11}(B_{12}{-}B_{22})\)            & blk\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_2}\) \\
+\(M_4\) & \(A_{22}(B_{21}{-}B_{11})\)            & blk\(\cdot\)sum & \(\nmpshape{M_2}{N_2}{P_1}\) \\
+\(M_5\) & \((A_{11}{+}A_{12})\,B_{22}\)          & sum\(\cdot\)blk & \(\nmpshape{M_1}{N_2}{P_2}\) \\
+\(M_6\) & \((A_{21}{-}A_{11})(B_{11}{+}B_{12})\) & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(M_7\) & \((A_{12}{-}A_{22})(B_{21}{+}B_{22})\) & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_2}{P_1}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Winograd}} & operands & realised size \\
+\midrule
+\(P_1\) & \(A_{11}\,B_{11}\)                     & blk\(\cdot\)blk & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(P_2\) & \(A_{12}\,B_{21}\)                     & blk\(\cdot\)blk & \(\nmpshape{M_1}{N_2}{P_1}\) \\
+\(P_3\) & \((A_{21}{+}A_{22})(B_{12}{-}B_{11})\) & sum\(\cdot\)sum & \(\nmpshape{M_2}{N_1}{P_1}\) \\
+\(P_4\) & \(S_2\,T_2\)                           & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_1}\) \\
+\(P_5\) & \(S_3\,T_3\)                           & sum\(\cdot\)sum & \(\nmpshape{M_1}{N_1}{P_2}\) \\
+\(P_6\) & \(S_4\,B_{22}\)                        & sum\(\cdot\)blk & \(\nmpshape{M_1}{N_2}{P_2}\) \\
+\(P_7\) & \(A_{22}\,T_4\)                        & blk\(\cdot\)sum & \(\nmpshape{M_2}{N_2}{P_1}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent with \(S_2{=}A_{21}{+}A_{22}{-}A_{11}\),
+\(S_3{=}A_{11}{-}A_{21}\),
+\(S_4{=}A_{11}{+}A_{12}{-}A_{21}{-}A_{22}\),
+\(T_2{=}B_{11}{-}B_{12}{+}B_{22}\), \(T_3{=}B_{22}{-}B_{12}\),
+\(T_4{=}B_{11}{-}B_{12}{-}B_{21}{+}B_{22}\).

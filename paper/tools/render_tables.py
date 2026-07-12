@@ -88,6 +88,119 @@ def render_us_vs_catalogs():
     print(f"wrote {os.path.relpath(dst, ROOT)} ({len(shown)} rows shown / {len(rows)} wins over {COMPARISON_FIELD})")
 
 
+def render_win_anatomy():
+    """Anatomy of the wins: which derivation mechanism produced each shape where
+    our derived rank strictly beats every external holding. Joins the comparison
+    JSON with catalog.json's per-scheme lineage_compact."""
+    import re
+    from collections import Counter
+
+    src = os.path.join(ROOT, 'docs', 'comparison',
+                       f'us-vs-fmm-vs-perminov-{COMPARISON_FIELD}.json')
+    cat_src = os.path.join(ROOT, 'docs', 'catalog.json')
+    comp = json.load(open(src))
+    cat = json.load(open(cat_src))['schemes']
+
+    byfmt = {}
+    for e in cat:
+        byfmt.setdefault(tuple(e['format']), []).append(e)
+
+    def pick(fmt, rank):
+        cands = [e for e in byfmt.get(tuple(fmt), [])
+                 if e['rank'] == rank and COMPARISON_FIELD in e['fields']
+                 and not e.get('commutative')]
+        derived = [e for e in cands if e['file'].startswith('derived')]
+        return (derived or cands or [None])[0]
+
+    def root_op(lc):
+        if lc.startswith('R*['):
+            return 'leaf-pair recombination'
+        if lc.startswith(('R[', 'Rta[')):
+            return 'recombination with allocation'
+        depth = 0
+        for i, ch in enumerate(lc):
+            if ch in '[(':
+                depth += 1
+            elif ch in '])':
+                depth -= 1
+            elif depth == 0:
+                if lc.startswith(' ⊗ˢ', i):
+                    return 'serendipitous product'
+                if lc.startswith(' ⊗ ', i):
+                    return 'Kronecker product'
+                if lc.startswith((' +p ', ' +n '), i):
+                    return 'axis concatenation'
+                if lc.startswith(' +m ', i):
+                    return 'contraction sum'
+        if re.search(r'[↓∖]\[', lc):
+            return 'downward projection'
+        return 'other'
+
+    ALLOC = re.compile(r'^R\*?\[.*?; ([\d,]+) \| ([\d,]+) \| ([\d,]+)[\];]')
+    BASE = re.compile(r'^R\*?\[(.+?);')
+
+    roots, bases = Counter(), Counter()
+    unbalanced = balanced = 0
+    margins = []
+    wins = [r for r in comp['rows'] if r.get('_status') == 0]
+    for r in wins:
+        e = pick(r['format'], r['us_derived'])
+        lc = (e or {}).get('lineage_compact')
+        if not lc:
+            roots['(no lineage)'] += 1
+            continue
+        roots[root_op(lc)] += 1
+        ext = min(x for x in (r.get('fmm'), r.get('perminov'), r.get('us_imported'))
+                  if x is not None)
+        margins.append(ext - r['us_derived'])
+        m = ALLOC.match(lc)
+        if m:
+            spread = any(max(map(int, g.split(','))) > min(map(int, g.split(',')))
+                         for g in m.groups())
+            unbalanced += spread
+            balanced += not spread
+        if lc.startswith(('R[', 'R*[', 'Rta[')):
+            b = BASE.match(lc).group(1)
+            b = re.sub(r'-[0-9a-f]{7}(\.json)?', '', b)     # strip content hash
+            b = re.sub(r'\^ABC->[A-Z]{3}', '', b)           # fold orientation variants
+            b = re.sub(r'→⟨[\d,]+⟩', '', b)                 # fold OrientAs wrappers
+            bases[b.strip()] += 1
+
+    margins.sort()
+    n = len(margins)
+    out = [header(["GenerateSourceComparison (Java)", "render_tables.py"], [src, cat_src])]
+    out.append("\\begin{table}[h]\n\\centering")
+    out.append("\\caption{Anatomy of the " + str(len(wins)) + " strict wins over "
+               "$\\mathbb{" + COMPARISON_FIELD + "}$ (Table~\\ref{tab:us-vs-catalogs}): "
+               "root operator of the winning scheme's lineage, and the most frequent "
+               "combining bases among winning recombinations (orientation variants folded). "
+               f"Of the recombination-rooted wins, {unbalanced} use "
+               f"\\emph{{unbalanced}} allocations and {balanced} balanced ones. Margins over "
+               f"the best external holding: {sum(margins)} ranks in total, median "
+               f"{margins[n // 2]}, maximum {margins[-1]}.}}")
+    out.append("\\label{tab:win-anatomy}")
+    out.append("\\begin{tabular}{lr@{\\qquad}lr}\n\\hline")
+    out.append("root operator & wins & top combining base & wins \\\\\n\\hline")
+    top_roots = roots.most_common()
+    top_bases = bases.most_common(len(top_roots))
+    for i in range(max(len(top_roots), len(top_bases))):
+        left = f"{top_roots[i][0]} & {top_roots[i][1]}" if i < len(top_roots) else " & "
+        if i < len(top_bases):
+            bname, bcount = top_bases[i]
+            if re.fullmatch(r'[\dx]+', bname):
+                bname = "$\\langle " + bname.replace('x', ',') + " \\rangle$"
+            right = f"{bname} & {bcount}"
+        else:
+            right = " & "
+        out.append(f"{left} & {right} \\\\")
+    out.append("\\hline\n\\end{tabular}\n\\end{table}")
+    dst = os.path.join(GEN, 'win-anatomy.tex')
+    open(dst, 'w').write("\n".join(out) + "\n")
+    print(f"wrote {os.path.relpath(dst, ROOT)} "
+          f"({len(wins)} wins; {unbalanced} unbalanced / {balanced} balanced)")
+
+
 if __name__ == '__main__':
     os.makedirs(GEN, exist_ok=True)
     render_us_vs_catalogs()
+    render_win_anatomy()

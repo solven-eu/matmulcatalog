@@ -16,25 +16,14 @@ at one shape, in one field, with one commutativity tag.
 \subsection{Three layers}
 
 \paragraph{Explicit schemes.} JSON files that carry the full \((U,
-V, W)\) factor matrices. Loaded by \code{SchemeIO.read} into a
-\code{NonCubicBilinearAlgorithm} record. Every explicit scheme passes
-\code{Verifier.passesRandomMatmulSpotCheck} at load time. The filename
-is a \emph{pure cosmetic label} --- it encodes the shape, the rank, a
-source/derivation note, and a short content hash:
-\begin{center}
-  \code{\(n\)x\(m\)x\(p\)-r\{rank\}-\{note\}-\{hash7\}.json}
-\end{center}
-Example: \code{10x10x10-r651-perminov\_ZT-7f71b5f.json},
-\code{2x18x32-r912-derived-6554475.json}. The \code{note} carries the
-source/author for imports (\code{perminov\_ZT}, \code{alphatensor\_Z},
-\code{laderman}) or the derivation kind for our own output
-(\code{derived}, \code{derived\_strassen\_recombine}). Crucially,
-\emph{no property is parsed from the filename}: the field
-(\code{fields[]}), addition count (recomputed from \((U, V, W)\)), and
-commutativity flag are all read from the JSON content. The
-\code{hash7} token is the first seven hex digits of a content hash of
-the factor matrices, giving each scheme a stable identity independent
-of how it was named upstream; renaming a file is therefore safe.
+V, W)\) factor matrices; every explicit scheme passes a randomised
+spot-check at load time. The filename is a pure cosmetic label
+(shape, rank, source or derivation note, short content hash): every
+property --- field, addition count, commutativity --- is read from
+the JSON content, never parsed from the name. The hash, the first
+seven hex digits of a content hash of the factor matrices, gives
+each scheme a stable identity independent of how it was named
+upstream.
 
 \paragraph{Cited bounds.} A central JSON file
 \code{docs/cited-bounds.json} records rank claims whose explicit
@@ -63,14 +52,10 @@ factor matrices from the lineage alone. This is essential --- it lets
 the catalog store a large scheme as a lineage-only \emph{stub} (no
 factor matrices on disk) and rebuild them on demand, and it makes every
 composed scheme reproducible from its building blocks rather than
-trusted as opaque numbers. The lineage is a sealed-node DAG with
-operations matching the composition primitives of
-Section \ref{sec:strategies}: \code{Leaf}, \code{KronProduct},
-\code{KronChain}, \code{ConcatRight}, \code{ConcatBelow},
-\code{Recombination}, \code{RecombinationWithPair}, \code{Dce},
-\code{Transpose}, \code{AxisFlip}, \code{AxisPermute}, and
-\code{DisjointSum} (the last reserved for imported disjoint-sum
-provenance and currently used by no scheme; see
+trusted as opaque numbers. The lineage is a DAG with a leaf node
+plus eleven operator node types, one per operator of
+Section~\ref{sec:strategies} (the disjoint-sum node is reserved for
+imported provenance and currently used by no scheme; see
 Section~\ref{ssec:disjoint-sum}). The lineage is serialised twice: as a
 human-readable function-call form (e.g.\
 \code{ConcatRight(KronProduct(strassen, winograd), SAME0)})\, and as
@@ -87,9 +72,9 @@ The lineage is load-bearing for three reasons:
     materialise. This lets the search iterate without paying for
     materialisation.
   \item \textbf{Attribution archaeology.} When a bulk-imported
-    catalog (FMM, Perminov) re-encodes a scheme originally due to
-    Smirnov or Sedoglavic, the lineage records the importing source
-    while a separate \code{attribution\_for\_rank} field records the
+    catalog re-encodes a scheme originally due to an earlier author,
+    the lineage records the importing source while a separate
+    attribution field (\code{attribution\_for\_rank}) records the
     earliest source that established the bound. Comparison tables
     pull from the latter.
 \end{enumerate}

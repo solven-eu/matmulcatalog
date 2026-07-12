@@ -1,7 +1,8 @@
-% Frontier-closure search — describe the two-phase algorithm, the
-% in-memory overlay, the dependency-ordered materialise pass, and
-% the verification pass. This is the algorithmic contribution of
-% the paper.
+% Frontier-closure search — the two-phase algorithm, the in-memory
+% overlay, the impact DAG, the multipass/fixpoint argument, and the
+% sound pruning. This is the algorithmic contribution of the paper.
+% Engineering details (caching, pools, budget flags) live in
+% Appendix~\ref{app:implementation}.
 
 The frontier-closure search converges the catalog to a fixed point
 under the derivation operators of Section \ref{sec:strategies}. It
@@ -23,18 +24,21 @@ recombination) and \emph{materialise} (build and write the concrete
     an in-memory \emph{pending overlay}, keyed by shape. The overlay
     is consulted by the rank resolver in subsequent rounds, so a win
     at round \(N\) propagates to round \(N+1\) without writing
-    anything to disk. Repeat until a round produces no new overlay
-    entries.
+    anything to disk.\footnote{The overlay is also a correctness
+    device: an earlier incarnation wrote each winner to disk and
+    relied on the next round to reload it, but the catalog lookup was
+    loaded once per sweep, so round \(N{+}1\) silently reused round
+    \(N\)'s snapshot and never saw the new entries.} Repeat until a
+    round produces no new overlay entries.
   \item[Phase 2 -- Materialise.] Iterate the overlay in
     dependency order (smaller maximum-dimension first). For each
-    entry, materialise the strategy via
-    \code{Recombination.constructWithAllocation} or its concat /
-    Kronecker analogue. Sub-product lookups are served from a
-    composed \code{AlgorithmLookup} that returns
-    just-materialised winners alongside the on-disk catalog, so a
-    larger winner can use a smaller winner from this same phase as
-    a sub-product. Spot-check the result against the predicted
-    rank, verify, write to disk.
+    entry, materialise the winning strategy
+    (\code{Recombination.constructWithAllocation} or its concat /
+    Kronecker analogue). Sub-product lookups are served from a
+    composed lookup that returns just-materialised winners alongside
+    the on-disk catalog, so a larger winner can use a smaller winner
+    from this same phase as a sub-product. Spot-check the result
+    against the predicted rank, verify, write to disk.
 \end{description}
 
 Theorem \ref{thm:nonoverlap} guarantees that the rank propagated by
@@ -50,7 +54,7 @@ Kron-, concat- or recombines a copy of \(\sigma\) (an \emph{upward} edge),
 or because \(\tau\) is a projection of \(\sigma\) (a \emph{downward}
 edge; Section~\ref{ssec:recombination}). A win therefore cannot change
 any shape that is not downstream of it. The search exploits exactly this:
-the frontier driver (\code{FrontierClosure}) keeps a priority queue of
+the frontier driver keeps a priority queue of
 seeds keyed by \(\omega\) (best first), pops a seed, and on each
 improvement pushes back \emph{only} the shapes that seed can impact ---
 so it rides the DAG, touching a shape only when one of its sub-shapes has
@@ -63,162 +67,74 @@ rank-arithmetic re-evaluation, whereas a downward (projection) edge
 requires materialising and DCE-ing the parent --- so the closure fans out
 upward eagerly and schedules the downward work.
 
-\subsection{Why the split matters}
-
-Three reasons.
-
-\paragraph{Throughput.} Materialisation involves Java array
+\paragraph{Why the split matters.} Materialisation involves array
 allocation, factor-matrix arithmetic, spot-check sampling, and disk
-I/O. A target shape at \(\nmpshape{17}{17}{17}\) takes a fraction of
-a second to predict and a few seconds to materialise; at
+I/O: a target at \(\nmpshape{17}{17}{17}\) takes a fraction of a
+second to predict and a few seconds to materialise, and at
 \(\nmpshape{32}{32}{32}\) the spread becomes minutes. Postponing
-materialisation lets the search round terminate as soon as no new
-predictions are found, even when 50 shapes have pending materialise
-work.
-
-\paragraph{Correctness of intra-round propagation.}
-A previous incarnation of the closure loop wrote each materialised
-winner to disk and relied on the next round to reload it. The
-catalog \code{FieldAwareLookup} was loaded once at the start of the
-sweep, so the next round did \emph{not} see the new entry: round
-\(N+1\) used the same catalog snapshot as round \(N\). The pending
-overlay fixes this: subsequent rounds see prior-round wins
-immediately, regardless of whether the JVM was restarted.
-
-\paragraph{Decoupling verification.} Verification is a third phase
-that can run on demand against any materialised scheme -- e.g.\ as a
-periodic catalog-wide sweep or as a follow-up to a search batch.
-There is no need to verify every newly-materialised scheme inside
-the closure loop, only those whose predicted-vs-actual rank match
-proves the materialise step succeeded (which is the cheap check;
-true random-matmul spot-check can run in batch later).
+materialisation lets a search round terminate as soon as no new
+predictions are found, even with dozens of shapes pending
+materialise work. It also decouples \emph{verification}: full
+random-matmul spot-checks can run in batch against any materialised
+scheme later; inside the loop only the cheap predicted-vs-actual
+rank match is needed to prove the materialise step succeeded.
 
 \subsection{Rebuilding the catalog from atoms: why the closure is multipass}
 \label{ssec:multipass}
 
-It helps to state the closure's job in the strongest form: given only the
-\emph{atoms} (Section \ref{sec:architecture}) --- the handful of primitive
-schemes we do not derive --- reconstruct the entire catalog by repeatedly
-applying the derivation operators of Section \ref{sec:strategies}. The
-round-based fixed point is exactly what makes this safe and easy: rather than
-hand-ordering which shape depends on which, each round re-applies every
-operator to every shape and the loop stops only when nothing improves.
-
-For an \emph{upward}-only operator set this is almost an accounting detail.
-Kronecker, axis concatenation, recombination and the serendipitous product
-(Section \ref{ssec:serendipitous}) all build a \emph{larger} shape from
-\emph{smaller} ones, so a single sweep in increasing maximum dimension would
-already suffice: every sub-product a shape needs is final before the shape is
-processed.
+The closure's job, stated in the strongest form, is to rebuild the entire
+catalog from the \emph{atoms} alone (Section \ref{sec:architecture}) by
+repeatedly applying the operators of Section \ref{sec:strategies}; the
+round-based fixed point makes this safe without hand-ordering which shape
+depends on which. For an \emph{upward}-only operator set a fixed point
+would be overkill: Kronecker, axis concatenation, recombination and the
+serendipitous product (Section \ref{ssec:serendipitous}) all build a
+\emph{larger} shape from \emph{smaller} ones, so a single sweep in
+increasing maximum dimension suffices --- every sub-product is final before
+its consumer is processed.
 
 The multipass design earns its keep once an operator runs \emph{downward}.
-The canonical example is \emph{projection}: a scheme for
-\(\nmpshape{n}{m}{p}\) is obtained from a \emph{larger} one for, say,
-\(\nmpshape{n{+}1}{m}{p}\) by zeroing one input slice, discarding the matching
-output slice, and dead-code-eliminating the products that fed only the dropped
-index. All three axes project. The two outer axes ($n$, $p$) each touch one
-input operand and the output $C$, so projecting them shrinks $C$ (a row or a
-column). The inner/contracted axis $m$ is different: it indexes A's columns
-\emph{and} B's rows but \emph{not} $C$, so projecting $m$ removes a term from
-the contraction sum --- $C$ keeps its shape, and the dead-code test consults
-\emph{both} input factors rather than one input and the output. A cube-to-cube
-step such as \(\nmpshape{26}{26}{26}\to\nmpshape{25}{25}{25}\) projects one
-index on each of the three axes at once (the index choice per axis is what
-FMM's \([[1,15],[15]]\) bracket records). Two facts make this concrete:
-\begin{itemize}[itemsep=2pt]
-  \item \(\nmpcount{}{3}{3}{3}{25}\) is the projection of
-        \(\nmpcount{}{4}{4}{4}{49}\): pad \(\nmpshape{3}{3}{3}\) with a zero
-        row and column to \(\nmpshape{4}{4}{4}\), apply Strassen recursively,
-        and eliminate the padding --- precisely the worked example of
-        \cite{drisc09}. Projection is thus the same operation as
-        padding-plus-DCE, run in reverse.
-  \item At scale, \(\nmpcount{}{25}{25}{25}{8359}\) is the projection of
-        \(\nmpcount{}{26}{26}{26}{8658}\); FMM \cite{fmmlille} builds most of
-        its non-cube and odd-cube entries this way, projecting a strong even
-        cube onto its neighbours.
-\end{itemize}
-
-Which index is dropped matters: each index has a different set of products
-localised to it, so dropping the most-localised one eliminates the most and
-gives the lowest rank. A concrete case --- projecting Laderman's
-\(\nmpcount{}{3}{3}{3}{23}\) down one axis to \(\nmpshape{2}{3}{3}\):
-\begin{center}
-\begin{tabular}{lcc}
-\toprule
-dropped index & products eliminated (DCE) & resulting rank \\
-\midrule
-\(0\) & 5 & 18 \\
-\(1\) & 7 & \(16\) \\
-\(2\) & 7 & \(16\) \\
-\bottomrule
-\end{tabular}
-\end{center}
-Same scheme, same target shape, but a two-multiplication swing from the choice
-alone: Laderman concentrates more products on indices 1 and 2 than on index 0,
-so dropping either of those eliminates 7 products versus only 5 for index 0. A
-``drop-the-last-index'' rule would have left rank 18 where 16 was available.
-(The format's true optimum, \(R(\nmpshape{2}{3}{3})=15\), comes from a
-different scheme, not a projection of Laderman --- a reminder that projection's
-payoff is bounded by its parent, which is why the closure keeps several parents
-per format.)
-
-FMM records this choice explicitly (e.g.\ the bracket in
-``projection \([[1,15],[15]]\)'' selects index 15, not the last index), and
-the operator must try every index per axis rather than only the tail. The best
-choice is moreover joint in the source scheme and the dropped index --- a
-different parent for the same shape concentrates products differently --- so
-projection, like the serendipitous product, rewards keeping structurally
-diverse schemes per format rather than only the minimum-rank one. With our
-recursively-composed schemes the per-index localisation is not predictable in
-closed form, so we simply enumerate all drop positions, project, and verify ---
-each position is an \(O(r)\) support scan plus dead-code elimination, so the
-exhaustive choice is cheap.
-
-A downward operator destroys the acyclicity in dimension: improving
-\(\nmpshape{26}{26}{26}\) can lower \(\nmpshape{25}{25}{25}\), which a
-smaller-first sweep has already finalised. So the catalog cannot be rebuilt in
-one dimension-ordered pass --- it must iterate to a fixed point, re-projecting
-neighbours after each cube improvement. This is also the \emph{safer} design:
-instead of special-casing ``did some larger shape just improve?'', the
-fixed point simply re-runs all operators each round and a projection win is
-absorbed on the next round automatically. Cube quality therefore propagates
-downward through the whole catalog --- a single better \(\nmpshape{n}{n}{n}\)
-improves every nearby rectangular and odd-cube shape at once.
-
-The downward (projection) operator and its \emph{projection-margin} score
-\(\mu\) --- the criterion that decides when a higher-rank parent projects to
-a lower-rank child --- are defined alongside the derivation strategies in
-Section~\ref{ssec:projmargin}. Operationally the closure fires a bounded
+The canonical example is \emph{projection}, which derives a scheme for a
+\emph{smaller} shape by zeroing a slice of a larger scheme and
+dead-code-eliminating the products that fed only the dropped index; the
+operator and its \emph{projection-margin} score \(\mu\) are defined in
+Section~\ref{ssec:projmargin}. A downward edge destroys the acyclicity in
+dimension: improving \(\nmpshape{26}{26}{26}\) can lower
+\(\nmpshape{25}{25}{25}\), which a smaller-first sweep has already
+finalised, so the catalog must instead iterate to a fixed point,
+re-projecting neighbours after each cube improvement. This is also the
+\emph{safer} design --- no special-casing of ``did some larger shape just
+improve?''; a projection win is simply absorbed on the next round --- and
+it means cube quality propagates downward through the whole catalog: a
+single better \(\nmpshape{n}{n}{n}\) improves every nearby rectangular and
+odd-cube shape at once. Operationally the closure fires a bounded
 \emph{downward wave} on each catalog update: a freshly arrived scheme with
-\(\mu>0\) is projected into its dimension-neighbours, and any neighbour that
-improves is enqueued for its own projections; termination is immediate since
-dimension strictly decreases.
+\(\mu>0\) is projected into its dimension-neighbours, any neighbour that
+improves is enqueued for its own projections, and termination is immediate
+since dimension strictly decreases.
 
-\subsection{Pool, allocation enumeration, and pruning}
+\subsection{Pool and allocation enumeration}
 
 The derivation search at a shape \(\nmpshape{n}{m}{p}\) enumerates,
 over a pool of outer schemes:
 \begin{itemize}[itemsep=2pt]
   \item per-axis allocations of \(n / m / p\) into the outer scheme's
     block counts, optionally filtered by a maximum per-allocation
-    imbalance \(\max(\mathbf{a}) - \min(\mathbf{a}) \le
-    \texttt{maxImbalance}\) and capped at
-    \texttt{maxCombinations} via a top-\(K\)-by-balance pre-selector;
-  \item over-allocation by per-axis padding \(\delta\) up to
-    \texttt{maxPadding}, paired with a corresponding tail-peel
-    pattern (Section \ref{ssec:peel}); and
+    imbalance \(\max(\mathbf{a}) - \min(\mathbf{a})\) and capped via a
+    top-\(K\)-by-balance pre-selector;
+  \item over-allocation by per-axis padding \(\delta\), paired with a
+    corresponding tail-peel pattern (Section \ref{ssec:peel}); and
   \item axis-flip orbit masks of the outer scheme, evaluated
-    analytically via per-product block-support bitmasks
-    (\code{AnalyticalMaskSearch}) so the 8-mask coverage costs only
-    a constant factor over single-mask evaluation.
+    analytically via per-product block-support bitmasks, so the
+    8-mask coverage costs only a constant factor over single-mask
+    evaluation.
 \end{itemize}
-
-The default pool (\code{PoolConfig.simple}) carries a small number of
-high-value outer schemes -- Strassen, Winograd, Smirnov 3-row
-templates, and a few imported Pan / AT / FMM bases. An
-\code{extendedPool} mode adds every \code{Leaf}-tagged catalog
-entry as an outer template; that pool is large enough that the
-maxCombinations-capped allocation enumerator becomes load-bearing.
+The default pool carries a small number of high-value outer schemes
+(Strassen, Winograd, Smirnov 3-row templates, a few imported Pan / AT
+/ FMM bases); an extended mode adds every leaf catalog entry as an
+outer template, at which point the capped allocation enumerator
+becomes load-bearing. Engineering details (caching, pool
+configuration, budget flags) are in Appendix~\ref{app:implementation}.
 
 \subsection{Allocation optimisation by branch-and-bound}\label{ssec:alloc-bnb}
 
@@ -228,8 +144,8 @@ is \(\binom{N-1}{n_o-1}\binom{M-1}{m_o-1}\binom{P-1}{p_o-1}\), which blows
 up well before \(N = 32\). Yet the inner problem --- given a target,
 template, and orientation, find the allocation minimising
 \(\sum_{\sigma} R(\sigma)\) over the sub-problem multiset (Section
-\ref{ssec:decomposition}) --- is solved \emph{exactly} by
-\code{AllocationOptimizer}, a branch-and-bound over the allocation grid.
+\ref{ssec:decomposition}) --- is solved \emph{exactly} by a
+branch-and-bound over the allocation grid (\code{AllocationOptimizer}).
 
 The search fixes the three axis partitions in turn (\(\mathbf{a}_N\),
 then \(\mathbf{a}_M\), then \(\mathbf{a}_P\)), depth-first. Two ingredients
@@ -246,23 +162,15 @@ make it cheap:
     pruned without expansion.
 \end{itemize}
 Branch-and-bound returns the \emph{same} optimum as the exhaustive grid
-while visiting far fewer allocations (the result reports
-\code{nodes} visited against \code{fullSpace}).
+while visiting far fewer allocations.
 
-\paragraph{Budget and what ``optimal'' means here.} The optimiser runs
-under a \code{SearchBudget}: \code{EXACT} (no cap), \code{upTo}(a known
-upper bound, e.g.\ the Kronecker rank), or a \code{maxNodes} anytime cap.
-The result carries an \code{exhaustive} flag, and we propagate it
-honestly (cf.\ the optimality discipline of Section~\ref{sec:intro}). When
-\code{exhaustive} is true the returned allocation is the \emph{proven
-global minimum over allocations} for that template and orientation ---
-\emph{optimal-within-scope}, not the tensor rank \(R(\nmpshape{N}{M}{P})\),
-which a different template or a non-recombination construction may still
-beat. When the node budget is hit, \code{exhaustive} is false and the
-rank is only a best-found \emph{upper bound}. The outer loop (pool of
-templates \(\times\) axis-flip orbit) and the frontier closure wrap this
-exact inner solve, and are themselves bounded; the catalog never reports
-an allocation result as a global rank optimum.
+The optimiser runs under a configurable budget --- exact, capped by a
+known upper bound, or an anytime node cap --- and every result carries
+its optimality tier per the discipline of Section~\ref{sec:intro}: an
+exhaustive descent proves the global minimum \emph{over allocations} for
+that template and orientation (optimal-within-scope, never the tensor
+rank). Otherwise the reported rank is a bound unless the run reports
+exhaustive.
 
 \subsection{Sound pruning from cheap candidates}\label{ssec:cheap-pruning}
 
@@ -288,8 +196,8 @@ r_{\text{kron}})\). The recombination sweep is then seeded with
     at least the unpaired sum on degenerate-shape sub-products.
     Hence \(\text{total} \ge r\) under any allocation. If
     \(r \ge \text{bestRank}\), the entire base is skipped.
-  \item \emph{Best-so-far gate.} After each
-    \code{(allocation, mask)} tuple completes, the predicted rank is
+  \item \emph{Best-so-far gate.} After each (allocation, mask)
+    tuple completes, the predicted rank is
     compared against the running \(\text{bestRank}\), updating the
     candidate only on strict improvement.
 \end{itemize}
@@ -301,16 +209,17 @@ the sum by tens of percent on cyclic-shape multisets. Adding a
 slack constant would be a heuristic, and we keep the search at
 SAT-style soundness: every prune is provably correct.
 
-A canonical case where this matters: at \(\nmpshape{12}{12}{12}\),
-the Kronecker pair \(\nmpshape{2}{4}{4}{=}26 \otimes
-\nmpshape{6}{3}{3}{=}40\) gives 1040 in milliseconds. Without the
-reorder, the recombination sweep grinds for several minutes on the
-AlphaEvolve \(\nmpshape{5}{5}{5}{=}93\) base, finding nothing
-better than 1071, before the final \(\min\) over all strategies
-selects Kronecker anyway. With the reorder, AE-\(\nmpshape{5}{5}{5}\)
-still runs (its trivial lower bound \(r=93 < 1040\)), but every
-allocation that doesn't beat 1040 is silently dropped instead of
-being recorded as a (worthless) intermediate best.
+A canonical case: at \(\nmpshape{12}{12}{12}\) the Kronecker pair
+\(\nmpshape{2}{4}{4}{=}26 \otimes \nmpshape{6}{3}{3}{=}40\) gives 1040 in
+milliseconds; seeded with that bound, the recombination sweep on the
+AlphaEvolve \(\nmpshape{5}{5}{5}{=}93\) base (whose best is 1071) drops
+every non-improving allocation instead of grinding for minutes on
+worthless intermediate bests. Beyond these provably-correct prunes, any
+heuristic that drops part of the allocation space (balanced-only
+filters, top-\(N\) caps) is opt-in --- a flag the user explicitly
+enables, never a silent default --- because unbalanced cubic targets and
+bridge-shape (Hopcroft--Kerr type) sub-problems live precisely in the
+region a balanced-only prune discards.
 
 \subsection{Low-\(\omega\) contamination}\label{ssec:omega-contamination}
 
@@ -319,85 +228,25 @@ shapes are processed during a closure round. The naive iteration is
 lexicographic over \((n, m, p)\), so the search reaches
 \(\nmpshape{12}{12}{12}\) before it reaches \(\nmpshape{17}{17}{17}\)
 and so on. But the value of an early win depends on its implied
-\(\omega\): a low-\(\omega\) seed contaminates every larger shape
-that consumes it as a sub-product.
+\(\omega\): a low-\(\omega\) seed \emph{contaminates} every larger shape
+that consumes it as a sub-product, silently rewriting those shapes'
+upper bounds.
 
 We rank candidate outer bases (and known catalog shapes) by their
 implied exponent
 \(\omega(\nmpshape{n}{m}{p}{:}r) = \log_n(r) \cdot 3 / (1 + \log_n(m)
 + \log_n(p))\)
-under the convention of Section \ref{sec:notation}, and prioritise:
-
-\begin{enumerate}[itemsep=2pt]
-  \item Low-\(\omega\) seeds first: e.g.\
-    \(\nmpshape{4}{4}{4}{=}48\) (\(\omega \approx 2.7925\); AlphaEvolve
-    over \(\Complex\), the DPS rationalisation \cite{dps2025} over
-    \(\Rationals/\Reals\)),
-    Smirnov \(\nmpshape{3}{3}{6}{=}40\), Pan
-    \(\nmpshape{3}{4}{7}{=}63\), then up the ladder.
-  \item Targets that can be \emph{contaminated} by a low-\(\omega\)
-    seed (via Kronecker, recombination, or concat) are re-evaluated
-    in the same round once the seed is on the overlay, so a
-    fresh \(\omega\) reduction propagates without a separate round.
-  \item The shape order within each round respects this dependency:
-    every shape that consumes a seed via a known composition rule
-    waits for the seed's seed-round completion before its own
-    search starts.
-\end{enumerate}
-
-Concretely: when AE-\(\nmpshape{4}{4}{4}{=}48\) lands as a seed in
-round \(k\), every Kronecker target whose factorisation includes
-\((4, 4, 4)\) on at least one axis pair --- \(\nmpshape{8}{8}{8}\),
-\(\nmpshape{12}{12}{12}\), \(\nmpshape{16}{16}{16}\), and so on ---
-sees its predicted rank drop in round \(k+1\). The ``contamination''
-metaphor captures the spreading: a low-\(\omega\) reduction at
-\(\nmpshape{4}{4}{4}\) silently rewrites everyone's upper bound.
-
-The selection of which schemes act as seeds is encoded in
-\code{docs/bases-by-omega.md}, an automatically-regenerated table
-ranking every pool-eligible base by its raw \(\omega\), its
-\(\omega\) after imbalance-\(\le 3\) restriction, and its \(\omega\)
-after axis-flip-canonical and S\(_3\)-canonical orbit reductions.
-The lowest-\(\omega\) row at the reference target
-\(\nmpshape{17}{17}{17}\) is the natural seed for any sweep that
-targets dim-32-or-higher cubic shapes.
-
-\subsection{Pruning is opt-in}
-
-A reviewer's natural question is whether the search uses heuristics
-to bound the allocation space. We have a strong project-level
-convention that pruning is opt-in: any heuristic that drops part of
-the allocation space (\texttt{balancedOnly}, top-\(N\), ``ignore
-imbalanced''---) is a flag the user explicitly turns on, not a
-silent default. This is a reaction to a recurring failure mode where
-``the search did not find scheme X'' turns out to mean ``the search
-silently pruned the allocation that would have found scheme X.''
-Unbalanced cubic targets and bridge-shape sub-problems (Hopcroft--Kerr
-type) live precisely in the region that naive balanced-only pruning
-discards.
-
-\subsection{Caching}
-
-Caching exists at two layers. The first is per-scheme \emph{symbolic
-templates}: for each outer scheme we extract once a tuple of six
-block-support bitmasks per product (\(U\)-row, \(U\)-col, \(V\)-row,
-\(V\)-col, \(W\)-row, \(W\)-col), and per-call sub-shape extraction
-reduces from \(O(r \cdot \text{dim}^2)\) to
-\(O(r \cdot \text{dim})\). The second is a per-(scheme, allocation,
-peel) cache of the resulting sub-shape multiset; this is a
-hashing-overhead trade and is currently capped at 200k entries per
-scheme. A symbolic-template-at-allocation-pattern layer would
-generalise the second cache; the current implementation captures the
-common cases without paying the templating cost.
-
-\subsection{Progress reporting}
-
-A frontier closure over the entire catalog up to dim 32 takes hours
-of wall-clock. Per CLAUDE.md ``Long-running procedures'' we emit
-periodic progress lines at three nested levels: per-round (round
-counter + overlay size), per-shape (search/materialise phase
-markers with timing), and intra-search (current pool entry, current
-allocation, allocations explored, throughput, best so far). The
-intra-search level is the one that catches a stuck inner-loop call,
-which otherwise stays silent for tens of minutes during heavy axis-flip
-mask enumeration at high dim.
+under the convention of Section \ref{sec:notation}, and process
+low-\(\omega\) seeds first: e.g.\
+\(\nmpshape{4}{4}{4}{=}48\) (\(\omega \approx 2.7925\); AlphaEvolve
+over \(\Complex\), the DPS rationalisation \cite{dps2025} over
+\(\Rationals/\Reals\)), Smirnov \(\nmpshape{3}{3}{6}{=}40\), Pan
+\(\nmpshape{3}{4}{7}{=}63\), then up the ladder. Targets a seed can
+contaminate (via Kronecker, recombination, or concat) are re-evaluated
+in the same round once the seed is on the overlay, and the shape order
+within each round respects this dependency --- every shape that
+consumes a seed via a known composition rule waits for the seed's
+search to complete --- so a fresh \(\omega\) reduction propagates
+without a separate round. The seed selection itself is data-driven, from
+an automatically regenerated ranking of every pool-eligible base by
+\(\omega\) (Appendix~\ref{app:implementation}).
