@@ -2,64 +2,78 @@
 
 A \emph{derivation} strategy takes one or more catalog entries and produces a new bilinear
 algorithm at a target shape --- combining them upward (\emph{composition}: Kronecker,
-concatenation), splitting a larger target onto a smaller scheme (\emph{decomposition},
-projection), or locally reducing the product set (peel, pair fusion); the strategies below
+concatenation), spanning a size gap with the mirror pair \emph{decomposition} (tile a large
+target into blocks handled by a smaller \emph{outer} scheme --- a small-shape scheme
+generating a large one) and its reverse \emph{projection} (restrict a larger scheme down to
+a sub-shape), or locally reducing the product set (peel, pair fusion); the strategies below
 are what the search and materialiser currently know how to do. Convention: the \emph{outer}
 scheme is the one whose bilinear structure is reused, its \emph{sub-schemes}
 (\emph{leaves}) the ones computing each outer bilinear product at a smaller shape.
 
 \paragraph{A unifying view, and its ceiling: smoothing \(\omega\) across shapes.}
-Almost every strategy below is \emph{local}: it synthesises a scheme at a target shape out
-of schemes at \emph{surrounding} shapes --- the sub-blocks of a decomposition, the factors
-of a Kronecker product, the concatenands of an axis split. Read on the landscape of
-\(\omega\) over shapes, these strategies \emph{interpolate}: the rank they produce at
-\nmpshape{n}{m}{p} is an arithmetic combination (sum, product) of the ranks --- hence the
-\(\omega\) --- of the shapes they consume, so the new local \(\omega\) is a blend of its
-neighbours'. Hence a structural ceiling: a pure composition/decomposition strategy
-\emph{cannot manufacture a local \(\omega\) below all of its inputs} --- if every
-surrounding shape it can draw on has higher \(\omega\), the arithmetic combination does
-too. Pushing below the neighbourhood needs a mechanism that rewrites the scheme's own
-product set rather than gluing fixed sub-schemes together; flip-graph and meta-flip-graph
-moves~\cite{perminov2025fast,kauersmoosbauerwood2026} are exactly such a mechanism, which
-is why they reach ranks our compositional closure cannot.
+Almost every strategy below is \emph{compositional}: it synthesises a scheme at a target
+shape out of schemes at \emph{other} shapes --- the sub-blocks of a decomposition, the
+factors of a Kronecker product, the concatenands of an axis split --- shapes that need not
+be anywhere near the target (Kronecker \emph{multiplies} them, landing far from either
+factor). Read on the landscape of \(\omega\) over shapes, these strategies \emph{interpolate}
+in \(\omega\)-value: the rank they produce at \nmpshape{n}{m}{p} is an arithmetic combination
+(sum, product) of the ranks --- hence the \(\omega\) --- of the shapes they consume, so the
+target's \(\omega\) is a blend of its inputs'. Hence a structural ceiling: the purely additive or
+multiplicative blends --- axis concatenation, the plain Kronecker product, plain block-split
+decomposition --- \emph{cannot manufacture an \(\omega\) below all of their inputs}: if
+every shape they draw on has higher \(\omega\), the arithmetic combination does too. Pushing below every input needs a mechanism that rewrites the scheme's own product
+set rather than gluing fixed sub-schemes together; flip-graph and meta-flip-graph
+moves~\cite{perminov2025fast,kauersmoosbauerwood2026} are exactly such a mechanism, which is
+why they reach ranks our compositional closure cannot.
 
-One qualification: the serendipitous borrow-and-correct product
-(Section~\ref{ssec:serendipitous}), and more speculatively projection
-(Section~\ref{ssec:decomposition}), are \emph{not} purely additive blends --- the borrow
-injects a correction term outside the sum of the consumed ranks, so they can in principle
-drop a local \(\omega\) below all neighbours. But \emph{propagation} is unclear: a lowered
-local \(\omega\) helps only if surrounding shapes consume it, and we have no argument that
-such a win propagates like a flip-graph improvement --- a local mechanism of unproven
-global reach.
+Two strategies escape this ceiling. The serendipitous (bud) product
+(Section~\ref{ssec:serendipitous}) --- a Kronecker \emph{variant}, so it is this variant and
+not the plain Kronecker product that can help --- lands \emph{below} the naïve rank product
+\(r_1 r_2\) by borrowing and correcting across the factors; and \emph{projection}
+(Section~\ref{ssec:projmargin}), more speculatively, can restrict a parent below the blend
+by eliminating dead products. Both inject a correction outside the sum or product of the
+consumed ranks. That they \emph{do} drop the rank below any pure blend is not hypothetical:
+projection and the serendipitous product each root dozens of our SOTA schemes (39 and 29
+respectively, Section~\ref{ssec:win-anatomy}), shapes whose best held rank comes from exactly
+this correction --- so at those shapes the \emph{local} \(\omega\) is measurably lower, and
+we can point to the case. What stays open is \emph{propagation}, not the local drop: a
+lowered \(\omega\) at one shape lowers the asymptotic exponent, or lifts another shape, only
+if that shape consumes it, and we have no argument that a local correction propagates the way
+a flip-graph base improvement provably does --- a local mechanism of unproven global reach.
 
-Table~\ref{tab:strategies} is the section's map. The ``no-sharing'' rows fall under the
-non-overlap property of Section~\ref{sec:nonoverlap}; the sharing rows are deliberately
-separate constructors, keeping that invariant for everything recombination can produce.
+Table~\ref{tab:strategies} is the section's map. The rows that do not reduce below
+\(\sum_k r_k\) fall under the non-overlap property of Section~\ref{sec:nonoverlap}; the
+reducing rows apply only \emph{known} identities at predict time, deliberately kept as
+separate constructors so that pure recombination never \emph{discovers} sharing.
 
 \begin{table}[h]
 \centering
-\caption{Derivation strategies used by the catalog. ``Sharing'' = ability to produce a
-scheme with fewer than \(\sum_k r_{\text{sub-}k}\) bilinear products (Section~\ref{sec:nonoverlap}).}
+\caption{Derivation strategies used by the catalog. ``Rank \(<\!\sum\)?'' = whether the
+operator can produce a scheme with fewer than \(\sum_k r_{\text{sub-}k}\) bilinear products.
+\emph{Predict-time} means the reduction is a \emph{known} identity, counted before
+materialisation --- no operator \emph{discovers} new sharing while materialising (the
+non-overlap property, Section~\ref{sec:nonoverlap}).}
 \label{tab:strategies}
 \begin{tabular}{lll}
 \toprule
-Operator & Source & Sharing? \\
+Operator & Source & Rank \(<\!\sum\)? \\
 \midrule
 Axis-flip orbit & folklore + this paper \S\ref{ssec:axis-flip} & no \\
 Kronecker product & Strassen 1969 & no \\
 Axis concatenation & folklore & no \\
-Recombination with allocation & Strassen-style block split & no \\
-Serendipitous product & this paper \S\ref{ssec:serendipitous} & no (predict-time lookup) \\
-Downward projection & this paper \S\ref{ssec:projmargin} & no (predict-time DCE) \\
+Recombination with allocation & Strassen-style block split & no\textsuperscript{$\ddagger$} \\
+Serendipitous product & Smith 2002; Perminov 2026 (buds) & yes (predict-time) \\
+Downward projection & Sedoglavic 2017; margin this paper \S\ref{ssec:projmargin} & yes (predict-time) \\
 Output peel & DIS09 / Islam 2009 \(\gamma_5\) & no \\
-Pair fusion (Pan TA family) & Pan 1980 / KGP 2026 & limited (paired only) \\
-Leaf-level pairing & Pan 1980 + this paper \S\ref{ssec:pair-fusion} & limited (paired slots) \\
+Pair fusion (Pan TA family) & Pan 1980 / KGP 2026 & yes (paired) \\
+Leaf-level pairing & Pan 1980 + this paper \S\ref{ssec:pair-fusion} & yes (paired) \\
 Disjoint-sum / $\tau$\textsuperscript{$\dagger$} & Pan 1980 / Sch\"onhage 1981 / SZ 2025 & n/a (imported) \\
 \bottomrule
 \end{tabular}
 
 \smallskip
-\noindent\textsuperscript{$\dagger$}\,Imported as explicit factor matrices, never constructed by our search (Section~\ref{ssec:disjoint-sum}).
+\noindent\textsuperscript{$\dagger$}\,Imported as explicit factor matrices, never constructed by our search (Section~\ref{ssec:disjoint-sum}).\\
+\noindent\textsuperscript{$\ddagger$}\,Exactly \(\sum_k r_{\text{sub-}k}\) by Theorem~\ref{thm:nonoverlap}, bar an accidental leaf coincidence (probed to zero, Section~\ref{sec:nonoverlap}).
 \end{table}
 
 \subsection{Axis concatenation (block-additive composition)}
@@ -69,10 +83,11 @@ If two schemes share two of the three axes, they concatenate along the third: a
 \(\nmpshape{n}{m}{p_1}\) scheme of rank \(r_1\) and a \(\nmpshape{n}{m}{p_2}\) scheme of
 rank \(r_2\) compose into a \(\nmpshape{n}{m}{p_1 + p_2}\) scheme of rank \(r_1 + r_2\),
 computing the two halves of the result independently; analogously along \(n\) and \(m\).
-Sometimes called ``plain split along a dimension'', it is distinct from the $\tau$-theorem
-disjoint sums of Section~\ref{ssec:disjoint-sum}, which are additive over the tensor but
-not over a single axis. Trivial but weight-pulling: it is the cheapest frontier-closure
-route to ``rectangular'' shapes (one large axis) from cubic catalog entries.
+Sometimes called ``plain split along a dimension''. Trivial but weight-pulling: axis
+concatenation is the direct (root) derivation behind \(48\) of the \(908\) shapes where our
+derived scheme strictly beats every external catalog over \(\Rationals\) (\(5\%\);
+Section~\ref{ssec:win-anatomy}) --- the cheapest route to ``rectangular'' shapes (one large
+axis) from cubic catalog entries.
 
 \subsection{Kronecker product (multiplicative composition)}
 \label{ssec:kronecker}
@@ -89,19 +104,21 @@ recursive substitution behind Strassen's \(\omega \le \log_2 7\): applied recurs
 
 The serendipitous product is a multiplicative composition that, unlike the Kronecker
 product, can land \emph{below} the naïve rank product \(r_1 r_2\). Introduced by
-Smith~\cite{smith2002fast} and generalised by Sedoglavic, we follow the bud-based
+Smith~\cite{smith2002fast} and generalised by Sedoglavic in FMM-Lille, we follow the bud-based
 formalisation of Perminov~\cite{perminov2026serendipitous} (Definitions \(2.9\)--\(2.12\),
 \(\S 2.6\)). Kauers, Moosbauer and Wood~\cite{kauersmoosbauerwood2026} independently
-formalised the same fusion as ``divide less, conquer more'': recursive calls that share an
-input, or whose output is used in several positions, merge into a single larger
-multiplication --- our \(U\)- and \(W\)-buds --- and they report
-\(\omega(\nmpshape{6}{6}{6}) \le 2.8019\). Notably, their route to bud-rich decompositions
-is a flip-graph \emph{search} maximising shareable sub-blocks (the same objective as our
-bud-richness selection; their \(\nmpshape{6}{6}{6}\) re-searches a Moosbauer--Poole
-rank-\(153\) decomposition), with no general \emph{construction} reported; whether a
-deterministic constructor (a targeted basis change in the spirit of the de~Groote solve
-used for kin-row unification by Schwartz and Zwecher~\cite{schwartzzwecher2025}) could
-replace this search is open.
+formalised the same fusion (their Section~3, ``divide less, conquer more''): recursive calls
+that share an input, or whose output is used in several positions, are treated as a single
+larger multiplication --- our \(U\)- and \(W\)-buds --- yielding
+\(\omega(\nmpshape{6}{6}{6}) \le 2.8019\). Their construction is a Sch\"onhage-style
+\emph{generalized asymptotic sum inequality} applied to the structure of a \emph{given}
+decomposition: for \(\nmpshape{6}{6}{6}\) they analyse the flip-graph-found Moosbauer--Poole
+rank-\(153\) decomposition to extract its shareable sub-blocks, rather than searching for
+them directly. Finding that shareable structure is the same objective as our bud-richness
+selection, but it is extracted per decomposition, not produced by a general constructor;
+whether a deterministic constructor (a targeted basis change in the spirit of the de~Groote
+solve used for kin-row unification by Schwartz and Zwecher~\cite{schwartzzwecher2025}) could
+replace the analysis is open.
 
 The key object is a \emph{bud}: a pair (or group) of rank-one terms sharing the
 \emph{same} \(u\) vector (or the same \(v\), or the same \(w\)) up to scaling, since
@@ -145,29 +162,49 @@ below the Kronecker value \(20\cdot 14 = 280\). The FMM catalog's~\cite{fmmlille
 records exactly this: eight of the twenty terms live in buds and become the four
 \(\nmpshape{2}{4}{4}\) blocks; the other twelve stay \(\nmpshape{2}{4}{2}\).
 
-\paragraph{Minimal example.} The smallest serendipitous saving \emph{derives Strassen}.
-The base \(\nmpshape{1}{1}{2}\) computes \(a\,b_1\) and \(a\,b_2\), which share the single
-\(A\)-form \(a\): one \(U\)-bud of size \(2\). Multiplying by \(\nmpshape{2}{2}{1}\), the
-bud fuses the Kronecker product's two independent \(\nmpshape{2}{2}{1}\) blocks (eight
-products reusing the same \(A\) entries --- that reuse \emph{is} the bud) into one enlarged
-block: \(r_s = R(\nmpshape{2}{2}{2}) = 7 < 2\cdot R(\nmpshape{2}{2}{1}) = 8\). Buds expose
-\emph{which} products can merge; a sub-additive enlarged block makes the merge a saving.
+\paragraph{Minimal example (and why it is not a free lunch).} The smallest serendipitous
+saving is Strassen's --- but the product \emph{consumes} \(R(\nmpshape{2}{2}{2})=7\), it
+does not produce it. The base \(\nmpshape{1}{1}{2}\) computes \(a\,b_1\) and \(a\,b_2\),
+which share the single \(A\)-form \(a\): one \(U\)-bud of size \(2\), i.e.\ the block
+decomposition \(\nmpshape{1}{1}{2} = 1\cdot\nmpshape{1}{1}{2}\). Its serendipitous product
+with \(\nmpshape{2}{2}{1}\) (rank \(R(\nmpshape{2}{2}{1})=4\)) sends that bud block to the
+enlarged format \(\nmpshape{1\cdot 2}{1\cdot 2}{2\cdot 1} = \nmpshape{2}{2}{2}\), realised
+by its best known scheme:
+\[
+  r_s \;=\; 1\cdot R(\nmpshape{2}{2}{2}) \;=\; 7
+  \;<\;
+  \underbrace{(1\cdot 1\cdot 2)\cdot R(\nmpshape{2}{2}{1})}_{\text{Kronecker product}}
+  \;=\; 2\cdot 4 \;=\; 8 .
+\]
+The bud fuses the Kronecker product's two independent \(\nmpshape{2}{2}{1}\) blocks (eight
+products reusing the same \(A\) entries --- that reuse \emph{is} the bud) into one
+\(\nmpshape{2}{2}{2}\) block; the saving \(7<8\) exists only because \(\nmpshape{2}{2}{2}\)
+is sub-additive --- only because Strassen supplies \(R(\nmpshape{2}{2}{2})=7\) as the
+enlarged-block realisation. Buds expose \emph{which} products can merge; a sub-additive
+enlarged block --- an \emph{input} to the product --- is what turns the merge into a saving.
 
 \paragraph{Bud-richness, rank, and which schemes to retain.} The rank-\emph{minimal}
 scheme for a format is often the \emph{wrong} base for a serendipitous product. Build
-\(\nmpshape{6}{6}{6}\) as \(\nmpshape{2}{2}{2}\otimes\nmpshape{3}{3}{3}\), using
-\(R(\nmpshape{3}{3}{3})=23\) (Laderman) and \(R(\nmpshape{3}{3}{6})=40\) (Smirnov; note
-\(40<2\cdot 23\)). Strassen \(\nmpcount{}{2}{2}{2}{7}\) has \emph{no} buds (pairwise
-non-proportional \(u,v,w\)), so its serendipitous product is just the Kronecker product,
-\(7\cdot 23 = 161\); the higher-rank \emph{naïve} \(\nmpcount{}{2}{2}{2}{8}\) is bud-rich
-(each \(A\)-entry feeds two outputs: four \(U\)-buds, \(4\cdot\nmpshape{1}{1}{2}\)) and
-fuses each bud with the inner \(\nmpshape{3}{3}{3}\) into a \(\nmpshape{3}{3}{6}\):
-\(4\cdot 40 = 160\). The bud-rich rank-\(8\) base beats the rank-minimal rank-\(7\) one
-(\(160<161\)) --- but \emph{only} through serendipity: its plain Kronecker product costs
-\(8\cdot 23 = 184\), the worst of the three. Since \(r_s\) depends only on the bud
-\emph{multiset} \(\{S_i\,\nmpshape{N_i}{M_i}{P_i}\}\), the store keys on the multiset, not
-scheme identity (rank/additions as tie-breakers); by the \(S_3\) isotropy below, one orbit
-representative covers all three bud axes. What must be retained is the
+\(\nmpshape{6}{6}{6}\) as an inner \(\nmpshape{3}{3}{3}\) (Laderman \(R=23\); Smirnov
+\(R(\nmpshape{3}{3}{6})=40\), note \(40<2\cdot 23\)) times one of two \(\nmpshape{2}{2}{2}\)
+bases, under either operator:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\(\nmpshape{2}{2}{2}\) base & Kronecker & serendipitous \\
+\midrule
+Strassen, rank \(7\) --- no buds & \(7\cdot 23 = 161\) & \(161\) (\(=\) Kronecker) \\
+na\"ive, rank \(8\) --- four \(U\)-buds & \(8\cdot 23 = 184\) & \(4\cdot 40 = \mathbf{160}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+Strassen's \(u,v,w\) are pairwise non-proportional, so it has no buds and serendipity buys
+it nothing over Kronecker. The na\"ive rank-\(8\) scheme is bud-rich --- each \(A\)-entry
+feeds two outputs, four \(U\)-buds \(4\cdot\nmpshape{1}{1}{2}\) --- and fusing each with the
+inner \(\nmpshape{3}{3}{3}\) into a \(\nmpshape{3}{3}{6}\) gives \(4\cdot 40 = 160\): the
+best of the four, from the \emph{worse}-rank base. A serendipitous base is chosen for
+bud-richness, not rank. Since \(r_s\) depends only on the bud \emph{multiset}
+\(\{S_i\,\nmpshape{N_i}{M_i}{P_i}\}\), what must be retained per format is the
 \emph{Pareto frontier} in \((\text{rank},\,\text{bud multiset})\): a higher-rank scheme is
 worth keeping iff its richer buds win some serendipitous product the lower-rank scheme
 cannot; a scheme of no-better rank whose bud multiset is contained in another's is
@@ -194,13 +231,10 @@ target axis carries the \(k\)-fold enlargement (a \(U\)-bud gives
 differ), so the search tries all three orientations; and aligning both factors' bud axes
 maximises the \(ab\) reinforcement for reuse as a base.
 
-\paragraph{What it is, and is not.} The serendipitous product is \emph{exact} and
+\paragraph{What it is.} The serendipitous product is \emph{exact} and
 \emph{combinatorial}: it reads buds off the base scheme's factor matrices and looks up
-sub-block ranks --- no numerical optimisation, no border rank. Unlike disjoint sums
-(\S\ref{ssec:disjoint-sum}) it does not split the \emph{target} tensor; unlike pair fusion
-(\S\ref{ssec:pair-fusion}) it fuses a base's \emph{own} terms into larger matmul blocks
-before multiplying by a second scheme. Our bud recognizer follows Perminov's \(\S 2.6\),
-and the assembled scheme is certified by the exact symbolic verifier.
+sub-block ranks --- no numerical optimisation, no border rank. Our bud recognizer follows
+Perminov's \(\S 2.6\), and the assembled scheme is certified by the exact symbolic verifier.
 
 \paragraph{Smoothness governs the serendipitous hit rate.} A serendipitous product needs
 the target to factor as \(\nmpshape{n_1}{m_1}{p_1}\otimes\nmpshape{n_2}{m_2}{p_2}\) with
@@ -247,7 +281,13 @@ direct-construction targets where the method cannot help.
 \subsection{Decomposition: block-splitting and the sub-problem multiset}
 \label{ssec:decomposition}
 
-The operators above build \emph{up}; the rest of this section builds \emph{down}.
+Decomposition, like the composition operators above, builds \emph{up} in shape: it
+generates a larger target from smaller schemes (a better small scheme lifts the target ---
+an upward edge in the impact DAG of Section~\ref{sec:search}). What differs is only the
+direction of \emph{construction} --- instead of gluing two given schemes, it starts from the
+target shape and tiles it with a smaller \emph{outer} scheme. Only \emph{projection}
+(Section~\ref{ssec:projmargin}) builds \emph{down}, restricting a larger scheme to a
+sub-shape.
 \emph{Decomposition} splits a large \(\nmpshape{N}{M}{P}\) product into a grid of blocks
 computed by a smaller \emph{outer} scheme of shape \(\nmpshape{n_o}{m_o}{p_o}\) and rank
 \(r_o\): cut each target axis into that many parts and let each of the outer scheme's
@@ -398,7 +438,8 @@ margin} of \(S\) (single index, best axis) is
   \mu(S)=\max_{A\in\{n,m,p\}}\ \max_{i}\ \rho_A(i), \qquad
   R_{\text{after}} \;=\; R_{\text{before}}-\mu(S)
 \]
-exactly, for projecting out the best single index; dropping \(\delta\) indices on one axis
+exactly as a \emph{survivor count} (an upper bound on the child's rank, tightened below),
+for projecting out the best single index; dropping \(\delta\) indices on one axis
 generalises to \(\mu^{(\delta)}_A(S)=\max_{|D|=\delta}\#\{k:\mathrm{supp}_A(k)\subseteq
 D\}\), with \(R_{\text{after}}=R_{\text{before}}-\mu^{(\delta)}\).
 
@@ -411,6 +452,46 @@ higher-rank \emph{structured} \(\nmpcount{}{30}{30}{30}{12710}\) (Pan trilinear
 aggregation) has \(\mu=122\) and projects to \(12588\), matching FMM. Structure localises
 whole product-slabs to boundary slices (large \(\rho\)); a flat decomposition spreads
 every product across all indices (small \(\rho\)), projecting worse despite lower rank.
+
+\paragraph{Survivor count versus true projected rank.} The identity
+\(R_{\text{after}}=R_{\text{before}}-\mu\) counts the products that \emph{survive} the
+restriction; that count is exact, but only an \emph{upper bound} on the child's rank,
+because restricting can make two survivors \emph{proportional} --- and a proportional pair
+is one rank-one term, not two. The mechanism is a linear form losing a coordinate: suppose
+two products agree on their \(\alpha\)- and \(\gamma\)-forms and differ only in their
+\(\beta\)-forms, one reading \(b_{\cdot,k_1}+b_{\cdot,k_0}\) and the other
+\(b_{\cdot,k_1}-b_{\cdot,k_0}\). Both survive the drop of output column \(k_0\) (each still
+reads \(b_{\cdot,k_1}\)), yet \emph{after} the drop both compute \(b_{\cdot,k_1}\): the two
+products coincide and fuse into one, for a \(-1\) that \(\mu\) never counts. (Over a
+ternary base ``proportional'' forces ``\(\pm\)-equal'', so the fusion is a cheap sign
+test.) This is the pair fusion of \S\ref{ssec:pair-fusion}, but \emph{induced} by the
+projection rather than pre-existing: a drop can \emph{manufacture} the coincidence that
+\S\ref{sec:nonoverlap} finds absent in un-projected schemes. The smallest instance is fully
+explicit: our rank-\(11\) \(\nmpfield{\Rationals}{2}{2}{3}\) carries two products sharing the
+input form \(A_{0,1}+A_{1,1}\) whose outputs differ only in column \(c=1\) --- one feeds
+\(C_{0,0}\) and \(C_{0,1}\), the other only \(C_{0,0}\). Projecting to \(\nmpshape{2}{2}{2}\)
+by dropping column \(c=1\) erases the distinguishing \(C_{0,1}\) entry; both products then
+write \(C_{0,0}\) alone under the same input form and fuse, so nine survivors realise rank
+eight. The effect stays small but is no toy-shape artefact ---
+\(\nmpfield{\Rationals}{4}{7}{7}=144\) restricted to \(\nmpshape{4}{6}{7}\) leaves \(132\)
+survivors but fuses to \(131\) --- and running the
+ordinary fusion pass on the restricted scheme recovers it, turning the death-rate score
+into the true projected rank. It also gives the rank-preserving meta-flip below a quantity
+it can actually lower: support-unioning flips barely move survivor counts, but they do
+create proportional pairs.
+
+\paragraph{The opposite extreme: \(\mu=0\) and shared-rank neighbours.} Nothing forces a
+drop to spare a multiplication. When no surviving product is \emph{private} to the dropped
+slice --- every product touches a second kept index on that axis --- then \(\mu=0\) and the
+projection inherits the parent's rank unchanged. The same cascade can do both: our
+\(\nmpfield{\Rationals}{9}{17}{19}=1753\) drops one output column to
+\(\nmpfield{\Rationals}{9}{17}{18}=1600\) (\(\mu=153\), a genuine reduction), yet the next
+drop, to \(\nmpshape{9}{17}{17}\), kills nothing (\(\mu=0\)), so \(1600\) is the best known
+for \emph{both} shapes. This is not the extra output column being free: it is only
+\(R(\nmpshape{9}{17}{17})\le R(\nmpshape{9}{17}{18})=1600\) holding trivially (a projection
+never raises rank) while no cheaper dedicated \(\nmpshape{9}{17}{17}\) scheme is known --- an
+inherited \emph{upper bound}, not a proven rank, and the shared-rank plateau an artefact of
+the catalog rather than of the shapes.
 
 \paragraph{A small worked instance, and how to \emph{raise} the margin.} Ordering our
 small catalog by \(\mu\), the high-margin schemes are uniformly the \emph{structured} ones
@@ -563,11 +644,7 @@ level} -- not at a single-axis level -- when it admits a $\tau$-theorem-style
 decomposition: each leg computes a smaller matmul, and the legs combine via the additive
 structure of the tensor. Schwartz--Zwecher 2025 \cite{schwartzzwecher2025} give explicit
 constructive disjoint-sum decompositions for \emph{large} formats (e.g.\
-\(n = 44, 56, 60\)). We caution that several FMM catalog~\cite{fmmlille} entries that
-\emph{look} like $\tau$/direct-sum identities at smaller shapes (e.g.\
-\(\nmpshape{17}{17}{17}\) at rank \(2934\)) turned out on inspection to be plain
-recombinations of a small base. (Our own \(\nmpshape{17}{17}{17}=2930\) is likewise a
-Winograd recombination, Section \ref{ssec:axis-flip}, not a disjoint sum.)
+\(n = 44, 56, 60\)).
 
 We stress that \emph{we do not currently leverage the $\tau$-theorem anywhere}. The
 disjoint-sum schemes we hold (Schwartz--Zwecher and those FMM/Perminov build this way) are

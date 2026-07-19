@@ -7,6 +7,51 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-07-16 — fmm-gap ⟨13,19,29⟩ Q:m: engine exhausted at 4249, FMM 4248 is a recursive-growth base gap (NEGATIVE)
+
+**Target:** `Q⟨13,19,29⟩:m` — ours **4249**, FMM **4248**, gap **+1**
+(field Q, non-commutative). Random pick from the WORSE list (now only 6:
+⟨7,11,30⟩+2, ⟨8,27,30⟩+6, ⟨13,19,29⟩+1, ⟨14,14,29⟩+1, ⟨17,17,19⟩+1,
+⟨19,19,31⟩+1). Member of the overlap-1 shared-mul endgame family
+(⟨17,17,19⟩ witness class, see 2026-07-09 entry).
+
+**FMM construction (per https://fmm.univ-lille.fr/13x19x29.html):** the
+"Algorithm definition" is a *single-base recursive* build —
+`⟨13×19×29:4248⟩` from `⟨6×9×15:529⟩` (no other ⟨⟩ ingredient terms; the
+rest is the trilinear Trace expansion). Structural signature:
+`13 = 2·6+1, 19 = 2·9+1, 29 = 2·15−1` and `4248 = 8·529 + 16`
+(ours `4249 = 8·529 + 17` — the +1 is the correction-term difference).
+Reads as a dimension-growth / tensor-plus-correction construction
+(≈ ⟨6,9,15⟩⊗⟨2,2,2⟩=7·529=3703 on ⟨12,18,30⟩ then grow n,m by a unit
+and shrink p by a unit) — NOT in our Kron/concat/recombination/GL rule set.
+
+**We hold the base:** `known/section15/6x9x15-r529-perminov_Q-5fdb986.json`
+(529/Q). So this is a base-*construction* gap, not a base-*import* gap —
+copying nothing.
+
+**Reactions run (all field=Q):**
+- `ProjectFmmGaps --shapes=13x19x29 --passes=2` → **0 wins** (nothing
+  larger projects below 4249; 6 parent replays margin-pruned).
+- `VerifyGLCandidate 13 19 29` → best **4249** across Strassen/Winograd/
+  GL222_win ⟨2,2,2⟩ bases (1512 allocs); verdict "tie (eval not
+  reproduced)".
+- `SchemeSweep --mode=materialize --field=Q --shape=13x19x29
+  --config=thorough --strategies=recomb,serendip,proj` → **0 wins, 1
+  no-improvement** over **506 bases / 1.8M allocations**, best 4249.
+
+Our current 4249 = `Recombination(base=2x2x2, allocA=[7,6],
+allocB=[9,10], allocC=[14,15])` (7·607). Engine is **exhausted at 4249**
+under the present rule set.
+
+**Status:** OPEN base-construction gap. Closing it needs the recursive
+dimension-growth engine feature (grow ⟨2n′,2m′,2p′⟩ from a base by
+adding/removing a unit dimension with correction blocks) — same missing
+mechanism flavour as the span-compressed-bud gaps. Do NOT re-run the
+above three engines on this shape; they plateau. Next lever if
+revisited: implement/verify the ⟨6,9,15⟩→⟨12,18,30⟩⊗7 → unit-grow path,
+or report to FMM only if their 4248 artifact fails re-verification.
+FMM attribution TBD (source column empty; catalog, not discoverer).
+
 ## 2026-07-10 — FUSION-KERNEL PROGRAM session 1: ⟨8,27,30⟩'s kernel = FIVE two-slot "joint-tail" units (8+8+13 = 29 vs 30) — full anatomy extracted
 
 **Confirmed base attribution:** the 3736 artifact is EXACTLY FMM's

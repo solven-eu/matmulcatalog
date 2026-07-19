@@ -13,18 +13,18 @@ that for every \(A, B\):
   \Big(\sum_{a',b'} V_{(a',b'),k}\, B_{a',b'}\Big).
 \]
 The integer \(r\) is the \emph{rank} (a.k.a.\ \emph{multiplication
-count}) of the algorithm. The \emph{addition count} is the number of
-nonzero coefficients in \((U, V, W)\) beyond the bare product
-multiplications, with conventions following Probert--Fischer 1976.
+count}) of the algorithm, and the quantity this paper focuses on.
 
 \paragraph{Shape notation.} A bare \(\nmpshape{n}{m}{p}\) is not
 sufficient -- the rank depends on the algebra. We adopt:
 \begin{itemize}[itemsep=2pt]
   \item \(\nmpfield{K}{n}{m}{p}\): non-commutative matmul over the
-    field \(K\). E.g.\ \(\nmpfield{\Reals}{7}{7}{7} = 249\).
+    field \(K\). E.g.\ \(\nmpfield{\Rationals}{3}{3}{3} = 23\)
+    (Laderman).
   \item \(\nmpfieldc{K}{n}{m}{p}\) (superscript-\(c\)): commutative
-    matmul over \(K\). E.g.\ \(\nmpfieldc{\Reals}{3}{3}{3} = 21\)
-    (Rosowski).
+    matmul over \(K\). E.g.\ \(\nmpfieldc{\Rationals}{3}{3}{3} = 21\)
+    (Rosowski) --- commutativity saves two multiplications at the same
+    shape.
 \end{itemize}
 The value after \(=\) is always the \emph{rank} --- the number of
 scalar multiplications, which is the quantity that compounds into an
@@ -35,18 +35,19 @@ separately (Section~\ref{sec:architecture}).
 \begin{description}[itemsep=2pt]
   \item[\Integers, \Rationals, \Reals] Characteristic-zero and
     non-commutative-friendly (they lift to recursive matmul). We keep
-    them \emph{distinct}, first-class fields --- not a single cluster ---
-    and use the inclusion \(\Integers\subset\Rationals\subset\Reals\)
-    only to compute which fields a scheme satisfies. Ternary-integer
+    them \emph{distinct}, first-class fields --- each with its own rank
+    claim and attribution, never collapsed into one combined
+    \(\Integers/\Rationals/\Reals\) bucket --- and use the inclusion
+    \(\Integers\subset\Rationals\subset\Reals\) only to compute which
+    fields a scheme satisfies. At \(\nmpshape{4}{4}{4}\), for instance,
+    \(\Integers\) stands at 49 (Strassen\(^2\)) while \(\Rationals\) and
+    \(\Reals\) reach 48 (Dumas--Pernet--Sedoglavic~\cite{dps2025}) ---
+    the same shape, genuinely different ranks. Ternary-integer
     schemes (\(\Integers\)T, coefficients in \(\{-1,0,1\}\)) are a
     first-class sub-class of \(\Integers\).
-  \item[\Complex] A complex extension. Real-valid schemes work
-    immediately; in addition, AlphaEvolve's complex-coefficient
-    schemes live here. Its \(\nmpfield{\Complex}{4}{4}{4} = 48\) was
-    subsequently rationalised by Dumas--Pernet--Sedoglavic
-    \cite{dps2025}, so that particular rank no longer separates
-    \Complex\ from \(\Rationals/\Reals\) --- a reminder that
-    field-separation examples are date-stamped claims.
+  \item[\Complex] A complex extension; real-valid schemes work
+    immediately. AlphaEvolve's complex-coefficient
+    \(\nmpfield{\Complex}{4}{4}{4} = 48\) lives here.
   \item[\Ftwo] Characteristic-2. AlphaTensor's
     \(\nmpfield{\Ftwo}{4}{4}{4} = 47\) lives here. Integer-valid
     schemes reduce mod 2 to give \Ftwo\ schemes; the field stampers
@@ -94,10 +95,10 @@ the cited literature (``base'', ``factorisation'') are noted inline.
     \emph{scheme} for shape \(\nmpshape{n}{m}{p}\) is a bilinear
     algorithm \((U, V, W)\) computing \(C = A \cdot B\) for
     \(A \in K^{n \times m}, B \in K^{m \times p}, C \in K^{n \times p}\)
-    over an algebra \(K\).
+    over a field \(K\).
 
   \item[Atom.] A primitive MM scheme not derived from other schemes
-    in our framework --- imported from upstream (FMM-Lille, Perminov,
+    in our framework --- imported from upstream (Perminov,
     AlphaTensor, AlphaEvolve), produced by a closed-form constructor
     (Waksman, Rosowski, Pan TA), or declared as such (Strassen,
     Laderman). Atoms are the leaves of the lineage DAG; some
@@ -108,10 +109,14 @@ the cited literature (``base'', ``factorisation'') are noted inline.
   \item[Lineage.] An expression describing in a constructive,
     replayable way how to build an MM scheme from atoms via the
     derivation operators (recombination, Kronecker, concatenation,
-    axis-flip, permutation). Large schemes (any dimension above 16)
-    are stored as lineage only; the concrete \((U, V, W)\) is
-    reconstructed by replaying the lineage against the atoms it
-    references.
+    axis-flip, permutation).
+
+  \item[Stub.] A scheme persisted as \emph{lineage only} --- no explicit
+    \((U, V, W)\) factor matrices on disk --- whose concrete matrices
+    are reconstructed on demand by replaying the lineage
+    (Section~\ref{sec:architecture}). Used to store large derived
+    schemes compactly and, during search, as the strategy descriptor
+    recorded before a candidate is materialised.
 
   \item[Allocation.] One way to partition a product of shape
     \(\nmpshape{n}{m}{p}\) into blocks compatible with an atom of
@@ -129,11 +134,13 @@ the cited literature (``base'', ``factorisation'') are noted inline.
     \(\nmpshape{n}{m}{p}\) form is reserved for contexts where the
     algebra has just been named.
 
-  \item[Optimisation target.] This catalog does \emph{not} aim to
-    minimise additions per scheme: two schemes of equal rank at the
+  \item[Optimisation target.] This catalog does \emph{not yet} target
+    minimal additions per scheme: two schemes of equal rank at the
     same shape (Strassen-18 vs Strassen--Winograd-15) induce the same
-    recursion structure and the same \(\omega\), so addition count is
-    metadata, not a quality measure. What we \emph{do} minimise is
+    recursion structure and the same \(\omega\), so for now we treat
+    addition count as metadata rather than a primary quality measure ---
+    though we still record it, and flag specific cases of interest such
+    as the Strassen-18 vs Strassen--Winograd-15 pair above. What we \emph{do} minimise is
     the multiset of distinct sub-shapes \(\nmpshape{n'}{m'}{p'}\) the
     recursion induces --- fewer distinct shapes means a simpler block
     decomposition, less catalog dependency, and easier verification.
@@ -157,22 +164,26 @@ the cited literature (``base'', ``factorisation'') are noted inline.
 
   \item[Permutation.] Rewrite of a scheme under an \(S_3\)
     permutation of its three axes, yielding a rank-preserving
-    six-element orbit of equivalent shapes of which the catalog
-    stores only the sorted representative \(n \le m \le p\)
+    six-element orbit of equivalent shapes
     (Section~\ref{sec:strategies}).
 
   \item[Axis-flip.] Rewrite that reverses the row order on any
     subset of the three axes, yielding a rank-preserving orbit of
-    eight variants per scheme with generally distinct addition
-    counts (Section~\ref{ssec:axis-flip}).
+    eight variants per scheme (Section~\ref{ssec:axis-flip}).
 
-  \item[Isotropy + coordinate change.] The symmetry actions on a
-    bilinear-algorithm tensor: coordinate changes
-    \(GL_n(K) \times GL_m(K) \times GL_p(K)\) plus the discrete axis
-    symmetries, and the isotropy group of a decomposition as the
-    sub-group fixing it~\cite{burichenko2014}; de Groote's uniqueness
-    theorem for \(\nmpshape{2}{2}{2}\)~\cite{degroote1978} is
-    treated in Section~\ref{sec:multisets}.
+  \item[Isotropy + coordinate change.] The full symmetry group of a
+    bilinear-algorithm tensor: the continuous coordinate changes
+    \(GL_n(K) \times GL_m(K) \times GL_p(K)\) together with the discrete
+    \(S_3\) axis symmetry; the isotropy group of a decomposition is the
+    sub-group that fixes it~\cite{burichenko2014}. The \emph{Permutation}
+    and \emph{Axis-flip} rewrites above are the finite \emph{monomial}
+    corner of this group --- Permutation is the \(S_3\) relabelling of
+    the three axes, axis-flip a row-reversal (a monomial element of the
+    \(GL\) factors) --- the rank-preserving, cheaply enumerable
+    symmetries we exploit directly, as opposed to the full continuous
+    group. de~Groote's uniqueness theorem for
+    \(\nmpshape{2}{2}{2}\)~\cite{degroote1978} is treated in
+    Section~\ref{sec:multisets}.
 
   \item[Commutative vs non-commutative.] Defined in the
     commutative-axis paragraph of this section; every rank claim

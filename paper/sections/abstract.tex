@@ -10,19 +10,27 @@ We present a unified, machine-checkable catalog covering shapes up to
 \nmpshape{32}{32}{32} over \Rationals, \Integers, \Reals, \Complex,
 \Ftwo, and \Fthree, with a separate axis for commutative algorithms
 (Waksman 1970, Makarov 1986, Rosowski 2019). Derivation over the
-catalog uses a \emph{frontier-closure search} that recombines
-entries by axis-flip, Kronecker, axis concatenation,
-serendipitous products, recombination-with-allocation (with optional
-output peeling and leaf-level pair fusion), and downward projection.
+catalog applies a fixed set of well-defined operators exhaustively ---
+axis-flip, Kronecker (with its serendipitous ``bud'' variant), axis
+concatenation, recombination-with-allocation (with optional output
+peeling and leaf-level pair fusion), and downward projection --- iterated to a
+fixed point (Section~\ref{sec:strategies}).
+Our derivation layer is closest in spirit to Sedoglavic's FMM-Lille
+catalog~\cite{fmmlille}, which likewise layers recursive derivations
+(Kronecker with serendipity, concatenation, projection) over known bases; we
+differ by covering more fields (\Integers, \Ftwo, \Fthree, and a
+commutative axis alongside \Rationals/\Reals/\Complex) and by exploring
+the derivation space more exhaustively --- rather than sampling it
+stochastically, as the flip-graph / meta-flip-graph
+methods~\cite{perminov} do.
 
-A central methodological point is the \emph{non-overlap property}: our
-composition cannot rediscover the shared bilinear products that
-hand-crafted constructions are built around --- a clean
-line between ``find a cleverer bilinear core'' and ``compose known
-cores'' that resolves several attribution puzzles. Empirically, over
-\Rationals (2026-07-12 snapshot), our derived schemes strictly beat
-every external holding on 908 shapes and trail on six audited ones ---
-all six explained by a single sharing device (fusion kernels) that our
+As of the 2026-07-12 snapshot over \Rationals, our derivations improve
+on the best external catalog (FMM-Lille or Perminov) at 908 shapes ---
+\(19\%\) of the 4760 comparable shapes in the large-format band
+\(17 \le \max(n,m,p) \le 32\); in fact every strict win we produce
+lands in that band, small formats being saturated. We tie the external
+best at a further 3688 shapes and trail on only six audited ones, each
+explained by a single sharing device (fusion kernels) that our
 composition deliberately forgoes.
 
 We refresh the DIS09 comparison tables, split per field with a

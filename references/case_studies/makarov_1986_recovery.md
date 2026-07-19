@@ -176,7 +176,7 @@ Makarov is not unique. We have already encountered:
 
 - **Heun 1994** (German bilinear-complexity textbook) — referenced
   by HK 1971 follow-up work, no online English version found.
-- **Probert-Fischer 1976** — referenced as the canonical
+- **Probert-Fischer 1980** — referenced as the canonical
   decomposition framework for small-format upper bounds, original
   paper hard to retrieve.
 - **Smith 2002 tables** — referenced as the next iteration of

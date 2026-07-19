@@ -1038,6 +1038,18 @@ function matchShapePattern(format, pattern) {
   return true;
 }
 
+// Two-level shape query: a LIST of shape-patterns OR'd together. Separators are
+// hierarchical — the OUTER (between-shape) separators are comma and whitespace;
+// the INNER (within-shape, per-axis) separators are `.`, `x` and a `-` between
+// digits, handled by matchShapePattern. So "9.17.17, 9.17.18" matches EITHER
+// shape, while "9.17.17" alone is the single positional pattern as before. Each
+// listed pattern keeps the full N/N+/N-/* grammar and leading-axis sub-matching.
+function matchShapeQuery(format, query) {
+  const patterns = query.split(/[\s,]+/).filter(Boolean);
+  if (patterns.length === 0) return true; // empty → no constraint
+  return patterns.some((p) => matchShapePattern(format, p));
+}
+
 function render() {
   const field = document.getElementById("f-field").value;
   const cubic = document.getElementById("f-cubic").checked;
@@ -1080,7 +1092,7 @@ function render() {
     if (fmtMax > maxDim) return false;
     if (fmtMin < minDim) return false;
     if (sourceQ && !s.source.toLowerCase().includes(sourceQ)) return false;
-    if (shapeQ && !matchShapePattern(s.format, shapeQ)) return false;
+    if (shapeQ && !matchShapeQuery(s.format, shapeQ)) return false;
     if (omegaBeatsStrassen) {
       const w = impliedOmega(s.format, s.rank);
       if (w == null || w >= STRASSEN_OMEGA) return false;

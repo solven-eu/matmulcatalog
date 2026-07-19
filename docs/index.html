@@ -132,14 +132,16 @@
 
   <!-- Shape-pattern filter. Positional on the displayed ⟨n,m,p⟩. Per axis: `N`
        exact, `N+` at-least (30+ = 30 or bigger), `N-` at-most (16- = 16 or less),
-       `*` wildcard. The separator is lax (any non-digit char: . , x space -); a
-       `-` between digits is a separator, so `2-3-16` is the exact ⟨2,3,16⟩. Fewer
-       tokens sub-match (`2x16` → all ⟨2,16,·⟩). Requested specifically for
+       `*` wildcard. Separators are two-level: WITHIN a shape the axis separator is
+       `.`, `x`, or a `-` between digits (so `2-3-16` = exact ⟨2,3,16⟩); BETWEEN
+       shapes use a comma or space to OR a whole LIST (`9.17.17, 9.17.18` matches
+       either). Fewer tokens sub-match (`2x16` → all ⟨2,16,·⟩). Requested for
        Perminov — his FastMatrixMultiplication catalog is browsed per-format, so a
-       wildcard or an `N±` band on an axis pulls "all ⟨2,·,16⟩" at once. -->
-  <label title="Filter by shape, positional on ⟨n,m,p⟩. Per axis: N exact, N+ means ≥N (30+), N- means ≤N (16-), * wildcard. Any separator works (. , x space); a dash BETWEEN digits is a separator, so 2-3-16 = exact ⟨2,3,16⟩. Fewer tokens sub-match leading axes. Examples: 2.*.16, 30+.2.16, 2-3-16, 2x16">
+       wildcard or an `N±` band on an axis pulls "all ⟨2,·,16⟩" at once, and a
+       comma list pulls several exact formats together. -->
+  <label title="Filter by shape, positional on ⟨n,m,p⟩. Per axis: N exact, N+ means ≥N (30+), N- means ≤N (16-), * wildcard. Two-level separators: WITHIN a shape use . or x or a dash-between-digits (2-3-16 = exact ⟨2,3,16⟩); BETWEEN shapes use comma or space to OR a list (9.17.17, 9.17.18 = either). Fewer tokens sub-match leading axes. Examples: 2.*.16, 30+.2.16, 2-3-16, '9.17.17 9.17.18'">
     Shape (e.g. 2.*.16):
-    <input type="text" id="f-shape" placeholder="2.*.16">
+    <input type="text" id="f-shape" placeholder="2.*.16 or 9.17.17,9.17.18">
   </label>
 
   <label>

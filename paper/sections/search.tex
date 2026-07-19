@@ -1,10 +1,10 @@
-% Frontier-closure search — the two-phase algorithm, the in-memory
+% Exhaustive derivation search — the two-phase algorithm, the in-memory
 % overlay, the impact DAG, the multipass/fixpoint argument, and the
 % sound pruning. This is the algorithmic contribution of the paper.
 % Engineering details (caching, pools, budget flags) live in
 % Appendix~\ref{app:implementation}.
 
-The frontier-closure search converges the catalog to a fixed point
+The exhaustive derivation search converges the catalog to a fixed point
 under the derivation operators of Section \ref{sec:strategies}. It
 propagates rank improvements along a dependency DAG of shapes
 (below) rather than re-deriving everything from scratch; the loop

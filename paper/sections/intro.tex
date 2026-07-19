@@ -28,24 +28,23 @@ from Smirnov's \(\nmpshape{3}{3}{6}\) scheme of rank
 the catalog, making it the best base case a recursive implementation
 can realistically use.
 
-The 2022--2026 period has shaken this landscape. AlphaTensor
-\cite{alphatensor2022} found 47 bilinear products for
-\(\nmpfield{\Ftwo}{4}{4}{4}\) -- previously believed to require 49.
-AlphaEvolve \cite{alphaevolve2025} found 48 for
-\(\nmpfield{\Complex}{4}{4}{4}\) (independently, an explicit complex 48
-had already been given a year earlier by Kaporin~\cite{kaporin2024brent}
-via a semi-analytical solution of the Brent equations), which
-Dumas--Pernet--Sedoglavic
-\cite{dps2025} promptly rationalised --- 48 with coefficients in
-\(\{\pm1,\pm\tfrac12,\pm\tfrac14,\pm\tfrac18\}\), valid over
-\(\Rationals\) and hence \(\Reals\). Schwartz--Zwecher 2025
-\cite{schwartzzwecher2025} produced a systematic disjoint-sum
-construction giving record ranks at several large shapes. The FMM
+The 2022--2026 period has shaken this landscape, with a fresh record
+almost every year. In 2022, AlphaTensor \cite{alphatensor2022} found 47
+bilinear products for \(\nmpfield{\Ftwo}{4}{4}{4}\). In 2024,
+Kaporin~\cite{kaporin2024brent} gave an explicit complex 48 for
+\(\nmpfield{\Complex}{4}{4}{4}\) via a semi-analytical solution of the
+Brent equations; in 2025, AlphaEvolve \cite{alphaevolve2025}
+independently found 48 for the same shape, which
+Dumas--Pernet--Sedoglavic \cite{dps2025} rationalised the same year ---
+48 with coefficients in \(\{\pm1,\pm\tfrac12,\pm\tfrac14,\pm\tfrac18\}\),
+valid over \(\Rationals\) and hence \(\Reals\). Also in 2025,
+Schwartz--Zwecher \cite{schwartzzwecher2025} produced a systematic
+disjoint-sum construction giving record ranks at several large shapes. The FMM
 catalog at Lille \cite{fmmlille} and Perminov's
 \code{FastMatrixMultiplication} repository \cite{perminov} both
 aggregate schemes from across the literature \emph{and} contribute
 their own results, but via different approaches: FMM layers recursive
-derivations (Kronecker, recursive concatenation, projection) on top of
+derivations (Kronecker with serendipity, concatenation, projection) on top of
 known bases, while Perminov runs flip-graph and meta-flip-graph search
 to discover fresh low-rank schemes (including ternary-integer ones).
 
@@ -53,25 +52,24 @@ to discover fresh low-rank schemes (including ternary-integer ones).
 (Maple scripts, NumPy archives, ad-hoc JSON), use inconsistent shape
 conventions (sorted vs unsorted \nmpshape{n}{m}{p}, with or without
 explicit field tags), and carry inconsistent attribution. A
-\(\nmpshape{4}{4}{4}\) entry sourced from AlphaTensor is sometimes
-cited as ``the AlphaTensor scheme'' even when the rank was already
-established by Strassen recursion or Smirnov -- only some of
+\(\nmpshape{3}{3}{3}\) entry sourced from AlphaTensor is sometimes
+cited as ``the AlphaTensor scheme'' even though rank 23 was established
+by Laderman~\cite{laderman1976} decades earlier -- only some of
 AlphaTensor's per-format ranks were genuine improvements over prior
-SOTA. The same trap exists in every bulk-import flow we have
-audited.
+SOTA (its \(\nmpfield{\Ftwo}{4}{4}{4}=47\) among them). The same trap
+exists in every bulk-import flow we have audited.
 
-We argue that a research-grade catalog -- machine-checkable, fully
-attributed, and uniformly serialised -- is now both possible and
+We argue that a catalog that is machine-checkable, fully
+attributed, and uniformly serialised is now both possible and
 necessary. This paper describes the construction of such a catalog,
-together with a frontier-closure search that automatically discovers
+together with an exhaustive derivation search that automatically discovers
 recombinations of catalog entries.
 
 \paragraph{Field discipline as load-bearing.} A bare \nmpshape{n}{m}{p}
 is ambiguous: different fields admit different ranks, as the
 \(\nmpshape{4}{4}{4}\) landscape illustrates --- 47 over \Ftwo, 48
-over \(\Rationals/\Reals/\Complex\) since the
-rationalisation~\cite{dps2025}, 49 over \Integers. We refuse to merge
-across fields and require every rank claim in the catalog (and in
+over \(\Rationals/\Reals/\Complex\), 49 over \Integers. We keep fields
+separate and require every rank claim in the catalog (and in
 this paper) to carry a field tag; Section \ref{sec:notation} fixes
 the conventions. Commutative algorithms (Waksman
 1970~\cite{waksman1970}, Makarov 1986~\cite{makarov1986}, Rosowski
@@ -83,11 +81,12 @@ over non-commutative rings.
 \begin{enumerate}[label=(\alph*)]
   \item explicit factor matrices \((U, V, W)\) with field tag,
     addition count, and lineage record; or
-  \item a \emph{cited bound} -- a rank claim attributed to a source
-    whose explicit factor matrices we do not (yet) hold; or
-  \item a \emph{derived bound} -- a rank computed by a formula that
-    our code can re-derive on demand (Waksman, Rosowski, Pan
-    trilinear aggregation).
+  \item a \emph{derived bound} -- a rank given by a closed-form
+    construction (Waksman, Rosowski, Pan trilinear aggregation) that we
+    reconstruct from its lineage record on demand; or
+  \item a \emph{cited bound} -- our last resort, for the edge cases
+    where we trust a published rank and attribute it to its source but
+    do not (yet) hold its explicit factor matrices.
 \end{enumerate}
 This three-way split lets us include results we cannot yet
 materialise as schemes without misrepresenting their status, and lets
@@ -96,26 +95,37 @@ us regenerate the derived layer as our formulas improve.
 \paragraph{Derivation over the catalog.} Recursive multiplication
 over the same catalog is performed by a search that recombines
 existing entries via well-defined operators (Section
-\ref{sec:strategies}): axis-flip, Kronecker product, axis
-concatenation, recombination with allocation (with optional output
-peeling and pair fusion), the serendipitous (bud) product, and
+\ref{sec:strategies}): axis-flip, Kronecker product (including its
+serendipitous ``bud'' variant), axis concatenation, recombination with
+allocation (with optional output peeling and pair fusion), and
 downward projection -- none of them a disjoint-sum / Sch\"onhage
 $\tau$-theorem construction (Section \ref{ssec:disjoint-sum}). The
 search is iterated until no further rank improvements appear at any
-catalog shape -- a \emph{frontier closure} -- and the resulting wins
+catalog shape -- a \emph{derivation closure} -- and the resulting wins
 are materialised lazily after the search has converged.
 
 \paragraph{The non-overlap property.} An observation that we believe is
-underdiscussed: our composition operators cannot produce sharing
-across bilinear products that did not already exist in the source
-schemes. A scheme assembled by recombination has rank
-\(\sum_k r_{\text{sub-}k}\) on the nose; there is no
-mechanism inside our materialisation step to discover a new shared
-core. Hand-crafted schemes work differently -- their entire raison
-d'être is to find non-obvious sharing. We argue that this makes
-``composed scheme matches hand-crafted scheme's rank'' a meaningful
-co-existence claim, not a re-discovery claim. Section
-\ref{sec:nonoverlap} develops this.
+underdiscussed: our composition operators never \emph{discover} sharing
+between bilinear products while materialising a scheme. A materialised
+scheme has exactly the rank the search predicted for it --- the sum
+\(\sum_k r_{\text{sub-}k}\) of its sub-schemes' ranks for pure
+block-substitution (Kronecker, concatenation, recombination), or a
+smaller value where a \emph{known} identity (pair fusion, serendipity,
+projection) reduces it, counted before materialisation and never found
+during it. What never happens is a product turning out, once expanded,
+to do double duty across outputs and merge with another for a free rank
+saving. That kind of non-obvious sharing --- as in Strassen's
+seven-product \(\nmpfield{\Reals}{2}{2}{2}\) scheme, where a product
+serves several output cells at once --- is exactly what hand-crafted
+schemes are built around (Laderman, Smirnov, AlphaTensor likewise). We
+argue that this makes ``composed scheme matches hand-crafted scheme's
+rank'' a meaningful co-existence claim, not a re-discovery claim. The same property
+predicts where we \emph{lose}: on the handful of shapes an external
+catalog still beats us (six against FMM-Lille), every deficit traces to
+one cross-slot sharing device -- a \emph{fusion kernel} -- that our
+operators forgo by construction, so those losses confirm the boundary
+rather than contradict it. Section \ref{sec:nonoverlap} develops both
+directions.
 
 \paragraph{Outline.} Section \ref{sec:notation} fixes notation, the
 field-discipline conventions, and the paper's glossary. Section
@@ -127,7 +137,7 @@ measured boundary (fusion kernels). Sections \ref{sec:multisets}
 and~\ref{sec:hk71} present the two theory contributions ---
 recombination multisets, and the constructive realisation of the
 Hopcroft--Kerr bound. Section \ref{sec:search} describes the
-frontier-closure search, and Section \ref{sec:balance} the empirical
+exhaustive derivation search, and Section \ref{sec:balance} the empirical
 case for unbalanced splits. Section \ref{sec:tables} gives the
 date-stamped head-to-head against FMM-Lille and Perminov, with an
 anatomy of the wins and losses. Section \ref{sec:openquestions}

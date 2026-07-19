@@ -682,7 +682,7 @@ decomposition rules" runs through four key works that we should
 explicitly chronologically anchor in REFERENCES.md and any future
 intro material:
 
-1. **Probert & Fischer 1976** — first systematic table of upper bounds
+1. **Probert & Fischer 1980** — first systematic table of upper bounds
    for ⟨m,n,p⟩ via Permutation / Additive / Multiplicative / Zero-Padding
    rules. Manual search, up to ⟨40,40,40⟩. Their decomposition example
    for ⟨12,12,12⟩=1125 (M(⟨3,2,3⟩=15, A(⟨4,4,4⟩=49, ⟨4,2,4⟩=26))) is the

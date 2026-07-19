@@ -43,10 +43,58 @@ def header(generator_chain, inputs):
 COMPARISON_FIELD = 'Q'
 
 
+def _catalog_by_format():
+    cat = json.load(open(os.path.join(ROOT, 'docs', 'catalog.json')))['schemes']
+    byfmt = {}
+    for e in cat:
+        byfmt.setdefault(tuple(e['format']), []).append(e)
+    return byfmt
+
+
+def _pick_derived(byfmt, fmt, rank):
+    cands = [e for e in byfmt.get(tuple(fmt), [])
+             if e['rank'] == rank and COMPARISON_FIELD in e['fields']
+             and not e.get('commutative')]
+    derived = [e for e in cands if e['file'].startswith('derived')]
+    return (derived or cands or [None])[0]
+
+
+def _root_op_short(lc):
+    """Short label for the root operator of a lineage_compact string. Mirrors the
+    classification in render_win_anatomy (Table 7) with compact names for a column."""
+    import re
+    if not lc:
+        return '---'
+    if lc.startswith('R*['):
+        return 'leaf-pair'
+    if lc.startswith(('R[', 'Rta[')):
+        return 'recombination'
+    depth = 0
+    for i, ch in enumerate(lc):
+        if ch in '[(':
+            depth += 1
+        elif ch in '])':
+            depth -= 1
+        elif depth == 0:
+            if lc.startswith(' ⊗ˢ', i):
+                return 'serendipitous'
+            if lc.startswith(' ⊗ ', i):
+                return 'Kronecker'
+            if lc.startswith((' +p ', ' +n '), i):
+                return 'concatenation'
+            if lc.startswith(' +m ', i):
+                return 'contraction'
+    if re.search(r'[↓∖]\[', lc):
+        return 'projection'
+    return 'other'
+
+
 def render_us_vs_catalogs():
     src = os.path.join(ROOT, 'docs', 'comparison',
                        f'us-vs-fmm-vs-perminov-{COMPARISON_FIELD}.json')
+    cat_src = os.path.join(ROOT, 'docs', 'catalog.json')
     data = json.load(open(src))
+    byfmt = _catalog_by_format()
     # _status: 0=win (our DERIVED work strictly best over the field), 1=loss,
     # 2=tie, 3=carried. The paper table shows our wins.
     rows = [r for r in data['rows'] if r.get('_status') == 0]
@@ -64,24 +112,29 @@ def render_us_vs_catalogs():
     cap = 24
     shown = rows[:cap]
 
-    out = [header(["GenerateSourceComparison (Java)", "render_tables.py"], [src])]
+    def op_of(r):
+        e = _pick_derived(byfmt, r['format'], r['us_derived'])
+        return _root_op_short((e or {}).get('lineage_compact'))
+
+    out = [header(["GenerateSourceComparison (Java)", "render_tables.py"], [src, cat_src])]
     out.append("\\begin{table}[h]\n\\centering")
     out.append("\\caption{Shapes where this work's own \\emph{derived} non-commutative rank "
                "over $\\mathbb{" + COMPARISON_FIELD + "}$ strictly improves on every external "
                "holding (FMM-Lille, Perminov). The \\emph{carry} column is the best rank we hold "
-               "as an import over the same field. "
+               "as an import over the same field; the \\emph{operator} column is the root of our "
+               "derived scheme's lineage (see Table~\\ref{tab:win-anatomy}). "
                f"Top {len(shown)} of {len(rows)} such shapes by margin; full data in "
                "\\code{docs/comparison/us-vs-fmm-vs-perminov-" + COMPARISON_FIELD + ".json}.}")
     out.append("\\label{tab:us-vs-catalogs}")
-    out.append("\\begin{tabular}{lrrrr}\n\\hline")
-    out.append("shape & this work & carry & FMM-Lille & Perminov \\\\\n\\hline")
+    out.append("\\begin{tabular}{lrrrrl}\n\\hline")
+    out.append("shape & this work & carry & FMM-Lille & Perminov & operator \\\\\n\\hline")
     for r in shown:
         f = r['format']
         def cell(v):
             return str(v) if v is not None else '---'
         out.append(f"$\\langle {f[0]},{f[1]},{f[2]} \\rangle$ & "
                    f"\\textbf{{{r['us_derived']}}} & {cell(r.get('us_imported'))} & "
-                   f"{cell(r.get('fmm'))} & {cell(r.get('perminov'))} \\\\")
+                   f"{cell(r.get('fmm'))} & {cell(r.get('perminov'))} & {op_of(r)} \\\\")
     out.append("\\hline\n\\end{tabular}\n\\end{table}")
     dst = os.path.join(GEN, 'us-vs-catalogs.tex')
     open(dst, 'w').write("\n".join(out) + "\n")

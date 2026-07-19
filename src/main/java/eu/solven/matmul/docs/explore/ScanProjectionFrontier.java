@@ -154,5 +154,15 @@ public class ScanProjectionFrontier {
 				+ "{} closed-at-LB, {} open gaps ({} shown)", maxDim, matched,
 				Math.min(25, matchedRows.size()), closed, rows.size(),
 				Math.min(25, rows.size()));
+		// Gap histogram: how far does the projected rank sit above the catalog SOTA
+		// of the target, across ALL open gaps (not just the 25 displayed)?
+		java.util.TreeMap<Long, Integer> hist = new java.util.TreeMap<>();
+		for (Row row : rows) {
+			hist.merge(row.gap(), 1, Integer::sum);
+		}
+		StringBuilder sb = new StringBuilder("gap histogram (proj − R_cat(T)) over ")
+				.append(rows.size()).append(" open gaps: ");
+		hist.forEach((g, c) -> sb.append(g).append("→").append(c).append("  "));
+		log.info(sb.toString().trim());
 	}
 }
