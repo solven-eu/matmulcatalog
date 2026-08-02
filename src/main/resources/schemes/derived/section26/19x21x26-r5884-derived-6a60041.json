@@ -1,0 +1,123 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 9], allocB=[12, 9], allocC=[14, 12], leaves=[10x12x14-r1048-perminov_ZT-107b016, 9x12x14-r940-perminov_Q-ffecb1f, 10x12x12-r900-perminov_Q-b7f0ceb, OrientAs(Serendipitous(OrientAs(3x3x7, ⟨3,7,3⟩) ⊗ ⟨3,2,3⟩), ⟨9,9,14⟩), OrientAs(Project(OrientAs(9x10x13, ⟨10,13,9⟩), keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8]), ⟨10,9,12⟩), OrientAs(KronProduct(Recombination(base=Transpose(2x3x4, perm=\"ABC->ACB\"), allocA=[1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1]), Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), ⟨9,12,12⟩), ConcatCols(OrientAs(2x9x10-r140-hk71-433453b, ⟨10,9,2⟩), Project(10x9x13, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepP=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]))])",
+  "lineage_compact": "R[2x2x2; 10,9 | 12,9 | 14,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [10, 9],
+    "allocB": [12, 9],
+    "allocC": [14, 12],
+    "leaves": [
+      {"op": "Atom", "ref": "10x12x14-r1048-perminov_ZT-107b016"},
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+      {"op": "Atom", "ref": "10x12x12-r900-perminov_Q-b7f0ceb"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 9,
+        "p": 14,
+        "axisMap": "pnm",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 3,
+          "m2": 2,
+          "p2": 3,
+          "base": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 3,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "3x3x7@4dd5dcb"}
+          }
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 9,
+        "p": 12,
+        "axisMap": "npm",
+        "child": {
+          "op": "Project",
+          "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          "keepM": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          "child": {
+            "op": "OrientAs",
+            "n": 10,
+            "m": 13,
+            "p": 9,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "9x10x13@16f3df1"}
+          }
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 12,
+        "p": 12,
+        "axisMap": "pnm",
+        "child": {
+          "op": "KronProduct",
+          "outer": {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->ACB",
+              "child": {"op": "Atom", "ref": "2x3x4@89186e6423a2858785511dc533b2d2d5a6468e9d5265e45bca02948ed46ef171"}
+            },
+            "allocA": [1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          "inner": {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          }
+        }
+      },
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 10,
+          "m": 9,
+          "p": 2,
+          "axisMap": "pmn",
+          "child": {"op": "Atom", "ref": "2x9x10-r140-hk71-433453b"}
+        },
+        "right": {
+          "op": "Project",
+          "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          "keepP": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          "child": {"op": "Atom", "ref": "10x9x13@8c62898"}
+        }
+      }
+    ]
+  },
+  "n": [19, 21, 26],
+  "m": 5884,
+  "hash": "6a60041a71c72c9fd6686b0ec46e0f5d4eaee368b37f84a778de15d584a52dd0",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

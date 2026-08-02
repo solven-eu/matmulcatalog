@@ -1,0 +1,123 @@
+{
+  "lineage_str": "Recombination(base=2x3x3, allocA=[12, 10], allocB=[8, 9, 8], allocC=[10, 9, 9], leaves=[12x8x9, OrientAs(Project(OrientAs(9x10x13, ⟨10,13,9⟩), keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], keepM=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8]), ⟨12,9,10⟩), KronProduct(2x3x3, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2])), OrientAs(8x10x10-r528-perminov_ZT-97dba4d, ⟨10,8,10⟩), Recombination(base=2x3x3, allocA=[4, 6], allocB=[3, 3, 3], allocC=[3, 3, 3], leaves=[Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), Recombination(base=Transpose(3x3x4, perm=\"ABC->CBA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1, 1], leaves=[naive-1x1x1])]), OrientAs(8x9x10-r482-perminov_Z-cba9048, ⟨10,8,9⟩), OrientAs(8x10x12-r624-perminov_Q-c5b7abd, ⟨12,8,10⟩)])",
+  "lineage_compact": "R[2x3x3; 12,10 | 8,9,8 | 10,9,9]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x3x3@5702e016b75798ca77cb943e002784c974168dfac1a3ce03077f730a505ce096"},
+    "allocA": [12, 10],
+    "allocB": [8, 9, 8],
+    "allocC": [10, 9, 9],
+    "leaves": [
+      {"op": "Atom", "ref": "12x8x9@bca473a"},
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 9,
+        "p": 10,
+        "axisMap": "mpn",
+        "child": {
+          "op": "Project",
+          "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          "keepM": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          "child": {
+            "op": "OrientAs",
+            "n": 10,
+            "m": 13,
+            "p": 9,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "9x10x13@16f3df1"}
+          }
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 8,
+        "p": 10,
+        "axisMap": "pnm",
+        "child": {"op": "Atom", "ref": "8x10x10-r528-perminov_ZT-97dba4d"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
+        "allocA": [4, 6],
+        "allocB": [3, 3, 3],
+        "allocC": [3, 3, 3],
+        "leaves": [
+          {
+            "op": "Project",
+            "keepN": [1, 2, 3, 4, 5, 6],
+            "keepM": [0, 1, 2],
+            "keepP": [0, 1, 2],
+            "child": {
+              "op": "OrientAs",
+              "n": 7,
+              "m": 3,
+              "p": 3,
+              "axisMap": "pnm",
+              "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+            }
+          },
+          {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->CBA",
+              "child": {"op": "Atom", "ref": "3x3x4@a5da05f9c305b9f4f041c45b66def9b2ca0fc2d330bf4974bb1c2e863fec89d5"}
+            },
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        ]
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 8,
+        "p": 9,
+        "axisMap": "pnm",
+        "child": {"op": "Atom", "ref": "8x9x10-r482-perminov_Z-cba9048"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 12,
+        "m": 8,
+        "p": 10,
+        "axisMap": "pnm",
+        "child": {"op": "Atom", "ref": "8x10x12-r624-perminov_Q-c5b7abd"}
+      }
+    ]
+  },
+  "n": [22, 25, 28],
+  "m": 8522,
+  "hash": "31af3c5a8de42b20a5436167ff59d7a2af93b845cf62eb98d209091d7e00ad89",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

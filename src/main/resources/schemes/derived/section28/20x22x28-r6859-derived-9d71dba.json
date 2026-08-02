@@ -1,0 +1,31 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 10], allocB=[10, 12], allocC=[14, 14], leaves=[10x12x14-r1048-perminov_ZT-107b016, KronProduct(2x2x2, 5x5x7-r127-perminov_ZT-9d68374)])",
+  "lineage_compact": "R[2x2x2; 10,10 | 10,12 | 14,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [10, 10],
+    "allocB": [10, 12],
+    "allocC": [14, 14],
+    "leaves": [
+      {"op": "Atom", "ref": "10x12x14-r1048-perminov_ZT-107b016"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"}
+      }
+    ]
+  },
+  "n": [20, 22, 28],
+  "m": 6859,
+  "hash": "9d71dbaabe4ebca5e50de64ab8b67a9a3f6eca37c523bcb521917019ef7793fe",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

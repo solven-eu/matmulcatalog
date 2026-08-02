@@ -8,7 +8,9 @@ for every shape `3 ≤ p ≤ 32`, `p ≤ n ≤ 32`: **465 schemes in
 formula-impossible within the framework (theorem, see below). 197 + 22 of
 these strictly improve on every published catalog (FMM-Lille, Perminov, our
 own prior derivations). Full recipe, proofs and verification policy:
-[CONSTRUCTIVE_METHOD.md](CONSTRUCTIVE_METHOD.md).
+[CONSTRUCTIVE_METHOD.md](CONSTRUCTIVE_METHOD.md). Synthetic explainer — why
+the construction works and why the `g ≥ 6` shapes' reachability is *unclear*
+rather than merely unsolved: [LOGIC_AND_LIMITS.md](LOGIC_AND_LIMITS.md).
 
 **What was built** (tasks #7, #8, #10, #11 — all complete):
 

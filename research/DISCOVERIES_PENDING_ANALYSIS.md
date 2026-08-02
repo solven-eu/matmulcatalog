@@ -1643,3 +1643,24 @@ timeout to 120 min, with heap-dump-on-OOM + artifact upload.
 **Status: fix committed to working tree; full local re-verify NOT re-run
 (70+ min) — CI will exercise it. If still slow, next lever is descending-
 weight scheduling or skipping unchanged raw imports (change-tracking).**
+
+## 2026-07-30 — ⟨22,23,23⟩ Q:m: Pan-TA gap, compositional engine plateaus (NEGATIVE)
+
+**Target:** `Q⟨22,23,23⟩:m` — ours **6442** (improved from 6476 by the 17–28 band
+resweep), FMM **6435**, gap **+7**.
+
+**FMM construction (index `description`):**
+`3 ⟨11×12×12:968⟩ + TA(⟨11×11×11⟩,⟨11×11×11⟩) + TA(⟨11×11×12⟩,⟨11×12×11⟩)` — Pan
+**trilinear aggregation** over an n=11+11, m/p=11+12 block split. We hold every
+ingredient (⟨11,12,12⟩=968 etc.).
+
+**Reactions (field=Q):**
+- thorough recomb+serendip+proj, `--baseFilter=2x2x2` (40 bases, 52k allocs): **6442**, 0 wins.
+- `VerifyGLCandidate 22 23 23` (GL222_win): **6486** (worse than on-disk 6442).
+- Our best is already a pair-fused recombination `R*[2x2x2; 11,11|11,12|11,12; pairs=[[3,6]]]`.
+
+**Status:** OPEN Pan-TA construction gap. Our `recomb` strategy does single-pair fusion,
+not Pan's full `TA(A,B)` aggregation; `PanTrilinearAggregationMethod`/`TrilinearAggregations`
+exist but are NOT wired as a sweep strategy (no `ta` token). Closing +7 needs a targeted
+Pan-TA derivation of ⟨22,23,23⟩ (TA of the ⟨11,·,·⟩ pairs), not a recombination sweep.
+Do NOT re-run recomb/GL here — all plateau at 6442.

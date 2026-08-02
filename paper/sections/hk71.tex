@@ -189,7 +189,126 @@ the full sweep range, \(\nmpshape{2}{12}{18}\) through
 \(\nmpshape{2}{24}{30}\)) land at formula\(+1\) to \(+3\); everything else
 closes exactly.
 
-\subsection{Results}
+\subsection{A worked obstruction: the gcd accounting at
+\(\nmpshape{2}{12}{18}\)}
+\label{ssec:hk71-gcd}
+
+The limit just stated is, at bottom, a counting argument, and it is worth
+making explicit: it is the only place the construction misses, and it
+localises the miss to a single arithmetic clash between two demands on the
+same parameter \(k{+}1\).
+
+\paragraph{The ledger has no slack.} For even \(p = 2k+2\) the band of
+half-width \(k\) costs \(2n\) diagonal products plus \(3kn\) for the pairs at
+distances \(1..k\), i.e.\ \(n(3k{+}2)\), and supplies \(2k{+}1 = p{-}1\) band
+cells per column. The formula then allows exactly
+\(\lceil (3pn{+}n)/2 \rceil - n(3k{+}2) = 3n/2\) further products for the
+\(n\) remaining cells --- precisely \(n/2\) pairs at three products each,
+with no residue. Everything below is therefore a statement about whether a
+certain pairing exists; a column whose last cell is instead computed
+naively costs two products against its \(3/2\) share, so \emph{each pair of
+columns that fails to be paired costs exactly \(+1\)}.
+
+\paragraph{Demand: a gcd.} The distance-\((k{+}1)\) pair \((i, i{+}k{+}1)\)
+supplies the missing cell of \emph{both} its columns, so the required pairing
+is a perfect matching in the circulant \(i \leftrightarrow i{+}k{+}1
+\pmod n\). That graph is a disjoint union of
+\[
+  g \;=\; \gcd(n,\, k{+}1) \quad\text{cycles of length } n/g .
+\]
+Even cycles match perfectly. If \(n/g\) is odd, every cycle strands one
+vertex, leaving \(g\) \emph{leftover columns}; these are completed two at a
+time by the \(Z\)-trick of block (vi), so the construction needs
+\(\lfloor g/2 \rfloor\) \(Z\)-pairs (a single odd leftover forces one naive
+cell, but \(n/g\) and \(g\) both odd makes \(n\) odd, and the formula's
+ceiling absorbs it).
+
+\paragraph{Supply: an arc-sum.} Each \(Z\)-pair introduces one method-3 row.
+By the \((3,3,\mathrm{bridge})\) theorem above, two method-3 rows may not sit
+within band distance of each other --- their arc must be at least
+\(k{+}2\) --- or the band contains a \((3,3)\) same-method pair with no
+three-product completion. On the cycle \(C_n\) the arcs sum to \(n\), so at
+most
+\[
+  \left\lfloor \frac{n}{k+2} \right\rfloor \quad\text{method-3 rows fit.}
+\]
+
+\paragraph{The clash.} Composing the two counts, the construction lands at
+\[
+  \text{formula} \;+\; \max\!\left(0,\;
+    \left\lfloor \frac{g}{2} \right\rfloor -
+    \left\lfloor \frac{n}{k+2} \right\rfloor \right),
+  \qquad g = \gcd(n,\,k{+}1),
+\]
+whenever \(n/g\) is odd (and at the formula otherwise). This is not an
+independent result --- it is the composition of the \(+1\)-per-dropped-pair
+ledger with the arc-sum bound --- but it reproduces every observed excess in
+the sweep, and it exposes why the failure is structural rather than
+incidental: \(k{+}1\) simultaneously \emph{creates} the demand (through
+\(g = \gcd(n, k{+}1)\)) and, via the band width, \emph{throttles} the supply
+(through the spacing \(k{+}2\)). The two move together, in opposite
+directions. The worst case is \(n = 3(k{+}1)\), where the circulant is all
+triangles: demand \(\lfloor (k{+}1)/2 \rfloor\) grows with \(k\) while supply
+stays at \(\lfloor 3(k{+}1)/(k{+}2) \rfloor = 2\) for every \(k \ge 2\).
+
+\paragraph{\(\nmpshape{2}{12}{18}\), end to end.} Here \(k = 5\), \(n = 18\),
+formula \(\lceil (3 \cdot 12 \cdot 18 + 18)/2 \rceil = 333\).
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+step & products & cumulative \\
+\hline
+diagonals + pairs at distance \(1..5\) & \(36 + 270\) & 306 \\
+\(\;\;\)(leaves 11 of the 12 band cells per column) & & \\
+\hline
+budget remaining to the formula & \(27 = 3n/2\) & 333 \\
+\hline
+matching: \(g = \gcd(18,6) = 6\) triangles, one leftover each & & \\
+\(\;\;\)6 matched pairs (12 columns) & \(18\) & 324 \\
+\(\;\;\)6 leftover columns, demand \(\lfloor 6/2 \rfloor = 3\) \(Z\)-pairs
+  & \((9)\) & \((333)\) \\
+\(\;\;\)supply \(\lfloor 18/7 \rfloor = 2\) \(Z\)-pairs (4 columns)
+  & \(6\) & 330 \\
+\(\;\;\)2 stranded columns, naive & \(4\) & \textbf{334} \\
+\hline
+\end{tabular}
+\end{center}
+
+The arithmetic closes at 333 --- three \(Z\)-pairs cost exactly the 27
+available --- and fails on geometry: three method-3 rows pairwise at least
+\(7\) apart on \(C_{18}\) need arcs summing to \(21 > 18\). Two fit (rows
+\(0\) and \(9\)); the third \(Z\)-pair is dropped, its two columns fall back
+to two products each, and the scheme lands at 334. The same ledger runs for
+the whole family:
+
+\begin{center}
+\begin{tabular}{lrrrrrr}
+\hline
+shape & \(k{+}1\) & \(g\) & demand & supply & excess & emitted \\
+\hline
+\(\nmpshape{2}{10}{15}\) & 5 & 5 & 2 & 2 & 0 & 233 \\
+\(\nmpshape{2}{12}{18}\) & 6 & 6 & 3 & 2 & \(+1\) & 334 \\
+\(\nmpshape{2}{14}{21}\) & 7 & 7 & 3 & 2 & \(+1\) & 453 \\
+\(\nmpshape{2}{24}{30}\) & 12 & 6 & 3 & 2 & \(+1\) & 1096 \\
+\(\nmpshape{2}{16}{24}\) & 8 & 8 & 4 & 2 & \(+2\) & 590 \\
+\(\nmpshape{2}{18}{27}\) & 9 & 9 & 4 & 2 & \(+2\) & 745 \\
+\(\nmpshape{2}{20}{30}\) & 10 & 10 & 5 & 2 & \(+3\) & 918 \\
+\hline
+\end{tabular}
+\end{center}
+
+\(\nmpshape{2}{10}{15}\) is included as the boundary case that \emph{does}
+close: \(g = 5\) demands two \(Z\)-pairs, two fit, and the odd leftover is
+absorbed by the ceiling --- which is exactly why the flagship
+\(\nmpfield{\Integers}{2}{10}{15}{=}233\) exists while
+\(\nmpshape{2}{12}{18}{=}333\) does not. The escape routes are those listed
+in the honesty notes below (a twelve-product \((3,3,\mathrm{bridge})\)
+completion, non-local atoms, or a four-product completion traded against a
+saving elsewhere); note also that no published catalog holds a scheme at
+these formula values either --- FMM-Lille's index quotes 333 at
+\(\nmpshape{2}{12}{18}\) while its own artifact realises 334, the pattern
+documented in the checkpoint below.
 
 Every scheme is machine-verified at emission by a 20{,}000-sample
 randomized spot check, the full residual over every tensor cell, and an

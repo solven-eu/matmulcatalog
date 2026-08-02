@@ -85,6 +85,11 @@ public final class SyncReferenceCatalogs {
 					+ "(.*?)(?=<a href=\"\\d+x\\d+x\\d+\\.html\"|</table>|</section>)",
 			Pattern.DOTALL);
 	private static final Pattern NAIVE = Pattern.compile("#view\\d+x\\d+x\\d+\">(\\d+)</a>");
+	// The index row's block-sum recipe, e.g. "4 ⟨5×5×8:144⟩ + 4 ⟨5×6×8:170⟩ + …".
+	// This is the FRESH construction (the per-shape *.html pages lag the index), so it is
+	// the authoritative source for diagnosing an FMM gap (which blocks, which allocation).
+	private static final Pattern DESC_TD =
+			Pattern.compile("<td[^>]*content=\"?description\"?[^>]*>(.*?)</td>", Pattern.DOTALL);
 	private static final Pattern BIBLIO_KEY = Pattern.compile("biblio\\.html#([\\w:_-]+)");
 	private static final Pattern BIBLIO_ENTRY = Pattern.compile(
 			"class=\"bibtexnumber\">\\s*\\[<a name=\"([^\"]+)\">\\d+</a>\\].*?"
@@ -298,6 +303,18 @@ public final class SyncReferenceCatalogs {
 			ArrayNode refs = node.putArray("references");
 			for (String key : dedup(BIBLIO_KEY, tail)) {
 				refs.add(key);
+			}
+			// Block-sum recipe from the index row (authoritative; per-shape pages lag).
+			Matcher dm = DESC_TD.matcher(tail);
+			if (dm.find()) {
+				String desc = TAG.matcher(dm.group(1)).replaceAll("");
+				desc = desc.replace("&lang;", "⟨").replace("&rang;", "⟩")
+						.replace("&times;", "×").replace("&InvisibleTimes;", "")
+						.replace("&plus;", "+").replace("&minus;", "−").replace("&nbsp;", " ");
+				desc = WS.matcher(desc).replaceAll(" ").trim();
+				node.put("description", desc.isEmpty() ? null : desc);
+			} else {
+				node.putNull("description");
 			}
 			node.put("details_url", FMM_BASE + "/" + m.group(1));
 			rows.add(node);

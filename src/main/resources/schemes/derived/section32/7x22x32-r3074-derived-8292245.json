@@ -1,0 +1,53 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[3, 4], allocB=[6, 6, 6, 4], allocC=[8, 8, 8, 8], leaves=[KronProduct(2x2x2, 2x3x4), 3x4x8-r73-perminov_Z-89c37df, ConcatCols(OrientAs(3x3x6-r40-smirnov13-d246191, ⟨3,6,3⟩), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨3,6,5⟩)), ConcatCols(4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e, 4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e)])",
+  "lineage_compact": "R[2x4x4; 3,4 | 6,6,6,4 | 8,8,8,8]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@a4ed740a036a37c48fd9a3386a354b8827aa1598a3135f17a8332d0d797c1177"},
+    "allocA": [3, 4],
+    "allocB": [6, 6, 6, 4],
+    "allocC": [8, 8, 8, 8],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+      },
+      {"op": "Atom", "ref": "3x4x8-r73-perminov_Z-89c37df"},
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 6,
+          "p": 3,
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x3x6-r40-smirnov13-d246191"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 6,
+          "p": 5,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+        }
+      },
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e"},
+        "right": {"op": "Atom", "ref": "4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e"}
+      }
+    ]
+  },
+  "n": [7, 22, 32],
+  "m": 3074,
+  "hash": "82922456309e4237989fc95a66a9695828ac92ef9eb40f7eacb40a3c714bf42f",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

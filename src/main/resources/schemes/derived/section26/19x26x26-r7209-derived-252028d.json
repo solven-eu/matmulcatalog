@@ -1,0 +1,51 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[10, 9], allocB=[14, 12], allocC=[14, 12], leaves=[KronProduct(2x2x2, 5x7x7-r176-perminov_ZT-fb1a527), Serendipitous(OrientAs(2x3x7, ⟨3,2,7⟩) ⊗ ⟨3,7,2⟩), OrientAs(10x12x14-r1048-perminov_ZT-107b016, ⟨10,14,12⟩), 9x12x14-r940-perminov_Q-ffecb1f, 10x12x12-r900-perminov_Q-b7f0ceb])",
+  "lineage_compact": "R[2x2x2; 10,9 | 14,12 | 14,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [10, 9],
+    "allocB": [14, 12],
+    "allocC": [14, 12],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "5x7x7-r176-perminov_ZT-fb1a527"}
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 7,
+        "p2": 2,
+        "base": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 2,
+          "p": 7,
+          "axisMap": "mnp",
+          "child": {"op": "Atom", "ref": "2x3x7@129ebee"}
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 10,
+        "m": 14,
+        "p": 12,
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "10x12x14-r1048-perminov_ZT-107b016"}
+      },
+      {"op": "Atom", "ref": "9x12x14-r940-perminov_Q-ffecb1f"},
+      {"op": "Atom", "ref": "10x12x12-r900-perminov_Q-b7f0ceb"}
+    ]
+  },
+  "n": [19, 26, 26],
+  "m": 7209,
+  "hash": "252028d175b1e9ae5332a075575b9e826da5818b1d6d40a616700bae2bd846ee",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
