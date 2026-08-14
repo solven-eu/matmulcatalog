@@ -129,8 +129,9 @@ public final class PanTrilinearAggregation {
 	}
 
 	public static String branchLabel(int n) {
-		// Even formula goes back to Pan 1992 (in Islam 2009's reading);
-		// odd formula is Islam 2009 Prop 1 — credit accordingly.
+		// Both parity closed forms are Islam 2009 Prop 1 (DIS09 §3); the
+		// trilinear-aggregation TECHNIQUE itself is Pan's. Islam introduced the
+		// odd-n formula. (Consistent with the class javadoc and the DIS enum member.)
 		return n % 2 == 0
 				? "Pan TA (n even, Islam 2009 Prop 1)"
 				: "Pan TA (n odd, Islam 2009 Prop 1 — introduced)";

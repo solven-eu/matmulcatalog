@@ -93,6 +93,8 @@ public final class LineageReplayer {
 	private static final Pattern DIS09_LEMMA4 = Pattern.compile("DIS09Lemma4\\(n=(\\d+)\\)");
 	/** KGP 2026 LITA cubic ⟨N,N,N⟩ parametric leaf — replays via LitaTaConstruction.build. */
 	private static final Pattern TA_LITA = Pattern.compile("TA_lita\\(n=(\\d+)\\)");
+	/** Schwartz–Zwecher 2025 TA-New25 cubic ⟨N,N,N⟩ leaf — replays via TaNew25Construction.build. */
+	private static final Pattern TA_SZ = Pattern.compile("TA_sz\\(n=(\\d+)\\)");
 
 	/**
 	 * Cross-call cache of canonical-path → materialised algorithm for stub
@@ -465,9 +467,11 @@ public final class LineageReplayer {
 	 * recognised parametric form (the caller then tries the shape-ref path).
 	 *
 	 * <p>Currently handles {@code DIS09Lemma4(n=N)} → {@link
-	 * PanTrilinearAggregation#build(int)} and {@code TA_lita(n=N)} → {@link
-	 * eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction#build(int)} (both
-	 * non-commutative cubic ⟨N,N,N⟩). Add further families here as their stubs
+	 * PanTrilinearAggregation#build(int)}, {@code TA_lita(n=N)} → {@link
+	 * eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction#build(int)}, and
+	 * {@code TA_sz(n=N)} → {@link
+	 * eu.solven.matmul.papers.schwartzzwecher2025.TaNew25Construction#build(int)}
+	 * (all non-commutative cubic ⟨N,N,N⟩). Add further families here as their stubs
 	 * appear (e.g. RosowskiTheorem2(…), commutative).</p>
 	 */
 	/**
@@ -478,7 +482,8 @@ public final class LineageReplayer {
 	 * Keep in sync with {@link #resolveParametric}.
 	 */
 	public static boolean isParametricRef(String ref) {
-		return DIS09_LEMMA4.matcher(ref).matches() || TA_LITA.matcher(ref).matches();
+		return DIS09_LEMMA4.matcher(ref).matches() || TA_LITA.matcher(ref).matches()
+				|| TA_SZ.matcher(ref).matches();
 	}
 
 	private NonCubicBilinearAlgorithm resolveParametric(String ref) {
@@ -491,6 +496,11 @@ public final class LineageReplayer {
 		if (lita.matches()) {
 			return eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction
 					.build(Integer.parseInt(lita.group(1)));
+		}
+		Matcher sz = TA_SZ.matcher(ref);
+		if (sz.matches()) {
+			return eu.solven.matmul.papers.schwartzzwecher2025.TaNew25Construction
+					.build(Integer.parseInt(sz.group(1)));
 		}
 		return null;
 	}

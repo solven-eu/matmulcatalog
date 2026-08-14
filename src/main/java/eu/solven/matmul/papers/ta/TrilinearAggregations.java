@@ -8,6 +8,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.papers.dis2009.PanTrilinearAggregation;
 import eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction;
 import eu.solven.matmul.papers.khoruzhii2026.LitaTrilinearAggregation;
+import eu.solven.matmul.papers.schwartzzwecher2025.TaNew25Construction;
 
 /**
  * The trilinear-aggregation (TA) family registry: every {@link TrilinearAggregation}
@@ -20,7 +21,7 @@ import eu.solven.matmul.papers.khoruzhii2026.LitaTrilinearAggregation;
  *   <li>{@link #PAN} — Pan 1980 (SIAM), even only, bound-only.</li>
  *   <li>{@link #DIS} — Islam 2009 / DIS09 §3, even+odd, BUILDABLE.</li>
  *   <li>{@link #HS}  — Pan / Hadas–Schwartz 1982, even ({@code n≠16}), bound-only.</li>
- *   <li>{@link #SZ}  — Schwartz–Zwecher 2025, even ({@code n≠16}), bound-only.</li>
+ *   <li>{@link #SZ}  — Schwartz–Zwecher 2025, even ({@code n≠16}), BUILDABLE.</li>
  *   <li>{@link #LITA}— Khoruzhii–Gelß–Pokutta 2026, even+odd ({@code n≥19}), BUILDABLE.</li>
  * </ul>
  *
@@ -64,11 +65,23 @@ public enum TrilinearAggregations implements TrilinearAggregation {
 		}
 	},
 
-	/** Schwartz–Zwecher 2025 (arXiv:2508.01748 Thm 3.4): even, {@code n≠16}. Bound-only. */
+	/** Schwartz–Zwecher 2025 (arXiv:2508.01748 Thm 3.4): even, {@code n≠16}. BUILDABLE
+	 *  via {@link TaNew25Construction} (Appendix B port; n0=4/6/8 exact-verified, larger
+	 *  even n0 spot-checked; rank == the bound). */
 	SZ("TA_sz", "Schwartz–Zwecher 2025 (arXiv:2508.01748)") {
 		@Override
 		public OptionalLong cubicRank(int n) {
 			return wrap(n < 2 ? -1L : PanTrilinearAggregation.schwartzZwecher2025Bound(n));
+		}
+
+		@Override
+		public boolean canBuild(int n) {
+			return n >= 2 && n % 2 == 0 && n != 16;
+		}
+
+		@Override
+		public Optional<NonCubicBilinearAlgorithm> build(int n) {
+			return canBuild(n) ? Optional.of(TaNew25Construction.build(n)) : Optional.empty();
 		}
 	},
 

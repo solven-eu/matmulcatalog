@@ -70,6 +70,13 @@ class TestTrilinearAggregations {
 		// check; the actual build+verify is covered by TestLitaTaConstruction.
 		assertThat(TrilinearAggregations.LITA.canBuild(18)).isFalse();
 		assertThat(TrilinearAggregations.LITA.canBuild(21)).isTrue();
+		// SZ now builds (TaNew25Construction) for even n≠16 — the built rank matches
+		// the bound; exact tensor-verify is covered by TestTaNew25Construction.
+		assertThat(TrilinearAggregations.SZ.canBuild(9)).isFalse();   // odd
+		assertThat(TrilinearAggregations.SZ.canBuild(16)).isFalse();  // n=16 pole
+		assertThat(TrilinearAggregations.SZ.canBuild(8)).isTrue();
+		var sz = TrilinearAggregations.SZ.build(8).orElseThrow();
+		assertThat((long) sz.r).isEqualTo(TrilinearAggregations.SZ.cubicRank(8).getAsLong());
 		// The best BUILDABLE TA at a LITA-winning even N is now LITA (10535 < DIS 10556).
 		assertThat(TrilinearAggregations.bestBuildable(28).orElseThrow().method().tag()).isEqualTo("TA_lita");
 	}

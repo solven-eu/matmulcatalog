@@ -1664,3 +1664,131 @@ not Pan's full `TA(A,B)` aggregation; `PanTrilinearAggregationMethod`/`Trilinear
 exist but are NOT wired as a sweep strategy (no `ta` token). Closing +7 needs a targeted
 Pan-TA derivation of ⟨22,23,23⟩ (TA of the ⟨11,·,·⟩ pairs), not a recombination sweep.
 Do NOT re-run recomb/GL here — all plateau at 6442.
+
+## 2026-08-06 — SZ TA-New25 cubic port: research complete, WIP implementation (rank-correct, tensor-wrong: φ-transform)
+
+**Target (user-chosen):** port Schwartz–Zwecher 2025 (arXiv:2508.01748) TA-New25
+cubic constructor (kin-row unification of Pan's diagonal ⟨2,2,2;7⟩ traces),
+`tNew = n0³/3 + 15/4 n0² + 61/6 n0 + 8`, even n0≠16 — to regenerate the dense SZ
+imports ⟨28³/30³/32³⟩ as stubs + build un-held n0=34…50.
+
+**Done:** full construction extracted (Appendix B), clean R(i) 7-product formula
+(ar5iv, cross-checked vs PDF), exact set definitions (Ŝ/Ṡ/Ṡ1/S̃/S̃1), spec at
+`references/SZ_TA_NEW25_PORT_SPEC.md`. First-pass impl
+`papers/schwartzzwecher2025/TaNew25Construction.java` (WIP, compiles, NOT wired).
+
+**Status:** rank CORRECT (build(4)=130=tNew) — family structure/counts verified.
+Tensor WRONG — exact residual n0=4 (γ=−2): 848/4096 mismatches, values in 1/d,
+1/d². Transpose test rules out a C→output transpose (800 vs 848). **Root cause =
+φ-transform**: code uses uniform φ=(I2⊗L)X(I2⊗R) for A,B,C; the VERIFIED
+`PanTrilinearAggregationBuilder.runEven` uses asymmetric A←L·A·R, B←L·B·Lᵀ, C
+padded+`remapPaddedToOutput`. NEXT: fix Bstar→L·B·Lᵀ, build Cstar in padded
+space + reuse the Pan C-remap, re-run `docs.explore.ProbeTaNew25` residual to 0,
+then wire `SZ.build`. Repo policy: not wired until n0=4 verifies EXACTLY.
+
+## 2026-08-06 (cont.) — SZ TA-New25 port: transform pinned, residual 848→416, structural C-recovery issue identified
+
+Resumed the port (user "keep going"). ~11 residual-guided iterations on n0=4
+(exact, γ=−2 dyadic). Confirmed: rank 130=tNew; transform A←L·A·R, B←L·B·Lᵀ
+(uniform/swap strictly worse); Strassen-trace family (c) re-derived cleanly;
+R(i) better than a plain diagonal trace. Best residual 848→**416/4096**.
+REMAINING (structural, not tweakable): residuals are multiples of 1/d,1/d² — the
+Appendix-B families use C\*=φ(C) (transformed output) but recovery uses a raw
+padded index-pick; φ=L·C·R is a RECTANGULAR embedding so needs φ⁻¹/projection.
+**Recommendation: pivot to building TA-New25 as a DELTA on the VERIFIED
+`PanTrilinearAggregationBuilder`** (handles transform+padding+recovery already):
+swap the diagonal ⟨2,2,2;7⟩ traces for the kin-unifier (Cor 3.2) + unite. WIP not
+wired. Harness `docs.explore.ProbeTaNew25`; spec `references/SZ_TA_NEW25_PORT_SPEC.md`.
+
+## 2026-08-06 (cont.²) — SZ TA-New25 port: recovery made CONSISTENT; defect proven to be in the family forms (block-patterned residual); from-scratch route STOPPED
+
+Resumed once more (user "keep going"). Key correction to the prior entry's
+"φ⁻¹/projection" framing: **the recovery was the confusion, not a genuine
+rectangular-embedding problem.** U/V are already pulled back to original A,B space
+by `star` (via PL/PR). For consistency W must use the SAME pullback: coeff of
+C[x][y] in Σγ_pq C\*_pq = Σ_pq γ_pq·PL[p][x]·PR[y][q], onto output (AB)_{yx}
+(trace dual). Implemented — `toAlg` now does exactly this. The earlier "integer"
+`(I2⊗Lᵀ)C\*(I2⊗L)` variant (residual 332) was INCONSISTENT with U/V and only
+looked better because Lᵀ/L are ±1; **fractional W-entries are legal — "fractions"
+was never the bug.** Correct-recovery residual = **360/4096** (256 fractional).
+
+**Defect localised to the FAMILY FORMS, not the recovery** (this is the new,
+load-bearing finding). `ProbeTaNew25` now buckets residual per output-cell (x,y);
+for n0=4 (half=2) the pattern is BLOCK-structured:
+```
+ 36 38  8  8     intra-half cells (x,y both in {0,1} or {2,3}): 36–38 errors
+ 38 36  8  8     cross-half cells: only 8
+  8  8 36 38     near-uniform across all four families, mostly fractional
+  8  8 38 36
+```
+That signature = a systematic transcription error in the core φ ⊗ block algebra
+(the `1/d` from PR failing to cancel across a block because a family C-form is
+off), NOT one mistranscribed product — so residual-poking cannot localise it
+further. **Two clean routes remain, both gated on the clean SZ/HS source:**
+(1) coefficient-level diff of families (a)/(b)/(c)/(d) — esp. the R(i) γ-powers
+and the R "[transpose per the paper]" orientation — against the arXiv LaTeX
+**e-print** `arxiv.org/e-print/2508.01748` (PDF text garbles these); (2) the
+Pan-builder-delta route (recommended). STOPPED the residual-guided debugging (~18
+iterations, not converging — it is a source-transcription issue now, not a code
+tweak). Value is **provenance-only** (LITA strictly beats SZ rank). WIP still not
+wired; code left in its mathematically-consistent state. Spec + class-header
+updated with the block-pattern finding.
+
+## 2026-08-06 (cont.³) — SZ TA-New25 port RESOLVED: verifies exactly, WIRED
+
+Fetched the arXiv LaTeX **e-print** (`arxiv.org/e-print/2508.01748` → `main.tex`,
+freely available, not paywalled) and diffed families (a)/(b)/(c)/(d) coefficient-by-
+coefficient against §"Explicit Description of Our Algorithms". Two bugs surfaced
+immediately — exactly the source-transcription class the block-pattern residual
+predicted:
+1. **Transform must be UNIFORM φ for all three**: `A*=B*=C*=(I2⊗L)X(I2⊗R)`. My
+   "asymmetric" `B←L·B·Lᵀ` (from an earlier residual-guided guess under a wrong
+   recovery) was wrong. `Tr(φA·φB·φC)=Tr(ABC)` because `R·L=I`. Fixing it dropped
+   the residual 360→208 and made it perfectly block-diagonal (cross-half cells → 0).
+2. **Family (b) C-form transpose**: third term is `C*_{q,s}` (=`C*_{j,k}`), not
+   `C*_{s,q}`. Hit all 51 family-(b) products. Fixing it: residual **208→0**.
+The other families were already correct (verified term-by-term vs source: family (a),
+the 7 Strassen-trace W-forms of family (c), and all 7 R(i) products).
+
+**Result:** `TaNew25Construction.build(n0)` reconstructs matmul EXACTLY — n0=4/6/8
+exact-verified, n0=10..32 spot-checked, rank==tNew throughout (28/30/32 →
+10550/12688/15096 = the held dense imports). WIRED: `TrilinearAggregations.SZ`
+now `canBuild`/`build`s; `LineageReplayer` resolves the `TA_sz(n=N)` atom;
+`RecursiveMaterialiser` can use it. Guards: `TestTaNew25Construction` (exact n0=4/6/8,
+domain rejection, rank formula) + SZ rows in `TestTrilinearAggregations`. All 53
+TA/lineage regression tests green.
+
+**Method-first lesson (worth remembering):** the residual block-pattern correctly
+localised the defect to "core φ⊗block transcription", and the fix required the clean
+LaTeX source — residual-poking alone would never have found the two index bugs.
+Diff against the arXiv **e-print** (`/e-print/<id>` → tarball → `main.tex`), never
+the PDF text, for coefficient-exact ports.
+
+**Deferred (provenance-only cleanup):** retire the 3 dense `known/` SZ imports →
+`TA_sz(n=N)` stubs. They are load-bearing lineage parents (pinned by 28x28x29 /
+30x30x31 / 30x32x32), so it needs the `RetireDerivableImports` re-pin; LITA already
+beats SZ at every one of these shapes, so no SOTA gain. Not urgent.
+
+## 2026-08-12 — TA `15/4·N²` floor: four-lever analysis (negative, but complete) → `references/TA_N2_FLOOR_ANALYSIS.md`
+
+Investigated whether TA can be improved past SZ/LITA. Full write-up:
+`references/TA_N2_FLOOR_ANALYSIS.md`. Summary: the `N³/3` and `15/4·N²` coefficients
+have not moved since HS 1982; SZ/LITA only improve the linear+constant terms.
+Diagnostic (`ProbeAggTail`): the `2·N²` half of `15/4` is ENTIRELY the two-equal
+"boundary" aggregation triples (generic triples contribute 0 to `N²`). Four levers to
+move it, all closed:
+1. **Better correction base** — provably worse: correction is a 2-D block tiling,
+   cost `R_g/g²`, minimized at `g=2` by `rank⟨g,g,g⟩ ≥ 2g²−1` (⟨2,2,2⟩=7 meets it).
+2. **Harvest leftovers** — provably empty: 0 shared factor-directions (transformed +
+   pulled-back), both SZ & LITA (`ProbeTaKinGraph`).
+3. **Compress the boundary** — `rank(R_bd)` tight for n₀=6,8 (`ProbeBoundaryReducible`);
+   n₀=4's 48→36 reduction is a dyadic-γ degeneracy.
+4. **Engineer kin (LITA-inspired φ / correction-orbit search)** — structurally closed:
+   boundary products are `±1`-rigid AND support-isolated (0 shared 2-axis support at
+   n₀=6/8/10, `ProbeBoundaryKinPotential`), so no tuning can create a unification.
+Structural reason: SZ's kin trick needs a tunable block co-located with the target;
+the 1-D diagonal has one, the 2-D boundary does not. Open path: a different aggregation
+skeleton giving the boundary a co-located tunable block — a from-scratch construction,
+not a search. Instrumentation added to `TaNew25Construction` (`buildSymbolicForms`,
+`buildTagged`, `buildSymbolicTagged`); `build()` remains exact-verified. Value: settles
+a recurring "can we beat SZ/LITA" question with rigor; prevents re-running dead levers.
