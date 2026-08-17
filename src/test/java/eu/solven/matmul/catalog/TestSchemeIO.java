@@ -12,6 +12,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Path;
 
 import eu.solven.matmul.BilinearAlgorithm;
+import eu.solven.matmul.ComplexNonCubicBilinearAlgorithm;
 import eu.solven.matmul.papers.laderman1976.Laderman23;
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.papers.strassen1969.Strassen7;
@@ -202,5 +203,23 @@ public class TestSchemeIO {
 			sb.append("]");
 		}
 		sb.append("]").append(trailing).append("\n");
+	}
+
+	/**
+	 * Regression for the "UNREADABLE 4x4x4-r48-kaporin_2024" catalog-verify failure:
+	 * a COMPLEX scheme whose real/imag components mix doubles with rational strings
+	 * (e.g. {@code ["-1/4", 0.5]}). Jackson-3's {@code JsonNode.asDouble()} THROWS on a
+	 * non-numeric string (Jackson-2 returned 0.0), so the complex-pair reader must use
+	 * the rational-aware {@code parseCoef}, exactly as the real reader already does.
+	 */
+	@Test
+	public void complex_reader_parses_string_fraction_coefficients() throws IOException {
+		String json = "{\"n\":[1,1,1],\"m\":1,\"complex\":true,"
+				+ "\"u\":[[[\"-1/4\",0.5]]],\"v\":[[[1,0]]],\"w\":[[[\"3/8\",0]]]}";
+		ComplexNonCubicBilinearAlgorithm alg = SchemeIO.readComplex(json);
+		assertThat(alg.n).isEqualTo(1);
+		assertThat(alg.uRe[0][0]).isEqualTo(-0.25);   // "-1/4" parsed, not thrown
+		assertThat(alg.uIm[0][0]).isEqualTo(0.5);
+		assertThat(alg.wRe[0][0]).isEqualTo(0.375);   // "3/8"
 	}
 }

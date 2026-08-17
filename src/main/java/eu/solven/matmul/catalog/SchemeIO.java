@@ -529,8 +529,8 @@ public final class SchemeIO {
 					throw new IOException("complex entry must be [re, im] pair, got size "
 							+ pair.size());
 				}
-				re[j][k] = pair.get(0).asDouble();
-				im[j][k] = pair.get(1).asDouble();
+				re[j][k] = parseCoef(pair.get(0));
+				im[j][k] = parseCoef(pair.get(1));
 			}
 		}
 		return new double[][][] { re, im };
@@ -555,8 +555,8 @@ public final class SchemeIO {
 				int j = pDron / n1;
 				int pUs = i * n3 + j;
 				JsonNode pair = row.get(pDron);
-				re[pUs][k] = pair.get(0).asDouble();
-				im[pUs][k] = pair.get(1).asDouble();
+				re[pUs][k] = parseCoef(pair.get(0));
+				im[pUs][k] = parseCoef(pair.get(1));
 			}
 		}
 		return new double[][][] { re, im };
@@ -691,7 +691,7 @@ public final class SchemeIO {
 				if (row < 0 || row >= dim) {
 					throw new IOException("non-bilinear row out of range: " + row + " / " + dim);
 				}
-				dst[row][k] += pair.get(1).asDouble();
+				dst[row][k] += parseCoef(pair.get(1));
 			}
 		}
 		return dst;

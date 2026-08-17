@@ -1375,6 +1375,22 @@ public class BlockSplitSearch {
 											PairedSubProducts.applyPairingWithMatching(r.smallMatrixSizes, sota);
 									boolean usePairs = match.pairs().length > 0 && match.cost() < r.totalRank;
 									long rk = usePairs ? match.cost() : r.totalRank;
+									// NON-cubic Pan-TA cross-pair fusion (rot², block-disjoint): the saving
+									// the MATERIALISER realises via constructWithTaFusion (tryBuildTaFusion →
+									// Lineage.RecombinationTaN), which the cubic-only matching above misses —
+									// e.g. the ⟨1,2,2⟩ symmetric peel of ⟨26,29,29⟩ fusing ⟨26,26,3⟩+⟨26,3,26⟩
+									// at 2860 < 2·1498. Allocation-driven, so pairing stays null (the build
+									// recomputes the same pairs from the allocation). Naïve-grid + no-peel only,
+									// matching where describeTaFusion/tryBuildTaFusion actually apply.
+									if (peelA == null && peelB == null && peelC == null
+											&& Recombination.isNaiveGrid(base)) {
+										Recombination.TaFusionBreakdown ta =
+												Recombination.describeTaFusion(base, sota, aA, aB, aC);
+										if (ta != null && ta.totalRank() < rk) {
+											rk = ta.totalRank();
+											usePairs = false;
+										}
+									}
 									if (rk < bestRank) {
 										bestRank = rk;
 										best = new MultiBaseSplitCandidate(n, m, p, base, nb.label,

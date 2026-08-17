@@ -1792,3 +1792,33 @@ skeleton giving the boundary a co-located tunable block — a from-scratch const
 not a search. Instrumentation added to `TaNew25Construction` (`buildSymbolicForms`,
 `buildTagged`, `buildSymbolicTagged`); `build()` remains exact-verified. Value: settles
 a recurring "can we beat SZ/LITA" question with rigor; prevents re-running dead levers.
+
+## 2026-08-16 — CI fixes: SchemeIO complex-rational read (FIXED) + TA cross-fusion detection regression (FIXED)
+
+Two failing CI jobs, both PRE-EXISTING (surfaced, not caused, by f41406af "Improve code and doc around TA" — which touches no reader/recombination code):
+
+**1. "Verify catalog" — FIXED.** `4x4x4-r48-kaporin_2024` (a COMPLEX ⟨4,4,4⟩=48 scheme
+with mixed double / rational-string components like `["-1/4", -0.433]`) became
+UNREADABLE: Jackson-3 `JsonNode.asDouble()` THROWS on a non-numeric string (Jackson-2
+returned 0.0). The complex-pair readers (`readComplexTransposed`,
+`readComplexWColMajor`, non-bilinear sparse) bypassed the rational-aware `parseCoef`
+the REAL readers use. Fix: route those 3 reads through `parseCoef`. Regression:
+`TestSchemeIO.complex_reader_parses_string_fraction_coefficients`.
+
+**2. "Tests" — `TestTaPeelDecomposition` — FIXED (scoring/materialisation pairing mismatch).**
+The ⟨1,2,2⟩-peel TA cross-fusion was no longer detected in SCORING: `findBestStrategy(26,29,29)`
+returned the un-fused concat 11808 instead of the fused 11687 (core ⟨26,26,26⟩=8652 +
+cross-pair 2860 + corner ⟨26,3,3⟩=175). Deep root cause: **scoring and materialisation used
+DIFFERENT pairing matchers.** Scoring (`findBestMultiBaseSplit` → `PairedSubProducts.applyPairingWithMatching`)
+only matches SAME-SHAPE CUBIC pairs, but the ⟨26,29,29⟩ cross-pair is ⟨26,26,3⟩+⟨26,3,26⟩ —
+NON-cubic cyclic rotations. Materialisation (`RecursiveMaterialiser.tryBuildTaFusion` →
+`Recombination.constructWithTaFusion` → `findTaPairs`) DOES fuse the non-cubic rot²/block-disjoint
+pair. So scoring under-priced what materialisation builds; a `[skip ci]` catalog import
+(⟨26,26,26⟩ 8658→8652 + a better ⟨26,29,29⟩=11620) merely shifted the concat/peel margin
+enough to expose it (Tests re-ran at f41406af because those imports were `[skip ci]`).
+**Fix:** in `findBestMultiBaseSplit`, for naïve-grid + no-peel allocations, also price the
+non-cubic fusion via the existing public rank-only `Recombination.describeTaFusion` (the same
+decision `constructWithTaFusion` makes) and take the min — aligning SCORED with BUILT. The
+candidate keeps `pairing=null`; materialisation recomputes the pairs from the allocation.
+Both guards re-enabled and pass (build log: "rank 11687 = 8827 leaves + 2860 fused; Pan-TA
+saved 136"). `TestTaPeelDecomposition` restored to its original committed form.
