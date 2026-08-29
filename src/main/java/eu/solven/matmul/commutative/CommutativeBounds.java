@@ -31,10 +31,9 @@ import tools.jackson.databind.json.JsonMapper;
  * <p>For each requested {@code ⟨a,b,c⟩}, returns the min over all axis
  * permutations of all sources.</p>
  *
- * <p>NOT a constructive lookup — only ranks (no factor matrices). For
- * commutative construction, an actual rank-6 {@code ⟨2,2,2⟩} algorithm
- * (Hopcroft 1971 / Winograd 1971) would need to be hardcoded; that's a
- * separate piece of work.</p>
+ * <p>NOT a constructive lookup — only ranks (no factor matrices). Strassen's
+ * rank-7 {@code ⟨2,2,2⟩} construction is already optimal even when scalars
+ * commute, by Winograd's 1971 lower bound.</p>
  */
 @Slf4j
 public final class CommutativeBounds {

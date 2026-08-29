@@ -73,7 +73,7 @@ Each catalog row records:
 | field | rank | LB | year | source | ref | notes |
 |---|---|---|---|---|---|---|
 | any non-commutative | **7** | **7** | 1969 | Strassen | [strassen69][strassen69] | Tight forever — lower bound proved [hopcroft-kerr 71][hk71] |
-| commutative | **6** | **6** | 1971 | Hopcroft, Winograd (independently) | [hk71][hk71], [winograd71][win71] | Tight but doesn't recurse to matrix entries |
+| commutative | **7** | **7** | 1969/1971 | Strassen; lower bound by Winograd | [strassen69][strassen69], [winograd71][win71] | Commutativity gives no advantage for this format |
 
 ### 4.2 `⟨3,3,3⟩`
 

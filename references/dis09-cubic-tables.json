@@ -35,7 +35,7 @@
     { "format": [30, 30, 30], "rank": 12710, "algorithm": "TA", "probert_fischer_1980": 14360, "smith_2002": null, "new_in_dis09": true }
   ],
   "commutative": [
-    { "format": [2, 2, 2], "rank": 7, "algorithm": "Strassen", "mezzarobba_2007": 7, "new_in_dis09": false, "note": "Lower commutative bound R_c(⟨2,2,2⟩)=6 from Hopcroft 1971 / Winograd 1971; DIS09 reports 7 from Strassen since Hopcroft's 6 isn't useful for recursive matmul" },
+    { "format": [2, 2, 2], "rank": 7, "algorithm": "Strassen", "mezzarobba_2007": 7, "new_in_dis09": false, "note": "Commutativity gives no improvement: Strassen supplies R_c(⟨2,2,2⟩)≤7 and Winograd 1971 proves the matching lower bound R_c(⟨2,2,2⟩)≥7" },
     { "format": [3, 3, 3], "rank": 22, "algorithm": "Makarov333", "mezzarobba_2007": 23, "new_in_dis09": true, "note": "COMMUTATIVE: 22 < non-commutative 23 (Laderman)" },
     { "format": [4, 4, 4], "rank": 46, "algorithm": "Waksman", "mezzarobba_2007": 46, "new_in_dis09": false },
     { "format": [5, 5, 5], "rank": 93, "algorithm": "Waksman", "mezzarobba_2007": 93, "new_in_dis09": false, "note": "Same rank as AlphaEvolve 2025 over R — but here over commutative scalars only; AlphaEvolve's is non-commutative." },

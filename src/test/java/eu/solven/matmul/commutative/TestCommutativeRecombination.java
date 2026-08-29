@@ -15,13 +15,12 @@ import eu.solven.matmul.papers.rosowski2019.RosowskiBound;
 import eu.solven.matmul.catalog.SchemeIO;
 
 /**
- * Reproduces DIS11 Table 4 (commutative cubic ranks) via the same recombination
+ * Reproduces DIS09 Table 4 (commutative cubic ranks) via the same recombination
  * machinery used for non-commutative work, just with a commutative sota
  * ({@link CommutativeBounds}).
  *
- * <p>Setup: NC Strassen ⟨2,2,2⟩=7 outer × commutative sub-ranks. This is
- * SUB-OPTIMAL vs a fully-commutative recombination (which would use
- * Hopcroft/Winograd 1971 ⟨2,2,2⟩=6 as outer — not yet implemented), but
+ * <p>Setup: NC Strassen ⟨2,2,2⟩=7 outer × commutative sub-ranks. The outer is
+ * optimal even over commutative scalars by Winograd's 1971 lower bound, and
  * already produces interesting improvements on top of Rosowski/DIS09 for
  * many sizes.</p>
  */
