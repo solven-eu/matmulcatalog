@@ -4,6 +4,7 @@
     "format": "[n, m, p] \u2014 canonical (sorted) ordering, since rank is permutation-invariant",
     "field": "Which fields the lower bound is PROVEN over. Unlike upper bounds (a scheme over Z is automatically valid over Q/R/C/F2/F3 by inclusion + reduction), a lower bound does NOT inherit across fields: a char-0 floor does not transfer to F2/F3, and an F2 floor does not transfer to char-0. So name exactly what is proven. Tokens: a single field (F2 | F3 | R | C); a '/'-separated explicit set (e.g. 'F2/Z/Q/R/C' = proven over F2 and characteristic 0, but weaker/unknown over F3); 'char0' = the characteristic-0 fields Z/Q/R/C only (NOT F2/F3); 'all' = RESERVED for a genuinely field-agnostic ARGUMENT \u2014 one proof valid over arbitrary fields of any characteristic (e.g. Blaser's 'over arbitrary fields' rank families, or R(<2,2,2>)=7). Do NOT use 'all' merely because a value happens to coincide across the fields you checked \u2014 that over-claims; use an explicit set instead.",
     "lb": "lower bound on the bilinear rank",
+    "model": "Which ALGEBRAIC MODEL the bound is proven in — the axis the 'field' token does NOT capture. 'bilinear' (the DEFAULT when the key is absent) = a floor on the non-commutative bilinear rank R; it constrains non-commutative claims ONLY, and says nothing about a commutative-only algorithm, since R_c ≤ R. 'quadratic' = a floor on the multiplicative complexity, i.e. proven even when the algorithm may exploit commutativity of the inputs; such a bound constrains BOTH models (R_c ≥ lb, hence R ≥ lb). Load-bearing: the catalog once carried a commutative R_c(<2,2,2>)=6 claim under the very papers that forbid it — the refutation was in this file all along, but nothing could tell that Winograd's floor also binds the commutative axis. Only tag 'quadratic' when the source proves it in that model; do NOT infer it from a value coinciding across models.",
     "tight": "whether some algorithm achieves this rank (some entry in catalog.json matches lb)",
     "source": "primary reference (citation key \u2014 use the SAME string across multiple entries for the same paper, so the reference registry deduplicates correctly)",
     "url": "optional link to the paper/HAL/arXiv",
@@ -18,11 +19,12 @@
         2
       ],
       "field": "all",
+      "model": "quadratic",
       "lb": 7,
       "tight": true,
       "source": "Winograd 1971 + Hopcroft\u2013Kerr 1971",
       "year": 1971,
-      "notes": "Classical: rank exactly 7 in any field. Independently proven by Hopcroft & Kerr (Cornell TR 69-44, Sep 1969 / SIAM 1971) and Winograd (in the same 1971 paper that introduces the Winograd-Strassen 15-additions variant). Later re-proven by Pan 1980. Matches Strassen 1969."
+      "notes": "Classical: rank exactly 7 in any field. Independently proven by Hopcroft & Kerr (Cornell TR 69-44, Sep 1969 / SIAM 1971) and Winograd (in the same 1971 paper that introduces the Winograd-Strassen 15-additions variant). Later re-proven by Pan 1980. Matches Strassen 1969. MODEL (2026-08-30): 'quadratic' \u2014 Hopcroft\u2013Kerr proved 7 minimal WITHOUT commutativity; Winograd's note (abstract: 'the minimum number of multiplications required to multiply two 2 x 2 matrices is seven', intro: the point is to show it 'using the commutativity law') extends the floor to the commutative model, so R_c(\u27e82,2,2\u27e9) = 7 too \u2014 commutativity buys nothing at size 2."
     },
     {
       "format": [
