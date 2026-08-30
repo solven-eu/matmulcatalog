@@ -503,8 +503,8 @@ public final class GenerateDerivedBounds {
 	 * sub-ranks ({@link CommutativeBounds}). Emits cubic entries where the
 	 * recombination beats both Rosowski direct AND DIS09 Table 4 direct.
 	 *
-	 * <p>Sub-optimal vs a hypothetical fully-commutative recombination using
-	 * Hopcroft/Winograd ⟨2,2,2⟩=6 as the outer base (not yet on disk).</p>
+	 * <p>The NC Strassen outer is also optimal for {@code ⟨2,2,2⟩} over
+	 * commutative scalars: Winograd proved the matching lower bound of 7.</p>
 	 */
 	private static List<String> commutativeRecombineEntries(NonCubicBilinearAlgorithm strassen) {
 		CommutativeBounds cmt = new CommutativeBounds();

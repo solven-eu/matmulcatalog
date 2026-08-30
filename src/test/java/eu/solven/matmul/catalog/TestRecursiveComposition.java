@@ -40,6 +40,15 @@ public class TestRecursiveComposition {
 	}
 
 	@Test
+	public void strassen_222_is_tight_over_commutative_scalars() {
+		Optional<KnownAlgorithm> best =
+				KnownAlgorithmCatalog.bestKnown(2, 2, 2, Algebra.commutative(Field.R));
+		assertThat(best).isPresent();
+		assertThat(best.get().rank).isEqualTo(7);
+		assertThat(best.get().source).isEqualTo("Strassen");
+	}
+
+	@Test
 	public void alphatensor_444_over_z2_gives_47() {
 		Optional<KnownAlgorithm> best =
 				KnownAlgorithmCatalog.bestKnown(4, 4, 4, Algebra.nonCommutative(Field.F2));

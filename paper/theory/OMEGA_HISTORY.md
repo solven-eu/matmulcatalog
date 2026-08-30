@@ -149,14 +149,14 @@ fields — see [RANK_KNOWLEDGE.md](RANK_KNOWLEDGE.md) §1.2bis.
 
 This is **not** a practical setting — algorithms that assume `a·b = b·a`
 don't recurse onto matrix entries. Listed for completeness; ranks here
-are lower than the non-commutative version but doesn't translate to
-faster matmul.
+can be lower than the non-commutative version, but that doesn't translate
+to faster matmul.
 
 ### 4.1 Small-format known commutative ranks
 
 | format | `R_c` | year | source | ref |
 |---|---|---|---|---|
-| `⟨2,2,2⟩` | **6** | 1971 | Hopcroft–Kerr / Winograd (independent) | [\[2\]](../../REFERENCES.md#2-hk71), [\[3\]](../../REFERENCES.md#3-winograd71) |
+| `⟨2,2,2⟩` | **7** | 1969/1971 | Strassen; lower bound by Winograd | [\[1\]](../../REFERENCES.md#1-strassen69), [\[3\]](../../REFERENCES.md#3-winograd71) |
 | `⟨3,3,3⟩` | open; UB ≈ 17–21 | various | see [\[10\]](../../REFERENCES.md#10-drisc09) | — |
 
 ---

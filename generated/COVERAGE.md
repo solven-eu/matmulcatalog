@@ -19,7 +19,7 @@ invariant under axis permutation).
 
 | format | F₂ | R/Q/Z | C | commutative | best (any field) | adds | history |
 |---|---|---|---|---|---|---|---|
-| `⟨2,2,2⟩` | **✓ 7** Alphatensor-F2 | **✓ 7** Alphatensor-Z | **📄 7** Strassen | **📄 6** Hopcroft–Kerr | **6** in commutative | +24 | • 1969 Strassen r=7 (R/Q/Z)<br>• 1969 Strassen r=7 (F₂)<br>• 1969 Strassen r=7 (C)<br>• 1971 Hopcroft–Kerr r=6 (commutative)<br>• 1971 Winograd r=6 (commutative) |
+| `⟨2,2,2⟩` | **✓ 7** Alphatensor-F2 | **✓ 7** Alphatensor-Z | **📄 7** Strassen | **📄 7** Strassen | **7** in F₂, R/Q/Z, C, commutative | +24 | • 1969 Strassen r=7 (R/Q/Z)<br>• 1969 Strassen r=7 (F₂)<br>• 1969 Strassen r=7 (C)<br>• 1969 Strassen r=7 (commutative) |
 
 ## Section 3 — max-dimension = 3
 

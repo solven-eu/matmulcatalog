@@ -42,10 +42,9 @@ public final class KnownAlgorithmCatalog {
 		add(2, 2, 2, NC_C, 7, 1969, "Strassen",
 				"https://doi.org/10.1007/BF02165411",
 				"Strassen's algorithm works unchanged over C.");
-		add(2, 2, 2, CMT_R, 6, 1971, "Hopcroft–Kerr",
-				"https://doi.org/10.1137/0120004", "Commutative-only; doesn't recurse.");
-		add(2, 2, 2, CMT_R, 6, 1971, "Winograd",
-				"https://doi.org/10.1016/0024-3795(71)90009-7", "Independent of Hopcroft–Kerr.");
+		add(2, 2, 2, CMT_R, 7, 1969, "Strassen",
+				"https://doi.org/10.1007/BF02165411",
+				"Also optimal over commutative scalars; Winograd proved the matching lower bound in 1971.");
 
 		// ───────── ⟨3,3,3⟩ ─────────
 		add(3, 3, 3, NC_R, 23, 1976, "Laderman",
