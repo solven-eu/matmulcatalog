@@ -1,5 +1,5 @@
 {
-  "total": 9547,
+  "total": 9549,
   "schemes": [
     {
       "format": [2, 9, 10],
@@ -23414,8 +23414,8 @@
       "file": "derived/section11/10x9x11-r651-derived-ce79862.json",
       "explicitable": true,
       "fmm_lille": {"best_rank": 651, "details_url": "https://fmm.univ-lille.fr/9x10x11.html"},
-      "external_best_rank": 651,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 644,
+      "external_best_source": "perminov",
       "external_cited": false,
       "bud_score": 66,
       "pareto_rank_buds": true
@@ -24225,8 +24225,8 @@
           "Perminov:2026aa"
         ]
       },
-      "external_best_rank": 715,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 711,
+      "external_best_source": "perminov",
       "external_cited": true,
       "bud_score": 64,
       "pareto_rank_buds": true
@@ -242284,6 +242284,35 @@
         "R",
         "C"
       ],
+      "rank": 644,
+      "additions": 42091,
+      "has_buds": true,
+      "buds": "6×V⟨2,1,1⟩ + 10×W⟨1,2,1⟩ + 3×W⟨1,3,1⟩ + 603×⟨1,1,1⟩",
+      "projection_margin": 12,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Q/9x10x11_m644_Q.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section11/9x10x11-r644-perminov_Q-6c6a69e.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 651, "details_url": "https://fmm.univ-lille.fr/9x10x11.html"},
+      "external_best_rank": 644,
+      "external_best_source": "perminov",
+      "external_cited": false,
+      "bud_score": 41,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 10, 11],
+      "max_dim": 11,
+      "fields": [
+        "Q",
+        "R",
+        "C"
+      ],
       "rank": 657,
       "additions": 17633,
       "min_additions": 5383,
@@ -242298,8 +242327,8 @@
       "file": "known/section11/9x10x11-r657-alphatensor_Q-3f09624.json",
       "explicitable": true,
       "fmm_lille": {"best_rank": 651, "details_url": "https://fmm.univ-lille.fr/9x10x11.html"},
-      "external_best_rank": 651,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 644,
+      "external_best_source": "perminov",
       "external_cited": false,
       "bud_score": 96,
       "pareto_rank_buds": true
@@ -242332,8 +242361,8 @@
       "file": "known/section11/9x10x11-r661-perminov_ZT-1a5c1e3.json",
       "explicitable": true,
       "fmm_lille": {"best_rank": 651, "details_url": "https://fmm.univ-lille.fr/9x10x11.html"},
-      "external_best_rank": 651,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 644,
+      "external_best_source": "perminov",
       "external_cited": false,
       "bud_score": 156,
       "pareto_rank_buds": true
@@ -242366,8 +242395,8 @@
       "file": "known/section11/9x10x11-r662-perminov_ZT-ca35e4d.json",
       "explicitable": true,
       "fmm_lille": {"best_rank": 651, "details_url": "https://fmm.univ-lille.fr/9x10x11.html"},
-      "external_best_rank": 651,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 644,
+      "external_best_source": "perminov",
       "external_cited": false,
       "bud_score": 182,
       "pareto_rank_buds": true
@@ -242400,10 +242429,45 @@
       "file": "known/section11/9x10x11-r694-perminov_ZT-2fb55f3.json",
       "explicitable": true,
       "fmm_lille": {"best_rank": 651, "details_url": "https://fmm.univ-lille.fr/9x10x11.html"},
-      "external_best_rank": 651,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 644,
+      "external_best_source": "perminov",
       "external_cited": false,
       "bud_score": 294,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 11, 11],
+      "max_dim": 11,
+      "fields": [
+        "Q",
+        "R",
+        "C"
+      ],
+      "rank": 711,
+      "additions": 38017,
+      "has_buds": true,
+      "buds": "9×V⟨2,1,1⟩ + 7×W⟨1,2,1⟩ + 679×⟨1,1,1⟩",
+      "projection_margin": 19,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Q/9x11x11_m711_Q.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section11/9x11x11-r711-perminov_Q-7123114.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 715,
+        "details_url": "https://fmm.univ-lille.fr/9x11x11.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 711,
+      "external_best_source": "perminov",
+      "external_cited": true,
+      "bud_score": 32,
       "pareto_rank_buds": true
     },
     {
@@ -242436,8 +242500,8 @@
           "Perminov:2026aa"
         ]
       },
-      "external_best_rank": 715,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 711,
+      "external_best_source": "perminov",
       "external_cited": true,
       "bud_score": 78,
       "pareto_rank_buds": true
@@ -242476,8 +242540,8 @@
           "Perminov:2026aa"
         ]
       },
-      "external_best_rank": 715,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 711,
+      "external_best_source": "perminov",
       "external_cited": true,
       "bud_score": 103,
       "pareto_rank_buds": true
@@ -242510,8 +242574,8 @@
           "Perminov:2026aa"
         ]
       },
-      "external_best_rank": 715,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 711,
+      "external_best_source": "perminov",
       "external_cited": true,
       "bud_score": 188,
       "pareto_rank_buds": true
@@ -242550,8 +242614,8 @@
           "Perminov:2026aa"
         ]
       },
-      "external_best_rank": 715,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 711,
+      "external_best_source": "perminov",
       "external_cited": true,
       "bud_score": 156,
       "pareto_rank_buds": true
@@ -242590,8 +242654,8 @@
           "Perminov:2026aa"
         ]
       },
-      "external_best_rank": 715,
-      "external_best_source": "fmm-lille",
+      "external_best_rank": 711,
+      "external_best_source": "perminov",
       "external_cited": true,
       "bud_score": 232,
       "pareto_rank_buds": true
