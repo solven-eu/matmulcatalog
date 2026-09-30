@@ -274,3 +274,38 @@ is the open question — task #9.
    assignment; change the assignment and none of the theorems transfer.
 5. **Lower bounds** (currently parked) — the only route to turning "we can't
    reach it" into "it can't be reached".
+
+---
+
+## Postscript (2026-09-30) — how it was resolved
+
+Routes 1 and 4 above, together, and not by us:
+[issue #7](https://github.com/solven-eu/matmulcatalog/issues/7) (Marcos
+Adriano) supplied explicit **integer** schemes at the exact formula for all six
+shapes — `⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`,
+`⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095` — which we verified exactly and imported
+(`schemes/known/*-adriano_2026-*`; record:
+[`references/contributions/issue7-adriano-2026-hk-task9.md`](../../references/contributions/issue7-adriano-2026-hk-task9.md)).
+Reading the outcome back through the three layers:
+
+- **Layer 1 (inside the framework)** — unchanged. The arc-sum wall and the
+  `(3,3,bridge-1/2)` theorem are correct in their scope (9-product reusable
+  set, local rank-1 atoms); the contributor's own exhaustive F₂/F₃/F₅ search
+  agrees (never a 3-product completion with 6 or 9 reusables).
+- **Layer 2 (scope of the theorem)** — resolved, in the direction the
+  `(2,2,bridge-3)` precedent predicted: over the **12-product** set a
+  3-product `(3,3,bridge)` completion **exists** (bridge through the virtual
+  row `ā_i+ā_b`, whose eigenlines are those of `i` and `b`). "Unreachable by
+  the atoms we have proved about" was, once more, not the truth boundary. The
+  contributor also changes the tiling itself (route 4): a *tripartite* method
+  graph with non-cyclic, locally-unimodular Lemma-1 windows removes the
+  circulant obstruction for five of the six shapes without any bridge.
+- **Layer 3 (the bound itself)** — settled *for these six shapes* by explicit
+  witnesses: the 1971 closed form is now a certified upper bound there, not a
+  claim. The general statement remains as before for shapes outside the
+  contributed six; the contributor reports a rational pencil-of-tori
+  construction reaching the formula for every `2 ≤ p ≤ n ≤ 32` (not verified
+  here).
+
+Optimality tier, unchanged: all of this is **upper-bound** work. Nothing here
+says `333` is the rank of ⟨2,12,18⟩ — only that `+1` was never forced.

@@ -52,6 +52,14 @@ local-atom framework. Question: what supports the 333 index entry? Same
 pattern for the whole family: ⟨2,14,21⟩ 452/453, ⟨2,16,24⟩ 588/592,
 ⟨2,18,27⟩ 743/747, ⟨2,20,30⟩ 915/920, ⟨2,24,30⟩ 1095/1104 (index/artifact).
 
+> *Postscript (2026-09-30, not part of the report as sent):* the index values
+> are attainable after all — explicit integer schemes at exactly 333 / 452 /
+> 588 / 743 / 915 / 1095 were contributed on
+> [issue #7](https://github.com/solven-eu/matmulcatalog/issues/7) (Marcos
+> Adriano), exact-verified and imported (`schemes/known/*-adriano_2026-*`).
+> They escape our local-atom framework via a 12-product-reusable-set bridge;
+> see `references/contributions/issue7-adriano-2026-hk-task9.md`.
+
 **Related case — ⟨8,27,30⟩:** the display recipe
 `(⟨4,9,10⟩:250 − 12) ⊗ ⟨2,3,3⟩:15 + 6·⟨4,3,3⟩:29 = 3744` is not realizable
 from the published ⟨4,9,10⟩:250 artifact: its bud census is exactly six

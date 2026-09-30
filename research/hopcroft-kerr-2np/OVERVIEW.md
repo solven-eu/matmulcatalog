@@ -9,8 +9,21 @@ formula-impossible within the framework (theorem, see below). 197 + 22 of
 these strictly improve on every published catalog (FMM-Lille, Perminov, our
 own prior derivations). Full recipe, proofs and verification policy:
 [CONSTRUCTIVE_METHOD.md](CONSTRUCTIVE_METHOD.md). Synthetic explainer — why
-the construction works and why the `g ≥ 6` shapes' reachability is *unclear*
+the construction works and why the `g ≥ 6` shapes' reachability was *unclear*
 rather than merely unsolved: [LOGIC_AND_LIMITS.md](LOGIC_AND_LIMITS.md).
+
+**Update 2026-09-30 — the six `g ≥ 6` shapes are closed, externally.**
+[Issue #7](https://github.com/solven-eu/matmulcatalog/issues/7) (Marcos
+Adriano) contributed explicit **integer** schemes at the exact formula for all
+six (333 / 452 / 588 / 743 / 915 / 1095); we verified them exactly and imported
+them as `schemes/known/*-adriano_2026-*` (record:
+[`references/contributions/issue7-adriano-2026-hk-task9.md`](../../references/contributions/issue7-adriano-2026-hk-task9.md)).
+His route is our first-listed resume point — a `(3,3,bridge)` completion over
+the **12-product** reusable set (via a virtual row `ā_i+ā_b`), plus
+non-cyclic unimodular Lemma-1 windows — so the framework theorem below stands
+(9-product scope) and its boundary was, once again, not the truth boundary.
+The catalog now holds the HK formula at **every** shape in the swept range;
+the emitter itself still lands +1..+3 there (unchanged).
 
 **What was built** (tasks #7, #8, #10, #11 — all complete):
 
@@ -39,7 +52,9 @@ rather than merely unsolved: [LOGIC_AND_LIMITS.md](LOGIC_AND_LIMITS.md).
    *avoiding* (3,3) pairs, which is possible iff `g ≤ 5` (arc-sum argument).
 2. The six `g ≥ 6` shapes (`⟨2,12,18⟩+1, ⟨2,14,21⟩+1, ⟨2,16,24⟩+2,
    ⟨2,18,27⟩+2, ⟨2,20,30⟩+3, ⟨2,24,30⟩+1`) are the ONLY shapes in range
-   above the formula — and still below every published catalog.
+   where the *emitter* sits above the formula — and were still below every
+   published catalog. (Closed at the catalog level by issue #7, 2026-09-30:
+   explicit ℤ schemes at the exact formula, via the 12-product reusable set.)
 3. Dense ±1 Lemma-1 rows can **never** be unimodular for `n−p ≥ 2` (every
    2×2 ±1-minor is even) — the origin of the denominators 2/4/8/16 in the
    first emission; zeros are necessary, and the Euclidean comb construction
@@ -50,16 +65,18 @@ rather than merely unsolved: [LOGIC_AND_LIMITS.md](LOGIC_AND_LIMITS.md).
 
 **Leftovers (resume here):**
 
-- **Task #9 (open)** — close the six `g ≥ 6` shapes. The precise frontier:
-  does a `(3,3,bridge)` completion exist over the **12-product** reusable
-  set (adding the (b,j)-pair products with free weights)? The projected
-  forced-structure argument survives (the shared set still vanishes on the
-  target blocks after projecting out a_b/x_b), but the spill-collapse
-  weakens to *projected* proportionality — a finite quadratic system,
-  Gröbner-able after the structural substitution. Other routes: non-local
-  atoms (rows beyond {i,b,j}), or 4-product completions traded against a
-  saving elsewhere. See task #9's description and
-  CONSTRUCTIVE_METHOD.md §"Where we stopped".
+- **Task #9 (CLOSED externally, 2026-09-30)** — the six `g ≥ 6` shapes. The
+  frontier question — does a `(3,3,bridge)` completion exist over the
+  **12-product** reusable set? — is answered **yes** by issue #7's
+  construction (virtual-row bridge; exhaustive F₂/F₃/F₅ per the contributor:
+  never with 6 or 9 reusables, always with 12). Our quadratic-system
+  elimination was never run; the theorem (9-product scope) is untouched.
+  What remains *ours*: port the construction (and the reported rational
+  pencil-of-tori variant, formula-exact for all `2 ≤ p ≤ n ≤ 32`) into the
+  emitter so the family is emitted + certified by us beyond the six
+  contributed shapes; re-run the closure sweep on shapes consuming them. See
+  CONSTRUCTIVE_METHOD.md §"Where we stopped" and
+  `references/contributions/issue7-adriano-2026-hk-task9.md`.
 - **Lower bounds** — parked by explicit decision (HK proved optimality only
   for ⟨2,2,n⟩ and ⟨2,3,3⟩; everything we emit is upper-bound tier).
 - `references/hopcroftkerr1971/README.md` is the *historical* impossibility

@@ -18,8 +18,13 @@
 > (`sympy/derive_bridge_true_reusables.py`, identities implemented as
 > emitters). The genuinely impossible case moved to **`(3,3,bridge-1/2)`**,
 > now a theorem over ARBITRARY local rank-1 atoms for the 9-product set
-> (`sympy/derive_33bridge_general.py`) — it gates the six remaining
-> `g ≥ 6` shapes at +1..+3 (task #9, the only open item).
+> (`sympy/derive_33bridge_general.py`) — it gated the six remaining
+> `g ≥ 6` shapes at +1..+3 (task #9). **Closed 2026-09-30, externally**:
+> issue #7 (Marcos Adriano) supplied integer schemes at the exact formula
+> for all six, via a 3-product `(3,3,bridge)` completion over the
+> **12-product** reusable set (virtual row `ā_i+ā_b`) — the same
+> enlargement that reversed `(2,2,b3)`. The 9-product theorem stands; see
+> `references/contributions/issue7-adriano-2026-hk-task9.md`.
 >
 > The text below is kept verbatim as the historical record of the
 > impossibility analysis (its mathematics is reused by the newer proofs).

@@ -38,6 +38,7 @@ Each scheme file is named with its source prefix
 | **`solven-strassen-2026`** | Our own materialisations via `Recombination` over imported leaves | Tagged with year-and-author for repo attribution. |
 | **plinopt — Dumas/Pernet/Sedoglavic** ([github.com/jgdumas/plinopt](https://github.com/jgdumas/plinopt)) | C++ toolkit for *addition-count optimization* of bilinear algorithms: given U/V/W factor matrices, searches for an equivalent factorization with fewer additions (independent of rank, which is fixed). References Dumas–Pernet–Sedoglavic papers on common-subexpression elimination + Kaporin-style optimizations. Read as: "we have R(⟨3,3,3⟩)=23, but what's the smallest `a` such that 23 mults + `a` additions suffice?" Adjacent in concept to the recent `_a59` / `_a58` / `_a60` ⟨3,3,3⟩ entries in our catalog. | Not integrated into our pipeline (additions-only optimization, no rank improvement). Worth running on our `solven-strassen-2026_*` recombination outputs to tighten their addition counts. |
 | **GroupNames — Tim Dokchitser** ([people.maths.bris.ac.uk/~matyd/GroupNames/](https://people.maths.bris.ac.uk/~matyd/GroupNames/)) | A catalog of small finite groups (orders 1–500) with structure / character / subgroup tables. Tangentially relevant: some fast-matmul schemes are obtained by exploiting the group structure of the symmetry orbit on the matmul tensor (Strassen's invariance group, AlphaEvolve's continuous symmetries, etc.) — GroupNames is a quick reference for identifying which abstract group is acting. | Not currently linked to any catalog scheme metadata. Useful when classifying a newly-found scheme's symmetry group (e.g. "is this Strassen orbit S₃ × S₃ × S₃?"). |
+| **Community contributions (GitHub issues)** ([issues](https://github.com/solven-eu/matmulcatalog/issues)) | Explicit factor matrices handed to us by third parties — first: [issue #7](https://github.com/solven-eu/matmulcatalog/issues/7), Marcos Adriano's six ℤ⟨2,p,n⟩ schemes at the exact Hopcroft–Kerr formula ([\[88\]](#88-adriano-2026-hk-task9)). | Imported ONLY through `ImportContributedSchemes` (exact symbolic proof + spot-check + coefficient-driven fields + disk round-trip; all-or-nothing). Provenance stamped from a UTF-8 `--meta` file kept under `references/contributions/`, with a per-contribution verification record (`*.md`) next to it. `source` = "{Author} {year}", `note` token `{author}_{year}`. |
 
 ### Hopcroft-Kerr family `⟨a,2,c⟩=(3ac+max(a,c))/2`: caveat
 
@@ -73,9 +74,16 @@ For the genuinely-missing HK schemes, we have:
   exact formula, registered under `schemes/constructed/` with
   `hk71`-tagged filenames and dual-certified. We are, to our knowledge,
   the first to publish HK-attaining explicit factor matrices for the
-  shapes above (e.g. `⟨2,10,15⟩=233/ℤ`). Recipe + the one open residue
+  shapes above (e.g. `⟨2,10,15⟩=233/ℤ`). Recipe + the one residue
   (six `g ≥ 6` shapes at +1..+3, task #9):
   `research/hopcroft-kerr-2np/CONSTRUCTIVE_METHOD.md`.
+- **The six `g ≥ 6` shapes — CLOSED by a community contribution
+  (2026-09-30, [\[88\]](#88-adriano-2026-hk-task9))**: Marcos Adriano's
+  explicit ℤ schemes at the exact formula (`⟨2,12,18⟩=333` …
+  `⟨2,24,30⟩=1095`), exact-verified and imported under
+  `schemes/known/*-adriano_2026-*` — the first explicit witnesses of the
+  formula at those shapes (FMM-Lille lists the rank index-only). The
+  catalog now holds the HK formula at every `3 ≤ p ≤ n ≤ 32`.
 
 The PDF is archived at
 [`references/papers/hopcroft_kerr_1971_2bc_2n2.pdf`](references/papers/hopcroft_kerr_1971_2bc_2n2.pdf).
@@ -223,6 +231,7 @@ add the **Local PDF** line linking the file path.
 | [85](#85-linz-mm-catalog) | linz-mm-catalog | (active) | catalog (⟨3,3,3⟩, value TBD) | Kauers group (JKU Linz), *Matrix Multiplication* research data page — online catalog of ⟨3,3,3⟩=23 schemes from the SAT search [[84]](#84-heule-kauers-seidl-2019) and later flip-graph work. **Not yet imported / evaluated** — register as a source to mine for bud-rich ⟨3,3,3⟩ bases and orbit diversity; its incremental value over our existing ⟨3,3,3⟩ entries is **undetermined** (see ROADMAP). Web page: [algebra.uni-linz.ac.at/research/matrix-multiplication](http://www.algebra.uni-linz.ac.at/research/matrix-multiplication/index.html); machine-readable schemes: [github.com/mkauers/matrix-multiplication](https://github.com/mkauers/matrix-multiplication) (see the provenance table at the top). |
 | [86](#86-perminov-2026-serendipitous) | perminov-2026-serendipitous | 2026 | method (**serendipitous / buds**) | A. I. Perminov, *Meta Flip Graph meets Serendipitous Product: new Fast Matrix Multiplication results*, arXiv:2606.02480 (June 2026). Combines the meta-flip-graph search [[77]](#77-perminov-2025-metaflip) with the **serendipitous product** (bud fusion; cf. Smith 2002 eq. (69) and Kauers–Moosbauer–Wood [[83]](#83-kauers-2026-structure)) — improving **207 rectangular formats** (≤16×16×16) and the **17–32 band** our catalog cites. **The source for the `Perminov 2026 (serendipitous)` rank claims** in `docs/cited-bounds.json` and `references/catalogs/perminov-serendipitous-catalog.json`. A distinct paper from the umbrella framework [[75]](#75-perminov-2026-arxiv) (arXiv:2603.02398). [Abs](https://arxiv.org/abs/2606.02480) |
 | [87](#87-kaporin-2024-brent) | kaporin-2024-brent | 2024 | algorithm (**C⟨4,4,4⟩=48**) | I. E. Kaporin, *Semi-analytical solution of Brent equations*, Doklady Mathematics **518**(1):29–34 (2024), DOI [10.31857/S2686954324040056](https://doi.org/10.31857/S2686954324040056). A parametrisation of the Brent equations (cyclic symmetry, several-fold fewer unknowns) solved numerically; yields explicit **complex** designs **(4,4,4;48)** and **(2,4,5;32)**. The (4,4,4;48) scheme — verified to floating-point tolerance in the author's companion `test444r48.for` — is an **independent C-coefficient 48** that **predates AlphaEvolve 2025** [[14]](#14-alphaevolve) (existence of `r<49` over C was conjectured by Li–Zhang–Ke 2023). Loaded as `4x4x4-r48-kaporin_2024-*.json`. [Article](https://journals.rcsi.science/2686-9543/article/view/269374) |
+| [88](#88-adriano-2026-hk-task9) | adriano-2026-hk-task9 | 2026 | algorithm (**ℤ⟨2,p,n⟩ at the HK formula, g ≥ 6**) | Marcos Adriano, *Task #9: the six g ≥ 6 ⟨2,p,n⟩ shapes at the exact Hopcroft-Kerr formula, with integer coefficients*, GitHub issue [solven-eu/matmulcatalog#7](https://github.com/solven-eu/matmulcatalog/issues/7) (2026-09-24), attachment `hk-task9-schemes.zip`. Explicit **integer** schemes `⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`, `⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095` — the shapes our own HK emitter provably cannot reach in-framework (+1..+3) and FMM-Lille lists index-only. Route: HK methods as tori (eigenline pairs), tripartite method graph with integer Lemma-2 edges, non-cyclic unimodular Lemma-1 windows, and for ⟨2,24,30⟩ a `(3,3)` bridge through a virtual row over the **12-product** reusable set. Exact-verified here and loaded as `2x{p}x{n}-r{formula}-adriano_2026-*.json` (`source: "Adriano 2026"`, `discovery: false` — rank attributed to HK71, first explicit scheme credited to the contributor). Record: `references/contributions/issue7-adriano-2026-hk-task9.md`. |
 
 ---
 
@@ -1032,6 +1041,52 @@ do not conflate the two.
 
 **Cited in**: `REFERENCES.md` (this entry, index row [87]), the loaded scheme
 JSON, `paper/refs.bib` (`kaporin2024brent`), `paper/sections/intro.tex`.
+
+---
+
+## [88] <a name="88-adriano-2026-hk-task9"></a>adriano-2026-hk-task9
+
+```bibtex
+@misc{adriano2026hk,
+  author       = {Adriano, Marcos},
+  title        = {Task \#9: the six $g \ge 6$ $\langle 2,p,n\rangle$ shapes at the exact Hopcroft--Kerr formula, with integer coefficients},
+  howpublished = {GitHub issue solven-eu/matmulcatalog\#7, \url{https://github.com/solven-eu/matmulcatalog/issues/7}},
+  month        = sep,
+  year         = {2026},
+  note         = {Six explicit integer schemes (attachment \texttt{hk-task9-schemes.zip}); work done with the help of AI tools (author's statement)}
+}
+```
+
+A **community contribution** (GitHub issue, 2026-09-24) — not a paper. Six
+explicit **integer** schemes at the exact Hopcroft–Kerr bound
+`⌈(3pn+max(p,n))/2⌉` for the `g = gcd(n, p/2) ≥ 6` shapes
+`⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`,
+`⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095`: exactly the residue (task #9) our own
+constructive HK program ([\[2\]](#2-hk71) family; `research/hopcroft-kerr-2np/`)
+provably could not reach *within its framework* (+1..+3), and where FMM-Lille
+lists the formula rank without any artifact.
+
+Relevance to this repo:
+- **All six loaded** as `schemes/known/section{n}/2x{p}x{n}-r{formula}-adriano_2026-*.json`
+  after the full `ImportContributedSchemes` gate (exact BigInteger symbolic
+  proof, random spot-check, coefficient-driven fields `[F2,F3,Z,Q,R,C]`,
+  canonical-disk round-trip). `discovery: false` with `attribution_for_rank`
+  naming Hopcroft & Kerr 1971 for the *rank value* and the contributor for the
+  *first explicit scheme* — under our reading (`LOGIC_AND_LIMITS.md`, Layer 3)
+  the 1971 proof has a gap at exactly these shapes, so these witnesses are what
+  certify the bound there. Not ternary (max |c| up to 63).
+- **Answers our open frontier**: a 3-product `(3,3,bridge)` completion exists
+  over the **12-product** reusable set (virtual row `ā_i+ā_b`), consistent
+  with — and outside the scope of — our 9-product impossibility theorem. The
+  contributor further reports a rational pencil-of-tori construction reaching
+  the formula for every `2 ≤ p ≤ n ≤ 32` (unverified here).
+- Verification record + the construction as described:
+  [`references/contributions/issue7-adriano-2026-hk-task9.md`](references/contributions/issue7-adriano-2026-hk-task9.md);
+  provenance file `references/contributions/issue7-adriano-2026.meta.json`.
+
+**Cited in**: `REFERENCES.md` (this entry, index row [88], provenance table),
+the six loaded scheme JSONs, `research/hopcroft-kerr-2np/{OVERVIEW,CONSTRUCTIVE_METHOD,LOGIC_AND_LIMITS}.md`,
+`ROADMAP.md`, `paper/refs.bib` (`adriano2026hk`), `paper/sections/hk71.tex`.
 
 ---
 
