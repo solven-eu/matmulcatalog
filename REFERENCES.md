@@ -233,6 +233,7 @@ add the **Local PDF** line linking the file path.
 | [87](#87-kaporin-2024-brent) | kaporin-2024-brent | 2024 | algorithm (**C⟨4,4,4⟩=48**) | I. E. Kaporin, *Semi-analytical solution of Brent equations*, Doklady Mathematics **518**(1):29–34 (2024), DOI [10.31857/S2686954324040056](https://doi.org/10.31857/S2686954324040056). A parametrisation of the Brent equations (cyclic symmetry, several-fold fewer unknowns) solved numerically; yields explicit **complex** designs **(4,4,4;48)** and **(2,4,5;32)**. The (4,4,4;48) scheme — verified to floating-point tolerance in the author's companion `test444r48.for` — is an **independent C-coefficient 48** that **predates AlphaEvolve 2025** [[14]](#14-alphaevolve) (existence of `r<49` over C was conjectured by Li–Zhang–Ke 2023). Loaded as `4x4x4-r48-kaporin_2024-*.json`. [Article](https://journals.rcsi.science/2686-9543/article/view/269374) |
 | [88](#88-adriano-2026-hk-task9) | adriano-2026-hk-task9 | 2026 | algorithm (**ℤ⟨2,p,n⟩ at the HK formula, g ≥ 6**) | Marcos Adriano, *Task #9: the six g ≥ 6 ⟨2,p,n⟩ shapes at the exact Hopcroft-Kerr formula, with integer coefficients*, GitHub issue [solven-eu/matmulcatalog#7](https://github.com/solven-eu/matmulcatalog/issues/7) (2026-09-24), attachment `hk-task9-schemes.zip`. Explicit **integer** schemes `⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`, `⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095` — the shapes our own HK emitter provably cannot reach in-framework (+1..+3) and FMM-Lille lists index-only. Route: HK methods as tori (eigenline pairs), tripartite method graph with integer Lemma-2 edges, non-cyclic unimodular Lemma-1 windows, and for ⟨2,24,30⟩ a `(3,3)` bridge through a virtual row over the **12-product** reusable set. Exact-verified here and loaded as `2x{p}x{n}-r{formula}-adriano_2026-*.json` (`source: "Adriano 2026"`, `discovery: false` — rank attributed to HK71, first explicit scheme credited to the contributor). Record: `references/contributions/issue7-adriano-2026-hk-task9.md`. |
 | [89](#89-adriano-2026-lille-recipes) | adriano-2026-lille-recipes | 2026 | algorithm (**22 FMM-Lille recipe ranks, explicit**) | Marcos Adriano, *22 explicit schemes at FMM-Lille table ranks (the table's own recipes, executed)*, GitHub issue [solven-eu/matmulcatalog#8](https://github.com/solven-eu/matmulcatalog/issues/8) (2026-09-24), attachment `lille-recipes-22-schemes.zip`. Explicit witnesses (9 ℤ, 13 with ±1/2 or ±1/3) for 22 table ranks FMM lists without a public scheme — recombinations over unequal blocks with an outer ⟨2,4,4⟩:26 HK (14 shapes) or Strassen (8). All 22 verified exactly here; **not loaded** (dim > 16 compositions of pieces we hold — 321 MB): instead RE-DERIVED as lineage stubs, 13 of them strictly below the recipe (⟨10,19,31⟩ 3492 vs 3532 …) once ⟨2,4,4⟩=26's Perminov-ZT / AlphaTensor-Z reps were registered as `rootPool()` bases. Record: `references/contributions/issue8-adriano-2026-lille-recipes.md`. |
+| [90](#90-witteveen-2026) | witteveen-2026 | 2026 | algorithm (**26 ZT schemes, 3 any-ring records**) | Merlijn S. Witteveen, *New fast matrix multiplication schemes* (dataset v1.2, 2026-09-30), DOI [10.5281/zenodo.22943995](https://doi.org/10.5281/zenodo.22943995), [github.com/MerlijnW70/fmm-schemes](https://github.com/MerlijnW70/fmm-schemes) — **CC BY 4.0**. 26 ternary-integer schemes (≤ 16): new best in any ring for `⟨7,11,15⟩=772`, `⟨11,13,15⟩=1364`, `⟨11,14,14⟩=1373`; first ZT scheme at the best rank for `⟨7,7,9⟩=315`; 22 further ZT records. All loaded (exact-verified, re-encoded canonically) as `*-witteveen_2026-*.json`. Cited by FMM-Lille for ⟨11,13,15⟩ / ⟨11,14,14⟩. |
 
 ---
 
@@ -1136,6 +1137,65 @@ Relevance to this repo:
 **Cited in**: `REFERENCES.md` (this entry, index row [89]),
 `docs/STRATEGIES.md` (root-pool list), `research/DISCOVERIES_PENDING_ANALYSIS.md`
 (2026-09-30 entry), the `TestSweepSpotsSota` / `TestRootPoolContents` guards.
+
+---
+
+## [90] <a name="90-witteveen-2026"></a>witteveen-2026
+
+```bibtex
+@misc{witteveen2026fmmschemes,
+  author       = {Witteveen, Merlijn S.},
+  title        = {New fast matrix multiplication schemes},
+  howpublished = {Dataset, \url{https://github.com/MerlijnW70/fmm-schemes}},
+  year         = {2026},
+  doi          = {10.5281/zenodo.22943995},
+  note         = {Releases 1.0 (2026-09-24), 1.1 (2026-09-27), 1.2 (2026-09-30). Licence: CC BY 4.0}
+}
+```
+
+A dataset of explicit **ternary-integer (ZT)** schemes — every coefficient in
+`{−1,0,1}`, hence valid over every ring — for formats with all dimensions ≤ 16,
+in Perminov's JSON layout (`n`, `m`, `u`, `v`, `w`). Release 1.2 holds 26 schemes.
+Per the dataset's own table (previous values = min of Perminov's and FMM-Lille's
+tables at the release date):
+
+| Claim | Shapes |
+| --- | --- |
+| **new best over every ring** | `⟨7,11,15⟩=772` (was 777, 1.2), `⟨11,13,15⟩=1364` (was 1371, 1.0), `⟨11,14,14⟩=1373` (was 1376, 1.0) |
+| first ZT scheme at the best known rank | `⟨7,7,9⟩=315` |
+| new ZT record, rank still above the best over ℚ | the other 22 — e.g. `⟨6,11,11⟩=492` (ℚ: 490), `⟨9,15,15⟩=1269` (ℚ: 1236), `⟨2,13,15⟩=304` |
+
+Relevance to this repo:
+- **All 26 loaded** (2026-09-30) as `schemes/known/section{maxDim}/…-witteveen_2026-*.json`
+  through the contributed-scheme gate (`ImportContributedSchemes`: exact BigInteger
+  proof, spot-check, mod-2 / mod-3 reductions, disk round-trip), re-encoded in the
+  canonical format with the CC BY 4.0 credit in `discovery_note` / `notes`.
+  `discovery: true` — for the 22 "ZT record" shapes that is a statement about the
+  **ZT class only**: on 17 of them it is also the lowest ℤ rank we hold, on
+  `⟨2,12,15⟩`, `⟨2,13,15⟩`, `⟨2,13,16⟩`, `⟨2,15,16⟩` (Hopcroft–Kerr formula schemes,
+  [\[88\]](#88-adriano-2026-hk-task9): 278 / 300 / 320 / 368) and `⟨11,15,16⟩`
+  (Perminov, 1629) a non-ternary integer scheme of lower rank exists.
+- **Scheduled pull**: `docs.migrate.ImportWitteveenSchemes` lists the origin repo
+  and imports any `(shape, rank, class)` the catalog lacks; it runs in
+  `sync-reference-catalogs.yml` every 3 h. Automated imports are stamped
+  `discovery: "TBD"` (the importer can see "beats this catalog", not "is a record").
+- **Chronology of the mirrors** — why a dedicated channel exists. Release 1.0
+  already carried the ⟨11,13,15⟩ / ⟨11,14,14⟩ records on 2026-09-24. FMM-Lille
+  cites the dataset for those two formats; Perminov mirrored release 1.1 on
+  2026-09-29 (20 files under `schemes/known/MerlijnW70_fmm_schemes/`, the five
+  ⟨2,p,n⟩ ones under his own `schemes/results/ZT/`). Our sync job imported two of
+  the latter — `⟨2,12,15⟩=280`, `⟨2,14,16⟩=348` — as "Perminov 2023" and nothing
+  else: see `research/CI_SYNC_GAP_ANALYSIS_2026-09-30.md`. Both are re-attributed
+  (`PerminovKnownAttribution.THIRD_PARTY_IN_RESULTS`).
+- **Superseded release ranks** (not loaded; the dataset itself replaced them):
+  1.0 — `⟨8,11,16⟩=909`, `⟨9,14,16⟩=1269`, `⟨11,15,16⟩=1647`, `⟨13,14,16⟩=1811`;
+  1.1 — `⟨7,9,14⟩=599`, `⟨13,14,16⟩=1806`. `⟨2,14,16⟩=348` (1.0–1.1, withdrawn in
+  1.2; Hopcroft–Kerr gives 344) is held because the Perminov mirror brought it in.
+
+**Cited in**: `REFERENCES.md` (this entry, index row [90]),
+`references/contributions/witteveen-2026.meta.json`, `ImportWitteveenSchemes`,
+`PerminovKnownAttribution`, `docs/catalog.js` (source → [90]), the
+`TestSweepSpotsSota.retains_witteveen_2026_records` guard.
 
 ---
 
@@ -2070,7 +2130,12 @@ that materialises the explicit U/V/W on demand (for verification / bud-structure
 > pushed ~530 shapes below our catalog at once. **Imported 2026-09-30** as
 > `known/section{N}/{N}x{N}x{N}-r{R}-khoruzhii_2026-*.json`
 > (`source: "Khoruzhii 2026"`, `discovery: true`) through `ImportKhoruzhiiLita`
-> + the Python-free `io.NpzSchemeReader`, with a size-aware gate (exact
+> + the Python-free `io.NpzSchemeReader`. These files are **hash-stamped stubs**
+> on the data-backed lineage atom `TA_lita_npz(n=N)`, not explicit matrices: the
+> coefficients stay in the upstream archives, vendored unmodified under
+> `src/main/resources/external/khoruzhii-lita/` (12 MB; 32³ alone is 117 MB as
+> canonical JSON, above GitHub's file limit), and `LineageReplayer` rebuilds the
+> scheme from them on demand. The gate is size-aware (exact
 > BigInteger proof where the term count fits — 13³/15³/17³ — spot-check tier
 > otherwise; the `verification` field says which). Every scheme has even
 > denominators → `fields_not [F2]`; F₃ is verified exactly for 14³ and 15³
@@ -2082,8 +2147,9 @@ that materialises the explicit U/V/W on demand (for verification / bud-structure
 > "derive, don't import" follow-up.
 
 Cited in: REFERENCES.md, `LitaTrilinearAggregation`, `LitaTaConstruction`,
-`GenerateDerivedBounds`, `ImportKhoruzhiiLita`, the 20 loaded scheme JSONs,
-`docs/catalog.js` (source → [82]).
+`GenerateDerivedBounds`, `ImportKhoruzhiiLita`, `LitaNpzCubes`, the 20 stubs,
+`src/main/resources/external/khoruzhii-lita/README.md` (provenance + the open
+licence question), `docs/catalog.js` (source → [82]).
 
 ---
 

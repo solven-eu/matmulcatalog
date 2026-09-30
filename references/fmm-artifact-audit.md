@@ -110,3 +110,20 @@ constructions, per the 2026-07-08 gap-tree census). Full rows in
 3. The 25 real rows are the true frontier: dominated by absorbing-pad /
    overlap constructions (analyze the now-downloaded artifacts to extract
    the device — they are explicit!).
+
+## Expiry rule (2026-09-30)
+
+An audit entry is a statement about **one index value** ("FMM's index said R and
+their artifact did not back it"). Each entry in `fmm-artifact-audit.json` now
+carries `index_rank` — the FMM index rank it was audited against — and
+`FmmCrossCheck` honours the entry **only while the digest still shows that rank**.
+When the index moves, the row returns to the ordinary WORSE list (and is named in
+the report's "expired artifact-audit entries" line) until someone re-audits it.
+
+Why: twelve of the July entries (⟨27,28,x⟩, ⟨27,29,x⟩, ⟨22,23,23⟩, ⟨22,28,28⟩,
+⟨22,30,30⟩, ⟨16,20,28/29⟩) kept hiding rows whose FMM index had since dropped — most
+of them to the Khoruzhii–Serafin–Gelß–Pokutta LITA cube ranks, which we hold and
+verified. ⟨27,28,28⟩ sat at 10442 vs 9847, was never a closure target, and blocked
+the projection cascade to ⟨26,28,28⟩ / ⟨25,28,28⟩. As of 2026-09-30 only
+⟨20,24,25⟩ (placeholder), ⟨21,28,32⟩ and ⟨22,30,30⟩ (index_only) are still valid at
+their audited index value. When adding an entry, always record `index_rank`.

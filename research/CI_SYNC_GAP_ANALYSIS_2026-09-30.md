@@ -24,7 +24,7 @@ so every cube ≥ 13 fell behind and the whole 17–32 band followed.
 
 | Job (schedule) | Designed to | Did it? | Why not |
 |---|---|---|---|
-| `sync-reference-catalogs` (every 3 h) | refresh `references/catalogs/{fmm-lille,perminov}-catalog.json`; import **Perminov** scheme files | **Yes** — each FMM index move landed within hours; Perminov import ran ("0 imported, 2597 skipped-existing") | The only auto-importer is Perminov's. KGP's cubes are not in Perminov's repo (his `status.json` is ≤ 16; the 17–32 band is a separate cited-bound digest), FMM hosts Maple artifacts we have no CI importer for, and FMM's *citation* of a third-party repo is followed by nobody. |
+| `sync-reference-catalogs` (every 3 h) | refresh `references/catalogs/{fmm-lille,perminov}-catalog.json`; import **Perminov** scheme files | **Yes** — each FMM index move landed within hours; Perminov import ran ("0 imported, 2597 skipped-existing") | The only auto-importer is Perminov's, and it lists his own `schemes/results/*` only. He did mirror the KGP cubes 13³–16³ (`schemes/known/lita/`, 2026-09-18 and 09-26) — a `known/<sub>` folder no job lists — and his `status.json` stops at 16, so 17³–32³ are not there at all. FMM hosts Maple artifacts we have no CI importer for, and FMM's *citation* of a third-party repo is followed by nobody. |
 | `regenerate-catalog` (daily + on push) | regenerate `docs/catalog.json` etc. | **Yes** — the manifest carried `external_best_rank` = FMM's 13433 every day, so the SPA *displayed* the gap | It regenerates only the three `docs/*.json`; the human-facing gap reports (`references/fmm-cross-check.md`, `references/reference-comparison.md`, `docs/comparison/fmm-gap-report.md`) were **not run by any workflow**, so the committed ones rotted at their July state. Nobody looks at 9 588 manifest rows for `external_best_rank < rank`. |
 | `scan-upstream-sources` (weekly) | the **alert**: list ranks that strictly beat ours; "opens a tracking issue if any new gap appears" | **No** — "Strict gaps: 0" every week, including 2026-09-28 when the digest already had 14216 vs our 14519 | (a) `loadLocalRanks()` read "ours" from **filenames** with `[-_]NxMxP_[rm]R` — the legacy `{source}-{shape}_m{rank}` pattern. The 2026-06 catalog rename to `{n}x{m}x{p}-r{rank}-{note}-{hash7}` left it matching **7 of ~11 000** files, so every upstream shape became "MISSING" (a category nobody acts on), never a "GAP". No crash, a clean green run, an empty report — the canonical silent regression, and a direct violation of CLAUDE.md's "read metadata from content, never the filename". (b) The promised issue-opening step **did not exist**; the report only went to a run artifact and the job summary. |
 | `verify-catalog` (daily) | verify every scheme on disk | Yes | Verification is about correctness, not competitiveness — by design. |
@@ -58,6 +58,33 @@ worse on **621** formats (11 465 multiplications) — again with a green sync jo
    (no catalog file: it *is* the naive scheme) and dropped every such candidate
    as unbuildable. `⟨13,20,21⟩ = ⟨13,4,3⟩:123 ⊗ˢ ⟨1,5,7⟩ = 3165` was unreachable
    (catalog: 3291) with the base on disk.
+
+## The ≤ 16 band — a third-party dataset no importer listed (Witteveen 2026)
+
+Merlijn S. Witteveen published `MerlijnW70/fmm-schemes` release 1.0 on
+**2026-09-24**: ternary-integer schemes including a new best over every ring at
+⟨11,13,15⟩ = 1364 (was 1371) and ⟨11,14,14⟩ = 1373 (was 1376); release 1.2
+(09-30) added ⟨7,11,15⟩ = 772 (was 777). FMM-Lille cites the dataset for the
+first two; Perminov mirrored release 1.1 on 09-29 08:40Z. Our 09:07Z sync ran
+green, imported **two** of the 25 mirrored files, and credited both to Perminov.
+Three more silent causes, all in `ImportPerminovSchemes`:
+
+1. **Scope.** It lists `schemes/results/*` only — by design, since
+   `schemes/known/<sub>/` is other people's work. But nothing else lists a *new*
+   `known/<sub>`: `MerlijnW70_fmm_schemes/` (20 files, the two records among
+   them) and `lita/` (the KGP cubes 13³–16³ as JSON) were mapped nowhere and
+   imported by no job. The rank digest did move (`status.json` said 1364) — into
+   reports no workflow regenerated (see above).
+2. **The `(shape, rank)` key was blind to the coefficient class.** Perminov filed
+   the five ⟨2,p,n⟩ ternary schemes under his own `results/ZT/`. Three were at a
+   rank we already held as a *non-ternary* integer scheme — ⟨2,13,15⟩ = 304,
+   ⟨2,13,16⟩ = 324, ⟨2,15,16⟩ = 374 — so "already have (shape, rank)" skipped
+   them without downloading. Four of Perminov's own ZT records had been skipped
+   the same way (⟨2,11,13⟩ = 221, ⟨2,11,14⟩ = 238, ⟨7,12,16⟩ = 878,
+   ⟨9,12,13⟩ = 878). The key was also parsed from `-perminov_` *filenames*.
+3. **Attribution by directory.** The two that did get in (⟨2,12,15⟩ = 280,
+   ⟨2,14,16⟩ = 348) were stamped `source: "Perminov 2023"` because they sat
+   under `results/` — five days after their author had published them.
 
 ## A third hider: the manual artifact audit never expired
 
@@ -104,14 +131,41 @@ never targeted, and blocked the projection cascade to ⟨26,28,28⟩, ⟨25,28,2
 8. **Audit entries expire** — each carries the `index_rank` it was audited
    against; `FmmCrossCheck` honours it only while the digest still shows that
    rank and lists the expired ones in the report.
+9. **Witteveen's dataset imported, and pulled on a schedule** — the 26 schemes of
+   release 1.2 are in `known/` (REFERENCES.md [90]); `ImportWitteveenSchemes`
+   lists the *origin* repo and imports what the catalog lacks, as a step of
+   `sync-reference-catalogs.yml` (every 3 h). Automated imports go through the
+   contributed-scheme gate and are stamped `discovery: "TBD"`. It warns when
+   the upstream listing matches no scheme file at all (a moved layout must not
+   read as "nothing new").
+10. **Class-aware, content-driven idempotence key** — `KnownSchemeKeys`:
+    `(sorted shape, rank, ZT ⊂ Z ⊂ Q)` read from each file's `n` / `m` /
+    `fields[]` / `zt` / coefficients, any source, any orientation. A ternary
+    upstream scheme is no longer "already held" because an integer one is. First
+    run: the four skipped Perminov ZT records imported. Guard `TestKnownSchemeKeys`.
+11. **Unmapped `known/<sub>` folders are reported** — the importer names every
+    sub-folder `PerminovKnownAttribution` does not map (log WARN, a GitHub
+    `::warning::` annotation, the job summary). `MerlijnW70_fmm_schemes` and
+    `lita` are now mapped (credited to their authors, pulled from their origin
+    repos). Guard `TestImportPerminovSchemes`.
+12. **Attribution of third-party files under `results/`** —
+    `PerminovKnownAttribution.THIRD_PARTY_IN_RESULTS` (the five Witteveen paths;
+    four confirmed by content hash against the origin files). ⟨2,14,16⟩ = 348 is
+    re-attributed; the duplicate ⟨2,12,15⟩ = 280 file is removed in favour of the
+    origin import. This one stays manual by nature: `status.json` names the path,
+    not the author.
 
 ## Follow-ups (not in this PR)
 
 - **CI-able KGP importer**: give `ImportKhoruzhiiLita` a `--download` mode
   (list `repos/khoruzhii/lita/contents/schemes`, import new/better
-  `(shape, rank)` like `ImportPerminovSchemes`) and run it in the sync job.
-  Generalise: a small registry of "third-party scheme repos FMM cites"
-  (KGP, `MerlijnW70/fmm-schemes`, …).
+  `(shape, rank)` like `ImportWitteveenSchemes`) and run it in the sync job.
+  With Perminov and Witteveen that would make three origin repos on a schedule;
+  a fourth should become a small registry rather than a fourth class.
+- **Two serendipitous bases fail our exact verifier** on every sync run
+  (`2x4x6_m39_…_Q`, `2x5x7_m56_…_Q`; coefficients like `3866/3705`). Probably a
+  limit of the double-backed reader rather than an upstream error — to check.
+  They are the recipes of ⟨4,16,30⟩ and ⟨8,14,20⟩ in the residual list.
 - **FMM Maple artifact importer in Java** (`MapleSchemeParser` exists for the
   17³ case; `tools/import_fmm_maple.py` needs Python) so a WORSE row backed by
   an FMM artifact can be pulled as a reaction base automatically.

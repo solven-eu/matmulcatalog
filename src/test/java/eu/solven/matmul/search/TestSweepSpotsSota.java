@@ -435,6 +435,23 @@ public class TestSweepSpotsSota {
 		}
 	}
 
+	/**
+	 * Disk-presence guard for Witteveen's 2026 dataset (REFERENCES [90];
+	 * {@code known/…-witteveen_2026-*}): the three formats where it is the best known
+	 * rank over every ring, plus ⟨7,7,9⟩ (first ternary scheme at the best rank). These
+	 * are explicit imports — no derivation in the catalog reaches them — and they sat
+	 * upstream un-imported for six days because no sync job listed their repo. Assert ≤.
+	 */
+	@Test
+	public void retains_witteveen_2026_records() {
+		int[][] rows = { { 7, 11, 15, 772 }, { 11, 13, 15, 1364 }, { 11, 14, 14, 1373 }, { 7, 7, 9, 315 } };
+		for (int[] r : rows) {
+			assertThat(lookup.findRank(r[0], r[1], r[2]))
+					.as("⟨%d,%d,%d⟩ must retain the Witteveen-2026 scheme at %d", r[0], r[1], r[2], r[3])
+					.isLessThanOrEqualTo(r[3]);
+		}
+	}
+
 	@Test
 	public void retains_issue7_hk_task9_formula_schemes() {
 		int[][] shapes = { { 2, 12, 18 }, { 2, 14, 21 }, { 2, 16, 24 }, { 2, 18, 27 }, { 2, 20, 30 }, { 2, 24, 30 } };

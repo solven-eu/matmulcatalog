@@ -1,0 +1,10 @@
+{
+  "_comment": "Provenance stamped by ImportContributedSchemes --meta=<this file> on the 26 schemes of github.com/MerlijnW70/fmm-schemes (v1.2, 2026-09-30). Licence: CC BY 4.0 — attribution below; the files are RE-ENCODED in the catalog's canonical format (coefficients unchanged; the readable `multiplications`/`elements` strings are dropped).",
+  "note": "witteveen_2026",
+  "source": "Witteveen 2026",
+  "year": 2026,
+  "source_url": "https://github.com/MerlijnW70/fmm-schemes",
+  "discovery": "true",
+  "discovery_note": "Merlijn S. Witteveen, New fast matrix multiplication schemes (dataset v1.2, 2026-09-30), doi:10.5281/zenodo.22943995, github.com/MerlijnW70/fmm-schemes — licensed CC BY 4.0. Ternary-integer (ZT, coefficients in {−1,0,1}) scheme, hence valid over every ring. Per the dataset's own table (previous values: min of Perminov's table 2026-09-29 and FMM-Lille 2026-09-30): NEW BEST IN ANY RING for ⟨7,11,15⟩=772 (was 777), ⟨11,13,15⟩=1364 (1371), ⟨11,14,14⟩=1373 (1376); first ZT scheme AT the best known rank for ⟨7,7,9⟩=315; for the other 22 shapes a NEW ZT RECORD (ternary-integer class) whose rank is still above the best known over ℚ — there `discovery:true` is a statement about the ZT class only, not about ℚ. On 17 of the 22 it is also the lowest ℤ rank this catalog holds; on ⟨2,12,15⟩, ⟨2,13,15⟩, ⟨2,13,16⟩, ⟨2,15,16⟩ (Hopcroft–Kerr ⟨2,p,n⟩ formula schemes at 278 / 300 / 320 / 368) and ⟨11,15,16⟩ (Perminov, 1629) a NON-ternary integer scheme of lower rank exists, so the record there is ZT-only. Verified here by ImportContributedSchemes (exact BigInteger symbolic proof, random spot-check, mod-2 / mod-3 reductions, canonical-disk round-trip); upstream SHA256SUMS checked on download.",
+  "notes": "Re-encoded from the upstream Perminov-style JSON (n, m, u, v, w; `multiplications`/`elements`/`complexity` dropped) into the catalog's canonical format — no coefficient was changed. CC BY 4.0: credit Merlijn S. Witteveen, doi:10.5281/zenodo.22943995. FMM-Lille cites this dataset for ⟨11,13,15⟩ and ⟨11,14,14⟩ (index 2026-09-30)."
+}
