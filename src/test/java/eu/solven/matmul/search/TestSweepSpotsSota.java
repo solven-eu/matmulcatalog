@@ -379,6 +379,41 @@ public class TestSweepSpotsSota {
 	}
 
 	/**
+	 * COMPUTE-path guard for DEGENERATE serendipitous products (2026-09-30): most of
+	 * Perminov's serendipitous 17–32 band is {@code base ⊗ˢ ⟨1,b,c⟩} — the second
+	 * factor has a unit axis, so the base's buds on that axis fuse into ⟨k,b,c⟩ blocks
+	 * (⟨13,20,21⟩ = ⟨13,4,3⟩:123 ⊗ˢ ⟨1,5,7⟩ = 3165, catalog was 3291). Prediction priced
+	 * the unit-axis inner (findRank → naive) and the replayer resolved it, but the
+	 * materialiser's BUILD resolver returned empty for ⟨1,5,7⟩ (no catalog file — it is
+	 * the naive scheme), so every such candidate was dropped as "unbuildable" and 621
+	 * formats sat above Perminov's digest. Needs the bud-rich base
+	 * ({@code bud-bases/section13/3x4x13-r123-perminov_serbase_*}) on disk too — the
+	 * importer used to drop it under its (shape, rank) idempotence key.
+	 * {@code deriveBest} so the on-disk 3165 stub does not prune the derivation.
+	 */
+	@Test
+	public void compute_pipeline_reaches_13x20x21_3165_via_unit_axis_inner() {
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.defaultPool();
+		eu.solven.matmul.recombination.Recombination.SotaResolver diskSota = (a, b, c) -> {
+			if (a == 0 || b == 0 || c == 0) return 0;
+			if (a == 1) return b * c;
+			if (b == 1) return a * c;
+			if (c == 1) return a * b;
+			return lookup.findRank(a, b, c);
+		};
+		RecursiveMaterialiser improver =
+				new RecursiveMaterialiser(lookup, pool, diskSota, null, false, false, true, true);
+		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_SERENDIPITOUS));
+		Optional<RecursiveMaterialiser.Result> r = improver.materialise(13, 20, 21);
+		assertThat(r).as("⟨13,20,21⟩ should resolve via base ⊗ˢ ⟨1,5,7⟩").isPresent();
+		assertThat(r.get().alg().r)
+				.as("degenerate serendipitous product must reach Perminov's 3165 (unit-axis inner dropped → 3291)")
+				.isLessThanOrEqualTo(3165);
+		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg()))
+				.as("⟨13,20,21⟩ result must verify").isTrue();
+	}
+
+	/**
 	 * Disk-presence guard for the Khoruzhii–Serafin–Gelß–Pokutta 2026 LITA cubes
 	 * (REFERENCES [82]; {@code known/section{N}/{N}x{N}x{N}-r{R}-khoruzhii_2026-*},
 	 * imported 2026-09-30 via {@code ImportKhoruzhiiLita}): the ⟨N,N,N⟩ ranks FMM-Lille's

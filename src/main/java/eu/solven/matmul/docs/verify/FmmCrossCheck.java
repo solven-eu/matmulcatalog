@@ -150,21 +150,47 @@ public final class FmmCrossCheck {
 		// audit, see the .md for method); rows absent from the audit stay in WORSE.
 		// The unverified section deliberately avoids the word "WORSE" so the fmm-gap
 		// skill's section-scoped random picker never selects from it.
+		//
+		// An audit entry is a statement about ONE index value: "FMM's index said R and
+		// their artifact did not back it". It EXPIRES when the index moves — each entry
+		// carries the `index_rank` it was audited against, and applies only while the
+		// digest still shows that rank. (2026-09-30: twelve July entries — ⟨27,28,x⟩,
+		// ⟨22,23,23⟩, … — kept hiding rows whose index had since dropped to the KGP LITA
+		// cube ranks, which we hold and verified; ⟨27,28,28⟩ 10442 vs 9847 stayed out of
+		// WORSE, so the projection closure never targeted it and its whole sub-family was
+		// stuck behind it.) An entry without `index_rank` is legacy → still honoured.
 		Map<String, String> audit = new java.util.HashMap<>();
+		Map<String, Integer> auditedIndexRank = new java.util.HashMap<>();
 		java.io.File auditFile = new java.io.File("references/fmm-artifact-audit.json");
 		if (auditFile.isFile()) {
 			tools.jackson.databind.JsonNode auditRoot =
 					new tools.jackson.databind.ObjectMapper().readTree(auditFile);
-			auditRoot.get("shapes").properties().forEach(e ->
-					audit.put(e.getKey(), e.getValue().get("class").asText()));
+			auditRoot.get("shapes").properties().forEach(e -> {
+				audit.put(e.getKey(), e.getValue().get("class").asText());
+				if (e.getValue().has("index_rank")) {
+					auditedIndexRank.put(e.getKey(), e.getValue().get("index_rank").asInt());
+				}
+			});
 		}
 		List<Row> unverified = new ArrayList<>();
+		List<String> expiredAudits = new ArrayList<>();
 		worse.removeIf(r -> {
-			String cls = audit.get(r.n + "x" + r.m + "x" + r.p);
+			String key = r.n + "x" + r.m + "x" + r.p;
+			String cls = audit.get(key);
 			if (cls == null) return false;
+			Integer auditedAt = auditedIndexRank.get(key);
+			if (auditedAt != null && auditedAt != r.fmm) {
+				expiredAudits.add(String.format("⟨%d,%d,%d⟩ (audited at index %d, now %d)",
+						r.n, r.m, r.p, auditedAt, r.fmm));
+				return false; // index moved since the audit → an ordinary, actionable row again
+			}
 			unverified.add(r);
 			return true;
 		});
+		if (!expiredAudits.isEmpty()) {
+			log.info("artifact-audit entries EXPIRED (FMM index moved since the audit; rows back in WORSE): {}",
+					expiredAudits);
+		}
 
 		try (PrintWriter pw = new PrintWriter(OUT)) {
 			pw.println("# Catalog vs FMM-Lille digest cross-check");
@@ -219,6 +245,12 @@ public final class FmmCrossCheck {
 					pw.printf("| ⟨%d,%d,%d⟩ | %d | %d | %s |%n",
 							r.n, r.m, r.p, r.ours, r.fmm, audit.get(r.n + "x" + r.m + "x" + r.p));
 				}
+				pw.println();
+			}
+			if (!expiredAudits.isEmpty()) {
+				pw.println("_Expired artifact-audit entries — FMM's index moved since the audit, so these");
+				pw.println("count as ordinary WORSE rows again (re-audit or drop them in");
+				pw.println("`references/fmm-artifact-audit.json`):_ " + String.join("; ", expiredAudits));
 				pw.println();
 			}
 

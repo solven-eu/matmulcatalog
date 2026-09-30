@@ -656,6 +656,16 @@ public final class RecursiveMaterialiser {
 		// corrupt-over-claim-guarded), where the default findWithSource resolver
 		// would throw and the candidate would be silently dropped.
 		eu.solven.matmul.catalog.SerendipitousBudProduct.InnerResolver resolver = (a, b, c) -> {
+			// A unit-axis inner ⟨1,b,c⟩ IS the naive scheme (rank b·c, optimal) and has no
+			// catalog file. Prediction prices it (findRank falls back to naive) and the
+			// replayer resolves it (LineageReplayer.resolveInner), but this build-time
+			// resolver returned empty → every DEGENERATE product base ⊗ ⟨1,b,c⟩ was
+			// dropped as "unbuildable". Those are the recipes behind most of Perminov's
+			// serendipitous 17–32 band (⟨13,20,21⟩ = ⟨13,4,3⟩:123 ⊗ˢ ⟨1,5,7⟩, where the
+			// buds on the unit axis fuse into ⟨k,5,7⟩ blocks) — 2026-09-30.
+			if (a == 1 || b == 1 || c == 1) {
+				return Optional.of(NonCubicBilinearAlgorithm.naive(a, b, c));
+			}
 			ParentHit ph = resolveParentHit(a, b, c);
 			return Optional.ofNullable(ph == null ? null : ph.alg());
 		};
