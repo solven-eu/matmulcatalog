@@ -1,0 +1,42 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[7, 8], allocB=[16, 15], allocC=[16, 16], leaves=[Serendipitous(2x4x8 ⊗ ⟨4,4,2⟩), Recombination(base=ext[2x4x4-r26-hk71-8cad2d9.json] / <2,4,4>=26 :: CANONICAL, allocA=[4, 3], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4], leaves=[3x4x4-r38-alphatensor_Z-644bd5e, 4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e]), 8x15x16-r1185-perminov_Q-b360074, 7x15x16-r1081-perminov_Q-5f77af8])",
+  "lineage_compact": "R[2x2x2; 7,8 | 16,15 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [7, 8],
+    "allocB": [16, 15],
+    "allocC": [16, 16],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 4,
+        "m2": 4,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x4x8@4f864e0"}
+      },
+      {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x4x4-r26-hk71-8cad2d9.json] / <2,4,4>=26 :: CANONICAL"},
+        "allocA": [4, 3],
+        "allocB": [4, 4, 4, 4],
+        "allocC": [4, 4, 4, 4],
+        "leaves": [
+          {"op": "Atom", "ref": "3x4x4-r38-alphatensor_Z-644bd5e"},
+          {"op": "Atom", "ref": "4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e"}
+        ]
+      },
+      {"op": "Atom", "ref": "8x15x16-r1185-perminov_Q-b360074"},
+      {"op": "Atom", "ref": "7x15x16-r1081-perminov_Q-5f77af8"}
+    ]
+  },
+  "n": [15, 31, 32],
+  "m": 8185,
+  "hash": "1e4ca3676392b100812bd3f185bc9cf92f6f072cf03b1e5ff09ee2dd650f4b54",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

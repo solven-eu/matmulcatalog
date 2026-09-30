@@ -232,6 +232,7 @@ add the **Local PDF** line linking the file path.
 | [86](#86-perminov-2026-serendipitous) | perminov-2026-serendipitous | 2026 | method (**serendipitous / buds**) | A. I. Perminov, *Meta Flip Graph meets Serendipitous Product: new Fast Matrix Multiplication results*, arXiv:2606.02480 (June 2026). Combines the meta-flip-graph search [[77]](#77-perminov-2025-metaflip) with the **serendipitous product** (bud fusion; cf. Smith 2002 eq. (69) and Kauers–Moosbauer–Wood [[83]](#83-kauers-2026-structure)) — improving **207 rectangular formats** (≤16×16×16) and the **17–32 band** our catalog cites. **The source for the `Perminov 2026 (serendipitous)` rank claims** in `docs/cited-bounds.json` and `references/catalogs/perminov-serendipitous-catalog.json`. A distinct paper from the umbrella framework [[75]](#75-perminov-2026-arxiv) (arXiv:2603.02398). [Abs](https://arxiv.org/abs/2606.02480) |
 | [87](#87-kaporin-2024-brent) | kaporin-2024-brent | 2024 | algorithm (**C⟨4,4,4⟩=48**) | I. E. Kaporin, *Semi-analytical solution of Brent equations*, Doklady Mathematics **518**(1):29–34 (2024), DOI [10.31857/S2686954324040056](https://doi.org/10.31857/S2686954324040056). A parametrisation of the Brent equations (cyclic symmetry, several-fold fewer unknowns) solved numerically; yields explicit **complex** designs **(4,4,4;48)** and **(2,4,5;32)**. The (4,4,4;48) scheme — verified to floating-point tolerance in the author's companion `test444r48.for` — is an **independent C-coefficient 48** that **predates AlphaEvolve 2025** [[14]](#14-alphaevolve) (existence of `r<49` over C was conjectured by Li–Zhang–Ke 2023). Loaded as `4x4x4-r48-kaporin_2024-*.json`. [Article](https://journals.rcsi.science/2686-9543/article/view/269374) |
 | [88](#88-adriano-2026-hk-task9) | adriano-2026-hk-task9 | 2026 | algorithm (**ℤ⟨2,p,n⟩ at the HK formula, g ≥ 6**) | Marcos Adriano, *Task #9: the six g ≥ 6 ⟨2,p,n⟩ shapes at the exact Hopcroft-Kerr formula, with integer coefficients*, GitHub issue [solven-eu/matmulcatalog#7](https://github.com/solven-eu/matmulcatalog/issues/7) (2026-09-24), attachment `hk-task9-schemes.zip`. Explicit **integer** schemes `⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`, `⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095` — the shapes our own HK emitter provably cannot reach in-framework (+1..+3) and FMM-Lille lists index-only. Route: HK methods as tori (eigenline pairs), tripartite method graph with integer Lemma-2 edges, non-cyclic unimodular Lemma-1 windows, and for ⟨2,24,30⟩ a `(3,3)` bridge through a virtual row over the **12-product** reusable set. Exact-verified here and loaded as `2x{p}x{n}-r{formula}-adriano_2026-*.json` (`source: "Adriano 2026"`, `discovery: false` — rank attributed to HK71, first explicit scheme credited to the contributor). Record: `references/contributions/issue7-adriano-2026-hk-task9.md`. |
+| [89](#89-adriano-2026-lille-recipes) | adriano-2026-lille-recipes | 2026 | algorithm (**22 FMM-Lille recipe ranks, explicit**) | Marcos Adriano, *22 explicit schemes at FMM-Lille table ranks (the table's own recipes, executed)*, GitHub issue [solven-eu/matmulcatalog#8](https://github.com/solven-eu/matmulcatalog/issues/8) (2026-09-24), attachment `lille-recipes-22-schemes.zip`. Explicit witnesses (9 ℤ, 13 with ±1/2 or ±1/3) for 22 table ranks FMM lists without a public scheme — recombinations over unequal blocks with an outer ⟨2,4,4⟩:26 HK (14 shapes) or Strassen (8). All 22 verified exactly here; **not loaded** (dim > 16 compositions of pieces we hold — 321 MB): instead RE-DERIVED as lineage stubs, 13 of them strictly below the recipe (⟨10,19,31⟩ 3492 vs 3532 …) once ⟨2,4,4⟩=26's Perminov-ZT / AlphaTensor-Z reps were registered as `rootPool()` bases. Record: `references/contributions/issue8-adriano-2026-lille-recipes.md`. |
 
 ---
 
@@ -1087,6 +1088,54 @@ Relevance to this repo:
 **Cited in**: `REFERENCES.md` (this entry, index row [88], provenance table),
 the six loaded scheme JSONs, `research/hopcroft-kerr-2np/{OVERVIEW,CONSTRUCTIVE_METHOD,LOGIC_AND_LIMITS}.md`,
 `ROADMAP.md`, `paper/refs.bib` (`adriano2026hk`), `paper/sections/hk71.tex`.
+
+---
+
+## [89] <a name="89-adriano-2026-lille-recipes"></a>adriano-2026-lille-recipes
+
+```bibtex
+@misc{adriano2026lille,
+  author       = {Adriano, Marcos},
+  title        = {22 explicit schemes at {FMM-Lille} table ranks (the table's own recipes, executed)},
+  howpublished = {GitHub issue solven-eu/matmulcatalog\#8, \url{https://github.com/solven-eu/matmulcatalog/issues/8}},
+  month        = sep,
+  year         = {2026},
+  note         = {Attachment \texttt{lille-recipes-22-schemes.zip}; work done with the help of AI tools (author's statement)}
+}
+```
+
+Second community contribution by the author of [\[88\]](#88-adriano-2026-hk-task9)
+(GitHub issue, 2026-09-24). For 22 shapes where FMM-Lille's table lists a rank
+but no public explicit scheme reaches it, the table's own `construction`
+recipe — a recombination over unequal blocks, outer ⟨2,4,4⟩:26 Hopcroft–Kerr
+(14 shapes: ⟨6,14,25⟩ and the ⟨10,·,·⟩ family) or Strassen ⟨2,2,2⟩:7 (8 shapes:
+⟨13,·,·⟩, ⟨15,31,32⟩), every product at the smallest size its two sides need —
+executed as explicit factor matrices (9 ℤ, 13 with ±1/2 or ±1/3). Not new
+ranks; explicit witnesses where none was public. 170 multiplications below our
+catalog at the time.
+
+Relevance to this repo:
+- **All 22 files verified exactly here** (`ImportContributedSchemes` gate,
+  dry-run) but **not loaded**: they are dim-16+ compositions of pieces the
+  catalog already holds, and the catalog stores such schemes as lineage stubs
+  (321 MB of matrices would duplicate what the stubs replay exactly).
+- **Re-derived instead, and beaten on 13 of the 14 ⟨2,4,4⟩-outer shapes**
+  (e.g. ⟨10,19,31⟩ 3492 vs the recipe's 3532, ⟨10,27,27⟩ 4276 vs 4322; ties on
+  the rest) — the decisive input was registering two content-distinct
+  ⟨2,4,4⟩=26 representatives (Perminov-ZT, AlphaTensor-Z) as `rootPool()`
+  bases: their product supports tile the ⟨10,·,·⟩ blocks better than the HK
+  file's. The 8 Strassen-outer shapes only needed Perminov's ⟨7,12,16⟩=876 /
+  ⟨7,15,16⟩=1081 pieces (synced 2026-09) and a re-materialisation. 552
+  multiplications below the previous catalog in total; tier: bound (B&B
+  node-capped).
+- Record with the full table, verification tiers (16 exact-symbolic, 6
+  spot-check) and repro commands:
+  [`references/contributions/issue8-adriano-2026-lille-recipes.md`](references/contributions/issue8-adriano-2026-lille-recipes.md);
+  probe `docs.explore.ProbeIssue8Recipes`.
+
+**Cited in**: `REFERENCES.md` (this entry, index row [89]),
+`docs/STRATEGIES.md` (root-pool list), `research/DISCOVERIES_PENDING_ANALYSIS.md`
+(2026-09-30 entry), the `TestSweepSpotsSota` / `TestRootPoolContents` guards.
 
 ---
 

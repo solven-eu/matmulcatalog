@@ -314,6 +314,70 @@ public class TestSweepSpotsSota {
 	 * to +1..+3 with no other symptom. Assert ≤ (a genuine improvement must never
 	 * break this).
 	 */
+	/**
+	 * Disk-presence guard for the issue-#8 family (2026-09-30): the 22 FMM-Lille
+	 * "recipe" ranks Marcos Adriano executed as explicit schemes, RE-DERIVED here as
+	 * recombination stubs — outer HK ⟨2,4,4⟩=26 over unequal blocks for 14 (the
+	 * Perminov-ZT / AlphaTensor-Z root reps registered in {@code rootPool} for this),
+	 * Strassen over the new Perminov ⟨7,12,16⟩=876 / ⟨7,15,16⟩=1081 pieces for 8.
+	 * Thirteen of the fourteen land strictly BELOW the recipe (⟨10,19,31⟩ 3492 vs
+	 * FMM 3532, ⟨10,23,23⟩ 3146 vs 3183, …). Bounds are OUR ranks (≤): losing the
+	 * stubs, the ⟨2,4,4⟩ root reps, or the 876/1081 pieces regresses silently by
+	 * +2…+40 with no other symptom.
+	 */
+	@Test
+	public void retains_issue8_lille_recipe_ranks() {
+		int[][] rows = {
+				{ 6, 14, 25, 1322 }, { 10, 19, 31, 3492 }, { 10, 22, 25, 3288 }, { 10, 22, 29, 3772 },
+				{ 10, 23, 23, 3146 }, { 10, 23, 26, 3534 }, { 10, 23, 27, 3648 }, { 10, 23, 30, 4036 },
+				{ 10, 23, 31, 4150 }, { 10, 25, 26, 3850 }, { 10, 26, 26, 4014 }, { 10, 26, 27, 4144 },
+				{ 10, 26, 29, 4482 }, { 10, 27, 27, 4276 },
+				{ 13, 23, 31, 5396 }, { 13, 23, 32, 5552 }, { 13, 24, 31, 5540 }, { 13, 25, 32, 6008 },
+				{ 13, 29, 32, 6910 }, { 13, 30, 31, 6913 }, { 13, 31, 32, 7322 }, { 15, 31, 32, 8185 } };
+		for (int[] r : rows) {
+			assertThat(lookup.findRank(r[0], r[1], r[2]))
+					.as("⟨%d,%d,%d⟩ must retain the issue-#8 re-derivation at %d (FMM recipe rank or below)",
+							r[0], r[1], r[2], r[3])
+					.isLessThanOrEqualTo(r[3]);
+		}
+	}
+
+	/**
+	 * COMPUTE-path guard for the ⟨2,4,4⟩=26 root registration (issue #8): the
+	 * {@code defaultPool()} (= rootPool + axis-flips) must carry the ⟨2,4,4⟩ reps and
+	 * an IMPROVE-mode materialiser restricted to them must compose ⟨6,14,25⟩ at the
+	 * FMM recipe rank 1322 from disk leaves (⟨3,4,7⟩, ⟨3,3,6⟩, …) — the AlphaTensor-Z
+	 * rep's support does it; the hk71 rep alone gives 1324 (the old catalog value).
+	 * A pool that silently drops the reps (or keeps only one) regresses to ≥ 1324.
+	 * The pool is filtered to the ⟨2,4,4⟩ entries so the guard stays fast (seconds).
+	 */
+	@Test
+	public void compute_pipeline_reaches_6x14x25_1322_via_244_root() {
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.defaultPool().stream()
+				.filter(nb -> nb.label().contains("2,4,4")).toList();
+		assertThat(pool).as("defaultPool must carry the ⟨2,4,4⟩ root reps").isNotEmpty();
+		eu.solven.matmul.recombination.Recombination.SotaResolver diskSota = (a, b, c) -> {
+			if (a == 0 || b == 0 || c == 0) return 0;
+			if (a == 1) return b * c;
+			if (b == 1) return a * c;
+			if (c == 1) return a * b;
+			return lookup.findRank(a, b, c);
+		};
+		// improveExisting=true → composes instead of returning the on-disk stub; deriveBest=true
+		// → do NOT prune at the disk incumbent (the 1322 stub IS on disk, so a strict-improvement
+		// bound would prune the very derivation under test); no write (writeRoot=null).
+		RecursiveMaterialiser improver =
+				new RecursiveMaterialiser(lookup, pool, diskSota, null, false, false, true, true);
+		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_RECOMBINATION));
+		Optional<RecursiveMaterialiser.Result> r = improver.materialise(6, 14, 25);
+		assertThat(r).as("⟨6,14,25⟩ should resolve").isPresent();
+		assertThat(r.get().alg().r)
+				.as("⟨2,4,4⟩-root recombination must reach the FMM recipe rank 1322 (hk71 rep alone: 1324)")
+				.isLessThanOrEqualTo(1322);
+		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg()))
+				.as("⟨6,14,25⟩ result must verify").isTrue();
+	}
+
 	@Test
 	public void retains_issue7_hk_task9_formula_schemes() {
 		int[][] shapes = { { 2, 12, 18 }, { 2, 14, 21 }, { 2, 16, 24 }, { 2, 18, 27 }, { 2, 20, 30 }, { 2, 24, 30 } };
@@ -369,9 +433,12 @@ public class TestSweepSpotsSota {
 	 * allocB=allocC=[8,8,8,8] (each 32=4·8) → 16×⟨3,8,8⟩=145 + 10×⟨2,8,8⟩=100.
 	 *
 	 * <p>The committed catalog held 3446 because the DEFAULT {@code rootPool}
-	 * omits ⟨2,4,4⟩ as an outer base; the ⟨2,4,4⟩ base lives only in the
-	 * derived-inclusive (extended) pool. This guards the mechanism: a regression
-	 * that drops ⟨2,4,4⟩ from the extended pool, breaks 4-way ({@code [8,8,8,8]})
+	 * omitted ⟨2,4,4⟩ as an outer base; until 2026-09-30 the ⟨2,4,4⟩ base lived
+	 * only in the derived-inclusive (extended) pool — since issue #8 two reps are
+	 * {@code rootPool} entries too (labelled {@code HK<2,4,4>=26 (… rep)}), so
+	 * the winner may carry either the extended-pool spelling ({@code 2x4x4}) or
+	 * the root-pool one ({@code 2,4,4}). This guards the mechanism: a regression
+	 * that drops ⟨2,4,4⟩ from both pools, breaks 4-way ({@code [8,8,8,8]})
 	 * allocations, or loses the ⟨3,8,8⟩/⟨2,8,8⟩ leaves would push this back to
 	 * 3446 and fail. SOTA-or-better (≤), so a future improvement never breaks it.</p>
 	 */
@@ -391,6 +458,7 @@ public class TestSweepSpotsSota {
 		assertThat(best.get().recombination())
 				.as("the 3320 route is a recombination, not concat/kronecker").isNotNull();
 		assertThat(best.get().label())
-				.as("the winning outer base must be ⟨2,4,4⟩").contains("2x4x4");
+				.as("the winning outer base must be ⟨2,4,4⟩ (extended-pool '2x4x4' or root-pool '2,4,4' spelling)")
+				.containsAnyOf("2x4x4", "2,4,4");
 	}
 }

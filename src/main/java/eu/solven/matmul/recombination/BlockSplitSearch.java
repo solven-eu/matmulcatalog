@@ -384,6 +384,20 @@ public class BlockSplitSearch {
 				"src/main/resources/schemes/known/section3/alphatensor_Z-2x2x3_m11_a25.json");
 		tryAddOrbit(pool, "AT<2,2,4>=14",
 				"src/main/resources/schemes/known/section4/alphatensor_Z-2x2x4_m14_a48.json");
+		// ── ⟨2,4,4⟩=26 (Hopcroft–Kerr 1971 rank) — registered as a ROOT base per
+		//     issue #8 (2026-09-30). FMM-Lille's "recipe" ranks for the ⟨10,·,·⟩ /
+		//     ⟨6,14,25⟩ family are recombinations over unequal blocks with a ⟨2,4,4⟩:26
+		//     outer; before this entry the base was reachable only through the
+		//     extended pool or --base=2x4x4 (which pins ONE file). Two content-distinct
+		//     representatives are pinned because their product SUPPORTS differ and tile
+		//     differently (the poolContentKey rule): the Perminov-ZT rep wins on the
+		//     ⟨10,·,·⟩ family (ProbeIssue8Recipes: ⟨10,19,31⟩ 3492 vs FMM 3532,
+		//     ⟨10,23,23⟩ 3146 vs 3183, …), the AlphaTensor-Z rep on ⟨6,14,25⟩ (1322) and
+		//     ⟨5,20,26⟩ (1702 vs hk71's 1716). Both are ℤ, hence field-universal. ──
+		tryAddOrbit(pool, "HK<2,4,4>=26 (Perminov-ZT rep)",
+				"src/main/resources/schemes/known/section4/2x4x4-r26-perminov_ZT-a4ed740.json");
+		tryAddOrbit(pool, "HK<2,4,4>=26 (AlphaTensor-Z rep)",
+				"src/main/resources/schemes/known/section4/2x4x4-r26-alphatensor_Z-8e5986a.json");
 		// ── ⟨2,3,*⟩, ⟨3,3,*⟩ ──
 		tryAddOrbit(pool, "AT<2,3,3>=15",
 				"src/main/resources/schemes/known/section3/alphatensor_Z-2x3x3_m15_a58.json");
