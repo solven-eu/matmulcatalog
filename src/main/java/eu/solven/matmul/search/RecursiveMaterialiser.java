@@ -813,10 +813,12 @@ public final class RecursiveMaterialiser {
 		if (hit.isEmpty()) return Optional.empty();
 		var h = hit.get();
 		if (!verifies(h.scheme())) return Optional.empty();
-		// Pin the EXACT parent (N×M×P@hash); projection DCE is parent-sensitive, so a bare
-		// "@sota" parent would make the projection non-reproducible.
-		String ref = preciseParentRef(parHit.path(), N, M, P);
-		Lineage.Node tree = new Lineage.Project(new Lineage.Atom(ref), h.keepN(), h.keepM(), h.keepP());
+		// Pin the EXACT parent: native shape@hash + exact-perm Transpose when oriented.
+		// Projection DCE is parent-sensitive, so a bare "@sota" parent would make the
+		// projection non-reproducible — and an oriented N×M×P@hash re-orients ambiguously
+		// for equal-axis parents (⟨30,31,31⟩ via ⟨31,32,31⟩: evaluated 14129, replayed 14197).
+		Lineage.Node tree = new Lineage.Project(projectionParentNode(parHit.path(), par, N, M, P),
+				h.keepN(), h.keepM(), h.keepP());
 		if (!replaysConsistently(tree, h.scheme())) {
 			log.warn("projectEdge ⟨{},{},{}⟩=r{} via ⟨{},{},{}⟩ produced a NON-replayable lineage"
 					+ " — discarding.", n, m, p, h.scheme().r, N, M, P);
@@ -845,7 +847,17 @@ public final class RecursiveMaterialiser {
 
 	/** A resolved projection parent plus the lineage ref ({@code "NxMxP"} for a disk
 	 *  scheme, {@code "DIS09Lemma4(n=N)"} for a PanTA cube) that replays it. */
-	private record NamedParent(NonCubicBilinearAlgorithm alg, String ref) {}
+	/** A candidate projection parent: its oriented matrices + the replayable lineage node
+	 *  that reconstructs EXACTLY those matrices (native {@code shape@hash} + exact-perm
+	 *  {@code Transpose} when oriented — never a bare oriented {@code NxMxP@hash}, which
+	 *  re-{@code orientAs} ambiguously for equal-axis parents; see {@link #projectionParentNode}). */
+	private record NamedParent(NonCubicBilinearAlgorithm alg, Lineage.Node node) {}
+
+	/** Scatter-pass predict/build divergences (a candidate whose lineage replays WORSE
+	 *  than evaluated). Each is skipped and logged at the candidate level so one bad
+	 *  parent cannot abort a 500-target campaign; {@link #projectScatter} re-throws at
+	 *  the END so the run still fails loud (nothing over-claimed was persisted). */
+	private final List<String> scatterDivergences = new ArrayList<>();
 
 	/**
 	 * Parent-centric (scatter) projection sweep over a set of target {@code children}.
@@ -873,6 +885,16 @@ public final class RecursiveMaterialiser {
 		}
 		log.info("projectScatter done: {} win(s) over {} target shape(s); {} parent replays skipped by margin prune.",
 				total, children.size(), PRUNED_PARENTS.get());
+		if (!scatterDivergences.isEmpty()) {
+			// Every win above was replay-certified before persisting; the divergences were
+			// skipped candidates. Still an engine bug (a phantom evaluated rank) → fail loud
+			// AFTER the campaign, listing each, rather than silently returning.
+			int count = scatterDivergences.size();
+			String all = String.join("\n  ", scatterDivergences);
+			scatterDivergences.clear();
+			throw new IllegalStateException(count + " predict/build divergence(s) during the"
+					+ " scatter (each candidate skipped, nothing over-claimed persisted):\n  " + all);
+		}
 		return total;
 	}
 
@@ -958,12 +980,21 @@ public final class RecursiveMaterialiser {
 			// parent-sensitive, so a bare/@sota parent makes the projection non-reproducible.
 			ParentHit diskHit = resolveParentHit(P[0], P[1], P[2]);
 			if (diskHit != null) {
-				cands.add(new NamedParent(diskHit.alg(),
-						preciseParentRef(diskHit.path(), P[0], P[1], P[2])));
+				try {
+					cands.add(new NamedParent(diskHit.alg(),
+							projectionParentNode(diskHit.path(), diskHit.alg(), P[0], P[1], P[2])));
+				} catch (IllegalStateException e) {
+					// No exact pin possible (no hash, no reproducing perm): skip this parent
+					// rather than emit an ambiguous ref — the 2026-09-30 ⟨30,31,31⟩ divergence.
+					log.warn("[scatter] parent ⟨{},{},{}⟩ from {} not pinnable — skipped: {}",
+							P[0], P[1], P[2], diskHit.path().getFileName(), e.getMessage());
+				}
 			}
 			if (P[0] == P[1] && P[1] == P[2]) {
 				NonCubicBilinearAlgorithm panta = pantaCube(P[0]);
-				if (panta != null) cands.add(new NamedParent(panta, "DIS09Lemma4(n=" + P[0] + ")"));
+				if (panta != null) {
+					cands.add(new NamedParent(panta, new Lineage.Atom("DIS09Lemma4(n=" + P[0] + ")")));
+				}
 			}
 			if (cands.isEmpty()) continue;
 			// 3c. project each candidate down to all covered children, Supports once.
@@ -985,9 +1016,18 @@ public final class RecursiveMaterialiser {
 					int ci = kidIdx.get(j);
 					int[] c = children.get(ci);
 					if (h.scheme().r >= upper[ci]) continue; // strict improvement over live best
-					Lineage.Node tree = new Lineage.Project(new Lineage.Atom(np.ref()),
-							h.keepN(), h.keepM(), h.keepP());
-					if (!replaysConsistently(tree, h.scheme())) continue;
+					Lineage.Node tree = new Lineage.Project(np.node(), h.keepN(), h.keepM(), h.keepP());
+					try {
+						if (!replaysConsistently(tree, h.scheme())) continue;
+					} catch (IllegalStateException divergence) {
+						// Predict/build divergence on THIS candidate: nothing persisted. Record it and
+						// keep the campaign going; projectScatter re-throws at the end (fail loud).
+						String msg = "⟨" + c[0] + "," + c[1] + "," + c[2] + "⟩ via parent ⟨" + P[0] + "," + P[1]
+								+ "," + P[2] + "⟩: " + divergence.getMessage();
+						scatterDivergences.add(msg);
+						log.error("[scatter-divergence] {} — candidate skipped, campaign continues", msg);
+						continue;
+					}
 					persist(c[0], c[1], c[2], new Result(h.scheme(), tree, false)); // immediate, crash-safe
 					upper[ci] = h.scheme().r;   // live bound for the rest of the pass
 					kidUppers[j] = h.scheme().r; // tighten for the next candidate parent
@@ -1545,33 +1585,6 @@ public final class RecursiveMaterialiser {
 	}
 
 	/**
-	 * Build an always-resolvable, bit-exact leaf ref for a building block loaded from
-	 * {@code src}: pin the file's NATIVE shape + its stamped content hash (which a
-	 * later {@code resolveLeaf} resolves via {@code findByHash} for dense files or the
-	 * stamped-hash stub scan), wrapped in an {@link Lineage.OrientAs} when the file's
-	 * native shape differs from the requested ⟨n,m,p⟩. Falls back to a bare (still
-	 * resolvable) shape ref if the file carries no stamped hash.
-	 */
-	/** Precise {@code N×M×P@hash} ref-string for a projection parent file; fails rather
-	 *  than emit a bare/@sota parent (projection DCE needs the exact parent scheme). */
-	private String preciseParentRef(Path src, int N, int M, int P) {
-		String hash;
-		try {
-			hash = SchemeIO.readHash(SchemeIO.parseJson(src.toFile()));
-		} catch (Exception e) {
-			throw new IllegalStateException("projection parent " + src + " unreadable — refusing to"
-					+ " emit a bare/@sota parent ref for ⟨" + N + "," + M + "," + P + "⟩", e);
-		}
-		if (hash == null || hash.isBlank()) hash = hashFromFilename(src); // older atoms hash-in-name only
-		if (hash == null || hash.isBlank()) {
-			throw new IllegalStateException("projection parent " + src.getFileName() + " has no content"
-					+ " hash (neither JSON nor filename) — refusing a bare/@sota parent ref for ⟨" + N
-					+ "," + M + "," + P + "⟩ (the exact parent is load-bearing for projection DCE).");
-		}
-		return N + "x" + M + "x" + P + "@" + hash;
-	}
-
-	/**
 	 * Pin a projection parent as a replayable {@link Lineage.Node}: the file's NATIVE
 	 * (as-stored) {@code shape@hash} Atom, wrapped in an EXACT-perm {@link Lineage.Transpose}
 	 * whenever the search oriented the parent into a different ⟨N,M,P⟩ frame. This keeps the
@@ -1650,6 +1663,14 @@ public final class RecursiveMaterialiser {
 		return new Lineage.OrientAs(legacy, n, m, p, exactPerm.clone());
 	}
 
+	/**
+	 * Build an always-resolvable, bit-exact leaf ref for a building block loaded from
+	 * {@code src}: pin the file's NATIVE shape + its stamped content hash (which a
+	 * later {@code resolveLeaf} resolves via {@code findByHash} for dense files or the
+	 * stamped-hash stub scan), wrapped in an {@link Lineage.OrientAs} when the file's
+	 * native shape differs from the requested ⟨n,m,p⟩. Falls back to a bare (still
+	 * resolvable) shape ref if the file carries no stamped hash.
+	 */
 	private Lineage.Node durableLeafRef(Path src, int n, int m, int p) {
 		int sn, sm, sp;
 		String hash;
