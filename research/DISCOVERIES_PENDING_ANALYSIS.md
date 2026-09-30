@@ -1875,3 +1875,51 @@ the formula for ALL `2 ≤ p ≤ n ≤ 32` (496/496) — unverified.
    `2x20x30-r919`, `2x24x30-r1100` and their consumers are now improvable.
 3. Regenerate `references/fmm-cross-check.md` / `docs/comparison/*` so the six
    UPSTREAM-UNVERIFIED rows become ties.
+
+## 2026-09-30 — Issue #8 (Marcos Adriano): 22 FMM-Lille recipe ranks — RE-DERIVED by our engine, 13 BEATEN (−14…−46), ⟨2,4,4⟩=26 registered as a root base
+
+**Claim (issue [#8](https://github.com/solven-eu/matmulcatalog/issues/8),
+2026-09-24, `lille-recipes-22-schemes.zip`, 321 MB unzipped):** explicit
+schemes at 22 FMM-Lille table ranks with no public witness — the table's own
+recipes executed (outer ⟨2,4,4⟩:26 HK for 14 shapes, Strassen for 8, unequal
+blocks, each product at the smallest size its sides need). 170 mults below our
+catalog in total.
+
+**Verified:** all 22 explicit files pass the `ImportContributedSchemes` gate
+(exact BigInteger symbolic + spot-check; dry-run). NOT imported (dim > 16
+compositions of pieces we hold → lineage stubs, not 321 MB of matrices).
+
+**Re-derived (`docs.explore.ProbeIssue8Recipes` → `SchemeSweep --mode=materialize`):**
+22/22 stubs written and re-verified (16 exact symbolic, 6 spot-check above the
+exact cap). Strictly below the recipe — and below FMM's index — on 13 shapes:
+⟨10,19,31⟩ 3492 (FMM 3532), ⟨10,22,25⟩ 3288 (3308), ⟨10,22,29⟩ 3772 (3795),
+⟨10,23,23⟩ 3146 (3183), ⟨10,23,26⟩ 3534 (3571), ⟨10,23,27⟩ 3648 (3688),
+⟨10,23,30⟩ 4036 (4076), ⟨10,23,31⟩ 4150 (4193), ⟨10,25,26⟩ 3850 (3864),
+⟨10,26,26⟩ 4014 (4028), ⟨10,26,27⟩ 4144 (4172), ⟨10,27,27⟩ 4276 (4322); ties on
+⟨6,14,25⟩ 1322, ⟨10,26,29⟩ 4482 and the 8 Strassen-outer ⟨13/15,·,·⟩ (which only
+needed Perminov's ⟨7,12,16⟩=876 / ⟨7,15,16⟩=1081 pieces + re-materialisation).
+552 mults below the previous catalog in total. Tier: **bound** (B&B node-capped).
+
+**Mechanism:** the outer ⟨2,4,4⟩:26's product SUPPORTS decide the tiling; the
+Perminov-ZT rep (`2x4x4-r26-perminov_ZT-a4ed740`) tiles the ⟨10,·,·⟩ family far
+better than FMM's/our hk71 rep, the AlphaTensor-Z rep wins ⟨6,14,25⟩ / ⟨10,26,29⟩.
+Neither was a `rootPool()` base (`--base=2x4x4` pins ONE file via findWithSource
+— the wrong one). **Fix:** both reps registered in `BlockSplitSearch.rootPool()`
+(kept distinct by `poolContentKey`). Guards: `TestRootPoolContents.poolHasTwoContentDistinct244Roots`,
+`TestSweepSpotsSota.retains_issue8_lille_recipe_ranks` + `compute_pipeline_reaches_6x14x25_1322_via_244_root`.
+
+**Repro:**
+```
+# probe (read-only)
+mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.explore.ProbeIssue8Recipes -Dexec.args="--field=Q"
+# materialise
+… SchemeSweep --mode=materialize --field=Q --config=rectangular --baseFilter=2,4,4 --strategies=recomb --maxNodes=60000000 --shape=6x14x25,10x19x31,…
+… SchemeSweep --mode=materialize --field=Q --config=simple --baseFilter=2,2,2 --strategies=recomb --shape=13x23x31,…,15x31x32
+```
+Record: `references/contributions/issue8-adriano-2026-lille-recipes.md`; REFERENCES.md [89].
+
+**Open:** (1) re-run the 17–32 closure with the two ⟨2,4,4⟩ reps now in the
+default pool — every existing ⟨2,4,4⟩-outer stub was optimised against hk71's
+support only; (2) ⟨6,14,25⟩ FMM index 1320 (index-only) vs ours 1322; (3) the
+contributor's other 14 recipes (piece sums above table rank / non-smallest-size
+allocations / DIS09-style Kronecker-with-correction, e.g. ⟨16,20,28⟩=4944).
