@@ -126,7 +126,12 @@ public class TestSerendipitousStubInner {
 
 	/**
 	 * The persisted ⟨20,28,28⟩=8434 stub replays through its stub inner
-	 * (LineageReplayer.resolveInner) to exactly the claimed rank.
+	 * (LineageReplayer.resolveInner) to AT MOST the claimed rank. Its lineage
+	 * ({@code 5x7x7 ⊗ˢ⟨4,4,4⟩}) resolves bare-shape refs to catalog-best, so a
+	 * better ingredient landing later (the 2026-09 Perminov syncs took it to
+	 * 8422) legitimately improves the replay — assert SOTA-or-better, never
+	 * equality (a real improvement must not break the guard; an over-claim
+	 * still does).
 	 */
 	@Test
 	public void serendip_stub_with_stub_inner_replays() {
@@ -135,7 +140,7 @@ public class TestSerendipitousStubInner {
 		assertThat(stub).exists();
 		NonCubicBilinearAlgorithm replayed =
 				LineageReplayer.withDefaultPool(lookup).replayFromFile(stub);
-		assertThat(replayed.r).isEqualTo(8434);
+		assertThat(replayed.r).isLessThanOrEqualTo(8434);
 		assertThat(new int[] { replayed.n, replayed.m, replayed.p }).containsExactly(20, 28, 28);
 	}
 }
