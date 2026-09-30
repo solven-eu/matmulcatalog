@@ -41,7 +41,7 @@ committed reports that a human would read were never refreshed. The data
 Against Perminov's serendipitous 17–32 band (`perminov-serendipitous-catalog.json`,
 971 formats, each naming the exact base file of its `s1 ⊗ˢ s2` recipe) we were
 worse on **621** formats (11 465 multiplications) — again with a green sync job
-("0 imported, 2597 skipped-existing"). Two causes, both silent:
+("0 imported, 2597 skipped-existing"). Three causes, all silent:
 
 1. **The importer's idempotence key was `(shape, rank)`.** Correct for rank
    results; wrong for `schemes/results/serendipitous_base/`, where several
@@ -58,6 +58,17 @@ worse on **621** formats (11 465 multiplications) — again with a green sync jo
    (no catalog file: it *is* the naive scheme) and dropped every such candidate
    as unbuildable. `⟨13,20,21⟩ = ⟨13,4,3⟩:123 ⊗ˢ ⟨1,5,7⟩ = 3165` was unreachable
    (catalog: 3291) with the base on disk.
+
+3. **The engine fused single-type buds only.** With every base on disk and the
+   unit-axis inner buildable, 45 formats still sat above Perminov's rank. 41 of
+   those recipes carry a *combined* bud in the published structure column
+   (`references/perminov-serendipitous-17-32.json`): a `⟨1,2,2⟩` / `⟨2,1,2⟩` /
+   `⟨2,2,1⟩` grid of four terms that fuses into ONE doubly-enlarged inner —
+   `⟨9,9,18⟩ = 15·⟨6,3,3⟩ + 2·⟨12,3,3⟩ + ⟨6,6,6⟩:153 = 913`, where single-type
+   buds give 920. `SerendipitousBudProduct`'s own class doc had it as "a
+   follow-up". Two more needed a better *choice* of single-type buds than any of
+   the six type orderings (a U-triple must give up a term to that term's only
+   W-partner), and the last two are blocked by the rejected rational bases below.
 
 ## The ≤ 16 band — a third-party dataset no importer listed (Witteveen 2026)
 
@@ -155,6 +166,16 @@ never targeted, and blocked the projection cascade to ⟨26,28,28⟩, ⟨25,28,2
     origin import. This one stays manual by nature: `status.json` names the path,
     not the author.
 
+13. **Combined buds in the serendipitous product** — `GridBud` (`⟨1,b,c⟩`,
+    `⟨a,1,c⟩`, `⟨a,b,1⟩`) detected, priced and built
+    (`SerendipitousBudProduct.buildGridBlock`); the decomposition is now the
+    cheapest of a structural family (grid strategies × type orderings × a
+    fewest-options-first greedy), shared by search and replay. Math, table of
+    mechanisms and the honesty tier (bound) in
+    `references/SERENDIPITOUS_PARTIAL_PRODUCT.md` §6; guards in
+    `TestSerendipitousGridBud` (three grid types against Strassen, scale
+    absorption, ⟨9,9,18⟩ ≤ 913 built and exactly verified, four priced recipes).
+
 ## Follow-ups (not in this PR)
 
 - **CI-able KGP importer**: give `ImportKhoruzhiiLita` a `--download` mode
@@ -175,3 +196,8 @@ never targeted, and blocked the projection cascade to ⟨26,28,28⟩, ⟨25,28,2
 - **Guard the guard**: the scan's output should fail the job (or at least
   warn loudly) when the local-rank map is implausibly small — the June
   regression would have been caught the first Monday.
+- **A cost-aware bud-partition search.** The serendipitous decomposition is the
+  cheapest of a structural family, not an optimum over bud partitions (a weighted
+  set packing). An optimiser that reads the ranks would need the chosen
+  decomposition recorded in the `SerendipitousProduct` lineage node to stay
+  replayable. Three-axis buds (`⟨a,b,c⟩`, all ≥ 2) are not searched either.

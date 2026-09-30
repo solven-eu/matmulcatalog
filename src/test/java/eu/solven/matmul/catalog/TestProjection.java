@@ -115,10 +115,13 @@ public class TestProjection {
 		assertThat(Verifier.passesRandomMatmulSpotCheck(direct)).isTrue();
 
 		// And resolving the shape (as projection's resolveParent does) must pick the
-		// best-rank dis09 stub and replay it — not a worse derived_recursive file.
+		// best-rank stub and replay it — not a worse derived_recursive file. ≤, not =:
+		// the catalog-best at ⟨20,20,20⟩ moves (3995 since the KGP-2026 LITA cubes), and
+		// a better cube must not break this.
 		NonCubicBilinearAlgorithm viaShape =
 				replayer.replay(new eu.solven.matmul.catalog.Lineage.Atom("20x20x20"));
-		assertThat(viaShape.r).isEqualTo(4340);
+		assertThat(viaShape.n).isEqualTo(20);
+		assertThat(viaShape.r).isLessThanOrEqualTo(4340);
 	}
 
 	@Test
