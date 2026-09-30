@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatCols(naive-8x11x1, 8x11x21)",
+  "lineage_compact": "naive-8x11x1 +p 8x11x21",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-8x11x1"},
+    "right": {"op": "Atom", "ref": "8x11x21@33fdabcc468fd60925fd0a5ff357e0224e94b9ab7dd6d086735e2578068d3265"}
+  },
+  "n": [8, 11, 22],
+  "m": 1241,
+  "hash": "ba65cfee18235742a9d99a8e4c0074cb8691c897b819a10a93d345cbfc229a15",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

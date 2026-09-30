@@ -36,6 +36,39 @@ committed reports that a human would read were never refreshed. The data
 (digests, manifest) was correct throughout — the failure was entirely in
 *surfacing*.
 
+## The Perminov side — a second, separate failure (621 shapes)
+
+Against Perminov's serendipitous 17–32 band (`perminov-serendipitous-catalog.json`,
+971 formats, each naming the exact base file of its `s1 ⊗ˢ s2` recipe) we were
+worse on **621** formats (11 465 multiplications) — again with a green sync job
+("0 imported, 2597 skipped-existing"). Two causes, both silent:
+
+1. **The importer's idempotence key was `(shape, rank)`.** Correct for rank
+   results; wrong for `schemes/results/serendipitous_base/`, where several
+   *content-distinct* schemes share a `(shape, rank)` (six `2x3x11_m55_*`) and
+   differ in **bud structure**. At most one variant was imported — not
+   necessarily the bud-rich one a recipe needs. Of 281 upstream bases we held 37.
+   (Same lesson as the ⟨2,4,4⟩=26 representatives in issue #8: schemes at one
+   `(shape, rank)` are not interchangeable.)
+2. **The engine could not build the recipes anyway.** Most of that band is a
+   *degenerate* product `base ⊗ˢ ⟨1,b,c⟩` — the second factor has a unit axis, the
+   base's buds on that axis fuse into `⟨k,b,c⟩` blocks. Prediction priced the
+   unit-axis inner (naive fallback) and the replayer resolved it, but the
+   materialiser's build-time resolver returned "unavailable" for `⟨1,b,c⟩`
+   (no catalog file: it *is* the naive scheme) and dropped every such candidate
+   as unbuildable. `⟨13,20,21⟩ = ⟨13,4,3⟩:123 ⊗ˢ ⟨1,5,7⟩ = 3165` was unreachable
+   (catalog: 3291) with the base on disk.
+
+## A third hider: the manual artifact audit never expired
+
+`references/fmm-artifact-audit.json` (2026-07-09) marks FMM index ranks that
+their published artifact did not back, and `FmmCrossCheck` moves those rows out
+of WORSE ("upstream-unverified", deliberately excluded from every gap-closing
+target list). The entries carried no record of *which* index value was audited,
+so when FMM's index later moved — twelve of them to the KGP cube ranks, which
+we hold and verified — the rows stayed hidden: ⟨27,28,28⟩ sat at 10442 vs 9847,
+never targeted, and blocked the projection cascade to ⟨26,28,28⟩, ⟨25,28,28⟩, ….
+
 ## Fixes shipped with this analysis (branch `resync-perminov-fmm`)
 
 1. **Scan made content-driven** — `ScanUpstreamSources.loadLocalRanks(Path)`
@@ -60,6 +93,17 @@ committed reports that a human would read were never refreshed. The data
    529-target campaign on the first predict/build divergence; it now pins the
    native `shape@hash` + exact-perm `Transpose`, skips a divergent candidate,
    and re-throws the collected divergences at the end.
+6. **Perminov importer keyed by path for serendipitous bases** —
+   `ImportPerminovSchemes` imports every content-distinct
+   `serendipitous_base/` file into `bud-bases/` (hash-stamped reaction bases);
+   the CI sync job therefore picks up new bases from now on. First run: 242
+   imported (2 upstream files rejected by the exact verifier).
+7. **Unit-axis inner in the serendipitous build** — one fallback
+   (`⟨1,b,c⟩` → naive) in `RecursiveMaterialiser.trySerendipitous`; guard
+   `TestSweepSpotsSota.compute_pipeline_reaches_13x20x21_3165_via_unit_axis_inner`.
+8. **Audit entries expire** — each carries the `index_rank` it was audited
+   against; `FmmCrossCheck` honours it only while the digest still shows that
+   rank and lists the expired ones in the report.
 
 ## Follow-ups (not in this PR)
 

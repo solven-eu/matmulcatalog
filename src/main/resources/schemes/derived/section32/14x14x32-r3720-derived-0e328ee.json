@@ -1,0 +1,36 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(KronProduct(Project(2x2x3, keepN=[0, 1], keepM=[0, 1], keepP=[1, 2]), 2x7x7-r76-perminov_Z-f028f76), ⟨14,14,4⟩), 14x14x28)",
+  "lineage_compact": "2x2x3 ∖[||0] ⊗ 2x7x7-r76-perminov_Z-f028f76→⟨14,14,4⟩ +p 14x14x28",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 14,
+      "m": 14,
+      "p": 4,
+      "axisMap": "mpn",
+      "child": {
+        "op": "KronProduct",
+        "outer": {
+          "op": "Project",
+          "keepN": [0, 1],
+          "keepM": [0, 1],
+          "keepP": [1, 2],
+          "child": {"op": "Atom", "ref": "2x2x3@682e003"}
+        },
+        "inner": {"op": "Atom", "ref": "2x7x7-r76-perminov_Z-f028f76"}
+      }
+    },
+    "right": {"op": "Atom", "ref": "14x14x28@4dd70672934936e93036a294ef27aaa3cad5a778b6d018b0bdd03fb9ad52802d"}
+  },
+  "n": [14, 14, 32],
+  "m": 3720,
+  "hash": "0e328eeb32a479332cb2b609433666e6a2ccf3722eb4e061c63f5095b9556bb6",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
