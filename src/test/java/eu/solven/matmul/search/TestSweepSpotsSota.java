@@ -433,9 +433,12 @@ public class TestSweepSpotsSota {
 	 * allocB=allocC=[8,8,8,8] (each 32=4·8) → 16×⟨3,8,8⟩=145 + 10×⟨2,8,8⟩=100.
 	 *
 	 * <p>The committed catalog held 3446 because the DEFAULT {@code rootPool}
-	 * omits ⟨2,4,4⟩ as an outer base; the ⟨2,4,4⟩ base lives only in the
-	 * derived-inclusive (extended) pool. This guards the mechanism: a regression
-	 * that drops ⟨2,4,4⟩ from the extended pool, breaks 4-way ({@code [8,8,8,8]})
+	 * omitted ⟨2,4,4⟩ as an outer base; until 2026-09-30 the ⟨2,4,4⟩ base lived
+	 * only in the derived-inclusive (extended) pool — since issue #8 two reps are
+	 * {@code rootPool} entries too (labelled {@code HK<2,4,4>=26 (… rep)}), so
+	 * the winner may carry either the extended-pool spelling ({@code 2x4x4}) or
+	 * the root-pool one ({@code 2,4,4}). This guards the mechanism: a regression
+	 * that drops ⟨2,4,4⟩ from both pools, breaks 4-way ({@code [8,8,8,8]})
 	 * allocations, or loses the ⟨3,8,8⟩/⟨2,8,8⟩ leaves would push this back to
 	 * 3446 and fail. SOTA-or-better (≤), so a future improvement never breaks it.</p>
 	 */
@@ -455,6 +458,7 @@ public class TestSweepSpotsSota {
 		assertThat(best.get().recombination())
 				.as("the 3320 route is a recombination, not concat/kronecker").isNotNull();
 		assertThat(best.get().label())
-				.as("the winning outer base must be ⟨2,4,4⟩").contains("2x4x4");
+				.as("the winning outer base must be ⟨2,4,4⟩ (extended-pool '2x4x4' or root-pool '2,4,4' spelling)")
+				.containsAnyOf("2x4x4", "2,4,4");
 	}
 }
