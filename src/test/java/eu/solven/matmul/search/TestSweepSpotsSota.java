@@ -304,6 +304,30 @@ public class TestSweepSpotsSota {
 	}
 
 	/**
+	 * Disk-presence guard for the six HK task-#9 shapes (issue #7, Adriano 2026,
+	 * {@code schemes/known/*-adriano_2026-*}): the only {@code g = gcd(n, p/2) ≥ 6}
+	 * shapes in the swept range, at the EXACT Hopcroft–Kerr formula
+	 * {@code ⌈(3pn+max(p,n))/2⌉}. Our own emitter ({@code HopcroftKerr2bcAsymmetric},
+	 * {@code schemes/constructed/}) provably cannot reach the formula there (+1..+3),
+	 * and FMM-Lille lists the rank index-only — so nothing in the COMPUTE pipeline can
+	 * re-derive these; losing the imported files would silently regress all six back
+	 * to +1..+3 with no other symptom. Assert ≤ (a genuine improvement must never
+	 * break this).
+	 */
+	@Test
+	public void retains_issue7_hk_task9_formula_schemes() {
+		int[][] shapes = { { 2, 12, 18 }, { 2, 14, 21 }, { 2, 16, 24 }, { 2, 18, 27 }, { 2, 20, 30 }, { 2, 24, 30 } };
+		for (int[] s : shapes) {
+			int p = s[1], n = s[2];
+			int formula = (int) Math.ceil((3.0 * p * n + Math.max(p, n)) / 2.0);
+			assertThat(lookup.findRank(2, p, n))
+					.as("⟨2,%d,%d⟩ must retain the issue-#7 scheme at the HK formula %d "
+							+ "(the emitter's constructed/ file sits above it)", p, n, formula)
+					.isLessThanOrEqualTo(formula);
+		}
+	}
+
+	/**
 	 * The extended template pool must see the whole catalog tree. A
 	 * {@code listFiles("section*")} on the schemes root (pre-2026-06-10 bug)
 	 * silently returned an empty pool after the known/derived/curated split,
