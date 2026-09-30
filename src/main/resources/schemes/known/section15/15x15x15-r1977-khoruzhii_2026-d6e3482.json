@@ -1,0 +1,31 @@
+{
+  "lineage_str": "TA_lita_npz(n=15)",
+  "lineage_compact": "TA_lita_npz(n=15)",
+  "lineage": {"op": "Atom", "ref": "TA_lita_npz(n=15)"},
+  "n": [15, 15, 15],
+  "m": 1977,
+  "hash": "d6e3482ee1cda210b5126665e5cd1fa21d7dfdbc80efa27e2e547040e27c8be1",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub",
+  "fields_not": [
+    "F2"
+  ],
+  "commutative": false,
+  "source": "Khoruzhii 2026",
+  "year": 2026,
+  "source_paper_url": "https://github.com/khoruzhii/lita",
+  "source_scheme_url": "https://github.com/khoruzhii/lita/blob/master/schemes/15x15x15_r1977.npz",
+  "discovery": true,
+  "discovery_note": "Khoruzhii, Serafin, Gelß & Pokutta 2026, Local Improvements to Trilinear Aggregation (LITA), github.com/khoruzhii/lita — explicit rational ⟨15,15,15⟩=1977 (R_even = N³/3+3N²+37N/6+5, R_odd = N³/3+7N²/2+14N/3−11/2; the Aug–Sep 2026 LITA3…LITA7 constructions, superseding the June generator ported in LitaTaConstruction). Cited by fmm.univ-lille.fr for this cube and, by projection, for its whole ⟨≤N⟩ family. Imported from the repo's 15x15x15_r1977.npz (fmm.q.csr.v1) via NpzSchemeReader; REFERENCES.md [82].",
+  "verified": true,
+  "verification": "exact-symbolic (BigInteger over lcm denominator, 27838744 terms)",
+  "additions": 105423,
+  "has_buds": true,
+  "buds": "167×U⟨1,1,2⟩ + 16×U⟨1,1,7⟩ + 41×V⟨2,1,1⟩ + 16×V⟨7,1,1⟩ + 41×W⟨1,2,1⟩ + 1255×⟨1,1,1⟩",
+  "projection_margin": 30
+}

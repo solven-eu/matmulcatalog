@@ -378,6 +378,28 @@ public class TestSweepSpotsSota {
 				.as("⟨6,14,25⟩ result must verify").isTrue();
 	}
 
+	/**
+	 * Disk-presence guard for the Khoruzhii–Serafin–Gelß–Pokutta 2026 LITA cubes
+	 * (REFERENCES [82]; {@code known/section{N}/{N}x{N}x{N}-r{R}-khoruzhii_2026-*},
+	 * imported 2026-09-30 via {@code ImportKhoruzhiiLita}): the ⟨N,N,N⟩ ranks FMM-Lille's
+	 * 2026-09 index cites, every one below our June-LITA {@code TA_lita} stubs by
+	 * 42 (13³) … 1086 (31³). Our emitter cannot re-derive them (it ports the older
+	 * generator), and every ⟨≤N⟩ family member's projection stub hangs off the cube —
+	 * losing a cube file regresses the whole family silently. Assert ≤ (a better
+	 * cube must never break this).
+	 */
+	@Test
+	public void retains_kgp_lita_cubes() {
+		int[][] rows = { { 13, 1379 }, { 14, 1594 }, { 15, 1977 }, { 16, 2237 }, { 17, 2723 }, { 18, 3032 },
+				{ 19, 3633 }, { 20, 3995 }, { 21, 4723 }, { 22, 5142 }, { 23, 6009 }, { 24, 6489 }, { 25, 7507 },
+				{ 26, 8052 }, { 27, 9233 }, { 28, 9847 }, { 29, 11203 }, { 30, 11890 }, { 31, 13433 }, { 32, 14197 } };
+		for (int[] r : rows) {
+			assertThat(lookup.findRank(r[0], r[0], r[0]))
+					.as("⟨%d,%d,%d⟩ must retain the KGP-2026 LITA cube at %d (FMM index rank)", r[0], r[0], r[0], r[1])
+					.isLessThanOrEqualTo(r[1]);
+		}
+	}
+
 	@Test
 	public void retains_issue7_hk_task9_formula_schemes() {
 		int[][] shapes = { { 2, 12, 18 }, { 2, 14, 21 }, { 2, 16, 24 }, { 2, 18, 27 }, { 2, 20, 30 }, { 2, 24, 30 } };

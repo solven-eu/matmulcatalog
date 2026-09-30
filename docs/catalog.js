@@ -50,6 +50,8 @@ function referencesMdAnchor(sourceKey) {
   if (sourceKey === "Kaporin 2024")                                return "87-kaporin-2024-brent";
   // Community contribution (GitHub issue #7): the six g ≥ 6 ℤ⟨2,p,n⟩ HK-formula schemes.
   if (sourceKey === "Adriano 2026")                                return "88-adriano-2026-hk-task9";
+  // Khoruzhii–Serafin–Gelß–Pokutta 2026 LITA cubes (github.com/khoruzhii/lita, imported 2026-09-30).
+  if (sourceKey.startsWith("Khoruzhii"))                           return "82-khoruzhii-2026-lita";
   if (sourceKey.startsWith("Schwartz") && sourceKey.includes("2025")) return "19-schwartz-zwecher25";
   if (sourceKey.startsWith("Drevet") && sourceKey.includes("2010")) return "20-drevet-schost-poster";
   if (sourceKey.startsWith("Sedoglavic 2017"))                     return "21-sedoglavic17";

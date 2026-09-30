@@ -224,7 +224,7 @@ add the **Local PDF** line linking the file path.
 | [79](#79-perminov-2025-3x3-a58) | perminov-2025-3x3-a58 | 2025 | algorithm | A. I. Perminov, *A 58-Addition, Rank-23 Scheme for General 3×3 Matrix Multiplication*, arXiv:2512.21980 (Dec 2025). The `R(⟨3,3,3⟩)=23` scheme with only 58 additions and no basis change (also cited as `[add58]` in [RANK_KNOWLEDGE.md](paper/theory/RANK_KNOWLEDGE.md)). [Abs](https://arxiv.org/abs/2512.21980) |
 | [80](#80-alekseev-smirnov-2013) | alekseev-smirnov-2013 | 2013 | algorithm (🇷🇺 Russian) | V. B. Alekseev & Alexey Vladimirovich Smirnov, "On the exact and approximate bilinear complexities of multiplication of 4×2 and 2×2 matrices" (**in Russian**), *Sovr. Probl. Mat.* 17:135–152. Independent confirmation of the exact + border ranks for the inner-dimension-2 Hopcroft-Kerr family (`⟨4,2,2⟩`, `⟨2,2,2⟩`). DOI [10.4213/spm47](https://doi.org/10.4213/spm47); [ResearchGate (RU)](https://www.researchgate.net/publication/284529885_On_the_exact_and_approximate_bilinear_complexities_of_multiplication_of_42_and_22_matrices). |
 | [81](#81-hopcroft-musinski-1973) | hopcroft-musinski-1973 | 1973 | duality / algorithm | J. E. Hopcroft & J. Musinski, "Duality applied to the complexity of matrix multiplication and other bilinear forms," *SIAM J. Comput.* 2(3):159–173. S₃-invariance of matmul rank (Thm 6 / Cor 7); states the Hopcroft-Kerr `⌈(3pn+max(n,p))/2⌉` bound for `p×2 by 2×n` (draft p. 76) and propagates it by duality. Local draft PDF + [cr.yp.to mirror](https://cr.yp.to/bib/1973/hopcroft-duality-draft.pdf). |
-| [82](#82-khoruzhii-2026-lita) | khoruzhii2026lita | 2026 | algorithm (formula) | Kirill Khoruzhii, Patrick Gelß & Sebastian Pokutta, *Local Improvements to Trilinear Aggregation* (LITA). Field-independent closed-form NC cubic rank: even `Rₑ(N)=N³/3+15N²/4+29N/3+7`, odd `Rₒ(N)=(4N³+57N²+14N−15)/12−⌊3(N−1)/8⌋`. Reproduces FMM's large-cubic index values (`R⟨21³⟩=5198`, `R⟨23³⟩=6586`, `R⟨25³⟩=8196`, …). Wired in `LitaTrilinearAggregation`. [GitHub](https://github.com/khoruzhii/lita) |
+| [82](#82-khoruzhii-2026-lita) | khoruzhii2026lita | 2026 | algorithm (formula + explicit ⟨N³⟩, 13≤N≤32) | Kirill Khoruzhii, Luzian Serafin, Patrick Gelß & Sebastian Pokutta, *Local Improvements to Trilinear Aggregation* (LITA; repo updated Aug–Sep 2026 — LITA3…LITA7, explicit `.npz` schemes 13³=1379 … 32³=14197, ω≈2.7587, imported 2026-09-30 as `khoruzhii_2026`). Field-independent closed-form NC cubic rank: even `Rₑ(N)=N³/3+15N²/4+29N/3+7`, odd `Rₒ(N)=(4N³+57N²+14N−15)/12−⌊3(N−1)/8⌋`. Reproduces FMM's large-cubic index values (`R⟨21³⟩=5198`, `R⟨23³⟩=6586`, `R⟨25³⟩=8196`, …). Wired in `LitaTrilinearAggregation`. [GitHub](https://github.com/khoruzhii/lita) |
 | [82](#82-deza-2023-cp) | deza-2023-cp | 2023 | method (exact / infeasibility) | A. Deza, C. Liu, P. Vaezipoor & E. B. Khalil, *Fast Matrix Multiplication Without Tears: A Constraint Programming Approach*, CP 2023 (LIPIcs vol. 280, art. 26), arXiv:2306.01097. CSP/CP formulation of the Brent equations over `{−1,0,1}` with **symmetry-breaking constraints + valid inequalities** enabling *exact* search and **infeasibility proofs** up to ⟨3,3,3⟩=23 — the complement to our heuristic upper-bound construction. Directly comparable to our axis-flip / allocation canonicalisation. Code: [khalil-research/Matrix-Mult-CP](https://github.com/khalil-research/Matrix-Mult-CP). [Abs](https://arxiv.org/abs/2306.01097) |
 | [83](#83-kauers-2026-structure) | kauers-2026-structure | 2026 | method (**serendipitous / buds**) | M. Kauers, J. Moosbauer & I. Wood, *Exploiting the Structure in Tensor Decompositions for Matrix Multiplication*, arXiv:2602.11041 (May 2026; submitted to Elsevier). **The published formalisation of exactly our bud / serendipitous-product idea**: recursive calls that *share an output* (or whose output feeds multiple positions) are merged into a *single larger* matrix multiplication, giving an effective exponent **lower than the tensor rank suggests** — improving 6×6 from ω 2.8075→**2.8019**. Direct prior/concurrent art for our `#159` serendipitous engine, `SerendipitousBudProduct`, and `BudBaseFactory`; cite in the paper. [Abs](https://arxiv.org/abs/2602.11041) |
 | [84](#84-heule-kauers-seidl-2019) | heule-kauers-seidl-2019 | 2019 | method (SAT search) / algorithm | M. J. H. Heule, M. Kauers & M. Seidl, *New Ways to Multiply 3×3-Matrices*, arXiv:1905.10192 (2019); J. Symbolic Computation **104** (2021) 899–916. SAT/heuristic search that produced **many distinct rank-23 ⟨3,3,3⟩ schemes** over ℤ and small fields, mapping out the solution variety (not a rank improvement — ⟨3,3,3⟩=23 is Laderman 1976 — but a *diversity* result, directly relevant to our orbit/uniqueness work and to bud-rich base selection). PDF: [cs.cmu.edu/~mheule/publications/CCA19.pdf](https://www.cs.cmu.edu/~mheule/publications/CCA19.pdf); [arXiv](https://arxiv.org/abs/1905.10192). |
@@ -2054,7 +2054,36 @@ generators (`scripts/KGP2026_{odd,even}.mpl`) to Java as a `TA_lita` lineage op
 that materialises the explicit U/V/W on demand (for verification / bud-structure)
 — a self-contained "derive, don't import" realisation.
 
-Cited in: REFERENCES.md, `LitaTrilinearAggregation`, `GenerateDerivedBounds`.
+> **Update 2026-09-30 — the repo moved well past the June generator we ported.**
+> The authors (now Kirill Khoruzhii, **Luzian Serafin**, Patrick Gelß & Sebastian
+> Pokutta; the README's bibtex adds Serafin) pushed "LITA3 … LITA7 odd"
+> constructions through August–September 2026 (last commit 2026-09-24) and
+> publish **explicit rational schemes** `schemes/{N}x{N}x{N}_r{R}.npz`
+> (format `fmmp.qcsr.v1`, CSR numerators/denominators) for every
+> **13 ≤ N ≤ 32**, at
+> `R_even(N) = N³/3 + 3N² + 37N/6 + 5` (`scripts/lita.py`, even N ≥ 8) and
+> `R_odd(N) = N³/3 + 7N²/2 + 14N/3 − 11/2` (`scripts/lita_odd.py`, odd 9 ≤ N < 32):
+> 13³=1379, 14³=1594, …, 21³=**4723** (the June formula: 5198), 27³=9233,
+> 31³=13433, **32³=14197 (ω ≈ 2.75866**, below Schwartz–Zwecher's N=44
+> exponent 2.77320). FMM-Lille's index adopted them in 2026-09 (every cube head
+> cites the repo; the non-square members inherit by `Proj`), which is what
+> pushed ~530 shapes below our catalog at once. **Imported 2026-09-30** as
+> `known/section{N}/{N}x{N}x{N}-r{R}-khoruzhii_2026-*.json`
+> (`source: "Khoruzhii 2026"`, `discovery: true`) through `ImportKhoruzhiiLita`
+> + the Python-free `io.NpzSchemeReader`, with a size-aware gate (exact
+> BigInteger proof where the term count fits — 13³/15³/17³ — spot-check tier
+> otherwise; the `verification` field says which). Every scheme has even
+> denominators → `fields_not [F2]`; F₃ is verified exactly for 14³ and 15³
+> (`fields [F3,Q,R,C]`), ruled out by a denominator divisible by 3 on most
+> others, and left unclaimed where the dense mod-3 check exceeded the import
+> budget (20³, 21³, 26³, 27³, 32³ — `notes` says so). Our
+> `LitaTaConstruction` / `TA_lita` stubs (N ≥ 19, the June formula) are now
+> superseded on every cube; porting `lita.py` / `lita_odd.py` is the
+> "derive, don't import" follow-up.
+
+Cited in: REFERENCES.md, `LitaTrilinearAggregation`, `LitaTaConstruction`,
+`GenerateDerivedBounds`, `ImportKhoruzhiiLita`, the 20 loaded scheme JSONs,
+`docs/catalog.js` (source → [82]).
 
 ---
 
