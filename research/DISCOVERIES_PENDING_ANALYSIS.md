@@ -1822,3 +1822,56 @@ decision `constructWithTaFusion` makes) and take the min — aligning SCORED wit
 candidate keeps `pairing=null`; materialisation recomputes the pairs from the allocation.
 Both guards re-enabled and pass (build log: "rank 11687 = 8827 leaves + 2860 fused; Pan-TA
 saved 136"). `TestTaPeelDecomposition` restored to its original committed form.
+
+## 2026-09-30 — Issue #7 (Marcos Adriano): the six g ≥ 6 ⟨2,p,n⟩ shapes at the EXACT HK formula, over ℤ — verified + IMPORTED (task #9 closed externally)
+
+**Claim (issue [#7](https://github.com/solven-eu/matmulcatalog/issues/7),
+2026-09-24, attachment `hk-task9-schemes.zip`):** explicit integer schemes at
+`⌈(3pn+max(p,n))/2⌉` for exactly the six shapes our HK emitter provably cannot
+reach in-framework: `⟨2,12,18⟩=333` (ours 334), `⟨2,14,21⟩=452` (453),
+`⟨2,16,24⟩=588` (590), `⟨2,18,27⟩=743` (745), `⟨2,20,30⟩=915` (918),
+`⟨2,24,30⟩=1095` (1096). FMM-Lille lists these ranks index-only
+(`fmm-cross-check.md` "UPSTREAM-UNVERIFIED").
+
+**Verified — all six, exactly.** New driver
+`docs.migrate.ImportContributedSchemes` (dry-run, then `--execute`): exact
+BigInteger symbolic (`Verifier.isExactNonCubic`) ✓, random spot-check ✓, fields
+from coefficients `[F2,F3,Z,Q,R,C]` (all-integer, max |c| = 9/10/19/63/35/17,
+NOT ternary), canonical-disk round-trip ✓. Gate sanity: a one-sign-flip copy is
+rejected. ~4.6 s total. `VerifyOneScheme` on the committed files:
+`EXACT_SYMBOLIC = true`.
+
+**Repro:**
+```
+mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.ImportContributedSchemes \
+  -Dexec.args="<unzipped dir> --meta=references/contributions/issue7-adriano-2026.meta.json --field=Q --execute"
+```
+
+**Registered (permanent home):** `schemes/known/section{n}/2x{p}x{n}-r{formula}-adriano_2026-{hash7}.json`
+(`source: "Adriano 2026"`, `discovery: false`, `attribution_for_rank` → HK71 for
+the value + contributor for the first explicit scheme, `verified: true`, Phase-2
+metrics stamped). The emitter's `constructed/` files (334…1096) stay on disk
+(chronology). Record: `references/contributions/issue7-adriano-2026-hk-task9.md`;
+REFERENCES.md [88]; notes updated in `research/hopcroft-kerr-2np/*`, ROADMAP,
+`references/hopcroftkerr1971/README.md` banner, `paper/sections/hk71.tex`
+(checkpoint paragraph + `adriano2026hk`). Guards:
+`TestImportContributedSchemes`, `TestSweepSpotsSota.retains_issue7_hk_task9_formula_schemes`.
+
+**Breakdown (contributor's construction — reported, NOT re-derived here):**
+methods as tori / eigenline pairs (Lemma 2 = 3 products iff the tori share
+exactly one line); tripartite method graph + non-cyclic locally-unimodular
+Lemma-1 windows (5 shapes, no bridges); ⟨2,24,30⟩ via a virtual-row bridge
+`ā_i+ā_b` = a 3-product `(3,3,bridge)` completion over the **12-product**
+reusable set (never with 6 or 9 per his exhaustive F₂/F₃/F₅ — consistent with
+our 9-product theorem). Also claims a rational pencil-of-tori construction at
+the formula for ALL `2 ≤ p ≤ n ≤ 32` (496/496) — unverified.
+
+**Status / follow-ups (open):**
+1. Ask the contributor for the generator; port into `HopcroftKerr2bcAsymmetric`
+   (integer tripartite tiling + virtual-vertex bridge; optionally the rational
+   pencil) so the family is emitted + certified by us beyond n ≤ 32.
+2. Re-run the closure sweep (`SchemeSweep --field=Q`) over shapes consuming
+   these six as ingredients — derived stubs `2x16x24-r591`, `2x18x27-r746`,
+   `2x20x30-r919`, `2x24x30-r1100` and their consumers are now improvable.
+3. Regenerate `references/fmm-cross-check.md` / `docs/comparison/*` so the six
+   UPSTREAM-UNVERIFIED rows become ties.

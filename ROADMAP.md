@@ -276,7 +276,7 @@ per the project's "prefer derivable over imported" rule. Tracker:
 the imported schemes' JSONs carry
 `"derivation_task": "TBD-SZ2025-kin-row-constructor"`.
 
-### HK 2bc constructive closure ✅ (2026-06-11/12 — one residue open)
+### HK 2bc constructive closure ✅ (2026-06-11/12; residue closed externally 2026-09-30)
 **Status:** SOLVED. The constructive procedure exists and shipped:
 **465 integer (ℤ) schemes** over `3 ≤ p ≤ 32, p ≤ n ≤ 32` in
 `schemes/constructed/`, **459 at the exact HK formula**
@@ -294,14 +294,21 @@ back-substitution → ℤ schemes. Recipe + proofs:
 paper section `paper/sections/hk71.tex`; historical impossibility doc
 (status-bannered): [`references/hopcroftkerr1971/README.md`](references/hopcroftkerr1971/README.md).
 
-**Open residue (task #9):** the six `g ≥ 6` circulant shapes sit at
-+1..+3 over the formula (still below every catalog) — provably
-formula-impossible in-framework: arc-sum placement + the
-`(3,3,bridge-1/2)` impossibility THEOREM over arbitrary local rank-1
+**Residue (task #9) — CLOSED externally 2026-09-30:** the six `g ≥ 6`
+circulant shapes sat at +1..+3 over the formula (still below every
+catalog) — provably formula-impossible in-framework: arc-sum placement +
+the `(3,3,bridge-1/2)` impossibility THEOREM over arbitrary local rank-1
 atoms (9-product reusable set, `sympy/derive_33bridge_general.py`).
-Resume route: the 12-product reusable set (finite quadratic system
-after structural substitution — Gröbner), non-local atoms, or
-4-product trades. Lower bounds: parked by explicit decision.
+[Issue #7](https://github.com/solven-eu/matmulcatalog/issues/7) (Marcos
+Adriano) contributed explicit ℤ schemes at the exact formula for all six
+(333/452/588/743/915/1095), exact-verified and imported as
+`schemes/known/*-adriano_2026-*` via the new `ImportContributedSchemes`
+gate — the route was exactly the 12-product reusable set (virtual-row
+bridge), plus a tripartite tiling with non-cyclic unimodular Lemma-1
+windows. Record: `references/contributions/issue7-adriano-2026-hk-task9.md`.
+Still ours to do: port the construction into the emitter (incl. the
+reported rational pencil-of-tori variant) and re-sweep shapes consuming
+these six. Lower bounds: parked by explicit decision.
 
 ### Deferred `_reduced` schemes 🟡
 **Status:** 167 `_reduced` schemes now verify end-to-end after the

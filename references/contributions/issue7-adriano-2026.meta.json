@@ -1,0 +1,11 @@
+{
+  "_comment": "Provenance stamped by ImportContributedSchemes --meta=<this file> (UTF-8). Import command + verification record: references/contributions/issue7-adriano-2026-hk-task9.md",
+  "note": "adriano_2026",
+  "source": "Adriano 2026",
+  "year": 2026,
+  "source_url": "https://github.com/solven-eu/matmulcatalog/issues/7",
+  "discovery": "false",
+  "attribution_for_rank": "Hopcroft & Kerr 1971, Theorem 1 — the ⌈(3pn+max(p,n))/2⌉ bound (rank listed index-only, without any artifact, by fmm.univ-lille.fr). First EXPLICIT scheme at this shape: Marcos Adriano, 2026 (github.com/solven-eu/matmulcatalog/issues/7).",
+  "discovery_note": "Explicit integer factor matrices at the exact HK formula for a g = gcd(n, p/2) ≥ 6 shape — task #9's open residue, where our own emitter (schemes/constructed/, HopcroftKerr2bcAsymmetric) lands +1..+3 over the formula and FMM-Lille lists the rank without a scheme. Construction as described by the contributor in issue #7 (NOT re-derived here — only the scheme itself is machine-verified): HK's three diagonal methods viewed as tori (pairs of eigenlines), Lemma 2 costing 3 products iff the two tori share exactly one line; a tripartite method graph (one method per part) with integer Lemma-2 edges; for ⟨2,24,30⟩ the forced equal-method pairs are bridged through the virtual row ā_i+ā_b — a 3-product completion over the 12-product reusable set, (3,3) pairs included; Lemma-1 augmentation M=[I;B], B∈{−1,0,1}, every window actually used unimodular. Verified here: exact symbolic (BigInteger over the lcm denominator, Verifier.isExactNonCubic), random matmul spot-check, exact mod-2 / mod-3 reductions, canonical-disk round-trip. See references/contributions/issue7-adriano-2026-hk-task9.md.",
+  "notes": "Contributed as hk-task9-schemes.zip on issue #7 (2026-09-24). Coefficients all integer, max |c| = 9 / 10 / 19 / 63 / 35 / 17 for ⟨2,12,18⟩ / ⟨2,14,21⟩ / ⟨2,16,24⟩ / ⟨2,18,27⟩ / ⟨2,20,30⟩ / ⟨2,24,30⟩ — NOT ternary (zt:false). The contributor states the work was done with the help of AI tools."
+}

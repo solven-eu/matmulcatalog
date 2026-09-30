@@ -187,7 +187,9 @@ circulant decomposes into \(k{+}1\) triangles, demanding
 \(3k{+}6 > n\) — impossible. Those shapes (\(g \ge 6\) odd cycles; six in
 the full sweep range, \(\nmpshape{2}{12}{18}\) through
 \(\nmpshape{2}{24}{30}\)) land at formula\(+1\) to \(+3\); everything else
-closes exactly.
+closes exactly. (Those six have since been attained by an external
+construction outside this framework — see the 2026-09-30 checkpoint
+below.)
 
 \subsection{A worked obstruction: the gcd accounting at
 \(\nmpshape{2}{12}{18}\)}
@@ -381,6 +383,41 @@ attribution dynamics of Section~\ref{ssec:head-to-head}.
     impossibility boundary.
 \end{itemize}
 
+\paragraph{Checkpoint: the \(g \ge 6\) family attained, by a community
+contribution (2026-09-30).} The open question just stated has since been
+answered in the affirmative --- and not by us. Marcos Adriano contributed,
+through the catalog's issue tracker~\cite{adriano2026hk}, explicit
+\emph{integer} schemes at the exact formula for all six shapes:
+\(\nmpfield{\Integers}{2}{12}{18}{=}333\),
+\(\nmpfield{\Integers}{2}{14}{21}{=}452\),
+\(\nmpfield{\Integers}{2}{16}{24}{=}588\),
+\(\nmpfield{\Integers}{2}{18}{27}{=}743\),
+\(\nmpfield{\Integers}{2}{20}{30}{=}915\) and
+\(\nmpfield{\Integers}{2}{24}{30}{=}1095\). We verified each exactly
+(integer-scaled symbolic check of the full bilinear identity, an
+independent random spot-check, and the modular reductions) and loaded them
+into the catalog's \emph{known} tier, attributing the rank value to
+Hopcroft--Kerr and the first explicit witness to the contributor. His
+construction, as described (we did not re-derive it), takes precisely the
+first route left open in the honesty notes below: the three diagonal
+methods are viewed as \emph{tori} (pairs of eigenlines; Lemma~2 costs three
+products iff two tori share exactly one line), the band is tiled by a
+tripartite method graph with integer Lemma-2 edges and non-cyclic,
+locally-unimodular Lemma-1 windows --- which dissolves the circulant
+obstruction for five shapes --- and at \(\nmpshape{2}{24}{30}\), where
+equal-method pairs are forced, a \((3,3)\) pair is bridged through the
+\emph{virtual row} \(a_i{+}a_b\) over the \emph{twelve}-product reusable
+set, a three-product completion. His exhaustive search over
+\(\mathbb{F}_2,\mathbb{F}_3,\mathbb{F}_5\) finds no such completion with
+six or nine reusable products and always one with twelve --- consistent
+with our theorem, and outside its scope. So the framework boundary was,
+once more, not the truth boundary: the catalog now holds the Hopcroft--Kerr
+formula at every shape of the swept range, while our own emitter is
+unchanged and still lands \(+1\)..\(+3\) at these six. (The contributor
+further reports a rational pencil-of-tori construction that reaches the
+formula without any bridge for every \(2 \le p \le n \le 32\); we have not
+verified it.)
+
 \subsection{Honesty notes}
 
 The construction is an upper-bound realisation; Hopcroft--Kerr proved
@@ -390,9 +427,12 @@ over all rank-1 atoms \emph{local to the three rows/columns} \(\{i,b,j\}\)
 and scoped to the emitter's nine-product reusable set; widening the
 reusable set to all twelve products of both adjacent Lemma-2 pairs (which
 couples the block decomposition), admitting non-local atoms, or trading a
-four-product completion against savings elsewhere remain open — these are
-the only identified routes to the six \(g \ge 6\) shapes still at
-\(+1\)..\(+3\) over the formula (themselves below every published catalog).
-Lower bounds beyond Hopcroft--Kerr's own remain out of scope. Short
+four-product completion against savings elsewhere were the only identified
+routes to the six \(g \ge 6\) shapes at \(+1\)..\(+3\) over the formula
+(themselves below every published catalog); the first of these routes has
+since been realised externally (checkpoint above), which settles the
+\emph{attainability} of the formula at those six shapes but leaves the
+theorem, in its nine-product scope, intact. Lower bounds beyond
+Hopcroft--Kerr's own remain out of scope. Short
 computer-algebra scripts accompanying the catalog reproduce every claim in
 minutes.

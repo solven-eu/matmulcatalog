@@ -48,6 +48,8 @@ function referencesMdAnchor(sourceKey) {
   if (sourceKey === "Perminov (FastMatrixMultiplication)")         return "18-perminov";
   if (sourceKey === "Perminov 2026 (serendipitous)")               return "86-perminov-2026-serendipitous";
   if (sourceKey === "Kaporin 2024")                                return "87-kaporin-2024-brent";
+  // Community contribution (GitHub issue #7): the six g ≥ 6 ℤ⟨2,p,n⟩ HK-formula schemes.
+  if (sourceKey === "Adriano 2026")                                return "88-adriano-2026-hk-task9";
   if (sourceKey.startsWith("Schwartz") && sourceKey.includes("2025")) return "19-schwartz-zwecher25";
   if (sourceKey.startsWith("Drevet") && sourceKey.includes("2010")) return "20-drevet-schost-poster";
   if (sourceKey.startsWith("Sedoglavic 2017"))                     return "21-sedoglavic17";
