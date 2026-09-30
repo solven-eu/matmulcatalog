@@ -1,5 +1,5 @@
 {
-  "total": 9561,
+  "total": 9567,
   "schemes": [
     {
       "format": [2, 9, 10],
@@ -294960,6 +294960,43 @@
       "pareto_rank_buds": true
     },
     {
+      "format": [2, 12, 18],
+      "max_dim": 18,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 333,
+      "additions": 5007,
+      "has_buds": false,
+      "projection_margin": 117,
+      "source": "Adriano 2026",
+      "source_url": "https://github.com/solven-eu/matmulcatalog/issues/7",
+      "year": 2026,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section18/2x12x18-r333-adriano_2026-d046d2b.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 333,
+        "details_url": "https://fmm.univ-lille.fr/2x12x18.html",
+        "references": [
+          "hopcroft:1971"
+        ]
+      },
+      "external_best_rank": 333,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
       "format": [19, 19, 19],
       "max_dim": 19,
       "fields": [
@@ -295250,6 +295287,45 @@
       "pareto_rank_buds": true
     },
     {
+      "format": [2, 14, 21],
+      "max_dim": 21,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 452,
+      "additions": 7528,
+      "has_buds": true,
+      "buds": "1×U⟨1,1,2⟩ + 1×W⟨1,2,1⟩ + 448×⟨1,1,1⟩",
+      "projection_margin": 158,
+      "buds_certainty": "exact",
+      "source": "Adriano 2026",
+      "source_url": "https://github.com/solven-eu/matmulcatalog/issues/7",
+      "year": 2026,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section21/2x14x21-r452-adriano_2026-365353f.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 452,
+        "details_url": "https://fmm.univ-lille.fr/2x14x21.html",
+        "references": [
+          "hopcroft:1971"
+        ]
+      },
+      "external_best_rank": 452,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 4,
+      "pareto_rank_buds": true
+    },
+    {
       "format": [22, 22, 22],
       "max_dim": 22,
       "fields": [
@@ -295392,6 +295468,37 @@
       "used_as_base": {"by_concat": 2, "total": 2}
     },
     {
+      "format": [2, 16, 24],
+      "max_dim": 24,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 588,
+      "additions": 10588,
+      "has_buds": false,
+      "projection_margin": 204,
+      "source": "Adriano 2026",
+      "source_url": "https://github.com/solven-eu/matmulcatalog/issues/7",
+      "year": 2026,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section24/2x16x24-r588-adriano_2026-b4f0c4f.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 588, "details_url": "https://fmm.univ-lille.fr/2x16x24.html"},
+      "external_best_rank": 588,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
       "format": [25, 25, 25],
       "max_dim": 25,
       "fields": [
@@ -295503,6 +295610,45 @@
       "external_best_source": "fmm-lille",
       "external_cited": false,
       "bud_score": 3594,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [2, 18, 27],
+      "max_dim": 27,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 743,
+      "additions": 15349,
+      "has_buds": true,
+      "buds": "1×U⟨1,1,2⟩ + 1×W⟨1,2,1⟩ + 739×⟨1,1,1⟩",
+      "projection_margin": 257,
+      "buds_certainty": "exact",
+      "source": "Adriano 2026",
+      "source_url": "https://github.com/solven-eu/matmulcatalog/issues/7",
+      "year": 2026,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section27/2x18x27-r743-adriano_2026-47aa850.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 743,
+        "details_url": "https://fmm.univ-lille.fr/2x18x27.html",
+        "references": [
+          "hopcroft:1971"
+        ]
+      },
+      "external_best_rank": 743,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 4,
       "pareto_rank_buds": true
     },
     {
@@ -296363,6 +296509,74 @@
         ]
       },
       "bud_score": 6,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [2, 20, 30],
+      "max_dim": 30,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 915,
+      "additions": 21243,
+      "has_buds": false,
+      "projection_margin": 315,
+      "source": "Adriano 2026",
+      "source_url": "https://github.com/solven-eu/matmulcatalog/issues/7",
+      "year": 2026,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section30/2x20x30-r915-adriano_2026-aaf5f01.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 915, "details_url": "https://fmm.univ-lille.fr/2x20x30.html"},
+      "external_best_rank": 915,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [2, 24, 30],
+      "max_dim": 30,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1095,
+      "additions": 20479,
+      "has_buds": false,
+      "projection_margin": 375,
+      "source": "Adriano 2026",
+      "source_url": "https://github.com/solven-eu/matmulcatalog/issues/7",
+      "year": 2026,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section30/2x24x30-r1095-adriano_2026-67ab18d.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1095,
+        "details_url": "https://fmm.univ-lille.fr/2x24x30.html",
+        "references": [
+          "hopcroft:1971"
+        ]
+      },
+      "external_best_rank": 1095,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
