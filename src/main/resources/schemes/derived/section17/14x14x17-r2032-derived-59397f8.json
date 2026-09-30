@@ -1,0 +1,55 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(ConcatCols(SumInner(OrientAs(3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad, ⟨3,7,4⟩), OrientAs(3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad, ⟨3,7,4⟩)), OrientAs(3x10x14-r312-perminov_ZT-14f1415, ⟨3,14,10⟩)), ⟨14,14,3⟩), 14x14x14)",
+  "lineage_compact": "3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad→⟨3,7,4⟩ +m 3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad→⟨3,7,4⟩ +p 3x10x14-r312-perminov_ZT-14f1415→⟨3,14,10⟩→⟨14,14,3⟩ +p 14x14x14",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 14,
+      "m": 14,
+      "p": 3,
+      "axisMap": "mpn",
+      "child": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 4,
+            "axisMap": "npm",
+            "child": {"op": "Atom", "ref": "3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad"}
+          },
+          "right": {
+            "op": "OrientAs",
+            "n": 3,
+            "m": 7,
+            "p": 4,
+            "axisMap": "npm",
+            "child": {"op": "Atom", "ref": "3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad"}
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 14,
+          "p": 10,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "3x10x14-r312-perminov_ZT-14f1415"}
+        }
+      }
+    },
+    "right": {"op": "Atom", "ref": "14x14x14@0a6a8a070d2d4785ca5c1cbb81e95deb297eef4fa85a85ab583e8e5d3034f195"}
+  },
+  "n": [14, 14, 17],
+  "m": 2032,
+  "hash": "59397f800080118e2b36197d3c6af5b7005e91594491622ad128d74867d133d7",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

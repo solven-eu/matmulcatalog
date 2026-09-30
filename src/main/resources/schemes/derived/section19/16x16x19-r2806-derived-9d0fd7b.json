@@ -1,0 +1,60 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(ConcatCols(SumInner(Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), SumInner(3x4x6-r54-alphaevolve-c197868, KronProduct(naive-1x3x1, Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6])))), OrientAs(3x10x16-r355-perminov_ZT-6cc036e, ⟨3,16,10⟩)), ⟨16,16,3⟩), 16x16x16)",
+  "lineage_compact": "3x3x7 ∖[||0] +m 3x4x6-r54-alphaevolve-c197868 +m naive-1x3x1 ⊗ 3x3x7 ∖[||0] +p 3x10x16-r355-perminov_ZT-6cc036e→⟨3,16,10⟩→⟨16,16,3⟩ +p 16x16x16",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 16,
+      "m": 16,
+      "p": 3,
+      "axisMap": "mpn",
+      "child": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "SumInner",
+          "left": {
+            "op": "Project",
+            "keepN": [0, 1, 2],
+            "keepM": [0, 1, 2],
+            "keepP": [1, 2, 3, 4, 5, 6],
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          },
+          "right": {
+            "op": "SumInner",
+            "left": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
+            "right": {
+              "op": "KronProduct",
+              "outer": {"op": "Atom", "ref": "naive-1x3x1"},
+              "inner": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [0, 1, 2],
+                "keepP": [1, 2, 3, 4, 5, 6],
+                "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+              }
+            }
+          }
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 3,
+          "m": 16,
+          "p": 10,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "3x10x16-r355-perminov_ZT-6cc036e"}
+        }
+      }
+    },
+    "right": {"op": "Atom", "ref": "16x16x16@535b8c596e94f7fdbbcef189f141c09001f7db332b50f732275d9b16a393e07b"}
+  },
+  "n": [16, 16, 19],
+  "m": 2806,
+  "hash": "9d0fd7b45298e0110ee84e235ca9c8325ef57145759dfe8afb110ae064fb30c9",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

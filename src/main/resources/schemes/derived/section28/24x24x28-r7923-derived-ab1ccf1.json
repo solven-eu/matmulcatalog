@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(24x24x4, 24x24x24)",
+  "lineage_compact": "24x24x4 +p 24x24x24",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "24x24x4@598db328daf21e57dc6d10a930fa7ae398c0eb32f995d4001b3a2a804339b453"},
+    "right": {"op": "Atom", "ref": "24x24x24@66a5daf6efac044f2f7396fc60fdcb8984f90cffab31c91451d2a8718f59c029"}
+  },
+  "n": [24, 24, 28],
+  "m": 7923,
+  "hash": "ab1ccf1ab7cec8f1843e4494074f4c37d9e52dfd41c28d8e78ac5f510171ab48",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

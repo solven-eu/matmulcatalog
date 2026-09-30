@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-27x30x1, 27x30x30)",
+  "lineage_compact": "naive-27x30x1 +p 27x30x30",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-27x30x1"},
+    "right": {"op": "Atom", "ref": "27x30x30@13704cf242a57fd5b1ab472e35fc562b12fd816a4535eb7c59b62610ec04af25"}
+  },
+  "n": [27, 30, 31],
+  "m": 12625,
+  "hash": "325201f2abd5cb2898decc3fc0997346005023db4515759a4a486150a67a09f1",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
