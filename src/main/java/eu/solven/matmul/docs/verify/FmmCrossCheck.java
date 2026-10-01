@@ -234,10 +234,10 @@ public final class FmmCrossCheck {
 				// skill's picker is section-scoped on that word.
 				pw.println("## UPSTREAM-UNVERIFIED — FMM index rank not backed by their published artifact");
 				pw.println();
-				pw.println("Audited per-shape (references/fmm-artifact-audit.{md,json}): either the");
-				pw.println("downloaded artifact's rank is no better than our catalog (index_only) or");
-				pw.println("the artifact is a data-less placeholder. Not actionable gaps; report");
-				pw.println("upstream and re-audit when the digest refreshes.");
+				pw.println("Audited per-shape (references/fmm-artifact-audit.{md,json}): the downloaded");
+				pw.println("artifact's rank is no better than our catalog (index_only), the artifact is a");
+				pw.println("data-less placeholder, or it does not compute matmul (artifact_invalid). Not");
+				pw.println("actionable gaps; report upstream and re-audit when the digest refreshes.");
 				pw.println();
 				pw.println("| shape | ours | FMM index | audit class |");
 				pw.println("| --- | ---: | ---: | --- |");

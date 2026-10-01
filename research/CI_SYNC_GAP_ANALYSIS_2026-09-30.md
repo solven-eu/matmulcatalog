@@ -68,7 +68,8 @@ worse on **621** formats (11 465 multiplications) — again with a green sync jo
    buds give 920. `SerendipitousBudProduct`'s own class doc had it as "a
    follow-up". Two more needed a better *choice* of single-type buds than any of
    the six type orderings (a U-triple must give up a term to that term's only
-   W-partner), and the last two are blocked by the rejected rational bases below.
+   W-partner), and the last two were the recipes of two rational bases our exact
+   verifier wrongly rejected (fix 14).
 
 ## The ≤ 16 band — a third-party dataset no importer listed (Witteveen 2026)
 
@@ -175,6 +176,15 @@ never targeted, and blocked the projection cascade to ⟨26,28,28⟩, ⟨25,28,2
     `references/SERENDIPITOUS_PARTIAL_PRODUCT.md` §6; guards in
     `TestSerendipitousGridBud` (three grid types against Strassen, scale
     absorption, ⟨9,9,18⟩ ≤ 913 built and exactly verified, four priced recipes).
+14. **The exact verifier reads large denominators** — two published rational
+    serendipitous bases (`2x4x6_m39_…_Q`, `2x5x7_m56_…_Q`) were rejected on every
+    sync run, a `[FAIL]` line in a green job: `SymbolicVerifier` recovered
+    denominators by scanning `d ≤ 1024`, so `3866/3705` read as irrational. It
+    now falls back to continued fractions (den ≤ 10⁶, relative 1e-12) and scales
+    numerators in `BigInteger` once the common denominator outgrows a double
+    (⟨2,5,7⟩:56's is ~2·10¹⁷). Sound by construction: the integer identity is
+    checked on the recovered fractions. Both bases are imported; the importer
+    reports 0 failed. Guard `TestExactVerifierLargeDenominators`.
 
 ## Follow-ups (not in this PR)
 
@@ -183,10 +193,6 @@ never targeted, and blocked the projection cascade to ⟨26,28,28⟩, ⟨25,28,2
   `(shape, rank)` like `ImportWitteveenSchemes`) and run it in the sync job.
   With Perminov and Witteveen that would make three origin repos on a schedule;
   a fourth should become a small registry rather than a fourth class.
-- **Two serendipitous bases fail our exact verifier** on every sync run
-  (`2x4x6_m39_…_Q`, `2x5x7_m56_…_Q`; coefficients like `3866/3705`). Probably a
-  limit of the double-backed reader rather than an upstream error — to check.
-  They are the recipes of ⟨4,16,30⟩ and ⟨8,14,20⟩ in the residual list.
 - **FMM Maple artifact importer in Java** (`MapleSchemeParser` exists for the
   17³ case; `tools/import_fmm_maple.py` needs Python) so a WORSE row backed by
   an FMM artifact can be pulled as a reaction base automatically.

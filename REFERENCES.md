@@ -689,6 +689,18 @@ methodology in Sedoglavic (2017, hal-01572046). Cited in:
 [RANK_KNOWLEDGE.md](paper/theory/RANK_KNOWLEDGE.md),
 [SMALL_MATMUL_CATALOG.md](paper/theory/SMALL_MATMUL_CATALOG.md) §2.
 
+> **Artifacts (2026-09-30).** Each format also has a tensor artifact,
+> `{n}x{m}x{p}_tensor.mpl.bz2` (Maple Triad listing; third matrix `p×n`), which is
+> what backs — or does not back — the index rank: see
+> [`references/fmm-artifact-audit.md`](references/fmm-artifact-audit.md). It can
+> be a real scheme, a recipe-only placeholder, a parametric family (`7x7x17` has
+> a free symbol `l`), or a scheme of rank *above* the index. `io.MapleTensorParser`
+> reads it and `docs.migrate.ImportFmmTensorArtifacts` loads it through the
+> contributed-scheme gate when it beats the catalog. Loaded so far, as
+> `known/…-fmm_lille-*.json` (`source: "FMM-Lille"`, `discovery: "TBD"`):
+> `Q⟨7,11,30⟩=1493`, `Q⟨13,19,29⟩=4248`. The ⟨8,27,30⟩ artifact (3736 triads, index
+> 3744) does not compute matmul and was not loaded (audit class `artifact_invalid`).
+
 ## [19] schwartz-zwecher25
 
 ```bibtex
