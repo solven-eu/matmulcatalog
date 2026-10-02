@@ -1,0 +1,52 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[8, 6], allocB=[12, 9], allocC=[16, 16], leaves=[8x12x16-r956-perminov_Q-68ba3d7, Serendipitous(2x3x8 ⊗ ⟨3,4,2⟩), OrientAs(Serendipitous(OrientAs(2x3x8, ⟨8,2,3⟩) ⊗ ⟨2,3,3⟩), ⟨6,9,16⟩), 8x9x16-r735-perminov_ZT-7351588])",
+  "lineage_compact": "R[2x2x2; 8,6 | 12,9 | 16,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [8, 6],
+    "allocB": [12, 9],
+    "allocC": [16, 16],
+    "leaves": [
+      {"op": "Atom", "ref": "8x12x16-r956-perminov_Q-68ba3d7"},
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 4,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x3x8@68085a4235233c6b9135a6c164173b49fbcab6d4c37f986229a6d7b93dfd793c"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 6,
+        "m": 9,
+        "p": 16,
+        "axisMap": "mpn",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 2,
+          "m2": 3,
+          "p2": 3,
+          "base": {
+            "op": "OrientAs",
+            "n": 8,
+            "m": 2,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "2x3x8@68085a4"}
+          }
+        }
+      },
+      {"op": "Atom", "ref": "8x9x16-r735-perminov_ZT-7351588"}
+    ]
+  },
+  "n": [14, 21, 32],
+  "m": 5406,
+  "hash": "ad09963447394eb82676b4e679f46d6d8d54e41813b4799684c312b596e79cfe",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -828,6 +828,7 @@ public class GenerateCatalogManifest {
 	static String attributeSourceFromLineage(String lineageCompact) {
 		if (lineageCompact == null) return "unknown";
 		if (lineageCompact.startsWith("TA_lita(")) return "Khoruzhii, Gelß & Pokutta 2026 (LITA)";
+		if (lineageCompact.startsWith("TA_lita_npz(")) return "Khoruzhii 2026";
 		if (lineageCompact.startsWith("DIS09Lemma4(")) return "DIS09";
 		return "unknown";
 	}

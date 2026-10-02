@@ -1,9 +1,13 @@
-name: Sync reference catalogs (FMM + Perminov)
+name: Sync reference catalogs (FMM + Perminov + Witteveen)
 
 # Refreshes the external reference-rank digests we compare against, via
 # eu.solven.matmul.docs.verify.SyncReferenceCatalogs (mvn exec:java):
 #   * references/catalogs/fmm-lille-catalog.json   (--fmm)
 #   * references/catalogs/perminov-catalog.json    (--perminov)
+# and imports the new scheme files (factor matrices) of the upstream repos that
+# publish them in a format we read directly:
+#   * dronperminov/FastMatrixMultiplication  schemes/results/*   (ImportPerminovSchemes)
+#   * MerlijnW70/fmm-schemes                 schemes/*           (ImportWitteveenSchemes)
 #
 # These drive the 3-catalog comparison + `solven_discovery` flag in
 # GenerateCatalogManifest (a result we beat both FMM and Perminov on). The flag
@@ -66,11 +70,30 @@ jobs:
       # but the imported scheme was 1908). This is the Java port of the removed
       # tools/import_dronperminov.py — it imports any NEW or strictly-better upstream scheme.
       - name: Import Perminov schemes (factor matrices)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # authenticated tree listing (rate limit)
         run: |
           mvn -B -ntp -q exec:java \
             -Dexec.mainClass=eu.solven.matmul.docs.migrate.ImportPerminovSchemes \
             -Dexec.args="--max-dim=32" \
             || echo "Perminov scheme import failed (GitHub API / rate-limit); keeping existing schemes"
+
+      # Witteveen's dataset (CC BY 4.0, doi:10.5281/zenodo.22943995) is cited by FMM-Lille
+      # and mirrored by Perminov under schemes/known/MerlijnW70_fmm_schemes/ — a subtree the
+      # step above does not list (it only pulls Perminov's own schemes/results/*). Release
+      # 1.0 (new best over every ring at ⟨11,13,15⟩ and ⟨11,14,14⟩) sat un-imported for six
+      # days; this pulls from the ORIGIN repo, which is also ahead of its mirrors. New files
+      # go through the contributed-scheme gate (exact proof + spot-check + mod-p + disk
+      # round-trip); `discovery` is stamped "TBD" for a human to audit.
+      - name: Import Witteveen schemes (MerlijnW70/fmm-schemes)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_OPTS: -Xmx4g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=target/oom-dumps/
+        run: |
+          mkdir -p target/oom-dumps
+          mvn -B -ntp -q exec:java \
+            -Dexec.mainClass=eu.solven.matmul.docs.migrate.ImportWitteveenSchemes \
+            || echo "Witteveen scheme import failed (GitHub API / rate-limit); keeping existing schemes"
 
       # Regenerate when schemes changed — counting BOTH modified-tracked AND untracked-new
       # files. `git diff --quiet` alone misses brand-new files, so an import that adds ONLY
@@ -106,6 +129,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No reference-catalog or scheme changes."
           else
-            git commit -m "Sync reference catalogs + import Perminov schemes [skip ci]"
+            git commit -m "Sync reference catalogs + import Perminov / Witteveen schemes [skip ci]"
             git push
           fi

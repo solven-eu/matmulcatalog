@@ -1,0 +1,25 @@
+{
+  "lineage_str": "KronProduct(OrientAs(3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad, ⟨3,7,4⟩), 4x4x8-r95-perminov_Q-6a277a8)",
+  "lineage_compact": "3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad→⟨3,7,4⟩ ⊗ 4x4x8-r95-perminov_Q-6a277a8",
+  "lineage": {
+    "op": "KronProduct",
+    "outer": {
+      "op": "OrientAs",
+      "n": 3,
+      "m": 7,
+      "p": 4,
+      "axisMap": "npm",
+      "child": {"op": "Atom", "ref": "3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad"}
+    },
+    "inner": {"op": "Atom", "ref": "4x4x8-r95-perminov_Q-6a277a8"}
+  },
+  "n": [12, 28, 32],
+  "m": 5985,
+  "hash": "b1b77e1db9d321efffd61297206dcf46bd4dd7035470a136810153fb4af7e1f5",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

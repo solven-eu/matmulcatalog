@@ -224,7 +224,7 @@ add the **Local PDF** line linking the file path.
 | [79](#79-perminov-2025-3x3-a58) | perminov-2025-3x3-a58 | 2025 | algorithm | A. I. Perminov, *A 58-Addition, Rank-23 Scheme for General 3×3 Matrix Multiplication*, arXiv:2512.21980 (Dec 2025). The `R(⟨3,3,3⟩)=23` scheme with only 58 additions and no basis change (also cited as `[add58]` in [RANK_KNOWLEDGE.md](paper/theory/RANK_KNOWLEDGE.md)). [Abs](https://arxiv.org/abs/2512.21980) |
 | [80](#80-alekseev-smirnov-2013) | alekseev-smirnov-2013 | 2013 | algorithm (🇷🇺 Russian) | V. B. Alekseev & Alexey Vladimirovich Smirnov, "On the exact and approximate bilinear complexities of multiplication of 4×2 and 2×2 matrices" (**in Russian**), *Sovr. Probl. Mat.* 17:135–152. Independent confirmation of the exact + border ranks for the inner-dimension-2 Hopcroft-Kerr family (`⟨4,2,2⟩`, `⟨2,2,2⟩`). DOI [10.4213/spm47](https://doi.org/10.4213/spm47); [ResearchGate (RU)](https://www.researchgate.net/publication/284529885_On_the_exact_and_approximate_bilinear_complexities_of_multiplication_of_42_and_22_matrices). |
 | [81](#81-hopcroft-musinski-1973) | hopcroft-musinski-1973 | 1973 | duality / algorithm | J. E. Hopcroft & J. Musinski, "Duality applied to the complexity of matrix multiplication and other bilinear forms," *SIAM J. Comput.* 2(3):159–173. S₃-invariance of matmul rank (Thm 6 / Cor 7); states the Hopcroft-Kerr `⌈(3pn+max(n,p))/2⌉` bound for `p×2 by 2×n` (draft p. 76) and propagates it by duality. Local draft PDF + [cr.yp.to mirror](https://cr.yp.to/bib/1973/hopcroft-duality-draft.pdf). |
-| [82](#82-khoruzhii-2026-lita) | khoruzhii2026lita | 2026 | algorithm (formula) | Kirill Khoruzhii, Patrick Gelß & Sebastian Pokutta, *Local Improvements to Trilinear Aggregation* (LITA). Field-independent closed-form NC cubic rank: even `Rₑ(N)=N³/3+15N²/4+29N/3+7`, odd `Rₒ(N)=(4N³+57N²+14N−15)/12−⌊3(N−1)/8⌋`. Reproduces FMM's large-cubic index values (`R⟨21³⟩=5198`, `R⟨23³⟩=6586`, `R⟨25³⟩=8196`, …). Wired in `LitaTrilinearAggregation`. [GitHub](https://github.com/khoruzhii/lita) |
+| [82](#82-khoruzhii-2026-lita) | khoruzhii2026lita | 2026 | algorithm (formula + explicit ⟨N³⟩, 13≤N≤32) | Kirill Khoruzhii, Luzian Serafin, Patrick Gelß & Sebastian Pokutta, *Local Improvements to Trilinear Aggregation* (LITA; repo updated Aug–Sep 2026 — LITA3…LITA7, explicit `.npz` schemes 13³=1379 … 32³=14197, ω≈2.7587, imported 2026-09-30 as `khoruzhii_2026`). Field-independent closed-form NC cubic rank: even `Rₑ(N)=N³/3+15N²/4+29N/3+7`, odd `Rₒ(N)=(4N³+57N²+14N−15)/12−⌊3(N−1)/8⌋`. Reproduces FMM's large-cubic index values (`R⟨21³⟩=5198`, `R⟨23³⟩=6586`, `R⟨25³⟩=8196`, …). Wired in `LitaTrilinearAggregation`. [GitHub](https://github.com/khoruzhii/lita) |
 | [82](#82-deza-2023-cp) | deza-2023-cp | 2023 | method (exact / infeasibility) | A. Deza, C. Liu, P. Vaezipoor & E. B. Khalil, *Fast Matrix Multiplication Without Tears: A Constraint Programming Approach*, CP 2023 (LIPIcs vol. 280, art. 26), arXiv:2306.01097. CSP/CP formulation of the Brent equations over `{−1,0,1}` with **symmetry-breaking constraints + valid inequalities** enabling *exact* search and **infeasibility proofs** up to ⟨3,3,3⟩=23 — the complement to our heuristic upper-bound construction. Directly comparable to our axis-flip / allocation canonicalisation. Code: [khalil-research/Matrix-Mult-CP](https://github.com/khalil-research/Matrix-Mult-CP). [Abs](https://arxiv.org/abs/2306.01097) |
 | [83](#83-kauers-2026-structure) | kauers-2026-structure | 2026 | method (**serendipitous / buds**) | M. Kauers, J. Moosbauer & I. Wood, *Exploiting the Structure in Tensor Decompositions for Matrix Multiplication*, arXiv:2602.11041 (May 2026; submitted to Elsevier). **The published formalisation of exactly our bud / serendipitous-product idea**: recursive calls that *share an output* (or whose output feeds multiple positions) are merged into a *single larger* matrix multiplication, giving an effective exponent **lower than the tensor rank suggests** — improving 6×6 from ω 2.8075→**2.8019**. Direct prior/concurrent art for our `#159` serendipitous engine, `SerendipitousBudProduct`, and `BudBaseFactory`; cite in the paper. [Abs](https://arxiv.org/abs/2602.11041) |
 | [84](#84-heule-kauers-seidl-2019) | heule-kauers-seidl-2019 | 2019 | method (SAT search) / algorithm | M. J. H. Heule, M. Kauers & M. Seidl, *New Ways to Multiply 3×3-Matrices*, arXiv:1905.10192 (2019); J. Symbolic Computation **104** (2021) 899–916. SAT/heuristic search that produced **many distinct rank-23 ⟨3,3,3⟩ schemes** over ℤ and small fields, mapping out the solution variety (not a rank improvement — ⟨3,3,3⟩=23 is Laderman 1976 — but a *diversity* result, directly relevant to our orbit/uniqueness work and to bud-rich base selection). PDF: [cs.cmu.edu/~mheule/publications/CCA19.pdf](https://www.cs.cmu.edu/~mheule/publications/CCA19.pdf); [arXiv](https://arxiv.org/abs/1905.10192). |
@@ -233,6 +233,7 @@ add the **Local PDF** line linking the file path.
 | [87](#87-kaporin-2024-brent) | kaporin-2024-brent | 2024 | algorithm (**C⟨4,4,4⟩=48**) | I. E. Kaporin, *Semi-analytical solution of Brent equations*, Doklady Mathematics **518**(1):29–34 (2024), DOI [10.31857/S2686954324040056](https://doi.org/10.31857/S2686954324040056). A parametrisation of the Brent equations (cyclic symmetry, several-fold fewer unknowns) solved numerically; yields explicit **complex** designs **(4,4,4;48)** and **(2,4,5;32)**. The (4,4,4;48) scheme — verified to floating-point tolerance in the author's companion `test444r48.for` — is an **independent C-coefficient 48** that **predates AlphaEvolve 2025** [[14]](#14-alphaevolve) (existence of `r<49` over C was conjectured by Li–Zhang–Ke 2023). Loaded as `4x4x4-r48-kaporin_2024-*.json`. [Article](https://journals.rcsi.science/2686-9543/article/view/269374) |
 | [88](#88-adriano-2026-hk-task9) | adriano-2026-hk-task9 | 2026 | algorithm (**ℤ⟨2,p,n⟩ at the HK formula, g ≥ 6**) | Marcos Adriano, *Task #9: the six g ≥ 6 ⟨2,p,n⟩ shapes at the exact Hopcroft-Kerr formula, with integer coefficients*, GitHub issue [solven-eu/matmulcatalog#7](https://github.com/solven-eu/matmulcatalog/issues/7) (2026-09-24), attachment `hk-task9-schemes.zip`. Explicit **integer** schemes `⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`, `⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095` — the shapes our own HK emitter provably cannot reach in-framework (+1..+3) and FMM-Lille lists index-only. Route: HK methods as tori (eigenline pairs), tripartite method graph with integer Lemma-2 edges, non-cyclic unimodular Lemma-1 windows, and for ⟨2,24,30⟩ a `(3,3)` bridge through a virtual row over the **12-product** reusable set. Exact-verified here and loaded as `2x{p}x{n}-r{formula}-adriano_2026-*.json` (`source: "Adriano 2026"`, `discovery: false` — rank attributed to HK71, first explicit scheme credited to the contributor). Record: `references/contributions/issue7-adriano-2026-hk-task9.md`. |
 | [89](#89-adriano-2026-lille-recipes) | adriano-2026-lille-recipes | 2026 | algorithm (**22 FMM-Lille recipe ranks, explicit**) | Marcos Adriano, *22 explicit schemes at FMM-Lille table ranks (the table's own recipes, executed)*, GitHub issue [solven-eu/matmulcatalog#8](https://github.com/solven-eu/matmulcatalog/issues/8) (2026-09-24), attachment `lille-recipes-22-schemes.zip`. Explicit witnesses (9 ℤ, 13 with ±1/2 or ±1/3) for 22 table ranks FMM lists without a public scheme — recombinations over unequal blocks with an outer ⟨2,4,4⟩:26 HK (14 shapes) or Strassen (8). All 22 verified exactly here; **not loaded** (dim > 16 compositions of pieces we hold — 321 MB): instead RE-DERIVED as lineage stubs, 13 of them strictly below the recipe (⟨10,19,31⟩ 3492 vs 3532 …) once ⟨2,4,4⟩=26's Perminov-ZT / AlphaTensor-Z reps were registered as `rootPool()` bases. Record: `references/contributions/issue8-adriano-2026-lille-recipes.md`. |
+| [90](#90-witteveen-2026) | witteveen-2026 | 2026 | algorithm (**26 ZT schemes, 3 any-ring records**) | Merlijn S. Witteveen, *New fast matrix multiplication schemes* (dataset v1.2, 2026-09-30), DOI [10.5281/zenodo.22943995](https://doi.org/10.5281/zenodo.22943995), [github.com/MerlijnW70/fmm-schemes](https://github.com/MerlijnW70/fmm-schemes) — **CC BY 4.0**. 26 ternary-integer schemes (≤ 16): new best in any ring for `⟨7,11,15⟩=772`, `⟨11,13,15⟩=1364`, `⟨11,14,14⟩=1373`; first ZT scheme at the best rank for `⟨7,7,9⟩=315`; 22 further ZT records. All loaded (exact-verified, re-encoded canonically) as `*-witteveen_2026-*.json`. Cited by FMM-Lille for ⟨11,13,15⟩ / ⟨11,14,14⟩. |
 
 ---
 
@@ -688,6 +689,18 @@ methodology in Sedoglavic (2017, hal-01572046). Cited in:
 [RANK_KNOWLEDGE.md](paper/theory/RANK_KNOWLEDGE.md),
 [SMALL_MATMUL_CATALOG.md](paper/theory/SMALL_MATMUL_CATALOG.md) §2.
 
+> **Artifacts (2026-09-30).** Each format also has a tensor artifact,
+> `{n}x{m}x{p}_tensor.mpl.bz2` (Maple Triad listing; third matrix `p×n`), which is
+> what backs — or does not back — the index rank: see
+> [`references/fmm-artifact-audit.md`](references/fmm-artifact-audit.md). It can
+> be a real scheme, a recipe-only placeholder, a parametric family (`7x7x17` has
+> a free symbol `l`), or a scheme of rank *above* the index. `io.MapleTensorParser`
+> reads it and `docs.migrate.ImportFmmTensorArtifacts` loads it through the
+> contributed-scheme gate when it beats the catalog. Loaded so far, as
+> `known/…-fmm_lille-*.json` (`source: "FMM-Lille"`, `discovery: "TBD"`):
+> `Q⟨7,11,30⟩=1493`, `Q⟨13,19,29⟩=4248`. The ⟨8,27,30⟩ artifact (3736 triads, index
+> 3744) does not compute matmul and was not loaded (audit class `artifact_invalid`).
+
 ## [19] schwartz-zwecher25
 
 ```bibtex
@@ -1136,6 +1149,65 @@ Relevance to this repo:
 **Cited in**: `REFERENCES.md` (this entry, index row [89]),
 `docs/STRATEGIES.md` (root-pool list), `research/DISCOVERIES_PENDING_ANALYSIS.md`
 (2026-09-30 entry), the `TestSweepSpotsSota` / `TestRootPoolContents` guards.
+
+---
+
+## [90] <a name="90-witteveen-2026"></a>witteveen-2026
+
+```bibtex
+@misc{witteveen2026fmmschemes,
+  author       = {Witteveen, Merlijn S.},
+  title        = {New fast matrix multiplication schemes},
+  howpublished = {Dataset, \url{https://github.com/MerlijnW70/fmm-schemes}},
+  year         = {2026},
+  doi          = {10.5281/zenodo.22943995},
+  note         = {Releases 1.0 (2026-09-24), 1.1 (2026-09-27), 1.2 (2026-09-30). Licence: CC BY 4.0}
+}
+```
+
+A dataset of explicit **ternary-integer (ZT)** schemes — every coefficient in
+`{−1,0,1}`, hence valid over every ring — for formats with all dimensions ≤ 16,
+in Perminov's JSON layout (`n`, `m`, `u`, `v`, `w`). Release 1.2 holds 26 schemes.
+Per the dataset's own table (previous values = min of Perminov's and FMM-Lille's
+tables at the release date):
+
+| Claim | Shapes |
+| --- | --- |
+| **new best over every ring** | `⟨7,11,15⟩=772` (was 777, 1.2), `⟨11,13,15⟩=1364` (was 1371, 1.0), `⟨11,14,14⟩=1373` (was 1376, 1.0) |
+| first ZT scheme at the best known rank | `⟨7,7,9⟩=315` |
+| new ZT record, rank still above the best over ℚ | the other 22 — e.g. `⟨6,11,11⟩=492` (ℚ: 490), `⟨9,15,15⟩=1269` (ℚ: 1236), `⟨2,13,15⟩=304` |
+
+Relevance to this repo:
+- **All 26 loaded** (2026-09-30) as `schemes/known/section{maxDim}/…-witteveen_2026-*.json`
+  through the contributed-scheme gate (`ImportContributedSchemes`: exact BigInteger
+  proof, spot-check, mod-2 / mod-3 reductions, disk round-trip), re-encoded in the
+  canonical format with the CC BY 4.0 credit in `discovery_note` / `notes`.
+  `discovery: true` — for the 22 "ZT record" shapes that is a statement about the
+  **ZT class only**: on 17 of them it is also the lowest ℤ rank we hold, on
+  `⟨2,12,15⟩`, `⟨2,13,15⟩`, `⟨2,13,16⟩`, `⟨2,15,16⟩` (Hopcroft–Kerr formula schemes,
+  [\[88\]](#88-adriano-2026-hk-task9): 278 / 300 / 320 / 368) and `⟨11,15,16⟩`
+  (Perminov, 1629) a non-ternary integer scheme of lower rank exists.
+- **Scheduled pull**: `docs.migrate.ImportWitteveenSchemes` lists the origin repo
+  and imports any `(shape, rank, class)` the catalog lacks; it runs in
+  `sync-reference-catalogs.yml` every 3 h. Automated imports are stamped
+  `discovery: "TBD"` (the importer can see "beats this catalog", not "is a record").
+- **Chronology of the mirrors** — why a dedicated channel exists. Release 1.0
+  already carried the ⟨11,13,15⟩ / ⟨11,14,14⟩ records on 2026-09-24. FMM-Lille
+  cites the dataset for those two formats; Perminov mirrored release 1.1 on
+  2026-09-29 (20 files under `schemes/known/MerlijnW70_fmm_schemes/`, the five
+  ⟨2,p,n⟩ ones under his own `schemes/results/ZT/`). Our sync job imported two of
+  the latter — `⟨2,12,15⟩=280`, `⟨2,14,16⟩=348` — as "Perminov 2023" and nothing
+  else: see `research/CI_SYNC_GAP_ANALYSIS_2026-09-30.md`. Both are re-attributed
+  (`PerminovKnownAttribution.THIRD_PARTY_IN_RESULTS`).
+- **Superseded release ranks** (not loaded; the dataset itself replaced them):
+  1.0 — `⟨8,11,16⟩=909`, `⟨9,14,16⟩=1269`, `⟨11,15,16⟩=1647`, `⟨13,14,16⟩=1811`;
+  1.1 — `⟨7,9,14⟩=599`, `⟨13,14,16⟩=1806`. `⟨2,14,16⟩=348` (1.0–1.1, withdrawn in
+  1.2; Hopcroft–Kerr gives 344) is held because the Perminov mirror brought it in.
+
+**Cited in**: `REFERENCES.md` (this entry, index row [90]),
+`references/contributions/witteveen-2026.meta.json`, `ImportWitteveenSchemes`,
+`PerminovKnownAttribution`, `docs/catalog.js` (source → [90]), the
+`TestSweepSpotsSota.retains_witteveen_2026_records` guard.
 
 ---
 
@@ -2054,7 +2126,42 @@ generators (`scripts/KGP2026_{odd,even}.mpl`) to Java as a `TA_lita` lineage op
 that materialises the explicit U/V/W on demand (for verification / bud-structure)
 — a self-contained "derive, don't import" realisation.
 
-Cited in: REFERENCES.md, `LitaTrilinearAggregation`, `GenerateDerivedBounds`.
+> **Update 2026-09-30 — the repo moved well past the June generator we ported.**
+> The authors (now Kirill Khoruzhii, **Luzian Serafin**, Patrick Gelß & Sebastian
+> Pokutta; the README's bibtex adds Serafin) pushed "LITA3 … LITA7 odd"
+> constructions through August–September 2026 (last commit 2026-09-24) and
+> publish **explicit rational schemes** `schemes/{N}x{N}x{N}_r{R}.npz`
+> (format `fmmp.qcsr.v1`, CSR numerators/denominators) for every
+> **13 ≤ N ≤ 32**, at
+> `R_even(N) = N³/3 + 3N² + 37N/6 + 5` (`scripts/lita.py`, even N ≥ 8) and
+> `R_odd(N) = N³/3 + 7N²/2 + 14N/3 − 11/2` (`scripts/lita_odd.py`, odd 9 ≤ N < 32):
+> 13³=1379, 14³=1594, …, 21³=**4723** (the June formula: 5198), 27³=9233,
+> 31³=13433, **32³=14197 (ω ≈ 2.75866**, below Schwartz–Zwecher's N=44
+> exponent 2.77320). FMM-Lille's index adopted them in 2026-09 (every cube head
+> cites the repo; the non-square members inherit by `Proj`), which is what
+> pushed ~530 shapes below our catalog at once. **Imported 2026-09-30** as
+> `known/section{N}/{N}x{N}x{N}-r{R}-khoruzhii_2026-*.json`
+> (`source: "Khoruzhii 2026"`, `discovery: true`) through `ImportKhoruzhiiLita`
+> + the Python-free `io.NpzSchemeReader`. These files are **hash-stamped stubs**
+> on the data-backed lineage atom `TA_lita_npz(n=N)`, not explicit matrices: the
+> coefficients stay in the upstream archives, vendored unmodified under
+> `src/main/resources/external/khoruzhii-lita/` (12 MB; 32³ alone is 117 MB as
+> canonical JSON, above GitHub's file limit), and `LineageReplayer` rebuilds the
+> scheme from them on demand. The gate is size-aware (exact
+> BigInteger proof where the term count fits — 13³/15³/17³ — spot-check tier
+> otherwise; the `verification` field says which). Every scheme has even
+> denominators → `fields_not [F2]`; F₃ is verified exactly for 14³ and 15³
+> (`fields [F3,Q,R,C]`), ruled out by a denominator divisible by 3 on most
+> others, and left unclaimed where the dense mod-3 check exceeded the import
+> budget (20³, 21³, 26³, 27³, 32³ — `notes` says so). Our
+> `LitaTaConstruction` / `TA_lita` stubs (N ≥ 19, the June formula) are now
+> superseded on every cube; porting `lita.py` / `lita_odd.py` is the
+> "derive, don't import" follow-up.
+
+Cited in: REFERENCES.md, `LitaTrilinearAggregation`, `LitaTaConstruction`,
+`GenerateDerivedBounds`, `ImportKhoruzhiiLita`, `LitaNpzCubes`, the 20 stubs,
+`src/main/resources/external/khoruzhii-lita/README.md` (provenance + the open
+licence question), `docs/catalog.js` (source → [82]).
 
 ---
 

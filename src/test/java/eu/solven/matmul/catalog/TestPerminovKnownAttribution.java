@@ -69,6 +69,37 @@ class TestPerminovKnownAttribution {
 	}
 
 	@Test
+	void witteveen_and_lita_mirrors_are_credited_to_their_authors_and_pulled_from_the_origin() {
+		Attribution witteveen = PerminovKnownAttribution
+				.forPath("schemes/known/MerlijnW70_fmm_schemes/11x13x15_m1364_ZT.json").orElseThrow();
+		assertThat(witteveen.source()).isEqualTo("Witteveen 2026");
+		assertThat(witteveen.disposition()).isEqualTo(Disposition.SKIP_FRESH_IMPORT);
+
+		Attribution lita = PerminovKnownAttribution
+				.forPath("schemes/known/lita/13x13x13_m1379_Q.json").orElseThrow();
+		assertThat(lita.source()).isEqualTo("Khoruzhii 2026");
+		assertThat(lita.disposition()).isEqualTo(Disposition.SKIP_FRESH_IMPORT);
+
+		assertThat(PerminovKnownAttribution.isMappedSubtree("MerlijnW70_fmm_schemes")).isTrue();
+		assertThat(PerminovKnownAttribution.isMappedSubtree("someone_new_2027")).isFalse();
+	}
+
+	@Test
+	void third_party_schemes_filed_under_results_are_not_perminovs() {
+		// Witteveen's ⟨2,12,15⟩=280 ternary scheme (fmm-schemes release 1.0, 2026-09-24),
+		// filed by Perminov under his own results/ZT/ on 2026-09-29 and imported by our
+		// sync as "Perminov 2023" half an hour later.
+		Attribution a = PerminovKnownAttribution
+				.forPath("schemes/results/ZT/2x12x15_m280_ZT.json").orElseThrow();
+		assertThat(a.source()).isEqualTo("Witteveen 2026");
+		assertThat(a.disposition()).isEqualTo(Disposition.EXTERNAL);
+		assertThat(a.isPerminovOwn()).isFalse();
+		// …while its neighbours in the same directory stay his.
+		assertThat(PerminovKnownAttribution.forPath("schemes/results/ZT/2x12x15_m281_ZT.json").orElseThrow()
+				.isPerminovOwn()).isTrue();
+	}
+
+	@Test
 	void results_subtree_stays_perminov_own() {
 		Attribution a = PerminovKnownAttribution
 				.forPath("schemes/results/Z/2x7x7_m76_cr320.json").orElseThrow();

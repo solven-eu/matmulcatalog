@@ -1,0 +1,31 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(Serendipitous(2x4x8 ⊗ ⟨2,4,2⟩), ⟨16,16,4⟩), 16x16x16)",
+  "lineage_compact": "2x4x8 ⊗ˢ⟨2,4,2⟩→⟨16,16,4⟩ +p 16x16x16",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 16,
+      "m": 16,
+      "p": 4,
+      "axisMap": "mpn",
+      "child": {
+        "op": "SerendipitousProduct",
+        "n2": 2,
+        "m2": 4,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "2x4x8@4f864e0"}
+      }
+    },
+    "right": {"op": "Atom", "ref": "16x16x16@535b8c596e94f7fdbbcef189f141c09001f7db332b50f732275d9b16a393e07b"}
+  },
+  "n": [16, 16, 20],
+  "m": 2903,
+  "hash": "708725e4249b4b1b62ce6794ded15f5d9c9ba511a63a4ec54191a091262e3222",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

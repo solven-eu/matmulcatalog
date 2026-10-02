@@ -1,0 +1,43 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[1, 24], allocB=[4, 24], allocC=[6, 24], leaves=[24x24x24, OrientAs(4x6x24, ⟨24,4,6⟩), naive-1x4x24, 24x24x6, naive-1x24x24, OrientAs(24x24x4, ⟨24,4,24⟩), naive-1x24x6])",
+  "lineage_compact": "R[2x2x2; 1,24 | 4,24 | 6,24]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [1, 24],
+    "allocB": [4, 24],
+    "allocC": [6, 24],
+    "leaves": [
+      {"op": "Atom", "ref": "24x24x24@66a5daf6efac044f2f7396fc60fdcb8984f90cffab31c91451d2a8718f59c029"},
+      {
+        "op": "OrientAs",
+        "n": 24,
+        "m": 4,
+        "p": 6,
+        "axisMap": "pnm",
+        "child": {"op": "Atom", "ref": "4x6x24@df5f8c9c00f88c48d2bf3e7af371da7f4cd9afb369b242042bb2220488fbca59"}
+      },
+      {"op": "Atom", "ref": "naive-1x4x24"},
+      {"op": "Atom", "ref": "24x24x6@ce617e2cce3e319fbec1447de20c40692ff491733ff3b51be20531148d5546f7"},
+      {"op": "Atom", "ref": "naive-1x24x24"},
+      {
+        "op": "OrientAs",
+        "n": 24,
+        "m": 4,
+        "p": 24,
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "24x24x4@598db328daf21e57dc6d10a930fa7ae398c0eb32f995d4001b3a2a804339b453"}
+      },
+      {"op": "Atom", "ref": "naive-1x24x6"}
+    ]
+  },
+  "n": [25, 28, 30],
+  "m": 11195,
+  "hash": "4eefd252feec2cc36d5dd514f74e3bfad05a3e62af7ec4e51de0479b64a06530",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -252,9 +252,11 @@ public final class Lineage {
 	 * {@code base ⊗ ⟨n2,m2,p2⟩} where {@code base} is decomposed into elementary
 	 * matmul tensors by its <em>buds</em> (rank-one terms sharing a {@code u}/
 	 * {@code v}/{@code w} vector up to scaling) and each enlarged block is
-	 * realised at its best known rank. Replay recomputes the (deterministic
-	 * greedy U→V→W) bud decomposition of {@code base}, so only the base and the
-	 * second shape need to be stored. See {@link SerendipitousBudProduct} and
+	 * realised at its best known rank. Replay re-derives the bud decomposition of
+	 * {@code base} — the cheapest member of the structural family
+	 * {@link SerendipitousBudProduct#candidateDecompositions}, which depends on the
+	 * base alone — so only the base and the second shape need to be stored. See
+	 * {@link SerendipitousBudProduct} and
 	 * {@code references/SERENDIPITOUS_PARTIAL_PRODUCT.md}.
 	 */
 	public record SerendipitousProduct(Node base, int n2, int m2, int p2) implements Node {}

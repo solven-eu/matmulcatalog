@@ -1,0 +1,25 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(10x16x16-r1560-perminov_Q-61b6658, ⟨16,16,10⟩), 16x16x16)",
+  "lineage_compact": "10x16x16-r1560-perminov_Q-61b6658→⟨16,16,10⟩ +p 16x16x16",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 16,
+      "m": 16,
+      "p": 10,
+      "axisMap": "mpn",
+      "child": {"op": "Atom", "ref": "10x16x16-r1560-perminov_Q-61b6658"}
+    },
+    "right": {"op": "Atom", "ref": "16x16x16@535b8c596e94f7fdbbcef189f141c09001f7db332b50f732275d9b16a393e07b"}
+  },
+  "n": [16, 16, 26],
+  "m": 3797,
+  "hash": "f7c728fd4d3d2d5f32c163c387e546c32cc68d88e97157c493e1abfcc57e255d",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

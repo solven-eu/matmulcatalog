@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-21x22x1, 21x22x22)",
+  "lineage_compact": "naive-21x22x1 +p 21x22x22",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-21x22x1"},
+    "right": {"op": "Atom", "ref": "21x22x22@c778babbde17e958127c276f18de3d9dc94cb7ea6cd28d1ee477212ca85144b9"}
+  },
+  "n": [21, 22, 23],
+  "m": 5604,
+  "hash": "f6f62a0383166f3ce9308ab94a1f5fbc7730c8bd9e1a731080fcf232eaebf591",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

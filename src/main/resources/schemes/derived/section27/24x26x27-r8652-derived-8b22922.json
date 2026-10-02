@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-24x26x1, 24x26x26)",
+  "lineage_compact": "naive-24x26x1 +p 24x26x26",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-24x26x1"},
+    "right": {"op": "Atom", "ref": "24x26x26@b0875d6b0ff07e5d0d7b19929d0517600cb90f8be636af21d217e4ebdddaa760"}
+  },
+  "n": [24, 26, 27],
+  "m": 8652,
+  "hash": "8b22922f22c10c7380cc6644b453c440c8eb59db7c9b345bf3b3fd48531a5ff7",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

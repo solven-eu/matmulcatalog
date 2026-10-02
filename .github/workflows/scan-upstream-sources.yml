@@ -60,3 +60,33 @@ jobs:
             echo ""
             cat generated/UPSTREAM_SCAN.md
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # The header of this file always promised "opens a tracking issue if any new
+      # gap appears"; until 2026-09-30 no step did, and the scan itself was blind
+      # (filename-regex "ours" after the 2026-06 rename → "Strict gaps: 0" for three
+      # months). Now: sum the per-source strict-gap counts; if > 0, open one labelled
+      # issue or comment on the open one — a report nobody reads is not an alert.
+      - name: Open / update the tracking issue when strict gaps exist
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          total=$(grep -oE 'Strict gaps[^:]*: \*\*[0-9]+\*\*' generated/UPSTREAM_SCAN.md \
+                  | grep -oE '[0-9]+' | paste -sd+ - | bc || echo 0)
+          echo "strict gaps across sources: ${total:-0}"
+          if [ "${total:-0}" -eq 0 ]; then
+            echo "no strict gaps — nothing to file"; exit 0
+          fi
+          body=$(printf '%s\n\n%s\n\n%s\n' \
+            "Weekly upstream scan found **${total}** strict gap(s) (an upstream rank strictly below ours). Report: ${RUN_URL}" \
+            '```' "$(head -c 60000 generated/UPSTREAM_SCAN.md)")
+          existing=$(gh issue list --label upstream-gap --state open --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+            echo "commented on #$existing"
+          else
+            gh label create upstream-gap --description "Upstream catalog rank strictly below ours" --color D93F0B 2>/dev/null || true
+            gh issue create --title "Upstream scan: ${total} strict gap(s) vs FMM/Perminov/Sedoglavic" \
+              --label upstream-gap --body "$body"
+          fi

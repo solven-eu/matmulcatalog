@@ -63,11 +63,6 @@ public final class ScanUpstreamSources {
 
 	private static final JsonMapper MAPPER = JsonMapper.builder().build();
 
-	/** Filename rank/shape token: shape preceded by {@code -} (source→shape) or
-	 *  {@code _} (source-internal), rank tagged {@code _m} (multiplications) or the
-	 *  legacy {@code _r}. e.g. {@code derived_recursive-17x19x28_m5162_a360135.json}. */
-	private static final Pattern FILE_SHAPE_RANK =
-			Pattern.compile("[-_](\\d+)x(\\d+)x(\\d+)_[rm](\\d+)");
 	private static final Pattern SHAPE_KEY = Pattern.compile("^(\\d+)x(\\d+)x(\\d+)$");
 
 	private ScanUpstreamSources() {}
@@ -137,27 +132,62 @@ public final class ScanUpstreamSources {
 		}
 	}
 
-	/** Best (lowest) rank we hold per canonical (sorted) shape, parsed from
-	 *  scheme filenames under {@link #SCHEMES_ROOT}. */
+	/** Best (lowest) NON-COMMUTATIVE, Q-valid rank we hold per canonical (sorted)
+	 *  shape, read from scheme CONTENT ({@code n}, {@code m}, {@code fields[]},
+	 *  {@code commutative}) under {@link #SCHEMES_ROOT} — the comparison scope of
+	 *  every upstream digest (FMM / Perminov / Sedoglavic are NC, char-0). */
 	private static Map<CanonicalShape, Integer> loadLocalRanks() throws IOException {
+		return loadLocalRanks(SCHEMES_ROOT);
+	}
+
+	/**
+	 * Content-driven local best per shape. Until 2026-09-30 this parsed the rank
+	 * out of the FILENAME with {@link #FILE_SHAPE_RANK} (legacy
+	 * {@code {source}-{shape}_m{rank}} names); the 2026-06 rename to
+	 * {@code {n}x{m}x{p}-r{rank}-{note}-{hash7}} left that regex matching 7 of
+	 * ~11k files, so every upstream shape read as MISSING (not a gap) and the
+	 * weekly scan reported "Strict gaps: 0" for three months — including the
+	 * 2026-09 KGP LITA refresh that put ~530 shapes below the catalog. Reading
+	 * {@code n}/{@code m} from the JSON (per CLAUDE.md "content-driven, never
+	 * the filename") cannot drift with naming. Commutative-only schemes and
+	 * schemes not valid over Q (F₂-native, C-only) are excluded so the scan
+	 * never "closes" a Q gap with an incomparable scheme.
+	 */
+	static Map<CanonicalShape, Integer> loadLocalRanks(Path schemesRoot) throws IOException {
 		Map<CanonicalShape, Integer> out = new LinkedHashMap<>();
-		if (!Files.isDirectory(SCHEMES_ROOT)) {
+		if (!Files.isDirectory(schemesRoot)) {
 			return out;
 		}
-		try (Stream<Path> walk = Files.walk(SCHEMES_ROOT)) {
-			walk.filter(p -> p.getFileName().toString().endsWith(".json")).forEach(p -> {
-				Matcher m = FILE_SHAPE_RANK.matcher(p.getFileName().toString());
-				if (!m.find()) {
-					return;
-				}
-				int n = Integer.parseInt(m.group(1));
-				int a = Integer.parseInt(m.group(2));
-				int b = Integer.parseInt(m.group(3));
-				int r = Integer.parseInt(m.group(4));
-				CanonicalShape sh = Shape.of(n, a, b).canonical();
-				out.merge(sh, r, Math::min);
-			});
+		List<Path> files;
+		try (Stream<Path> walk = Files.walk(schemesRoot)) {
+			files = walk.filter(p -> p.getFileName().toString().endsWith(".json")).toList();
 		}
+		int skipped = 0;
+		for (Path p : files) {
+			try {
+				JsonNode root = eu.solven.matmul.catalog.SchemeIO.parseJson(p.toFile());
+				JsonNode dims = root.get("n");
+				JsonNode rank = root.get("m");
+				if (dims == null || !dims.isArray() || dims.size() != 3 || rank == null || !rank.isInt()) {
+					skipped++;
+					continue;
+				}
+				if (root.path("commutative").asBoolean(false)) {
+					continue;
+				}
+				List<String> fields = eu.solven.matmul.catalog.SchemeIO.fieldTags(root);
+				if (!fields.isEmpty() && !fields.contains("Q")) {
+					continue; // F₂-native / C-only: not comparable to the NC char-0 digests
+				}
+				CanonicalShape sh = Shape.of(dims.get(0).asInt(), dims.get(1).asInt(), dims.get(2).asInt()).canonical();
+				out.merge(sh, rank.asInt(), Math::min);
+			} catch (Exception e) {
+				skipped++;
+				log.debug("loadLocalRanks: skipping {}: {}", p.getFileName(), e.toString());
+			}
+		}
+		log.info("local ranks: {} shapes from {} files ({} skipped: non-scheme JSON / unreadable)",
+				out.size(), files.size(), skipped);
 		return out;
 	}
 

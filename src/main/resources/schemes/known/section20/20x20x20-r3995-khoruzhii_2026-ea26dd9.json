@@ -1,0 +1,31 @@
+{
+  "lineage_str": "TA_lita_npz(n=20)",
+  "lineage_compact": "TA_lita_npz(n=20)",
+  "lineage": {"op": "Atom", "ref": "TA_lita_npz(n=20)"},
+  "n": [20, 20, 20],
+  "m": 3995,
+  "hash": "ea26dd9e3dc17d98af39435fed17c2fb84a03547a0442dd2348e9d8741234c6c",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub",
+  "fields_not": [
+    "F2"
+  ],
+  "commutative": false,
+  "source": "Khoruzhii 2026",
+  "year": 2026,
+  "source_paper_url": "https://github.com/khoruzhii/lita",
+  "source_scheme_url": "https://github.com/khoruzhii/lita/blob/master/schemes/20x20x20_r3995.npz",
+  "discovery": true,
+  "discovery_note": "Khoruzhii, Serafin, Gelß & Pokutta 2026, Local Improvements to Trilinear Aggregation (LITA), github.com/khoruzhii/lita — explicit rational ⟨20,20,20⟩=3995 (R_even = N³/3+3N²+37N/6+5, R_odd = N³/3+7N²/2+14N/3−11/2; the Aug–Sep 2026 LITA3…LITA7 constructions, superseding the June generator ported in LitaTaConstruction). Cited by fmm.univ-lille.fr for this cube and, by projection, for its whole ⟨≤N⟩ family. Imported from the repo's 20x20x20_r3995.npz (fmm.q.csr.v1) via NpzSchemeReader; REFERENCES.md [82].",
+  "verified": true,
+  "verification": "random matmul spot-check (20 samples, eps=0.022653034834211508; exact term estimate 55785877232 exceeds the 60000000 cap — NOT an algebraic proof)",
+  "notes": "F-p reducibility for [F3] left UNCLAIMED: denominators are coprime to p but the dense mod-p verification (255680000000 triple products) exceeds the import budget.",
+  "additions": 1411385,
+  "has_buds": true,
+  "buds": "117×U⟨1,1,2⟩ + 1×U⟨1,1,3⟩ + 81×V⟨2,1,1⟩ + 84×W⟨1,2,1⟩ + 3428×⟨1,1,1⟩",
+  "projection_margin": 0
+}
