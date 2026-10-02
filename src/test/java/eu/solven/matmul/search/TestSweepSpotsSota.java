@@ -350,6 +350,12 @@ public class TestSweepSpotsSota {
 	 * rep's support does it; the hk71 rep alone gives 1324 (the old catalog value).
 	 * A pool that silently drops the reps (or keeps only one) regresses to ≥ 1324.
 	 * The pool is filtered to the ⟨2,4,4⟩ entries so the guard stays fast (seconds).
+	 *
+	 * <p>2026-10-01: the catalog's ⟨6,14,24⟩ dropped to 1232 (combined-bud serendipitous
+	 * product), so the concat ⟨6,14,24⟩ + ⟨6,14,1⟩ = 1316 now beats the recombination —
+	 * and, being the cheap bound the recombination B&amp;B prunes against, hides it from
+	 * a recombination-only run. The guard therefore elects concat and Kronecker too and
+	 * keeps the SOTA-or-better assertion (≤ 1322; the pipeline reaches 1316).</p>
 	 */
 	@Test
 	public void compute_pipeline_reaches_6x14x25_1322_via_244_root() {
@@ -368,7 +374,8 @@ public class TestSweepSpotsSota {
 		// bound would prune the very derivation under test); no write (writeRoot=null).
 		RecursiveMaterialiser improver =
 				new RecursiveMaterialiser(lookup, pool, diskSota, null, false, false, true, true);
-		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_RECOMBINATION));
+		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_RECOMBINATION,
+				RecursiveMaterialiser.STRAT_CONCAT, RecursiveMaterialiser.STRAT_KRONECKER));
 		Optional<RecursiveMaterialiser.Result> r = improver.materialise(6, 14, 25);
 		assertThat(r).as("⟨6,14,25⟩ should resolve").isPresent();
 		assertThat(r.get().alg().r)
