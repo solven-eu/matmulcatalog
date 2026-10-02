@@ -207,3 +207,16 @@ never targeted, and blocked the projection cascade to ⟨26,28,28⟩, ⟨25,28,2
   set packing). An optimiser that reads the ranks would need the chosen
   decomposition recorded in the `SerendipitousProduct` lineage node to stay
   replayable. Three-axis buds (`⟨a,b,c⟩`, all ≥ 2) are not searched either.
+
+## Outcome (2026-10-02, PR #11)
+
+| | before | after |
+| --- | ---: | ---: |
+| FMM-Lille index: WORSE / BETTER | 529 / 1 275 | **0** / 1 818 (13 upstream-unverified rows, audited one by one) |
+| min(FMM, Perminov), 5 440 formats | — | tie 4 377, better 1 050, worse 13 (the same 13) |
+| Perminov serendipitous 17–32 band, 971 formats | worse 621 | **worse 0**, tie 789, better 182 |
+| Sync job: imports it could not make | 25 Witteveen files, 244 bases, 7 ZT records, 2 bases | all in; next run starts clean (0 failed) |
+
+Numbers, repro commands and the residual (two recipe-only FMM placeholders,
+one invalid FMM artifact) in `research/DISCOVERIES_PENDING_ANALYSIS.md`,
+entry "2026-09-30 / 10-01 — Full resync".
