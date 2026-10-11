@@ -121,6 +121,12 @@ public final class PerminovKnownAttribution {
 			// re-encoded by Perminov. Ours come from the origin archives
 			// (docs.migrate.ImportKhoruzhiiLita, TA_lita_npz stubs).
 			return Optional.of(new Attribution("Khoruzhii 2026", Disposition.SKIP_FRESH_IMPORT));
+		case "cloudroom-math":
+			// Cloudroom Math Campaign (github.com/matyasstoch/cloudroom-math, Apache-2.0,
+			// release 2026-10-08), mirrored by Perminov since 2026-10-09. Pulled from the
+			// origin repo (ImportContributedSchemes --meta=references/contributions/
+			// cloudroom-math-2026.meta.json); a scheduled pull is a follow-up.
+			return Optional.of(new Attribution("Cloudroom Math 2026", Disposition.SKIP_FRESH_IMPORT));
 		default:
 			// An unseen known/<sub>: still NOT Perminov's. Fall back to the aggregator
 			// label so it is at least not miscredited to Perminov.
@@ -140,7 +146,7 @@ public final class PerminovKnownAttribution {
 	 */
 	public static final Set<String> MAPPED_SUBTREES = Set.of("meta_flip_graph", "alpha_tensor", "alpha_evolve",
 			"a_60_addition", "jakobmoosbauer_flips", "jakobmoosbauer_symmetric_flips", "fmm_add_reduction",
-			"classic", "tensor", "matmulcatalog", "MerlijnW70_fmm_schemes", "lita");
+			"classic", "tensor", "matmulcatalog", "MerlijnW70_fmm_schemes", "lita", "cloudroom-math");
 
 	public static boolean isMappedSubtree(String sub) {
 		return MAPPED_SUBTREES.contains(sub);

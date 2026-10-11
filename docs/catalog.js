@@ -54,6 +54,8 @@ function referencesMdAnchor(sourceKey) {
   if (sourceKey.startsWith("Khoruzhii"))                           return "82-khoruzhii-2026-lita";
   // Witteveen 2026 ZT dataset (doi:10.5281/zenodo.22943995, CC BY 4.0).
   if (sourceKey === "Witteveen 2026")                              return "90-witteveen-2026";
+  // Cloudroom Math Campaign 2026 (github.com/matyasstoch/cloudroom-math, Apache-2.0).
+  if (sourceKey === "Cloudroom Math 2026")                         return "91-cloudroom-math-2026";
   if (sourceKey.startsWith("Schwartz") && sourceKey.includes("2025")) return "19-schwartz-zwecher25";
   if (sourceKey.startsWith("Drevet") && sourceKey.includes("2010")) return "20-drevet-schost-poster";
   if (sourceKey.startsWith("Sedoglavic 2017"))                     return "21-sedoglavic17";

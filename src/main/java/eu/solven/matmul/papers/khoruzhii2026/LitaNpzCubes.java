@@ -40,13 +40,25 @@ public final class LitaNpzCubes {
 	private static final Pattern NAME = Pattern.compile("^(\\d+)x(\\d+)x(\\d+)_r(\\d+)\\.npz$");
 
 	/** The best (lowest-rank) archive for {@code ⟨n,n,n⟩}, if one is present. */
+	/** The lowest-rank archive for the cube {@code ⟨n,n,n⟩} (the legacy {@code TA_lita_npz(n=N)} atom). */
 	public static Optional<Path> file(int n) {
+		return file(n, -1);
+	}
+
+	/**
+	 * The archive {@code {n}x{n}x{n}_r{r}.npz}, or with {@code r < 0} the lowest-rank one
+	 * for that cube. Several archives per cube coexist since 2026-10-07 (Serafin's
+	 * "Improve even LITA construction" took every even cube down by one): the
+	 * September stubs pin {@code TA_lita_npz(n=N,r=R)} to their own archive and keep
+	 * the chronology, the October stubs pin theirs.
+	 */
+	public static Optional<Path> file(int n, int r) {
 		if (!Files.isDirectory(DIR)) return Optional.empty();
 		try (Stream<Path> ls = Files.list(DIR)) {
 			return ls.filter(p -> {
 				Matcher m = NAME.matcher(p.getFileName().toString());
 				return m.matches() && Integer.parseInt(m.group(1)) == n && Integer.parseInt(m.group(2)) == n
-						&& Integer.parseInt(m.group(3)) == n;
+						&& Integer.parseInt(m.group(3)) == n && (r < 0 || Integer.parseInt(m.group(4)) == r);
 			}).min(Comparator.comparingInt(LitaNpzCubes::rankOf));
 		} catch (IOException e) {
 			return Optional.empty();
@@ -60,8 +72,14 @@ public final class LitaNpzCubes {
 
 	/** Load the published {@code ⟨n,n,n⟩} cube. Deterministic: same archive → same matrices. */
 	public static NonCubicBilinearAlgorithm build(int n) {
-		Path f = file(n).orElseThrow(() -> new IllegalStateException(
-				"TA_lita_npz(n=" + n + "): no " + n + "x" + n + "x" + n + "_r*.npz under " + DIR));
+		return build(n, -1);
+	}
+
+	/** Build from the archive of rank {@code r} ({@code r < 0}: the lowest-rank one). */
+	public static NonCubicBilinearAlgorithm build(int n, int r) {
+		String atom = "TA_lita_npz(n=" + n + (r < 0 ? "" : ",r=" + r) + ")";
+		Path f = file(n, r).orElseThrow(() -> new IllegalStateException(
+				atom + ": no " + n + "x" + n + "x" + n + "_r" + (r < 0 ? "*" : r) + ".npz under " + DIR));
 		try {
 			NonCubicBilinearAlgorithm alg = NpzSchemeReader.read(f.toFile()).alg();
 			if (alg.n != n || alg.m != n || alg.p != n || alg.r != rankOf(f)) {

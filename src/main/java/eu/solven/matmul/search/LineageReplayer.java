@@ -96,7 +96,8 @@ public final class LineageReplayer {
 	/** KGP 2026 LITA cubes AS PUBLISHED (khoruzhii/lita schemes/*.npz, 13 ≤ N ≤ 32; the
 	 *  Aug–Sep 2026 constructions that supersede {@link #TA_LITA}'s June generator) —
 	 *  a DATA-backed parametric leaf: replays by loading the archive via LitaNpzCubes.build. */
-	private static final Pattern TA_LITA_NPZ = Pattern.compile("TA_lita_npz\\(n=(\\d+)\\)");
+	/** {@code TA_lita_npz(n=N)} (lowest-rank archive) or {@code TA_lita_npz(n=N,r=R)} (that archive). */
+	private static final Pattern TA_LITA_NPZ = Pattern.compile("TA_lita_npz\\(n=(\\d+)(?:,r=(\\d+))?\\)");
 	/** Schwartz–Zwecher 2025 TA-New25 cubic ⟨N,N,N⟩ leaf — replays via TaNew25Construction.build. */
 	private static final Pattern TA_SZ = Pattern.compile("TA_sz\\(n=(\\d+)\\)");
 
@@ -503,8 +504,8 @@ public final class LineageReplayer {
 		}
 		Matcher litaNpz = TA_LITA_NPZ.matcher(ref);
 		if (litaNpz.matches()) {
-			return eu.solven.matmul.papers.khoruzhii2026.LitaNpzCubes
-					.build(Integer.parseInt(litaNpz.group(1)));
+			return eu.solven.matmul.papers.khoruzhii2026.LitaNpzCubes.build(Integer.parseInt(litaNpz.group(1)),
+					litaNpz.group(2) == null ? -1 : Integer.parseInt(litaNpz.group(2)));
 		}
 		Matcher sz = TA_SZ.matcher(ref);
 		if (sz.matches()) {

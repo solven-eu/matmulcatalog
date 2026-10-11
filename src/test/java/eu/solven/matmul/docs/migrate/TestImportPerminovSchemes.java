@@ -34,10 +34,10 @@ public class TestImportPerminovSchemes {
 
 	@Test
 	public void the_current_upstream_layout_has_no_unmapped_subtree() {
-		// Every sub-folder present upstream on 2026-09-30.
+		// Every sub-folder present upstream on 2026-10-11.
 		List<String> upstream = List.of("MerlijnW70_fmm_schemes", "a_60_addition", "alpha_evolve", "alpha_tensor", "classic",
 				"fmm_add_reduction", "jakobmoosbauer_flips", "jakobmoosbauer_symmetric_flips", "lita", "matmulcatalog",
-				"meta_flip_graph", "tensor").stream().map(sub -> "schemes/known/" + sub + "/x.json").toList();
+				"meta_flip_graph", "tensor", "cloudroom-math").stream().map(sub -> "schemes/known/" + sub + "/x.json").toList();
 
 		assertThat(ImportPerminovSchemes.unmappedKnownSubtrees(upstream)).isEmpty();
 	}

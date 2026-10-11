@@ -234,6 +234,7 @@ add the **Local PDF** line linking the file path.
 | [88](#88-adriano-2026-hk-task9) | adriano-2026-hk-task9 | 2026 | algorithm (**ℤ⟨2,p,n⟩ at the HK formula, g ≥ 6**) | Marcos Adriano, *Task #9: the six g ≥ 6 ⟨2,p,n⟩ shapes at the exact Hopcroft-Kerr formula, with integer coefficients*, GitHub issue [solven-eu/matmulcatalog#7](https://github.com/solven-eu/matmulcatalog/issues/7) (2026-09-24), attachment `hk-task9-schemes.zip`. Explicit **integer** schemes `⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`, `⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095` — the shapes our own HK emitter provably cannot reach in-framework (+1..+3) and FMM-Lille lists index-only. Route: HK methods as tori (eigenline pairs), tripartite method graph with integer Lemma-2 edges, non-cyclic unimodular Lemma-1 windows, and for ⟨2,24,30⟩ a `(3,3)` bridge through a virtual row over the **12-product** reusable set. Exact-verified here and loaded as `2x{p}x{n}-r{formula}-adriano_2026-*.json` (`source: "Adriano 2026"`, `discovery: false` — rank attributed to HK71, first explicit scheme credited to the contributor). Record: `references/contributions/issue7-adriano-2026-hk-task9.md`. |
 | [89](#89-adriano-2026-lille-recipes) | adriano-2026-lille-recipes | 2026 | algorithm (**22 FMM-Lille recipe ranks, explicit**) | Marcos Adriano, *22 explicit schemes at FMM-Lille table ranks (the table's own recipes, executed)*, GitHub issue [solven-eu/matmulcatalog#8](https://github.com/solven-eu/matmulcatalog/issues/8) (2026-09-24), attachment `lille-recipes-22-schemes.zip`. Explicit witnesses (9 ℤ, 13 with ±1/2 or ±1/3) for 22 table ranks FMM lists without a public scheme — recombinations over unequal blocks with an outer ⟨2,4,4⟩:26 HK (14 shapes) or Strassen (8). All 22 verified exactly here; **not loaded** (dim > 16 compositions of pieces we hold — 321 MB): instead RE-DERIVED as lineage stubs, 13 of them strictly below the recipe (⟨10,19,31⟩ 3492 vs 3532 …) once ⟨2,4,4⟩=26's Perminov-ZT / AlphaTensor-Z reps were registered as `rootPool()` bases. Record: `references/contributions/issue8-adriano-2026-lille-recipes.md`. |
 | [90](#90-witteveen-2026) | witteveen-2026 | 2026 | algorithm (**26 ZT schemes, 3 any-ring records**) | Merlijn S. Witteveen, *New fast matrix multiplication schemes* (dataset v1.2, 2026-09-30), DOI [10.5281/zenodo.22943995](https://doi.org/10.5281/zenodo.22943995), [github.com/MerlijnW70/fmm-schemes](https://github.com/MerlijnW70/fmm-schemes) — **CC BY 4.0**. 26 ternary-integer schemes (≤ 16): new best in any ring for `⟨7,11,15⟩=772`, `⟨11,13,15⟩=1364`, `⟨11,14,14⟩=1373`; first ZT scheme at the best rank for `⟨7,7,9⟩=315`; 22 further ZT records. All loaded (exact-verified, re-encoded canonically) as `*-witteveen_2026-*.json`. Cited by FMM-Lille for ⟨11,13,15⟩ / ⟨11,14,14⟩. |
+| [91](#91-cloudroom-math-2026) | cloudroom-math-2026 | 2026 | algorithm (**27 new upper bounds, AI-agent campaign**) | Cloudroom Math Campaign, *Cloudroom Math: new matrix multiplication algorithms found by AI agents* (release 2026-10-08), [github.com/matyasstoch/cloudroom-math](https://github.com/matyasstoch/cloudroom-math) — **Apache-2.0**. Explicit schemes found by Claude Opus 5.5 agents: `⟨4,6,15⟩=261` ("hidden grids" in serendipitous products), `⟨9,11,11⟩=710` (mod-3 flip-graph walk + core-restricted Hensel lift), 25 composition-type improvements in the 17–32 band. All verified exactly and loaded as `*-cloudroom_2026-*.json`. Cites this catalog ("Lacelle") as a previous-best source. |
 
 ---
 
@@ -1161,15 +1162,16 @@ Relevance to this repo:
   howpublished = {Dataset, \url{https://github.com/MerlijnW70/fmm-schemes}},
   year         = {2026},
   doi          = {10.5281/zenodo.22943995},
-  note         = {Releases 1.0 (2026-09-24), 1.1 (2026-09-27), 1.2 (2026-09-30). Licence: CC BY 4.0}
+  note         = {Releases 1.0 (2026-09-24), 1.1 (2026-09-27), 1.2 and 1.3 (2026-09-30). Licence: CC BY 4.0}
 }
 ```
 
 A dataset of explicit **ternary-integer (ZT)** schemes — every coefficient in
 `{−1,0,1}`, hence valid over every ring — for formats with all dimensions ≤ 16,
-in Perminov's JSON layout (`n`, `m`, `u`, `v`, `w`). Release 1.2 holds 26 schemes.
-Per the dataset's own table (previous values = min of Perminov's and FMM-Lille's
-tables at the release date):
+in Perminov's JSON layout (`n`, `m`, `u`, `v`, `w`). Release 1.2 holds 26 schemes;
+release 1.3 (same day, 13:41Z) replaces ten of them with lower ranks — see the
+update block below. Per release 1.2's table (previous values = min of Perminov's
+and FMM-Lille's tables at the release date):
 
 | Claim | Shapes |
 | --- | --- |
@@ -1204,10 +1206,68 @@ Relevance to this repo:
   1.1 — `⟨7,9,14⟩=599`, `⟨13,14,16⟩=1806`. `⟨2,14,16⟩=348` (1.0–1.1, withdrawn in
   1.2; Hopcroft–Kerr gives 344) is held because the Perminov mirror brought it in.
 
+> **Update 2026-10-11 — release 1.3 (2026-09-30 13:41Z).** Ten formats dropped
+> further, all now the best known over every ring: `⟨7,7,9⟩=314` (was 315 — the
+> first improvement of that format), `⟨6,11,13⟩=572` (574), `⟨8,10,13⟩=684` (686),
+> `⟨8,10,14⟩=724` (726), `⟨7,11,15⟩=769` (777), `⟨9,11,13⟩=833` (835),
+> `⟨10,13,14⟩=1150` (1152), `⟨11,13,15⟩=1362` (1371), `⟨11,14,14⟩=1367` (1376),
+> `⟨13,13,15⟩=1591` (1605). Pulled by the scheduled `ImportWitteveenSchemes`
+> (exact gate, `discovery: "TBD"` as for every automated import — the dataset's
+> own "previous best" column supports `true` for all ten; stamped at the next
+> audit). The release-1.2 files stay as the previous ranks.
+
 **Cited in**: `REFERENCES.md` (this entry, index row [90]),
 `references/contributions/witteveen-2026.meta.json`, `ImportWitteveenSchemes`,
 `PerminovKnownAttribution`, `docs/catalog.js` (source → [90]), the
 `TestSweepSpotsSota.retains_witteveen_2026_records` guard.
+
+---
+
+## [91] <a name="91-cloudroom-math-2026"></a>cloudroom-math-2026
+
+```bibtex
+@misc{cloudroom2026,
+  author       = {{Cloudroom Math Campaign}},
+  title        = {Cloudroom Math: new matrix multiplication algorithms found by {AI} agents},
+  howpublished = {\url{https://github.com/matyasstoch/cloudroom-math}},
+  year         = {2026},
+  note         = {Release 2026-10-08. Licence: Apache-2.0. Explicit schemes found by an autonomous multi-agent campaign of Claude Opus 5.5 agents orchestrated in Cloudroom}
+}
+```
+
+A dataset of explicit schemes (Perminov JSON layout) with per-result manuscripts
+and an exact verifier; the "previous best" it cites for each format is the
+minimum of FMM-Lille, Perminov and this catalog ("Lacelle"). Three result
+families matter here:
+
+- **`⟨4,6,15⟩=261`** (was 263) — *hidden grids* in serendipitous products: inside a
+  bud class the two free factors are re-based exactly over ℚ, and when the spans
+  of two classes intersect in dimension ≥ 2 the re-basing exposes a
+  two-dimensional grid. Perminov's `⟨2,3,15⟩:75` has two hidden 2×3 grids; its
+  product with `⟨2,2,1⟩` needs 261. This is the combined bud of
+  `SerendipitousBudProduct.GridBud` taken one step further (ours requires the
+  grid to be visible in the given basis — a follow-up).
+- **`⟨9,11,11⟩=710`** (was 711) — a mod-3 flip-graph walk on Perminov's rational
+  711 (denominators 4 and 8 reduce mod 3) and a core-restricted Hensel lift of
+  the 48 changed terms.
+- **25 upper bounds in the 17–32 band** (gains 1–12, 111 in total) from a sweep
+  of every known base against every second factor with the best block ranks
+  over ℚ and hidden grids — e.g. `⟨6,10,24⟩=900`, `⟨4,9,22⟩=548`, `⟨6,9,22⟩=737`,
+  `⟨4,12,30⟩=954`. Four of them (`⟨6,14,20⟩=1073`, `⟨6,14,24⟩=1232`,
+  `⟨8,13,28⟩=1796`, `⟨6,10,32⟩=1231`) were reached independently here on
+  2026-10-01/02 by the combined-bud pass (PR #11).
+
+Relevance to this repo: **all 27 loaded** (2026-10-11) as
+`schemes/known/section{maxDim}/…-cloudroom_2026-*.json` through the
+contributed-scheme gate (`ImportContributedSchemes --meta=references/contributions/cloudroom-math-2026.meta.json`),
+`discovery: "TBD"` pending the per-format audit against the release date.
+Perminov mirrors two of them (`schemes/known/cloudroom-math/`, mapped in
+`PerminovKnownAttribution`). A scheduled pull from the origin repo, like
+`ImportWitteveenSchemes`, is a follow-up.
+
+**Cited in**: `REFERENCES.md` (this entry, index row [91]),
+`references/contributions/cloudroom-math-2026.meta.json`,
+`PerminovKnownAttribution`, `docs/catalog.js` (source → [91]).
 
 ---
 

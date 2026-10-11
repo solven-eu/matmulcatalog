@@ -53,7 +53,7 @@ import lombok.extern.slf4j.Slf4j;
  * pointing at the repo / the exact file. Dry-run by default; {@code --execute}
  * archives the {@code .npz} under {@link LitaNpzCubes#DIR} and writes a HASH-STAMPED
  * STUB {@code schemes/known/section{N}/{N}x{N}x{N}-r{R}-khoruzhii_2026-{hash7}.json}
- * whose lineage is the data-backed atom {@code TA_lita_npz(n=N)} (replayed by
+ * whose lineage is the data-backed atom {@code TA_lita_npz(n=N,r=R)} (replayed by
  * {@code LineageReplayer} through {@link NpzSchemeReader}). Explicit catalog JSON is
  * not an option at this size: 32³ is 117 MB canonical (GitHub's file limit is
  * 100 MB) and the 20 cubes total 491 MB, against 12 MB of archives.</p>
@@ -179,7 +179,9 @@ public final class ImportKhoruzhiiLita {
 			Path outDir = SCHEMES_ROOT.resolve("known").resolve("section" + maxDim);
 			Files.createDirectories(outDir);
 			File out = outDir.resolve(SchemeIO.canonicalName(alg, "khoruzhii_2026")).toFile();
-			SchemeIO.writeStub(alg, out, new Lineage.Atom("TA_lita_npz(n=" + alg.n + ")"), fields);
+			// Rank-qualified atom: several archives per cube coexist (the September and the
+			// October even constructions), and each stub must replay to ITS content.
+			SchemeIO.writeStub(alg, out, new Lineage.Atom("TA_lita_npz(n=" + alg.n + ",r=" + alg.r + ")"), fields);
 			Map<String, Object> meta = new LinkedHashMap<>();
 			meta.put("fields", fields);
 			meta.put("fields_not", fieldsNot);
