@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(naive-16x16x1, 16x16x16)",
+  "lineage_compact": "naive-16x16x1 +p 16x16x16",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-16x16x1"},
+    "right": {"op": "Atom", "ref": "16x16x16@535b8c596e94f7fdbbcef189f141c09001f7db332b50f732275d9b16a393e07b"}
+  },
+  "n": [16, 16, 17],
+  "m": 2493,
+  "hash": "4811d9b6d38fde5eb2710de6b07b31baf70f9c329ec6db77d5d1cdcb2de85b28",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -427,6 +427,14 @@ public final class FieldAwareLookup implements Recombination.AlgorithmLookup {
 		if (ref.startsWith("DIS09Lemma4")) {
 			return List.of("Q", "R", "C"); // Pan/Islam TA cube — Q-strict
 		}
+		if (ref.startsWith("TA_lita")) {
+			// KGP LITA cubes (TA_lita = June generator port, TA_lita_npz = the published
+			// 2026-09 archives): rational with even denominators → Q-strict as a FORMULA
+			// leaf. (A specific cube may additionally reduce mod 3 — 14³, 15³ — but that is
+			// a property stamped on its stub and reached through a shaped `NxNxN@hash`
+			// ref, never claimed for the bare formula.)
+			return List.of("Q", "R", "C");
+		}
 		if (ref.contains("naive")) {
 			return List.of("F2", "F3", "Z", "Q", "R", "C"); // elementary products — integer
 		}

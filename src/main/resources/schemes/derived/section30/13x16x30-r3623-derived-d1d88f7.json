@@ -1,0 +1,28 @@
+{
+  "lineage_str": "Serendipitous(OrientAs(3x4x13, ⟨13,4,3⟩) ⊗ ⟨1,4,10⟩)",
+  "lineage_compact": "3x4x13→⟨13,4,3⟩ ⊗ˢ⟨1,4,10⟩",
+  "lineage": {
+    "op": "SerendipitousProduct",
+    "n2": 1,
+    "m2": 4,
+    "p2": 10,
+    "base": {
+      "op": "OrientAs",
+      "n": 13,
+      "m": 4,
+      "p": 3,
+      "axisMap": "pmn",
+      "child": {"op": "Atom", "ref": "3x4x13@0ae4fbe"}
+    }
+  },
+  "n": [13, 16, 30],
+  "m": 3623,
+  "hash": "d1d88f7abc8838aca4ee6bf1f0465ea002c4cc03325994cb4ddd7508f7cc3dee",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

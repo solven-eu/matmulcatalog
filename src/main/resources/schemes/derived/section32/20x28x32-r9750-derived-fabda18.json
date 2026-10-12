@@ -1,0 +1,25 @@
+{
+  "lineage_str": "SumInner(OrientAs(4x20x32, ⟨20,4,32⟩), 20x24x32)",
+  "lineage_compact": "4x20x32→⟨20,4,32⟩ +m 20x24x32",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 20,
+      "m": 4,
+      "p": 32,
+      "axisMap": "mnp",
+      "child": {"op": "Atom", "ref": "4x20x32@dfd5c6d9c154d560030220c256cb49169afefa2f25fb8549eb1eeb928ef3f056"}
+    },
+    "right": {"op": "Atom", "ref": "20x24x32@92374193a3a23a3289fb795b0860aee9489ce945d3c87551f46ccec53790be19"}
+  },
+  "n": [20, 28, 32],
+  "m": 9750,
+  "hash": "fabda1862e41c8aea3c90800f668995f3e96bb8a0d573b6054faa76195d2ed46",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

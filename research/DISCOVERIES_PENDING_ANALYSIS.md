@@ -1923,3 +1923,107 @@ default pool — every existing ⟨2,4,4⟩-outer stub was optimised against hk7
 support only; (2) ⟨6,14,25⟩ FMM index 1320 (index-only) vs ours 1322; (3) the
 contributor's other 14 recipes (piece sums above table rank / non-smallest-size
 allocations / DIS09-style Kronecker-with-correction, e.g. ⟨16,20,28⟩=4944).
+
+---
+
+## 2026-09-30 / 10-01 — Full resync with FMM-Lille and Perminov: 529 → 0 backed FMM gaps, 621 → 0 in Perminov's 17–32 band; why CI had synced none of it (PR #11)
+
+**Ask:** "do a full resync with Perminov and FMM, so make sure we do tie or
+improve everywhere", then "analyse why these were not synced automatically by
+the CI regular jobs". Root-cause document:
+[`research/CI_SYNC_GAP_ANALYSIS_2026-09-30.md`](CI_SYNC_GAP_ANALYSIS_2026-09-30.md)
+(14 fixes shipped, follow-ups listed). Field `Q` throughout, NC.
+
+**Headline numbers** (`FmmCrossCheck`, `CompareReferenceCatalogs`, and
+`scratchpad/perm-compare.sh` = `ProbeFindRank` over the 971 formats of
+`references/perminov-serendipitous-17-32.json`):
+
+| | before | after |
+| --- | ---: | ---: |
+| FMM-Lille WORSE rows (index) | 529, Σ 114 815 | 11 index-side rows, **0 backed by a valid artifact** |
+| FMM-Lille BETTER | 1 275 | 1 818 |
+| Perminov 17–32 band WORSE | 621, Σ 11 465 | **0** |
+| Perminov 17–32 band tie / better | 350 | 789 / 182 |
+
+**What closed the FMM side** (in order of effect): the KGP LITA cubes
+13³–32³ (509 of the 529 rows were `Proj` descendants of the 20 cube heads);
+the projection scatter over the WORSE list (`ProjectFmmGaps --passes=2`,
+repaired to pin native `shape@hash` parents and skip divergent candidates);
+`SchemeSweep --mode=materialize --field=Q --config=simple --strategies=concat,kron,recomb --shape-file=target/fmm-worse.txt`;
+the Witteveen 2026 imports (⟨11,13,15⟩, ⟨11,14,14⟩); the two FMM artifacts
+⟨7,11,30⟩=1493 and ⟨13,19,29⟩=4248 (`ImportFmmTensorArtifacts`).
+
+**The 11 FMM rows that remain, audited against FMM's own artifact**
+(`references/fmm-artifact-audit.md`, 2026-09-30 section): 8 are *index-only*
+— the artifact and the page title state a rank ≥ ours (⟨7,7,17⟩ 573 = ours,
+⟨11,13,13⟩ 1205 = ours, ⟨6,14,25⟩ artifact 1346 vs ours 1322, …), i.e. the
+digest index runs one or two ahead of anything FMM publishes; ⟨8,27,30⟩'s
+current artifact (3736 triads) **does not compute matmul** (95/240 output
+cells wrong; the July audit had decoded a valid 3744 one) — index 3744 is
+unbacked; ⟨16,20,28⟩ / ⟨16,20,29⟩ are recipe-only placeholders whose page
+recipe (4944 / 5264) IS a real gap of +30 / +16 — span-compressed buds, see the
+2026-07-08 entry; the combined buds below do not reach it.
+
+**What closed the Perminov band.** Three engine/importer defects, each
+silent:
+1. the importer kept at most ONE serendipitous base per `(shape, rank)` (37 of
+   281 held) → keyed by upstream path, 244 imported (`bud-bases/`);
+2. degenerate products `base ⊗ˢ ⟨1,b,c⟩` were priced but unbuildable (no file
+   for a unit-axis shape) → naive fallback; ⟨13,20,21⟩ = 3165 as the guard;
+3. **combined buds** (Perminov §2.6.4): 41 of the last 45 recipes carry a
+   `⟨1,2,2⟩`-type grid of four terms fusing into one doubly-enlarged inner.
+   `SerendipitousBudProduct.GridBud` + a structural decomposition family
+   (`candidateDecompositions`: grid strategies `NONE/ALL/CLOSED/KEEP_U,V,W/CORE/UW/UV/VW`
+   × six type orderings × {class-at-a-time, fewest-options-first}) — math and
+   tier (bound) in `references/SERENDIPITOUS_PARTIAL_PRODUCT.md` §6. The
+   remaining two recipes needed the exact verifier to read denominators above
+   1024 (`3866/3705`).
+   Canonical instance: ⟨9,9,18⟩ = 15·⟨6,3,3⟩ + 2·⟨12,3,3⟩ + ⟨6,6,6⟩:153 = **913**
+   (single-type buds: 920). Repro:
+   `MaterialiseSerendipitousWins --shapes=9x9x18`;
+   `ProbeSerendipStructure bud-bases/section3/3x3x3-r23-perminov_serbase_ZT-86f228f.json 3 3 6`.
+
+**Beyond Perminov** (bound tier, our family's choice differs from his):
+⟨12,16,20⟩ 2242 vs his 2244, ⟨16,20,20⟩ 3619 vs 3624 — serendipitous stubs,
+lineage `Serendipitous(⟨3,4,5⟩:47 ⊗ ⟨4,4,4⟩)` / `(⟨4,5,5⟩:76 ⊗ ⟨4,4,4⟩)`.
+Eighteen formats went from tie-or-worse to BELOW his published serendipitous rank
+in the same passes (all bound-tier serendipitous stubs; each `WIN, persisted` line
+in `scratchpad/cycle{3,4}-ser.log`): ⟨6,14,24⟩ 1240→1232, ⟨8,10,26⟩ 1328→1326,
+⟨8,22,32⟩ 3328→3318, ⟨8,24,28⟩ 3141→3140, ⟨8,32,32⟩ 4608→4605, ⟨12,16,20⟩
+2250→2242, ⟨12,20,22⟩ 3061→3055, ⟨12,22,32⟩ 4756→4753, ⟨14,15,32⟩ 3947→3920,
+⟨14,20,26⟩ 4246→4230, ⟨14,24,32⟩ 6048→6032, ⟨14,25,26⟩ 5243→5221, ⟨16,20,20⟩
+3630→3619, ⟨16,22,28⟩ 5500→5498, ⟨16,26,32⟩ 7296→7284, ⟨20,24,28⟩ 7191→7173,
+⟨20,27,28⟩ 8192→8190, ⟨20,28,28⟩ 8434→8422. And ⟨6,14,25⟩ = 1316 by concat of
+the new ⟨6,14,24⟩ — below FMM's index (1320).
+
+**Not done / open:** span-compressed buds (⟨16,20,28⟩ family); a cost-aware
+bud-partition optimiser (needs the decomposition recorded in the lineage
+node); three-axis buds; KGP archive licence; the two divergent sweep
+candidates ⟨23,28,28⟩ (9679 priced, 10179 built) and ⟨23,29,29⟩ (10470 vs
+10720) were never diagnosed.
+
+### Addendum 2026-10-11 — resync before merge (PR #11)
+
+Ten days of upstream movement, all absorbed in one pass (`ImportWitteveenSchemes`,
+`ImportPerminovSchemes`, `ImportContributedSchemes --meta=…cloudroom-math-2026.meta.json`,
+`ImportKhoruzhiiLita`, `ProjectFmmGaps --passes=2`, then the generators):
+
+- **Witteveen release 1.3** (2026-09-30 13:41Z): ten formats now the best known over
+  every ring — ⟨7,7,9⟩=314, ⟨6,11,13⟩=572, ⟨8,10,13⟩=684, ⟨8,10,14⟩=724,
+  ⟨7,11,15⟩=769, ⟨9,11,13⟩=833, ⟨10,13,14⟩=1150, ⟨11,13,15⟩=1362, ⟨11,14,14⟩=1367,
+  ⟨13,13,15⟩=1591. Pulled by the scheduled importer exactly as designed.
+- **Cloudroom Math 2026** (REFERENCES [91], release 2026-10-08, Apache-2.0, 27
+  explicit schemes found by Claude Opus 5.5 agents): 7 below this catalog —
+  ⟨4,6,15⟩=261 ("hidden grids": combined buds after an exact re-basing of the free
+  factors — the next step past `GridBud`), ⟨9,11,11⟩=710 (mod-3 flip walk + core
+  Hensel lift), ⟨4,9,22⟩=548, ⟨6,9,22⟩=737, ⟨4,12,30⟩=954, ⟨4,9,30⟩=742,
+  ⟨8,9,22⟩=994 — and 20 exact ties with what the combined-bud passes had reached
+  here on 2026-10-01/02 (⟨6,14,20⟩=1073, ⟨6,14,24⟩=1232, ⟨8,13,28⟩=1796, …). Their
+  CONTENTS.md cites this catalog ("Lacelle") among the previous-best sources.
+  Perminov started mirroring it on 2026-10-09; the importer's unmapped-subtree
+  warning fired on the first run and the subtree is now mapped.
+- **KGP LITA, 2026-10-07** (Serafin, "Improve even LITA construction"): every even
+  cube one lower, 14³=1593 … 32³=14196, which had put 200 formats (the cubes and
+  their `Proj` families) below FMM's index again. Imported as new stubs on the
+  rank-qualified atom `TA_lita_npz(n=N,r=R)`; both archive generations are kept.
+- Perminov ≤ 16: one new ZT record, ⟨8,10,12⟩=628.

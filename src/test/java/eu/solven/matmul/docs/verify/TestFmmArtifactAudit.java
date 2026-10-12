@@ -35,7 +35,9 @@ public class TestFmmArtifactAudit {
 			// unsorted key would never match and the row would silently stay WORSE.
 			assertThat(n <= m && m <= p).as("key must be sorted n≤m≤p: " + e.getKey()).isTrue();
 			String cls = e.getValue().get("class").asText();
-			assertThat(cls).isIn("index_only", "placeholder");
+			assertThat(cls).isIn("index_only", "placeholder", "artifact_invalid");
+			// 2026-09-30: an entry is a statement about ONE index value and expires with it.
+			assertThat(e.getValue().has("index_rank")).as("index_rank on " + e.getKey()).isTrue();
 		});
 	}
 }

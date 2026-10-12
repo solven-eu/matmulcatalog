@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatCols(naive-6x10x1, 6x10x18)",
+  "lineage_compact": "naive-6x10x1 +p 6x10x18",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-6x10x1"},
+    "right": {"op": "Atom", "ref": "6x10x18@05dda13d3aa65e0d3a10afc1585659586d30d15a4ac1ce2bda311384037cc23f"}
+  },
+  "n": [6, 10, 19],
+  "m": 728,
+  "hash": "eb0b7153b7803ec51ec8a81b4d99dad1e6e8ca33705596b28dce30756089d86d",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

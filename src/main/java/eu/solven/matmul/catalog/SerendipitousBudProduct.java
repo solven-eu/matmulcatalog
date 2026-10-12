@@ -34,10 +34,17 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
  * (the saving {@code k·rB − Σ R(...)} framing).
  *
  * <p>Covers single-type {@code U}-buds ({@code ⟨1,1,k⟩}), {@code V}-buds
- * ({@code ⟨k,1,1⟩}) and {@code W}-buds ({@code ⟨1,k,1⟩}) plus trivial terms.
- * Combined buds (§2.6.4, e.g. {@code ⟨2,1,2⟩}) are a follow-up. The assembled
- * scheme is a standard flatten {@code (U,V,W)}; the caller verifies it with
+ * ({@code ⟨k,1,1⟩}) and {@code W}-buds ({@code ⟨1,k,1⟩}), trivial terms, and
+ * <b>combined two-axis buds</b> (§2.6.4 — {@link GridBud}: {@code ⟨1,b,c⟩},
+ * {@code ⟨a,1,c⟩}, {@code ⟨a,b,1⟩}, e.g. the {@code ⟨1,2,2⟩} of a ⟨3,3,3⟩:23 that
+ * fuses four ⟨6,3,3⟩ copies into one ⟨6,6,6⟩:153 → ⟨9,9,18⟩ ≤ 913). Three-axis
+ * buds ({@code a,b,c} all ≥ 2) are not searched. The assembled scheme is a
+ * standard flatten {@code (U,V,W)}; the caller verifies it with
  * {@link eu.solven.matmul.verifiers.Verifier#isExactNonCubic} (the oracle).</p>
+ *
+ * <p><b>Optimality tier: bound.</b> The decomposition is the cheapest of a fixed
+ * structural family ({@link #candidateDecompositions}: grid strategies × type
+ * orderings, each greedy) — not an optimum over all bud partitions.</p>
  */
 public final class SerendipitousBudProduct {
 
@@ -48,8 +55,115 @@ public final class SerendipitousBudProduct {
 	/** A bud: a group of ≥2 term indices sharing one factor vector (up to scaling). */
 	public record Bud(BudType type, int[] terms) {}
 
-	/** Full bud decomposition: typed buds + leftover trivial terms. */
-	public record BudDecomposition(List<Bud> buds, int[] trivial) {
+	/**
+	 * A combined bud (Perminov §2.6.4): terms that together form an embedded
+	 * {@code ⟨a,b,c⟩} matmul tensor with exactly one of {@code a,b,c} equal to 1 —
+	 * a full grid over the proportionality classes of two factors:
+	 * <ul>
+	 *   <li>{@code ⟨1,b,c⟩} — {@code b} U-classes × {@code c} W-classes (V free);</li>
+	 *   <li>{@code ⟨a,1,c⟩} — {@code a} U-classes × {@code c} V-classes (W free);</li>
+	 *   <li>{@code ⟨a,b,1⟩} — {@code a} W-classes × {@code b} V-classes (U free).</li>
+	 * </ul>
+	 * {@code terms} is row-major over {@code (i,j,k)}: index {@code (i·b + j)·c + k}.
+	 * Against an inner {@code ⟨n₂,m₂,p₂⟩} the {@code a·b·c} copies fuse into ONE
+	 * {@code ⟨a·n₂, b·m₂, c·p₂⟩}. The single-type buds are the degenerate grids with
+	 * two unit dims; a grid beats its own row/column split whenever
+	 * {@code R(⟨an₂,bm₂,cp₂⟩)} is below the sum of the single-axis fusions.
+	 *
+	 * <p>No scale condition is needed: each term is
+	 * {@code (α·Û) ⊗ V ⊗ (γ·Ŵ)} for its two class representatives, and
+	 * {@code α·γ} is absorbed by the free factor.</p>
+	 */
+	public record GridBud(int a, int b, int c, int[] terms) {
+		public GridBud {
+			if ((a == 1 ? 1 : 0) + (b == 1 ? 1 : 0) + (c == 1 ? 1 : 0) != 1 || terms.length != a * b * c) {
+				throw new IllegalArgumentException("a combined bud is ⟨1,b,c⟩ / ⟨a,1,c⟩ / ⟨a,b,1⟩ with a·b·c terms, got ⟨"
+						+ a + "," + b + "," + c + "⟩ with " + terms.length);
+			}
+		}
+	}
+
+	/** Which combined buds a decomposition extracts before the single-type greedy. */
+	public enum GridStrategy {
+		/** None — single-type buds only (the pre-2026-09-30 behaviour). */
+		NONE,
+		/** Every grid type, largest first. */
+		ALL,
+		/**
+		 * Every grid type, but only CLOSED grids: each row-class and column-class lies
+		 * entirely inside the grid, so fusing it strands no class-mate.
+		 */
+		CLOSED,
+		/**
+		 * Every grid type, but no grid may SPLIT a U-class (each U-class it touches lies
+		 * entirely inside it). Where a grid would take two of a three-term U-class, the
+		 * class is left whole for the single-type greedy — ⟨3,10,14⟩:312 ⊗ˢ ⟨3,3,2⟩ keeps
+		 * its four {@code ⟨1,1,3⟩} next to 69 {@code ⟨1,2,2⟩} (4244) instead of 71 grids
+		 * and four broken triples (4252).
+		 */
+		KEEP_U,
+		/** As {@link #KEEP_U}, for V-classes. */
+		KEEP_V,
+		/** As {@link #KEEP_U}, for W-classes. */
+		KEEP_W,
+		/**
+		 * Every grid type, each grid cut down to its 2×2 CORE: the two rows and two
+		 * columns whose four terms are least entangled with the free factor (fewest
+		 * terms that also sit in a class of the factor the grid leaves free). A 2×5 grid
+		 * built from the third members of eight U-triples costs those triples more than
+		 * it saves; its core over the two triple-free columns does not —
+		 * ⟨2,5,13⟩:104 ⊗ˢ ⟨2,5,2⟩ = 1657 with one {@code ⟨2,2,1⟩}, 1659 without.
+		 */
+		CORE,
+		/** Only {@code ⟨1,b,c⟩} grids (U-classes × W-classes). */
+		UW,
+		/** Only {@code ⟨a,1,c⟩} grids (U-classes × V-classes). */
+		UV,
+		/** Only {@code ⟨a,b,1⟩} grids (W-classes × V-classes). */
+		VW
+	}
+
+	/** Rank oracle for pricing a decomposition; {@code ≥ UNKNOWN_RANK} = unknown. */
+	@FunctionalInterface
+	public interface RankOracle {
+		long rank(int n, int m, int p);
+
+		static RankOracle of(FieldAwareLookup lookup) {
+			return lookup::findRank;
+		}
+
+		/** Prices by what the resolver can actually BUILD (the replay-side oracle). */
+		static RankOracle of(InnerResolver resolver) {
+			java.util.Map<String, Long> memo = new java.util.HashMap<>();
+			return (n, m, p) -> {
+				String key = n + "x" + m + "x" + p;
+				Long known = memo.get(key);
+				if (known != null) {
+					return known;
+				}
+				long r;
+				try {
+					r = resolver.find(n, m, p).map(a -> (long) a.r).orElse(Long.MAX_VALUE / 4);
+				} catch (RuntimeException e) {
+					r = Long.MAX_VALUE / 4;
+				}
+				memo.put(key, r);
+				return r;
+			};
+		}
+	}
+
+	/** Full bud decomposition: typed buds + combined buds + leftover trivial terms. */
+	public record BudDecomposition(List<Bud> buds, List<GridBud> grids, int[] trivial) {
+		public BudDecomposition(List<Bud> buds, int[] trivial) {
+			this(buds, List.of(), trivial);
+		}
+
+		/** Any fusion at all (single-type or combined)? */
+		public boolean hasBuds() {
+			return !buds.isEmpty() || !grids.isEmpty();
+		}
+
 		/** U-buds only (back-compat with the original probe). */
 		public List<int[]> uBuds() {
 			List<int[]> out = new ArrayList<>();
@@ -118,18 +232,325 @@ public final class SerendipitousBudProduct {
 
 	/** Greedy bud decomposition under an explicit type ordering (see {@link #ALL_ORDERINGS}). */
 	public static BudDecomposition findBuds(NonCubicBilinearAlgorithm a, BudType[] order) {
-		double[][] srcU = a.denseU();
-		double[][] srcV = a.denseV();
-		double[][] srcW = a.denseW();
-		boolean[] used = new boolean[a.r];
+		return decompose(a.r, independentClassIds(a), List.of(), order);
+	}
+
+	/**
+	 * The structural family of decompositions a serendipitous product is chosen from:
+	 * every {@link GridStrategy} that extracts at least one combined bud (plus
+	 * {@link GridStrategy#NONE}, first — its six greedy members are the whole
+	 * pre-2026-09-30 family) × every type ordering of {@link #ALL_ORDERINGS} for the
+	 * terms left over, each ordering both as the class-at-a-time greedy and as the
+	 * fewest-options-first greedy. It depends on the base ALONE — not on any rank oracle — so
+	 * the search ({@code SerendipitousSearch.bestFor}, pricing with {@code findRank})
+	 * and the replay ({@link #productViaBudsBest}, pricing with what it can build)
+	 * minimise over the same set, and a better inner can only lower a replayed rank.
+	 */
+	public static List<BudDecomposition> candidateDecompositions(NonCubicBilinearAlgorithm a) {
+		int[][] ids = independentClassIds(a);
+		List<BudDecomposition> out = new ArrayList<>();
+		java.util.Set<String> seenGridSets = new java.util.HashSet<>();
+		for (GridStrategy strategy : GridStrategy.values()) {
+			List<GridBud> grids = selectGrids(a.r, ids, strategy);
+			if (strategy != GridStrategy.NONE && grids.isEmpty()) {
+				continue;
+			}
+			StringBuilder sig = new StringBuilder();
+			for (GridBud g : grids) {
+				sig.append(java.util.Arrays.toString(g.terms())).append('|').append(g.a()).append(',').append(g.b());
+			}
+			if (!seenGridSets.add(sig.toString())) {
+				continue; // e.g. ALL picked exactly the UW grids
+			}
+			for (BudType[] order : ALL_ORDERINGS) {
+				out.add(decompose(a.r, ids, grids, order));
+			}
+			for (BudType[] order : ALL_ORDERINGS) {
+				out.add(decomposeFewestOptionsFirst(a.r, ids, grids, order));
+			}
+		}
+		return out;
+	}
+
+	/** Combined buds first (given), then the greedy single-type grouping of the rest. */
+	private static BudDecomposition decompose(int r, int[][] ids, List<GridBud> grids, BudType[] order) {
+		boolean[] used = new boolean[r];
+		for (GridBud g : grids) for (int t : g.terms()) used[t] = true;
 		List<Bud> buds = new ArrayList<>();
 		for (BudType t : order) {
-			double[][] src = switch (t) { case U -> srcU; case V -> srcV; case W -> srcW; };
-			groupBy(a, src, t, used, buds);
+			groupBy(r, ids[t.ordinal()], t, used, buds);
 		}
 		List<Integer> trivial = new ArrayList<>();
-		for (int l = 0; l < a.r; l++) if (!used[l]) trivial.add(l);
-		return new BudDecomposition(buds, trivial.stream().mapToInt(Integer::intValue).toArray());
+		for (int l = 0; l < r; l++) if (!used[l]) trivial.add(l);
+		return new BudDecomposition(buds, grids, trivial.stream().mapToInt(Integer::intValue).toArray());
+	}
+
+	/**
+	 * Single-type grouping that serves the most constrained terms first (Karp–Sipser's
+	 * matching heuristic, lifted from pairs to classes). The type-by-type greedy of
+	 * {@link #decompose} commits a whole class at once, so a three-term U-class
+	 * {@code {a,b,c}} swallows {@code c} even when {@code c} is the ONLY partner of some
+	 * {@code d} on another factor — one bud where {@code {a,b}} + {@code {c,d}} gives
+	 * two. No type ordering repairs that when the pattern occurs on two factors at
+	 * once: ⟨4,5,9⟩:132 ⊗ˢ ⟨4,3,3⟩ stays at 3748 under all six orderings, 3744 here.
+	 *
+	 * <p>Loop, until no unassigned term has a class with a partner left:</p>
+	 * <ol>
+	 *   <li>a term with exactly ONE class that still holds another unassigned term
+	 *       opens a bud there, with the class-mate that has the fewest other options
+	 *       (pairs before joins: {@code d} claims {@code c} before {@code c} is
+	 *       absorbed);</li>
+	 *   <li>else every term with a class that is already a bud joins it;</li>
+	 *   <li>else the class with the most unassigned terms opens with its two
+	 *       least-flexible members.</li>
+	 * </ol>
+	 * {@code order} breaks ties between factors. Structural — no rank oracle.
+	 */
+	private static BudDecomposition decomposeFewestOptionsFirst(int r, int[][] ids, List<GridBud> grids,
+			BudType[] order) {
+		boolean[] done = new boolean[r];
+		for (GridBud g : grids) for (int t : g.terms()) done[t] = true;
+		int types = BudType.values().length;
+		int[][] free = new int[types][];        // unassigned terms per class
+		int[][] opened = new int[types][];      // terms already committed per class
+		for (int ty = 0; ty < types; ty++) {
+			int max = 0;
+			for (int t = 0; t < r; t++) max = Math.max(max, ids[ty][t] + 1);
+			free[ty] = new int[max];
+			opened[ty] = new int[max];
+			for (int t = 0; t < r; t++) if (!done[t]) free[ty][ids[ty][t]]++;
+		}
+		int[] assignedType = new int[r];
+		java.util.Arrays.fill(assignedType, -1);
+		while (true) {
+			// 1. a term with exactly one usable class — the one with the fewest possible
+			//    partners first (a term whose only class is a pair before a term whose only
+			//    class is a triple, or the triple's pick could strand the pair's partner).
+			int seed = -1, seedType = -1, seedChoices = Integer.MAX_VALUE;
+			for (int t = 0; t < r; t++) {
+				if (done[t]) continue;
+				int usable = 0, last = -1;
+				for (BudType ty : order) {
+					if (free[ty.ordinal()][ids[ty.ordinal()][t]] >= 2) { usable++; last = ty.ordinal(); }
+				}
+				if (usable == 1 && free[last][ids[last][t]] < seedChoices) {
+					seed = t;
+					seedType = last;
+					seedChoices = free[last][ids[last][t]];
+				}
+			}
+			if (seed < 0) {
+				// 2. join an open bud.
+				boolean progressed = false;
+				for (int t = 0; t < r; t++) {
+					if (done[t]) continue;
+					for (BudType ty : order) {
+						if (opened[ty.ordinal()][ids[ty.ordinal()][t]] > 0) {
+							commit(t, ty.ordinal(), ids, done, free, opened, assignedType);
+							progressed = true;
+							break;
+						}
+					}
+				}
+				if (progressed) continue;
+			}
+			// 3. else the fullest class, its least flexible member.
+			if (seed < 0) {
+				int best = 1;
+				for (BudType ty : order) {
+					for (int t = 0; t < r; t++) {
+						if (done[t]) continue;
+						int size = free[ty.ordinal()][ids[ty.ordinal()][t]];
+						if (size > best) { best = size; seedType = ty.ordinal(); seed = t; }
+					}
+				}
+				if (seed < 0) break; // nobody has a partner left
+				seed = leastFlexible(seedType, ids[seedType][seed], -1, r, ids, done, free);
+			}
+			int mate = leastFlexible(seedType, ids[seedType][seed], seed, r, ids, done, free);
+			commit(seed, seedType, ids, done, free, opened, assignedType);
+			commit(mate, seedType, ids, done, free, opened, assignedType);
+		}
+		// Emit buds in the same shape as the greedy: per type in `order`, classes first-seen.
+		List<Bud> buds = new ArrayList<>();
+		for (BudType ty : order) {
+			java.util.LinkedHashMap<Integer, List<Integer>> byClass = new java.util.LinkedHashMap<>();
+			for (int t = 0; t < r; t++) {
+				if (assignedType[t] == ty.ordinal()) {
+					byClass.computeIfAbsent(ids[ty.ordinal()][t], k -> new ArrayList<>()).add(t);
+				}
+			}
+			for (List<Integer> grp : byClass.values()) {
+				buds.add(new Bud(ty, grp.stream().mapToInt(Integer::intValue).toArray()));
+			}
+		}
+		List<Integer> trivial = new ArrayList<>();
+		for (int t = 0; t < r; t++) if (assignedType[t] < 0 && !inGrid(grids, t)) trivial.add(t);
+		return new BudDecomposition(buds, grids, trivial.stream().mapToInt(Integer::intValue).toArray());
+	}
+
+	private static boolean inGrid(List<GridBud> grids, int term) {
+		for (GridBud g : grids) for (int t : g.terms()) if (t == term) return true;
+		return false;
+	}
+
+	private static void commit(int t, int type, int[][] ids, boolean[] done, int[][] free, int[][] opened,
+			int[] assignedType) {
+		done[t] = true;
+		assignedType[t] = type;
+		for (int ty = 0; ty < free.length; ty++) free[ty][ids[ty][t]]--;
+		opened[type][ids[type][t]]++;
+	}
+
+	/** The unassigned member of a class (other than {@code except}) with the fewest usable classes; lowest index on ties. */
+	private static int leastFlexible(int type, int classId, int except, int r, int[][] ids, boolean[] done,
+			int[][] free) {
+		int best = -1, bestOptions = Integer.MAX_VALUE;
+		for (int t = 0; t < r; t++) {
+			if (done[t] || t == except || ids[type][t] != classId) continue;
+			int options = 0;
+			for (int ty = 0; ty < free.length; ty++) if (free[ty][ids[ty][t]] >= 2) options++;
+			if (options < bestOptions) { bestOptions = options; best = t; }
+		}
+		return best;
+	}
+
+	/**
+	 * Greedy, largest-first, disjoint selection of combined buds. Candidates: for every
+	 * pair of row-classes sharing ≥ 2 column-classes, the grid over their common
+	 * columns, and that grid extended by every further row-class containing all those
+	 * columns. One term per cell (a second term in the same cell stays available to the
+	 * single-type greedy). Deterministic: ties break on grid type, then on the terms.
+	 */
+	static List<GridBud> selectGrids(int r, int[][] ids, GridStrategy strategy) {
+		if (strategy == GridStrategy.NONE) {
+			return List.of();
+		}
+		List<GridBud> candidates = new ArrayList<>();
+		boolean keepU = strategy == GridStrategy.CLOSED || strategy == GridStrategy.KEEP_U;
+		boolean keepV = strategy == GridStrategy.CLOSED || strategy == GridStrategy.KEEP_V;
+		boolean keepW = strategy == GridStrategy.CLOSED || strategy == GridStrategy.KEEP_W;
+		boolean core = strategy == GridStrategy.CORE;
+		boolean every = strategy == GridStrategy.ALL || keepU || keepV || keepW || core;
+		// (rows, cols, free factor) per grid type: UW = (U, W, V), UV = (U, V, W), VW = (W, V, U).
+		if (every || strategy == GridStrategy.UW) {
+			gridCandidates(r, ids[0], ids[2], core ? ids[1] : null, GridStrategy.UW, keepU, keepW, candidates);
+		}
+		if (every || strategy == GridStrategy.UV) {
+			gridCandidates(r, ids[0], ids[1], core ? ids[2] : null, GridStrategy.UV, keepU, keepV, candidates);
+		}
+		if (every || strategy == GridStrategy.VW) {
+			gridCandidates(r, ids[2], ids[1], core ? ids[0] : null, GridStrategy.VW, keepW, keepV, candidates);
+		}
+		candidates.sort((x, y) -> {
+			if (x.terms().length != y.terms().length) return Integer.compare(y.terms().length, x.terms().length);
+			int tx = x.a() == 1 ? 0 : x.b() == 1 ? 1 : 2, ty = y.a() == 1 ? 0 : y.b() == 1 ? 1 : 2;
+			if (tx != ty) return Integer.compare(tx, ty);
+			return java.util.Arrays.compare(x.terms(), y.terms());
+		});
+		boolean[] used = new boolean[r];
+		List<GridBud> picked = new ArrayList<>();
+		next: for (GridBud g : candidates) {
+			for (int t : g.terms()) if (used[t]) continue next;
+			for (int t : g.terms()) used[t] = true;
+			picked.add(g);
+		}
+		return picked;
+	}
+
+	/** Enumerate the grids of one type: {@code rows} / {@code cols} are per-term class ids. */
+	private static void gridCandidates(int r, int[] rows, int[] cols, int[] coreFree, GridStrategy type,
+			boolean rowsWhole, boolean colsWhole, List<GridBud> out) {
+		// row-class → (col-class → first term in that cell), both in first-seen order.
+		java.util.LinkedHashMap<Integer, java.util.LinkedHashMap<Integer, Integer>> cells = new java.util.LinkedHashMap<>();
+		java.util.Map<Integer, Integer> rowSize = new java.util.HashMap<>(), colSize = new java.util.HashMap<>();
+		for (int t = 0; t < r; t++) {
+			cells.computeIfAbsent(rows[t], k -> new java.util.LinkedHashMap<>()).putIfAbsent(cols[t], t);
+			rowSize.merge(rows[t], 1, Integer::sum);
+			colSize.merge(cols[t], 1, Integer::sum);
+		}
+		java.util.function.BiPredicate<List<Integer>, List<Integer>> admissible = (gridRows, gridCols) -> {
+			if (rowsWhole) for (Integer row : gridRows) if (rowSize.get(row) != gridCols.size()) return false;
+			if (colsWhole) for (Integer col : gridCols) if (colSize.get(col) != gridRows.size()) return false;
+			return true;
+		};
+		List<Integer> rowIds = new ArrayList<>();
+		for (var e : cells.entrySet()) if (e.getValue().size() >= 2) rowIds.add(e.getKey());
+		java.util.Set<String> seen = new java.util.HashSet<>();
+		for (int x = 0; x < rowIds.size(); x++) {
+			for (int y = x + 1; y < rowIds.size(); y++) {
+				var cx = cells.get(rowIds.get(x));
+				var cy = cells.get(rowIds.get(y));
+				List<Integer> common = new ArrayList<>();
+				for (Integer c : cx.keySet()) if (cy.containsKey(c)) common.add(c);
+				if (common.size() < 2) continue;
+				List<Integer> pair = List.of(rowIds.get(x), rowIds.get(y));
+				List<Integer> extended = new ArrayList<>(pair);
+				for (int z = 0; z < rowIds.size(); z++) {
+					if (z == x || z == y) continue;
+					if (cells.get(rowIds.get(z)).keySet().containsAll(common)) extended.add(rowIds.get(z));
+				}
+				if (coreFree != null && (extended.size() > 2 || common.size() > 2)) {
+					// CORE: a biclique larger than 2×2 is replaced by its least-entangled 2×2.
+					addCore(r, cells, extended, common, coreFree, type, seen, out);
+					continue;
+				}
+				if (admissible.test(pair, common)) addGrid(cells, pair, common, type, seen, out);
+				if (extended.size() > 2 && admissible.test(extended, common)) {
+					addGrid(cells, extended, common, type, seen, out);
+				}
+			}
+		}
+	}
+
+	/** The 2×2 sub-grid of {@code gridRows × gridCols} with the fewest terms that also
+	 *  belong to a (≥ 2-term) class of the free factor; first found on ties. */
+	private static void addCore(int r, java.util.Map<Integer, java.util.LinkedHashMap<Integer, Integer>> cells,
+			List<Integer> gridRows, List<Integer> gridCols, int[] freeIds, GridStrategy type,
+			java.util.Set<String> seen, List<GridBud> out) {
+		java.util.Map<Integer, Integer> freeSize = new java.util.HashMap<>();
+		for (int t = 0; t < r; t++) freeSize.merge(freeIds[t], 1, Integer::sum);
+		List<Integer> rs = new ArrayList<>(gridRows);
+		java.util.Collections.sort(rs);
+		int best = Integer.MAX_VALUE;
+		List<Integer> bestRows = null, bestCols = null;
+		for (int x = 0; x < rs.size(); x++) for (int y = x + 1; y < rs.size(); y++) {
+			for (int u = 0; u < gridCols.size(); u++) for (int v = u + 1; v < gridCols.size(); v++) {
+				int entangled = 0;
+				for (int row : new int[] { rs.get(x), rs.get(y) }) for (int col : new int[] { gridCols.get(u), gridCols.get(v) }) {
+					if (freeSize.get(freeIds[cells.get(row).get(col)]) >= 2) entangled++;
+				}
+				if (entangled < best) {
+					best = entangled;
+					bestRows = List.of(rs.get(x), rs.get(y));
+					bestCols = List.of(gridCols.get(u), gridCols.get(v));
+				}
+			}
+		}
+		addGrid(cells, bestRows, bestCols, type, seen, out);
+	}
+
+	private static void addGrid(java.util.Map<Integer, java.util.LinkedHashMap<Integer, Integer>> cells,
+			List<Integer> gridRows, List<Integer> gridCols, GridStrategy type, java.util.Set<String> seen,
+			List<GridBud> out) {
+		List<Integer> rs = new ArrayList<>(gridRows);
+		java.util.Collections.sort(rs);
+		if (!seen.add(rs + "×" + gridCols)) return;
+		int nr = rs.size(), nc = gridCols.size();
+		int[] terms = new int[nr * nc];
+		// Row-major (i,j,k) with the unit axis dropped — see GridBud:
+		//   UW ⟨1,b,c⟩: rows = U-classes (j), cols = W-classes (k) → j·c + k
+		//   UV ⟨a,1,c⟩: rows = U-classes (i), cols = V-classes (k) → i·c + k
+		//   VW ⟨a,b,1⟩: rows = W-classes (i), cols = V-classes (j) → i·b + j
+		for (int x = 0; x < nr; x++) for (int y = 0; y < nc; y++) {
+			terms[x * nc + y] = cells.get(rs.get(x)).get(gridCols.get(y));
+		}
+		out.add(switch (type) {
+			case UW -> new GridBud(1, nr, nc, terms);
+			case UV -> new GridBud(nr, 1, nc, terms);
+			case VW -> new GridBud(nr, nc, 1, terms);
+			default -> throw new IllegalArgumentException("not a grid type: " + type);
+		});
 	}
 
 	/**
@@ -193,23 +614,21 @@ public final class SerendipitousBudProduct {
 
 	/** Back-compat: U-buds + trivial. */
 	public static BudDecomposition findUBuds(NonCubicBilinearAlgorithm a) {
-		double[][] srcU = a.denseU();
 		boolean[] used = new boolean[a.r];
 		List<Bud> buds = new ArrayList<>();
-		groupBy(a, srcU, BudType.U, used, buds);
+		groupBy(a.r, classIds(a.denseU(), a.r), BudType.U, used, buds);
 		List<Integer> trivial = new ArrayList<>();
 		for (int l = 0; l < a.r; l++) if (!used[l]) trivial.add(l);
 		return new BudDecomposition(buds, trivial.stream().mapToInt(Integer::intValue).toArray());
 	}
 
-	private static void groupBy(NonCubicBilinearAlgorithm a, double[][] factor, BudType type,
-			boolean[] used, List<Bud> buds) {
-		// Hash by canonical direction → O(r·dim) instead of O(r²·dim).
-		java.util.LinkedHashMap<String, List<Integer>> byDir = new java.util.LinkedHashMap<>();
-		for (int l = 0; l < a.r; l++) {
+	/** Group the still-unused terms by their class id on one factor ({@code ids} from
+	 *  {@link #independentClassIds}: equal id ⇔ proportional columns). */
+	private static void groupBy(int r, int[] ids, BudType type, boolean[] used, List<Bud> buds) {
+		java.util.LinkedHashMap<Integer, List<Integer>> byDir = new java.util.LinkedHashMap<>();
+		for (int l = 0; l < r; l++) {
 			if (used[l]) continue;
-			String key = java.util.Arrays.toString(canonicalDirection(column(factor, l)));
-			byDir.computeIfAbsent(key, k -> new ArrayList<>()).add(l);
+			byDir.computeIfAbsent(ids[l], k -> new ArrayList<>()).add(l);
 		}
 		for (List<Integer> grp : byDir.values()) {
 			if (grp.size() >= 2) {
@@ -232,8 +651,8 @@ public final class SerendipitousBudProduct {
 	public static long serendipitousCost(NonCubicBilinearAlgorithm t1, FieldAwareLookup lookup,
 			int n2, int m2, int p2) {
 		long best = Long.MAX_VALUE / 4;
-		for (BudType[] order : ALL_ORDERINGS) {
-			best = Math.min(best, costOf(findBuds(t1, order), lookup, n2, m2, p2));
+		for (BudDecomposition dec : candidateDecompositions(t1)) {
+			best = Math.min(best, costOf(dec, lookup, n2, m2, p2));
 		}
 		return best;
 	}
@@ -241,17 +660,27 @@ public final class SerendipitousBudProduct {
 	/** Predicted cost of a specific decomposition; {@code Long.MAX_VALUE/4} if any
 	 *  enlarged inner rank is unknown. */
 	public static long costOf(BudDecomposition dec, FieldAwareLookup lookup, int n2, int m2, int p2) {
+		return costOf(dec, RankOracle.of(lookup), n2, m2, p2);
+	}
+
+	/** {@link #costOf(BudDecomposition, FieldAwareLookup, int, int, int)} against any oracle. */
+	public static long costOf(BudDecomposition dec, RankOracle oracle, int n2, int m2, int p2) {
 		final long UNKNOWN = Long.MAX_VALUE / 4;
-		long inner = lookup.findRank(n2, m2, p2);
+		long inner = oracle.rank(n2, m2, p2);
 		if (inner >= Recombination.SotaResolver.UNKNOWN_RANK) return UNKNOWN;
 		long cost = (long) dec.trivial().length * inner;
 		for (Bud b : dec.buds()) {
 			int k = b.terms().length;
 			long r = switch (b.type()) {
-				case U -> lookup.findRank(n2, m2, k * p2);
-				case V -> lookup.findRank(k * n2, m2, p2);
-				case W -> lookup.findRank(n2, k * m2, p2);
+				case U -> oracle.rank(n2, m2, k * p2);
+				case V -> oracle.rank(k * n2, m2, p2);
+				case W -> oracle.rank(n2, k * m2, p2);
 			};
+			if (r >= Recombination.SotaResolver.UNKNOWN_RANK) return UNKNOWN;
+			cost += r;
+		}
+		for (GridBud g : dec.grids()) {
+			long r = oracle.rank(g.a() * n2, g.b() * m2, g.c() * p2);
 			if (r >= Recombination.SotaResolver.UNKNOWN_RANK) return UNKNOWN;
 			cost += r;
 		}
@@ -287,24 +716,33 @@ public final class SerendipitousBudProduct {
 	public static NonCubicBilinearAlgorithm productViaBudsBest(
 			NonCubicBilinearAlgorithm t1, InnerResolver resolver, int n2, int m2, int p2) {
 		java.util.Set<BudType> allow = java.util.EnumSet.allOf(BudType.class);
-		NonCubicBilinearAlgorithm best = null;
-		for (BudType[] order : ALL_ORDERINGS) {
-			BudDecomposition dec = findBuds(t1, order);
-			if (dec.buds().isEmpty()) {
-				continue; // no buds under this ordering → nothing to beat the others with
+		// A built product's rank IS its priced cost (the parts' ranks add up), so price
+		// every candidate with what the resolver can build and build cheapest-first —
+		// one build instead of one per candidate. Stable sort: ties keep family order.
+		RankOracle oracle = RankOracle.of(resolver);
+		List<BudDecomposition> cands = new ArrayList<>();
+		java.util.Map<BudDecomposition, Long> price = new java.util.IdentityHashMap<>();
+		for (BudDecomposition dec : candidateDecompositions(t1)) {
+			if (!dec.hasBuds()) {
+				continue; // nothing fused → nothing to beat the plain product with
 			}
+			long cost = costOf(dec, oracle, n2, m2, p2);
+			if (cost >= Long.MAX_VALUE / 4) {
+				continue; // a fusion target is unavailable
+			}
+			cands.add(dec);
+			price.put(dec, cost);
+		}
+		cands.sort(java.util.Comparator.comparingLong(price::get));
+		for (BudDecomposition dec : cands) {
 			try {
-				NonCubicBilinearAlgorithm built =
-						productFromDecomposition(t1, dec, resolver, n2, m2, p2, allow);
-				if (best == null || built.r < best.r) {
-					best = built;
-				}
+				return productFromDecomposition(t1, dec, resolver, n2, m2, p2, allow);
 			} catch (RuntimeException e) {
-				// This ordering's fusion target is unavailable — skip to the next.
+				// Priced but not buildable after all — fall through to the next cheapest.
 			}
 		}
-		// No ordering yielded a buildable bud decomposition → default (term-by-term Kron).
-		return best != null ? best : productFromDecomposition(
+		// No candidate yielded a buildable bud decomposition → default (term-by-term Kron).
+		return productFromDecomposition(
 				t1, findBuds(t1), resolver, n2, m2, p2, java.util.EnumSet.noneOf(BudType.class));
 	}
 
@@ -375,7 +813,103 @@ public final class SerendipitousBudProduct {
 							+ ep + "⟩ (stub-only? pass a replaying InnerResolver)"));
 			parts.add(buildBudBlock(t1, bud, s3, n2, m2, p2));
 		}
+		for (GridBud grid : dec.grids()) {
+			if (allow.isEmpty()) {
+				for (int term : grid.terms()) {
+					parts.add(Compose.kroneckerGeneral(rankOne(t1, term), s2));
+				}
+				continue;
+			}
+			int en = grid.a() * n2, em = grid.b() * m2, ep = grid.c() * p2;
+			NonCubicBilinearAlgorithm s3 = resolver.find(en, em, ep).orElseThrow(
+					() -> new IllegalStateException("no buildable enlarged ⟨" + en + "," + em + ","
+							+ ep + "⟩ for a combined bud (stub-only? pass a replaying InnerResolver)"));
+			parts.add(buildGridBlock(t1, grid, s3, n2, m2, p2));
+		}
 		return concatColumns(parts, t1.n * n2, t1.m * m2, t1.p * p2);
+	}
+
+	/**
+	 * Fused block of a combined bud {@code ⟨a,b,c⟩} against the inner {@code ⟨n₂,m₂,p₂⟩},
+	 * realised by one {@code S3 = ⟨a·n₂, b·m₂, c·p₂⟩}. With class representatives
+	 * {@code Û[i][j]} (base A-coefficients, {@code n₁×m₁}), {@code V̂[j][k]}, {@code Ŵ[i][k]}
+	 * such that the bud's terms sum to {@code Σ_{ijk} Û_ij ⊗ V̂_jk ⊗ Ŵ_ik}, product
+	 * {@code q} of the block is
+	 * <pre>
+	 *   U_q = Σ_{i,j} Û_ij ⊗ S3.U_q[block (i,j)]     (block = the n₂×m₂ sub-matrix)
+	 *   V_q = Σ_{j,k} V̂_jk ⊗ S3.V_q[block (j,k)]
+	 *   W_q = Σ_{i,k} Ŵ_ik ⊗ S3.W_q[block (i,k)]
+	 * </pre>
+	 * Summing over {@code q}, S3's matmul identity kills every mismatched block triple
+	 * and leaves {@code ⟨n₂,m₂,p₂⟩} on the matched ones — i.e. exactly
+	 * {@code (Σ Û_ij⊗V̂_jk⊗Ŵ_ik) ⊗ ⟨n₂,m₂,p₂⟩}. The single-type blocks of
+	 * {@link #buildBudBlock} are this formula with two unit dims.
+	 */
+	private static NonCubicBilinearAlgorithm buildGridBlock(
+			NonCubicBilinearAlgorithm t1, GridBud grid, NonCubicBilinearAlgorithm s3,
+			int n2, int m2, int p2) {
+		double[][] srcU = t1.denseU(), srcV = t1.denseV(), srcW = t1.denseW();
+		int a = grid.a(), b = grid.b(), c = grid.c();
+		int n1 = t1.n, m1 = t1.m, p1 = t1.p;
+		double[][][] uHat = new double[a][b][], vHat = new double[b][c][], wHat = new double[a][c][];
+		for (int i = 0; i < a; i++) for (int j = 0; j < b; j++) for (int k = 0; k < c; k++) {
+			int term = grid.terms()[(i * b + j) * c + k];
+			double[] u = column(srcU, term), v = column(srcV, term), w = column(srcW, term);
+			if (a == 1) {
+				// U-class j, W-class k; V is free and absorbs both scales.
+				if (uHat[0][j] == null) uHat[0][j] = u;
+				if (wHat[0][k] == null) wHat[0][k] = w;
+				vHat[j][k] = mul(v, proportionFactor(uHat[0][j], u) * proportionFactor(wHat[0][k], w));
+			} else if (b == 1) {
+				// U-class i, V-class k; W is free.
+				if (uHat[i][0] == null) uHat[i][0] = u;
+				if (vHat[0][k] == null) vHat[0][k] = v;
+				wHat[i][k] = mul(w, proportionFactor(uHat[i][0], u) * proportionFactor(vHat[0][k], v));
+			} else {
+				// W-class i, V-class j; U is free.
+				if (wHat[i][0] == null) wHat[i][0] = w;
+				if (vHat[j][0] == null) vHat[j][0] = v;
+				uHat[i][j] = mul(u, proportionFactor(wHat[i][0], w) * proportionFactor(vHat[j][0], v));
+			}
+		}
+		int N = n1 * n2, M = m1 * m2, P = p1 * p2, r3 = s3.r;
+		int m3 = b * m2, p3 = c * p2;
+		double[][] s3U = s3.denseU(), s3V = s3.denseV(), s3W = s3.denseW();
+		double[][] U = new double[N * M][r3], V = new double[M * P][r3], W = new double[N * P][r3];
+		for (int i = 0; i < a; i++) for (int j = 0; j < b; j++) {
+			double[] hat = uHat[i][j];
+			for (int i1 = 0; i1 < n1; i1++) for (int j1 = 0; j1 < m1; j1++) {
+				double coef = hat[i1 * m1 + j1]; if (coef == 0) continue;
+				for (int i2 = 0; i2 < n2; i2++) for (int j2 = 0; j2 < m2; j2++) {
+					double[] src = s3U[(i * n2 + i2) * m3 + (j * m2 + j2)];
+					double[] dst = U[(i1 * n2 + i2) * M + (j1 * m2 + j2)];
+					for (int q = 0; q < r3; q++) if (src[q] != 0) dst[q] += coef * src[q];
+				}
+			}
+		}
+		for (int j = 0; j < b; j++) for (int k = 0; k < c; k++) {
+			double[] hat = vHat[j][k];
+			for (int j1 = 0; j1 < m1; j1++) for (int k1 = 0; k1 < p1; k1++) {
+				double coef = hat[j1 * p1 + k1]; if (coef == 0) continue;
+				for (int j2 = 0; j2 < m2; j2++) for (int k2 = 0; k2 < p2; k2++) {
+					double[] src = s3V[(j * m2 + j2) * p3 + (k * p2 + k2)];
+					double[] dst = V[(j1 * m2 + j2) * P + (k1 * p2 + k2)];
+					for (int q = 0; q < r3; q++) if (src[q] != 0) dst[q] += coef * src[q];
+				}
+			}
+		}
+		for (int i = 0; i < a; i++) for (int k = 0; k < c; k++) {
+			double[] hat = wHat[i][k];
+			for (int i1 = 0; i1 < n1; i1++) for (int k1 = 0; k1 < p1; k1++) {
+				double coef = hat[i1 * p1 + k1]; if (coef == 0) continue;
+				for (int i2 = 0; i2 < n2; i2++) for (int k2 = 0; k2 < p2; k2++) {
+					double[] src = s3W[(i * n2 + i2) * p3 + (k * p2 + k2)];
+					double[] dst = W[(i1 * n2 + i2) * P + (k1 * p2 + k2)];
+					for (int q = 0; q < r3; q++) if (src[q] != 0) dst[q] += coef * src[q];
+				}
+			}
+		}
+		return new NonCubicBilinearAlgorithm(N, M, P, U, V, W);
 	}
 
 	/** Back-compat alias (U-buds + trivial path is subsumed by productViaBuds). */

@@ -1,0 +1,25 @@
+{
+  "lineage_str": "SumInner(OrientAs(2x23x28-r980-hk71-ecef791, ⟨23,2,28⟩), 23x24x28)",
+  "lineage_compact": "2x23x28-r980-hk71-ecef791→⟨23,2,28⟩ +m 23x24x28",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 23,
+      "m": 2,
+      "p": 28,
+      "axisMap": "mnp",
+      "child": {"op": "Atom", "ref": "2x23x28-r980-hk71-ecef791"}
+    },
+    "right": {"op": "Atom", "ref": "23x24x28@8098ecf1eb71a6b8a5baabfeda208155f60c661d5cc31c43dfbf711875c6330c"}
+  },
+  "n": [23, 26, 28],
+  "m": 8880,
+  "hash": "96ac213766c0aed7f6983ce1193fd63968662824278db64a291b88e310c035d6",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

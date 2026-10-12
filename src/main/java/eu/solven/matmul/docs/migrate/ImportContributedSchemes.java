@@ -170,7 +170,12 @@ public final class ImportContributedSchemes {
 	 * sabotaged copy.
 	 */
 	public static Gate gate(File in, FieldAwareLookup lookup) throws IOException {
-		NonCubicBilinearAlgorithm alg = SchemeIO.readBilinear(in);
+		return gate(SchemeIO.readBilinear(in), lookup);
+	}
+
+	/** {@link #gate(File, FieldAwareLookup)} for a scheme already in memory (a parsed
+	 *  upstream artifact that is not one of the JSON encodings). */
+	public static Gate gate(NonCubicBilinearAlgorithm alg, FieldAwareLookup lookup) {
 		boolean exact = Verifier.isExactNonCubic(alg);
 		boolean spot = Verifier.passesRandomMatmulSpotCheck(alg);
 		boolean integer = allIntegers(alg);

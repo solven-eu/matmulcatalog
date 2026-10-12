@@ -315,21 +315,74 @@ public final class SymbolicVerifier {
 
 	/**
 	 * Find the smallest integer denominator (≤ 1024) such that {@code v · d}
-	 * is an integer to 1e-9 precision. Returns {@code 1L<<30} (treated as an
-	 * "irrational" sentinel) if no small denominator works.
+	 * is an integer to 1e-9 precision; failing that, the denominator (≤ 10⁶) of the
+	 * continued-fraction convergent matching {@code v} to a relative 1e-12. Returns
+	 * {@code 1L<<30} (treated as an "irrational" sentinel) if neither works.
 	 */
 	static BigInteger denominatorOf(double v) {
-		if (v == 0.0) return BigInteger.ONE;
+		long[] f = fractionOf(v);
+		return BigInteger.valueOf(f != null ? f[1] : 1L << 30);
+	}
+
+	/**
+	 * The fraction {@code [num, den]} a coefficient encodes, or {@code null}
+	 * ("irrational"). The scan over {@code den ≤ 1024} is the historical rule; beyond
+	 * it, the continued-fraction convergent (den ≤ 10⁶) matching {@code v} to a
+	 * relative 1e-12. Perminov's rational serendipitous bases carry coefficients like
+	 * 3866/3705 — with the scan alone they read as irrational, and two published bases
+	 * failed the exact gate on every sync (2026-09-30). Sound either way: the
+	 * BigInteger identity is checked on the recovered fractions, so a wrong recovery
+	 * can only make an exact scheme FAIL, never make a wrong one pass.
+	 */
+	static long[] fractionOf(double v) {
+		if (v == 0.0) return new long[] { 0, 1 };
 		for (int d = 1; d <= 1024; d++) {
 			double scaled = v * d;
 			if (Math.abs(scaled - Math.round(scaled)) < 1e-9) {
-				return BigInteger.valueOf(d);
+				return new long[] { Math.round(scaled), d };
 			}
 		}
-		return BigInteger.valueOf(1L << 30);
+		final long denCap = 1_000_000L;
+		final double tol = 1e-12;
+		double x = Math.abs(v);
+		long hPrev = 0, h = 1, kPrev = 1, k = 0;
+		double frac = x;
+		for (int iter = 0; iter < 64; iter++) {
+			long a = (long) Math.floor(frac);
+			long hNext = a * h + hPrev;
+			long kNext = a * k + kPrev;
+			if (kNext > denCap || kNext <= 0) return null;
+			hPrev = h;
+			h = hNext;
+			kPrev = k;
+			k = kNext;
+			if (Math.abs((double) h / (double) k - x) <= tol * Math.max(1.0, x)) {
+				return new long[] { v < 0 ? -h : h, k };
+			}
+			double rem = frac - a;
+			if (rem < 1e-15) return null;
+			frac = 1.0 / rem;
+		}
+		return null;
 	}
 
+	/**
+	 * {@code v · d} as an exact integer, {@code d} being a multiple of {@code v}'s
+	 * denominator. With a small common denominator the double product is exact and
+	 * rounding it is the historical path. Once {@code d} outgrows a double's 53 bits
+	 * (⟨2,5,7⟩:56's lcm is ~2·10¹⁷) the product's low digits are noise, so the
+	 * numerator comes from the coefficient's own fraction, scaled in BigInteger.
+	 */
 	static BigInteger numeratorScaled(double v, BigInteger d) {
+		if (d.bitLength() > 40) {
+			long[] f = fractionOf(v);
+			if (f != null) {
+				BigInteger den = BigInteger.valueOf(f[1]);
+				if (d.mod(den).signum() == 0) {
+					return BigInteger.valueOf(f[0]).multiply(d.divide(den));
+				}
+			}
+		}
 		double scaled = v * d.doubleValue();
 		return BigInteger.valueOf(Math.round(scaled));
 	}

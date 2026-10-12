@@ -93,6 +93,11 @@ public final class LineageReplayer {
 	private static final Pattern DIS09_LEMMA4 = Pattern.compile("DIS09Lemma4\\(n=(\\d+)\\)");
 	/** KGP 2026 LITA cubic ⟨N,N,N⟩ parametric leaf — replays via LitaTaConstruction.build. */
 	private static final Pattern TA_LITA = Pattern.compile("TA_lita\\(n=(\\d+)\\)");
+	/** KGP 2026 LITA cubes AS PUBLISHED (khoruzhii/lita schemes/*.npz, 13 ≤ N ≤ 32; the
+	 *  Aug–Sep 2026 constructions that supersede {@link #TA_LITA}'s June generator) —
+	 *  a DATA-backed parametric leaf: replays by loading the archive via LitaNpzCubes.build. */
+	/** {@code TA_lita_npz(n=N)} (lowest-rank archive) or {@code TA_lita_npz(n=N,r=R)} (that archive). */
+	private static final Pattern TA_LITA_NPZ = Pattern.compile("TA_lita_npz\\(n=(\\d+)(?:,r=(\\d+))?\\)");
 	/** Schwartz–Zwecher 2025 TA-New25 cubic ⟨N,N,N⟩ leaf — replays via TaNew25Construction.build. */
 	private static final Pattern TA_SZ = Pattern.compile("TA_sz\\(n=(\\d+)\\)");
 
@@ -483,7 +488,7 @@ public final class LineageReplayer {
 	 */
 	public static boolean isParametricRef(String ref) {
 		return DIS09_LEMMA4.matcher(ref).matches() || TA_LITA.matcher(ref).matches()
-				|| TA_SZ.matcher(ref).matches();
+				|| TA_LITA_NPZ.matcher(ref).matches() || TA_SZ.matcher(ref).matches();
 	}
 
 	private NonCubicBilinearAlgorithm resolveParametric(String ref) {
@@ -496,6 +501,11 @@ public final class LineageReplayer {
 		if (lita.matches()) {
 			return eu.solven.matmul.papers.khoruzhii2026.LitaTaConstruction
 					.build(Integer.parseInt(lita.group(1)));
+		}
+		Matcher litaNpz = TA_LITA_NPZ.matcher(ref);
+		if (litaNpz.matches()) {
+			return eu.solven.matmul.papers.khoruzhii2026.LitaNpzCubes.build(Integer.parseInt(litaNpz.group(1)),
+					litaNpz.group(2) == null ? -1 : Integer.parseInt(litaNpz.group(2)));
 		}
 		Matcher sz = TA_SZ.matcher(ref);
 		if (sz.matches()) {

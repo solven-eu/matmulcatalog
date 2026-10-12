@@ -1,0 +1,35 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(Recombination(base=ext[2x4x4-r26-hk71-8cad2d9.json] / <2,4,4>=26 :: CANONICAL, allocA=[4, 3], allocB=[4, 4, 4, 4], allocC=[4, 4, 4, 4], leaves=[3x4x4-r38-alphatensor_Z-644bd5e, 4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e]), ⟨16,16,7⟩), 16x16x16)",
+  "lineage_compact": "R[ext[2x4x4-r26-hk71-8cad2d9.json] / <2,4,4>=26 :: CANONICAL; 4,3 | 4,4,4,4 | 4,4,4,4]→⟨16,16,7⟩ +p 16x16x16",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 16,
+      "m": 16,
+      "p": 7,
+      "axisMap": "mpn",
+      "child": {
+        "op": "Recombination",
+        "base": {"op": "Atom", "ref": "ext[2x4x4-r26-hk71-8cad2d9.json] / <2,4,4>=26 :: CANONICAL"},
+        "allocA": [4, 3],
+        "allocB": [4, 4, 4, 4],
+        "allocC": [4, 4, 4, 4],
+        "leaves": [
+          {"op": "Atom", "ref": "3x4x4-r38-alphatensor_Z-644bd5e"},
+          {"op": "Atom", "ref": "4x4x4-r48-dumas_pernet_sedoglavic_2025-929db4e"}
+        ]
+      }
+    },
+    "right": {"op": "Atom", "ref": "16x16x16@535b8c596e94f7fdbbcef189f141c09001f7db332b50f732275d9b16a393e07b"}
+  },
+  "n": [16, 16, 23],
+  "m": 3385,
+  "hash": "6ce105ffc35522310471aff306feb7e8d40408077c8c0c13c3378327990480cc",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

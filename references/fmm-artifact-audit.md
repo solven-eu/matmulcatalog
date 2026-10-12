@@ -110,3 +110,62 @@ constructions, per the 2026-07-08 gap-tree census). Full rows in
 3. The 25 real rows are the true frontier: dominated by absorbing-pad /
    overlap constructions (analyze the now-downloaded artifacts to extract
    the device — they are explicit!).
+
+## Expiry rule (2026-09-30)
+
+An audit entry is a statement about **one index value** ("FMM's index said R and
+their artifact did not back it"). Each entry in `fmm-artifact-audit.json` now
+carries `index_rank` — the FMM index rank it was audited against — and
+`FmmCrossCheck` honours the entry **only while the digest still shows that rank**.
+When the index moves, the row returns to the ordinary WORSE list (and is named in
+the report's "expired artifact-audit entries" line) until someone re-audits it.
+
+Why: twelve of the July entries (⟨27,28,x⟩, ⟨27,29,x⟩, ⟨22,23,23⟩, ⟨22,28,28⟩,
+⟨22,30,30⟩, ⟨16,20,28/29⟩) kept hiding rows whose FMM index had since dropped — most
+of them to the Khoruzhii–Serafin–Gelß–Pokutta LITA cube ranks, which we hold and
+verified. ⟨27,28,28⟩ sat at 10442 vs 9847, was never a closure target, and blocked
+the projection cascade to ⟨26,28,28⟩ / ⟨25,28,28⟩. As of 2026-09-30 only
+⟨20,24,25⟩ (placeholder), ⟨21,28,32⟩ and ⟨22,30,30⟩ (index_only) are still valid at
+their audited index value. When adding an entry, always record `index_rank`.
+
+## Re-audit 2026-09-30 — the 13 rows left after the resync
+
+After the KGP / Witteveen imports and the closure campaigns the cross-check had 13
+WORSE rows. Each FMM artifact (`{shape}_tensor.mpl.bz2`) was downloaded and its rank
+read twice — the `i=1..R` of the file's own verification line and the `Triad(` count
+(they agree on every file).
+
+| shape | FMM index | ours | FMM artifact | verdict |
+| --- | ---: | ---: | ---: | --- |
+| ⟨6,14,25⟩ | 1320 | 1322 | 1346 | index only — artifact 24 above ours |
+| ⟨7,7,17⟩ | 572 | 573 | 573 | index only — artifact == ours (a parametric family, free symbol `l`) |
+| ⟨7,8,17⟩ | 635 | 636 | 637 | index only — artifact above ours |
+| ⟨7,9,19⟩ | 779 | 780 | 780 | index only — artifact == ours |
+| ⟨7,9,25⟩ | 1020 | 1022 | 1022 | index only — artifact == ours |
+| ⟨9,19,25⟩ | 2541 | 2542 | 2542 | index only — artifact == ours |
+| ⟨11,11,17⟩ | 1313 | 1314 | 1314 | index only — artifact == ours |
+| ⟨11,13,13⟩ | 1204 | 1205 | 1205 | index only — artifact == ours |
+| ⟨7,11,30⟩ | 1493 | 1495 | **1493** | **backed** — imported (`ImportFmmTensorArtifacts`) |
+| ⟨13,19,29⟩ | 4248 | 4249 | **4248** | **backed** — imported |
+| ⟨8,27,30⟩ | 3744 | 3750 | 3736 (**invalid**) | parses to 3736 triads that do **not** compute ⟨8,27,30⟩ — 95 of 240 output cells wrong on random input, exact term (0,9,18) absent |
+| ⟨16,20,28⟩ | 4936 | 4974 | placeholder | recipe-only; the page's recipe gives 4944 |
+| ⟨16,20,29⟩ | 5256 | 5272 | placeholder | recipe-only; the page's recipe gives 5264 |
+
+So of the 13: **8 are not gaps** (FMM's index is one or two below what FMM itself
+publishes; the per-shape page still states the artifact's rank), **2 were real and
+are closed by importing the artifact**, **1 rests on an artifact that does not
+verify** (`artifact_invalid`, a new audit class — the July audit decoded a valid
+3744-triad artifact for this format; the current 3736-triad file is broken), and
+**2 are recipe-only**. The eight, the one and the two are recorded in `fmm-artifact-audit.json` with the index value audited, so they
+return to WORSE the day the index moves again.
+
+The two recipe-only rows are a real open gap against the *recipe*, not against the
+index: FMM's page builds ⟨16,20,28⟩ as `(⟨4,5,7⟩:104 − 17) ⊗ ⟨4,4,4⟩:48 + 8·⟨4,4,8⟩:96 = 4944`,
+and our engine reaches 4974. Seventeen base terms are absorbed into eight doubled
+blocks — more than any partition into class buds allows (see the 2026-07-08
+span-compressed-bud entry in `research/DISCOVERIES_PENDING_ANALYSIS.md`); the
+combined buds added on 2026-09-30 do not reach it either.
+
+The pages and the digest index disagree on eight rows, which is itself worth
+reporting upstream: the digest's `rank` for those formats is below the rank in the
+page title and in the artifact.

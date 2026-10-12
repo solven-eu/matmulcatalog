@@ -1,0 +1,18 @@
+{
+  "lineage_str": "ConcatCols(18x18x4, 18x18x18)",
+  "lineage_compact": "18x18x4 +p 18x18x18",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "18x18x4@19751b09044cf5d5afcf1a84f77b57e92792f8a098b1a1e406e3ef1b6d1a5497"},
+    "right": {"op": "Atom", "ref": "18x18x18@80277fd5a95b273b8c8f65998a4890de6f7b0ee5adea6637d3f6fbdb4e87149e"}
+  },
+  "n": [18, 18, 22],
+  "m": 3871,
+  "hash": "770cc5fb0b247f1f4f58fa7f169ff15c915585ce5e2bb3fa395ea52ccf48e7e9",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

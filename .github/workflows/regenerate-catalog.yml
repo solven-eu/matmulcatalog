@@ -84,13 +84,46 @@ jobs:
           mvn -B -ntp -q exec:java
           -Dexec.mainClass=eu.solven.matmul.docs.generate.GenerateDerivedBounds
 
+      # The three upstream-comparison reports read the digests the sync job just
+      # refreshed + the on-disk schemes. Until 2026-09-30 nothing in CI regenerated
+      # them, so references/fmm-cross-check.md sat at its 2026-07 state ("WORSE 6")
+      # while the digest had moved ~530 shapes below the catalog (the KGP LITA
+      # refresh) — a gap visible only to someone re-running FmmCrossCheck by hand.
+      - name: Run FmmCrossCheck
+        run: >
+          mvn -B -ntp -q exec:java
+          -Dexec.mainClass=eu.solven.matmul.docs.verify.FmmCrossCheck
+
+      - name: Run CompareReferenceCatalogs
+        run: >
+          mvn -B -ntp -q exec:java
+          -Dexec.mainClass=eu.solven.matmul.docs.verify.CompareReferenceCatalogs
+
+      - name: Run GenerateFmmGapReport
+        run: >
+          mvn -B -ntp -q exec:java
+          -Dexec.mainClass=eu.solven.matmul.docs.generate.GenerateFmmGapReport
+
+      - name: Surface the FMM / Perminov headline in the job summary
+        if: always()
+        run: |
+          {
+            echo "## Catalog vs upstream (this run)"
+            echo ""
+            grep -E '^- (WORSE|UPSTREAM-UNVERIFIED|BETTER|MISSING)' references/fmm-cross-check.md || true
+            grep -E '^\*\*Formats compared' references/reference-comparison.md || true
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Detect changes
         id: diff
         run: |
           changed_files=$(git diff --name-only -- \
               docs/catalog.json \
               docs/cited-bounds.json \
-              docs/derived-from-cited-bounds.json)
+              docs/derived-from-cited-bounds.json \
+              references/fmm-cross-check.md \
+              references/reference-comparison.md \
+              docs/comparison/fmm-gap-report.md)
           if [ -z "$changed_files" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "::notice::All docs/*.json manifests are up-to-date."
@@ -101,7 +134,10 @@ jobs:
             git --no-pager diff --stat -- \
                 docs/catalog.json \
                 docs/cited-bounds.json \
-                docs/derived-from-cited-bounds.json
+                docs/derived-from-cited-bounds.json \
+                references/fmm-cross-check.md \
+                references/reference-comparison.md \
+                docs/comparison/fmm-gap-report.md
           fi
 
       - name: Commit + push regenerated manifests
@@ -112,10 +148,13 @@ jobs:
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: |
-          git add docs/catalog.json docs/cited-bounds.json docs/derived-from-cited-bounds.json
-          git commit -m "Regenerate docs/*.json via Generate{CatalogManifest,CitedBounds,DerivedBounds}
+          git add docs/catalog.json docs/cited-bounds.json docs/derived-from-cited-bounds.json \
+                  references/fmm-cross-check.md references/reference-comparison.md \
+                  docs/comparison/fmm-gap-report.md
+          git commit -m "Regenerate docs/*.json + upstream comparison reports
 
           Auto-commit from the regenerate-catalog workflow. Source of truth
-          is src/main/resources/schemes/** + the Generate*.java code — these
-          docs/*.json files are regenerated, not hand-edited."
+          is src/main/resources/schemes/** + the digests + the Generate*/
+          FmmCrossCheck/CompareReferenceCatalogs code — these files are
+          regenerated, not hand-edited."
           git push origin HEAD:master

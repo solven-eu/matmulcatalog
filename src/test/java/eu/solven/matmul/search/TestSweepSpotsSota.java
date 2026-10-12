@@ -350,6 +350,12 @@ public class TestSweepSpotsSota {
 	 * rep's support does it; the hk71 rep alone gives 1324 (the old catalog value).
 	 * A pool that silently drops the reps (or keeps only one) regresses to ≥ 1324.
 	 * The pool is filtered to the ⟨2,4,4⟩ entries so the guard stays fast (seconds).
+	 *
+	 * <p>2026-10-01: the catalog's ⟨6,14,24⟩ dropped to 1232 (combined-bud serendipitous
+	 * product), so the concat ⟨6,14,24⟩ + ⟨6,14,1⟩ = 1316 now beats the recombination —
+	 * and, being the cheap bound the recombination B&amp;B prunes against, hides it from
+	 * a recombination-only run. The guard therefore elects concat and Kronecker too and
+	 * keeps the SOTA-or-better assertion (≤ 1322; the pipeline reaches 1316).</p>
 	 */
 	@Test
 	public void compute_pipeline_reaches_6x14x25_1322_via_244_root() {
@@ -368,7 +374,8 @@ public class TestSweepSpotsSota {
 		// bound would prune the very derivation under test); no write (writeRoot=null).
 		RecursiveMaterialiser improver =
 				new RecursiveMaterialiser(lookup, pool, diskSota, null, false, false, true, true);
-		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_RECOMBINATION));
+		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_RECOMBINATION,
+				RecursiveMaterialiser.STRAT_CONCAT, RecursiveMaterialiser.STRAT_KRONECKER));
 		Optional<RecursiveMaterialiser.Result> r = improver.materialise(6, 14, 25);
 		assertThat(r).as("⟨6,14,25⟩ should resolve").isPresent();
 		assertThat(r.get().alg().r)
@@ -376,6 +383,80 @@ public class TestSweepSpotsSota {
 				.isLessThanOrEqualTo(1322);
 		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg()))
 				.as("⟨6,14,25⟩ result must verify").isTrue();
+	}
+
+	/**
+	 * COMPUTE-path guard for DEGENERATE serendipitous products (2026-09-30): most of
+	 * Perminov's serendipitous 17–32 band is {@code base ⊗ˢ ⟨1,b,c⟩} — the second
+	 * factor has a unit axis, so the base's buds on that axis fuse into ⟨k,b,c⟩ blocks
+	 * (⟨13,20,21⟩ = ⟨13,4,3⟩:123 ⊗ˢ ⟨1,5,7⟩ = 3165, catalog was 3291). Prediction priced
+	 * the unit-axis inner (findRank → naive) and the replayer resolved it, but the
+	 * materialiser's BUILD resolver returned empty for ⟨1,5,7⟩ (no catalog file — it is
+	 * the naive scheme), so every such candidate was dropped as "unbuildable" and 621
+	 * formats sat above Perminov's digest. Needs the bud-rich base
+	 * ({@code bud-bases/section13/3x4x13-r123-perminov_serbase_*}) on disk too — the
+	 * importer used to drop it under its (shape, rank) idempotence key.
+	 * {@code deriveBest} so the on-disk 3165 stub does not prune the derivation.
+	 */
+	@Test
+	public void compute_pipeline_reaches_13x20x21_3165_via_unit_axis_inner() {
+		List<BlockSplitSearch.NamedBase> pool = BlockSplitSearch.defaultPool();
+		eu.solven.matmul.recombination.Recombination.SotaResolver diskSota = (a, b, c) -> {
+			if (a == 0 || b == 0 || c == 0) return 0;
+			if (a == 1) return b * c;
+			if (b == 1) return a * c;
+			if (c == 1) return a * b;
+			return lookup.findRank(a, b, c);
+		};
+		RecursiveMaterialiser improver =
+				new RecursiveMaterialiser(lookup, pool, diskSota, null, false, false, true, true);
+		improver.setStrategies(java.util.Set.of(RecursiveMaterialiser.STRAT_SERENDIPITOUS));
+		Optional<RecursiveMaterialiser.Result> r = improver.materialise(13, 20, 21);
+		assertThat(r).as("⟨13,20,21⟩ should resolve via base ⊗ˢ ⟨1,5,7⟩").isPresent();
+		assertThat(r.get().alg().r)
+				.as("degenerate serendipitous product must reach Perminov's 3165 (unit-axis inner dropped → 3291)")
+				.isLessThanOrEqualTo(3165);
+		assertThat(Verifier.passesRandomMatmulSpotCheck(r.get().alg()))
+				.as("⟨13,20,21⟩ result must verify").isTrue();
+	}
+
+	/**
+	 * Disk-presence guard for the Khoruzhii–Serafin–Gelß–Pokutta 2026 LITA cubes
+	 * (REFERENCES [82]; {@code known/section{N}/{N}x{N}x{N}-r{R}-khoruzhii_2026-*},
+	 * imported 2026-09-30 via {@code ImportKhoruzhiiLita}): the ⟨N,N,N⟩ ranks FMM-Lille's
+	 * 2026-09 index cites, every one below our June-LITA {@code TA_lita} stubs by
+	 * 42 (13³) … 1086 (31³). Our emitter cannot re-derive them (it ports the older
+	 * generator), and every ⟨≤N⟩ family member's projection stub hangs off the cube —
+	 * losing a cube file regresses the whole family silently. Assert ≤ (a better
+	 * cube must never break this).
+	 */
+	@Test
+	public void retains_kgp_lita_cubes() {
+		int[][] rows = { { 13, 1379 }, { 14, 1594 }, { 15, 1977 }, { 16, 2237 }, { 17, 2723 }, { 18, 3032 },
+				{ 19, 3633 }, { 20, 3995 }, { 21, 4723 }, { 22, 5142 }, { 23, 6009 }, { 24, 6489 }, { 25, 7507 },
+				{ 26, 8052 }, { 27, 9233 }, { 28, 9847 }, { 29, 11203 }, { 30, 11890 }, { 31, 13433 }, { 32, 14197 } };
+		for (int[] r : rows) {
+			assertThat(lookup.findRank(r[0], r[0], r[0]))
+					.as("⟨%d,%d,%d⟩ must retain the KGP-2026 LITA cube at %d (FMM index rank)", r[0], r[0], r[0], r[1])
+					.isLessThanOrEqualTo(r[1]);
+		}
+	}
+
+	/**
+	 * Disk-presence guard for Witteveen's 2026 dataset (REFERENCES [90];
+	 * {@code known/…-witteveen_2026-*}): the three formats where it is the best known
+	 * rank over every ring, plus ⟨7,7,9⟩ (first ternary scheme at the best rank). These
+	 * are explicit imports — no derivation in the catalog reaches them — and they sat
+	 * upstream un-imported for six days because no sync job listed their repo. Assert ≤.
+	 */
+	@Test
+	public void retains_witteveen_2026_records() {
+		int[][] rows = { { 7, 11, 15, 772 }, { 11, 13, 15, 1364 }, { 11, 14, 14, 1373 }, { 7, 7, 9, 315 } };
+		for (int[] r : rows) {
+			assertThat(lookup.findRank(r[0], r[1], r[2]))
+					.as("⟨%d,%d,%d⟩ must retain the Witteveen-2026 scheme at %d", r[0], r[1], r[2], r[3])
+					.isLessThanOrEqualTo(r[3]);
+		}
 	}
 
 	@Test

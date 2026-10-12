@@ -40,11 +40,18 @@ import tools.jackson.databind.json.JsonMapper;
  * download → {@link SchemeIO#read} → {@link Verifier#isExactNonCubic} → write the
  * canonical {@code known/section{maxdim}/<shape>-r<rank>-perminov_<tag>-<hash7>.json}.</p>
  *
- * <p>Idempotent: a {@code (shape, rank)} we already carry under {@code known/}
- * (any perminov file) is skipped <em>without downloading</em>. A NEW or BETTER
- * (lower-rank) upstream scheme is a fresh {@code (shape, rank)} → imported. Run the
- * digest sync ({@code SyncReferenceCatalogs --perminov}) first so the comparison
+ * <p>Idempotent: a {@code (shape, rank, class)} we already carry under {@code known/}
+ * (from any source; class = {@code ZT ⊂ Z ⊂ Q}, read from content by
+ * {@link KnownSchemeKeys}) is skipped <em>without downloading</em>. A NEW or BETTER
+ * (lower-rank) upstream scheme — or a finer class at a held rank, e.g. the first
+ * ternary scheme where we only had an integer one — is a fresh key → imported. Run
+ * the digest sync ({@code SyncReferenceCatalogs --perminov}) first so the comparison
  * reflects the same upstream snapshot.</p>
+ *
+ * <p>Scope: {@code schemes/results/*} only. {@code schemes/known/<sub>} is other
+ * people's work that Perminov mirrors; each sub-folder needs its own channel
+ * ({@link eu.solven.matmul.catalog.PerminovKnownAttribution}), and an unmapped one is
+ * reported loudly ({@link #unmappedKnownSubtrees}) instead of being ignored.</p>
  *
  * <p>Run (defaults: maxDim 32, minDim 2, no limit):</p>
  * <pre>MAVEN_OPTS="-Xmx2g" mvn -q -ntp exec:java \
@@ -69,6 +76,21 @@ public final class ImportPerminovSchemes {
 			"https://github.com/dronperminov/FastMatrixMultiplication/blob/master/";
 	private static final String USER_AGENT = "solven-matmul-catalog/perminov-import";
 	private static final Path KNOWN = Path.of("src/main/resources/schemes/known");
+	/** Reaction bases (bud-rich representatives; rank need not be the catalog best). */
+	private static final Path BUD_BASES = Path.of("src/main/resources/schemes/bud-bases");
+	/**
+	 * Perminov's serendipitous-product BASES ({@code {shape}_m{rank}_{sha}_{FIELD}.json}):
+	 * several CONTENT-DISTINCT schemes per {@code (shape, rank)} — e.g. six
+	 * {@code 2x3x11_m55_*} — differing in BUD structure, each the base of published
+	 * {@code s1 ⊗ˢ s2} ranks in the 17–32 band (perminov-serendipitous-catalog.json names
+	 * the exact file per format). The generic {@code (shape, rank)} skip below kept at
+	 * most ONE of them (whichever came first, not necessarily the bud-rich one a recipe
+	 * needs), which is why 621 formats of that band sat below our catalog while the sync
+	 * job reported "0 imported" (2026-09-30). These are keyed by upstream PATH instead
+	 * and land in {@code bud-bases/} as reaction bases.
+	 */
+	private static final String SER_BASE_DIR = "schemes/results/serendipitous_base/";
+	private static final String SER_PAPER_URL = "https://arxiv.org/abs/2606.02480";
 	/** Upstream basename: {@code <n>x<m>x<p>_m<rank>_<tag>.json}. */
 	private static final Pattern NAME =
 			Pattern.compile("^(\\d+)x(\\d+)x(\\d+)_m(\\d+)_(.+)\\.json$");
@@ -80,20 +102,30 @@ public final class ImportPerminovSchemes {
 		int maxDim = intArg(args, "--max-dim", 32);
 		int limit = intArg(args, "--limit", 0);
 		boolean overwrite = flag(args, "--overwrite");
+		// List what would be downloaded (by key), fetch nothing, write nothing.
+		boolean dryRun = flag(args, "--dry-run");
 
-		// Existing (shape, rank) we already carry as a Perminov import — skip those
-		// without re-downloading. Keyed "NxMxP-rRANK".
-		Set<String> have = existingPerminovKeys();
-		log.info("already carry {} perminov (shape,rank) keys under known/", have.size());
+		// (shape, rank, class) we already carry under known/ — from ANY source, read from
+		// content — skip those without re-downloading. See KnownSchemeKeys for why the
+		// class (ZT ⊂ Z ⊂ Q) is part of the key.
+		Set<String> have = KnownSchemeKeys.scan(KNOWN);
+		log.info("already carry {} (shape, rank, class) keys under known/", have.size());
 
 		log.info("listing upstream scheme tree …");
 		JsonNode tree = MAPPER.readTree(fetch(TREE_URL)).get("tree");
 		List<String> paths = new ArrayList<>();
+		List<String> allPaths = new ArrayList<>();
 		for (JsonNode t : tree) {
 			String p = t.path("path").asString();
+			allPaths.add(p);
 			if (p.startsWith("schemes/results/") && p.endsWith(".json")) paths.add(p);
 		}
 		log.info("found {} upstream result schemes", paths.size());
+		reportUnmappedSubtrees(unmappedKnownSubtrees(allPaths));
+		// Upstream paths of serendipitous bases we already hold (bud-bases/ + the known/
+		// files at the same (shape, rank) keys) — the idempotence key for that directory.
+		Set<String> havePaths = existingSerendipitousBasePaths(paths);
+		log.info("already carry {} serendipitous-base upstream paths", havePaths.size());
 
 		int wrote = 0, skipExisting = 0, skipRange = 0, fail = 0, processed = 0;
 		long t0 = System.nanoTime();
@@ -106,8 +138,20 @@ public final class ImportPerminovSchemes {
 			String tag = m.group(5);
 			int maxd = Math.max(n, Math.max(mm, p));
 			if (maxd < minDim || maxd > maxDim) { skipRange++; continue; }
-			String key = n + "x" + mm + "x" + p + "-r" + rank;
-			if (!overwrite && have.contains(key)) { skipExisting++; continue; }
+			String cls = fieldOf(path, tag);
+			boolean serBase = path.startsWith(SER_BASE_DIR);
+			// Rank results: one file per (shape, rank, class) is enough. Serendipitous
+			// bases: every content-distinct file matters (bud profile) → key by path.
+			if (!overwrite && (serBase ? havePaths.contains(path)
+					: KnownSchemeKeys.covers(have, n, mm, p, rank, cls))) {
+				skipExisting++;
+				continue;
+			}
+			if (dryRun) {
+				log.info("[dry-run] would fetch {} ({})", path, serBase ? "serendipitous base" : cls);
+				wrote++;
+				continue;
+			}
 
 			try {
 				String body = fetch(RAW_BASE + path);
@@ -126,11 +170,21 @@ public final class ImportPerminovSchemes {
 					fail++;
 					continue;
 				}
-				String hash7 = SchemeIO.contentHash(alg).substring(0, 7);
+				String hash = SchemeIO.contentHash(alg);
+				String hash7 = hash.substring(0, 7);
+				if (!overwrite && existsWithHash(n, mm, p, rank, hash7)) {
+					// Identical content already in the catalog under another label (the ONE
+					// serendipitous variant the old (shape, rank) rule let into known/; a
+					// third-party scheme we hold from its origin repo) — nothing to add.
+					if (serBase) havePaths.add(path);
+					else KnownSchemeKeys.add(have, n, mm, p, rank, cls);
+					skipExisting++;
+					continue;
+				}
 				// Clean cosmetic label: perminov_{ZT|Z|Q} (the raw tag carries cr/cn/
 				// hash cruft); content + metadata are authoritative, the name is a label.
-				String note = "perminov_" + fieldOf(path, tag);
-				Path dir = KNOWN.resolve("section" + maxd);
+				String note = (serBase ? "perminov_serbase_" : "perminov_") + cls;
+				Path dir = (serBase ? BUD_BASES : KNOWN).resolve("section" + maxd);
 				Files.createDirectories(dir);
 				File out = dir.resolve(n + "x" + mm + "x" + p + "-r" + rank + "-" + note + "-" + hash7 + ".json").toFile();
 				if (out.exists() && !overwrite) { skipExisting++; continue; }
@@ -142,10 +196,12 @@ public final class ImportPerminovSchemes {
 				// Attribute by Perminov's OWN directory layout, not blindly to "Perminov
 				// 2023": his schemes/known/<sub> subtree re-hosts others' work (e.g.
 				// known/meta_flip_graph = Kauers & Wood 2025). This loop only lists
-				// schemes/results/* (line ~94 — Perminov's own), so forPath returns
-				// PERMINOV_OWN here; the routing is defensive so a widened filter stays
-				// correct, and SKIP_FRESH_IMPORT mirrors (tensor=FMM, matmulcatalog=ours)
-				// are never freshly pulled.
+				// schemes/results/* (Perminov's own), so forPath returns PERMINOV_OWN here
+				// — except for the few third-party files he filed under results/
+				// (THIRD_PARTY_IN_RESULTS, e.g. Witteveen's ⟨2,p,n⟩ ternary schemes), which
+				// come back EXTERNAL. SKIP_FRESH_IMPORT mirrors (tensor=FMM,
+				// matmulcatalog=ours, MerlijnW70/lita=pulled from their origin) are never
+				// freshly pulled.
 				var attr = eu.solven.matmul.catalog.PerminovKnownAttribution.forPath(path)
 						.orElse(new eu.solven.matmul.catalog.PerminovKnownAttribution.Attribution(
 								"Perminov 2023",
@@ -156,9 +212,24 @@ public final class ImportPerminovSchemes {
 					skipExisting++;
 					continue;
 				}
-				meta.put("source", attr.source());
-				if (!attr.isPerminovOwn()) {
-					meta.put("imported_via", "Perminov FastMatrixMultiplication");
+				if (serBase) {
+					// A REACTION base, not a rank claim: the bud-rich representative behind
+					// Perminov's published serendipitous products. Stamp the content hash —
+					// durableLeafRef refuses to pin an un-hashed base when a reaction wins
+					// (the ⟨20,28,28⟩=8434 persist failure, 2026-07-08).
+					meta.put("source", "Perminov 2026 (serendipitous)");
+					meta.put("year", 2026);
+					meta.put("source_paper_url", SER_PAPER_URL);
+					meta.put("hash", hash);
+					meta.put("discovery", false);
+					meta.put("attribution_for_rank", "reaction base only (bud-rich representative of a "
+							+ "serendipitous product, Perminov arXiv:2606.02480) — the rank at this shape is "
+							+ "attributed by the catalog's rank-best scheme, not by this file");
+				} else {
+					meta.put("source", attr.source());
+					if (!attr.isPerminovOwn()) {
+						meta.put("imported_via", "Perminov FastMatrixMultiplication");
+					}
 				}
 				meta.put("original_source_path", path);
 				// Clear pointer to the scheme's file in Perminov's own repo (the file,
@@ -166,9 +237,10 @@ public final class ImportPerminovSchemes {
 				meta.put("source_scheme_url", BLOB_BASE + path);
 				meta.put("commutative", false);
 				meta.put("verified", true);
-				meta.put("fields", fieldsForField(fieldOf(path, tag)));
+				meta.put("fields", fieldsForField(cls));
 				SchemeIO.addFields(out, meta, /* apply */ true);
-				have.add(key);
+				if (serBase) havePaths.add(path);
+				else KnownSchemeKeys.add(have, n, mm, p, rank, cls);
 				wrote++;
 				if (wrote % 50 == 0) {
 					long ms = (System.nanoTime() - t0) / 1_000_000L;
@@ -209,18 +281,101 @@ public final class ImportPerminovSchemes {
 				: List.of("F2", "F3", "Z", "Q", "R", "C");
 	}
 
-	/** Scan {@code known/} for existing perminov imports → set of "NxMxP-rRANK". */
-	private static Set<String> existingPerminovKeys() throws IOException {
-		Set<String> keys = new HashSet<>();
-		if (!Files.isDirectory(KNOWN)) return keys;
-		Pattern fn = Pattern.compile("^(\\d+x\\d+x\\d+-r\\d+)-perminov_.*\\.json$");
-		try (Stream<Path> w = Files.walk(KNOWN)) {
-			w.filter(Files::isRegularFile).forEach(p -> {
-				Matcher m = fn.matcher(p.getFileName().toString());
-				if (m.matches()) keys.add(m.group(1));
-			});
+	/**
+	 * {@code schemes/known/<sub>} folders upstream that {@link PerminovKnownAttribution}
+	 * does not map → {@code sub → file count}. Such a folder is a third-party source
+	 * Perminov started mirroring; this importer (results/ only) will never pull it, and
+	 * nothing else knows it exists.
+	 */
+	static Map<String, Integer> unmappedKnownSubtrees(List<String> upstreamPaths) {
+		Map<String, Integer> out = new java.util.TreeMap<>();
+		String prefix = "schemes/known/";
+		for (String p : upstreamPaths) {
+			if (!p.startsWith(prefix)) continue;
+			int slash = p.indexOf('/', prefix.length());
+			if (slash < 0) continue;
+			String sub = p.substring(prefix.length(), slash);
+			if (!eu.solven.matmul.catalog.PerminovKnownAttribution.isMappedSubtree(sub)) {
+				out.merge(sub, 1, Integer::sum);
+			}
 		}
-		return keys;
+		return out;
+	}
+
+	/** Loud, not fatal: a log WARN, a GitHub Actions annotation, and the job summary. */
+	private static void reportUnmappedSubtrees(Map<String, Integer> unmapped) {
+		if (unmapped.isEmpty()) return;
+		StringBuilder md = new StringBuilder("### Perminov mirrors a source we do not import\n\n");
+		unmapped.forEach((sub, count) -> {
+			log.warn("[unmapped-subtree] schemes/known/{} ({} files) is not mapped in PerminovKnownAttribution — "
+					+ "a third-party source nobody imports. Map it and give it an import channel.", sub, count);
+			System.out.println("::warning title=Unmapped Perminov known/ subtree::schemes/known/" + sub + " ("
+					+ count + " files) is not imported by any job — map it in PerminovKnownAttribution");
+			md.append("- `schemes/known/").append(sub).append("/` — ").append(count)
+					.append(" files, not mapped in `PerminovKnownAttribution`, imported by no job\n");
+		});
+		String summary = System.getenv("GITHUB_STEP_SUMMARY");
+		if (summary != null && !summary.isBlank()) {
+			try {
+				Files.writeString(Path.of(summary), md + "\n", java.nio.file.StandardOpenOption.CREATE,
+						java.nio.file.StandardOpenOption.APPEND);
+			} catch (IOException e) {
+				log.warn("could not append to the job summary: {}", e.toString());
+			}
+		}
+	}
+
+	/**
+	 * Upstream {@code serendipitous_base/} paths already imported: the
+	 * {@code original_source_path} of every file under {@code bud-bases/}, plus those of
+	 * the {@code known/} Perminov files at a {@code (shape, rank)} that occurs among the
+	 * upstream serendipitous bases (the single variant the pre-2026-09-30 rule let in).
+	 * Bounded read: only files at those keys are opened.
+	 */
+	private static Set<String> existingSerendipitousBasePaths(List<String> upstreamPaths) throws IOException {
+		Set<String> serKeys = new HashSet<>();
+		for (String path : upstreamPaths) {
+			if (!path.startsWith(SER_BASE_DIR)) continue;
+			Matcher m = NAME.matcher(path.substring(path.lastIndexOf('/') + 1));
+			if (m.matches()) serKeys.add(m.group(1) + "x" + m.group(2) + "x" + m.group(3) + "-r" + m.group(4));
+		}
+		Set<String> out = new HashSet<>();
+		Pattern fn = Pattern.compile("^(\\d+x\\d+x\\d+-r\\d+)-.*\\.json$");
+		Pattern src = Pattern.compile("\"original_source_path\"\\s*:\\s*\"([^\"]+)\"");
+		for (Path root : new Path[] { BUD_BASES, KNOWN }) {
+			if (!Files.isDirectory(root)) continue;
+			List<Path> files;
+			try (Stream<Path> w = Files.walk(root)) {
+				files = w.filter(Files::isRegularFile).toList();
+			}
+			for (Path f : files) {
+				Matcher m = fn.matcher(f.getFileName().toString());
+				if (!m.matches() || !serKeys.contains(m.group(1))) continue;
+				Matcher s = src.matcher(Files.readString(f));
+				if (s.find() && s.group(1).startsWith(SER_BASE_DIR)) out.add(s.group(1));
+			}
+		}
+		return out;
+	}
+
+	/** Is a scheme with this exact content (hash7 in the canonical filename) already on
+	 *  disk at {@code (shape, rank)}, under {@code known/} or {@code bud-bases/}? */
+	private static boolean existsWithHash(int n, int m, int p, int rank, String hash7) throws IOException {
+		int maxd = Math.max(n, Math.max(m, p));
+		String prefix = n + "x" + m + "x" + p + "-r" + rank + "-";
+		for (Path root : new Path[] { BUD_BASES, KNOWN }) {
+			Path dir = root.resolve("section" + maxd);
+			if (!Files.isDirectory(dir)) continue;
+			try (Stream<Path> ls = Files.list(dir)) {
+				if (ls.anyMatch(f -> {
+					String name = f.getFileName().toString();
+					return name.startsWith(prefix) && name.endsWith("-" + hash7 + ".json");
+				})) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private static int intArg(String[] args, String key, int dflt) {
@@ -235,16 +390,22 @@ public final class ImportPerminovSchemes {
 		return false;
 	}
 
-	private static String fetch(String url) throws IOException, InterruptedException {
+	static String fetch(String url) throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newBuilder()
 				.followRedirects(HttpClient.Redirect.NORMAL)
 				.connectTimeout(Duration.ofSeconds(30))
 				.build();
-		HttpRequest req = HttpRequest.newBuilder(URI.create(url))
+		HttpRequest.Builder rb = HttpRequest.newBuilder(URI.create(url))
 				.header("User-Agent", USER_AGENT)
 				.timeout(Duration.ofSeconds(60))
-				.GET()
-				.build();
+				.GET();
+		// The tree listing is an api.github.com call (60/h unauthenticated per runner IP);
+		// use the workflow token when the job exports one.
+		String token = System.getenv("GITHUB_TOKEN");
+		if (token != null && !token.isBlank() && url.startsWith("https://api.github.com/")) {
+			rb.header("Authorization", "Bearer " + token);
+		}
+		HttpRequest req = rb.build();
 		IOException last = null;
 		for (int attempt = 0; attempt <= 2; attempt++) {
 			try {

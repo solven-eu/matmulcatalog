@@ -1,0 +1,39 @@
+{
+  "lineage_str": "Recombination(base=naive-1x2x2, allocA=[18], allocB=[9, 18], allocC=[9, 18], leaves=[OrientAs(9x9x18, ⟨18,9,9⟩), OrientAs(18x18x9, ⟨18,9,18⟩), 18x18x18])",
+  "lineage_compact": "R[naive-1x2x2; 18 | 9,18 | 9,18]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "naive-1x2x2"},
+    "allocA": [18],
+    "allocB": [9, 18],
+    "allocC": [9, 18],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 18,
+        "m": 9,
+        "p": 9,
+        "axisMap": "pnm",
+        "child": {"op": "Atom", "ref": "9x9x18@bcba319deda1da227fda07c4fad17f4dd644f93edc80fa5b59b0c728a96005d2"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 18,
+        "m": 9,
+        "p": 18,
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "18x18x9@60b0bf4044b54f34eb5ce3cc03c7bbeec2307255933a19dc251f8feeac659975"}
+      },
+      {"op": "Atom", "ref": "18x18x18@6f19f58b44259b637444827db1a131c931af97b1a7fb53e758ef2a737287f9bd"}
+    ]
+  },
+  "n": [18, 27, 27],
+  "m": 7150,
+  "hash": "7740050101d97bc42b9b69553c00d77fabccb3d7e0efab5c6106716c095452f0",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

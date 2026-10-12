@@ -1,0 +1,242 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[6, 5], allocB=[11, 11], allocC=[13, 12], leaves=[6x11x13-r572-witteveen_2026-737d7cb, OrientAs(Recombination(base=2x2x2, allocA=[6, 5], allocB=[7, 6], allocC=[3, 2], leaves=[SumInner(Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨6,4,3⟩)), OrientAs(Recombination(base=ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,7,3⟩), OrientAs(Recombination(base=ext[2x6x7-r66-perminov_ZT-ed57436.json] / <2,6,7>=66 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,7,2⟩), OrientAs(3x5x6-r68-alphaevolve-14be9c3, ⟨5,6,3⟩), OrientAs(Recombination(base=ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨6,6,2⟩), OrientAs(Recombination(base=ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL, allocA=[1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨5,7,2⟩), ConcatRows(Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]))]), ⟨5,11,13⟩), 6x11x12-r521-perminov_ZT-77435fe, OrientAs(ConcatRows(OrientAs(5x5x12-r204-perminov_ZT-61a6cb7, ⟨5,12,5⟩), Recombination(base=2x2x2, allocA=[3, 3], allocB=[6, 6], allocC=[3, 2], leaves=[Project(OrientAs(3x3x7, ⟨3,7,3⟩), keepN=[0, 1, 2], keepM=[1, 2, 3, 4, 5, 6], keepP=[0, 1, 2]), SumInner(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]))])), ⟨5,11,12⟩)])",
+  "lineage_compact": "R[2x2x2; 6,5 | 11,11 | 13,12]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [6, 5],
+    "allocB": [11, 11],
+    "allocC": [13, 12],
+    "leaves": [
+      {"op": "Atom", "ref": "6x11x13-r572-witteveen_2026-737d7cb"},
+      {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 11,
+        "p": 13,
+        "axisMap": "pnm",
+        "child": {
+          "op": "Recombination",
+          "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+          "allocA": [6, 5],
+          "allocB": [7, 6],
+          "allocC": [3, 2],
+          "leaves": [
+            {
+              "op": "SumInner",
+              "left": {
+                "op": "Project",
+                "keepN": [1, 2, 3, 4, 5, 6],
+                "keepM": [0, 1, 2],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 7,
+                  "m": 3,
+                  "p": 3,
+                  "axisMap": "pnm",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              },
+              "right": {
+                "op": "OrientAs",
+                "n": 6,
+                "m": 4,
+                "p": 3,
+                "axisMap": "pmn",
+                "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              }
+            },
+            {
+              "op": "OrientAs",
+              "n": 5,
+              "m": 7,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {
+                "op": "Recombination",
+                "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
+                "allocA": [1, 1, 1],
+                "allocB": [1, 1, 1, 1, 1],
+                "allocC": [1, 1, 1, 1, 1, 1, 1],
+                "leaves": [
+                  {"op": "Atom", "ref": "naive-1x1x1"}
+                ]
+              }
+            },
+            {
+              "op": "OrientAs",
+              "n": 6,
+              "m": 7,
+              "p": 2,
+              "axisMap": "mpn",
+              "child": {
+                "op": "Recombination",
+                "base": {"op": "Atom", "ref": "ext[2x6x7-r66-perminov_ZT-ed57436.json] / <2,6,7>=66 :: CANONICAL"},
+                "allocA": [1, 1],
+                "allocB": [1, 1, 1, 1, 1, 1],
+                "allocC": [1, 1, 1, 1, 1, 1, 1],
+                "leaves": [
+                  {"op": "Atom", "ref": "naive-1x1x1"}
+                ]
+              }
+            },
+            {
+              "op": "OrientAs",
+              "n": 5,
+              "m": 6,
+              "p": 3,
+              "axisMap": "mpn",
+              "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
+            },
+            {
+              "op": "OrientAs",
+              "n": 6,
+              "m": 6,
+              "p": 2,
+              "axisMap": "mpn",
+              "child": {
+                "op": "Recombination",
+                "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
+                "allocA": [1, 1],
+                "allocB": [1, 1, 1, 1, 1, 1],
+                "allocC": [1, 1, 1, 1, 1, 1],
+                "leaves": [
+                  {"op": "Atom", "ref": "naive-1x1x1"}
+                ]
+              }
+            },
+            {
+              "op": "OrientAs",
+              "n": 5,
+              "m": 7,
+              "p": 2,
+              "axisMap": "mpn",
+              "child": {
+                "op": "Recombination",
+                "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
+                "allocA": [1, 1],
+                "allocB": [1, 1, 1, 1, 1],
+                "allocC": [1, 1, 1, 1, 1, 1, 1],
+                "leaves": [
+                  {"op": "Atom", "ref": "naive-1x1x1"}
+                ]
+              }
+            },
+            {
+              "op": "ConcatRows",
+              "top": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              },
+              "bottom": {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              }
+            }
+          ]
+        }
+      },
+      {"op": "Atom", "ref": "6x11x12-r521-perminov_ZT-77435fe"},
+      {
+        "op": "OrientAs",
+        "n": 5,
+        "m": 11,
+        "p": 12,
+        "axisMap": "pnm",
+        "child": {
+          "op": "ConcatRows",
+          "top": {
+            "op": "OrientAs",
+            "n": 5,
+            "m": 12,
+            "p": 5,
+            "axisMap": "mpn",
+            "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
+          },
+          "bottom": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+            "allocA": [3, 3],
+            "allocB": [6, 6],
+            "allocC": [3, 2],
+            "leaves": [
+              {
+                "op": "Project",
+                "keepN": [0, 1, 2],
+                "keepM": [1, 2, 3, 4, 5, 6],
+                "keepP": [0, 1, 2],
+                "child": {
+                  "op": "OrientAs",
+                  "n": 3,
+                  "m": 7,
+                  "p": 3,
+                  "axisMap": "mpn",
+                  "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+                }
+              },
+              {
+                "op": "SumInner",
+                "left": {
+                  "op": "Recombination",
+                  "base": {
+                    "op": "Transpose",
+                    "id": "L0",
+                    "perm": "ABC->CBA",
+                    "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+                  },
+                  "allocA": [1, 1, 1],
+                  "allocB": [1, 1, 1],
+                  "allocC": [1, 1],
+                  "leaves": [
+                    {"op": "Atom", "ref": "naive-1x1x1"}
+                  ]
+                },
+                "right": {
+                  "op": "Recombination",
+                  "base": {"op": "@ref", "id": "L0"},
+                  "allocA": [1, 1, 1],
+                  "allocB": [1, 1, 1],
+                  "allocC": [1, 1],
+                  "leaves": [
+                    {"op": "Atom", "ref": "naive-1x1x1"}
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "n": [11, 22, 25],
+  "m": 3636,
+  "hash": "1489fe89fbcaa2c4edc9f8f8a858816a8adf9265aa31691d4f28a7f90fc893e0",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

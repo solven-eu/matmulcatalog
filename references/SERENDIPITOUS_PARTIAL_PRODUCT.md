@@ -254,3 +254,65 @@ Files fetched to `target/fmm-maple/` (uncommitted).
 5. **REFERENCES #195 tags** (already started): DIS09 = *sparseness-aware
    recursive padding*; this technique = *partial matrix multiplication
    (Schönhage borrow-and-correct)*; Schönhage 1981 + BCS97 §14–16 as sources.
+
+## 6. Combined buds and the decomposition family (2026-09-30)
+
+Sections 1–5 are the borrow-and-correct design. What the engine actually runs
+(`SerendipitousBudProduct`, since #159) is the bud form: a base's rank-one terms
+are grouped into **buds**, each bud an embedded small matmul tensor, and the
+product with an inner `⟨n₂,m₂,p₂⟩` realises each bud by ONE enlarged inner
+scheme. Until 2026-09-30 only single-type buds were fused.
+
+**A bud is an embedded `⟨a,b,c⟩`.** Terms indexed `(i,j,k) ∈ [a]×[b]×[c]` whose
+`U` depends (up to scale) only on `(i,j)`, `V` only on `(j,k)`, `W` only on
+`(i,k)`, sum to `Σ Û_ij ⊗ V̂_jk ⊗ Ŵ_ik` — the image of `⟨a,b,c⟩` under three
+linear maps. Against the inner it fuses into one `⟨a·n₂, b·m₂, c·p₂⟩`:
+
+    U_q = Σ_{i,j} Û_ij ⊗ S3.U_q[block (i,j)]   (likewise V over (j,k), W over (i,k))
+
+and S3's own matmul identity leaves `⟨n₂,m₂,p₂⟩` on the matched blocks, zero on
+the others. So `abc · R(n₂,m₂,p₂)` becomes `R(an₂, bm₂, cp₂)`.
+
+| Bud | Shared structure | Fuses into |
+| --- | --- | --- |
+| `⟨1,1,k⟩` (U-bud) | one U-class | `⟨n₂, m₂, k·p₂⟩` |
+| `⟨k,1,1⟩` (V-bud) | one V-class | `⟨k·n₂, m₂, p₂⟩` |
+| `⟨1,k,1⟩` (W-bud) | one W-class | `⟨n₂, k·m₂, p₂⟩` |
+| `⟨1,b,c⟩` | grid: `b` U-classes × `c` W-classes | `⟨n₂, b·m₂, c·p₂⟩` |
+| `⟨a,1,c⟩` | grid: `a` U-classes × `c` V-classes | `⟨a·n₂, m₂, c·p₂⟩` |
+| `⟨a,b,1⟩` | grid: `a` W-classes × `b` V-classes | `⟨a·n₂, b·m₂, p₂⟩` |
+
+The last three are the **combined buds** (Perminov §2.6.4; `GridBud`). No scale
+condition: a grid term is `(α·Û) ⊗ V ⊗ (γ·Ŵ)` and the free factor absorbs `αγ`.
+A three-axis bud (`a,b,c ≥ 2`) would need `c_ijk = α_ij β_jk γ_ik` and is not
+searched. Canonical instance: `⟨3,3,3⟩:23` with structure
+`⟨1,2,2⟩ + 2⟨2,1,1⟩ + 15⟨1,1,1⟩`, against `⟨6,3,3⟩:40` —
+`15·40 + 2·80 + ⟨6,6,6⟩:153 = 913` for `⟨9,9,18⟩`; single-type buds give 920.
+
+**Which buds — the search is a bound.** Choosing disjoint buds to minimise
+`Σ R(fused)` is a weighted set packing (terms sit in a U-class, a V-class and a
+W-class at once). The engine does not solve it; it prices a fixed **structural
+family** (`candidateDecompositions`) and keeps the cheapest:
+
+- grid strategies: `NONE`; `ALL` (largest first); `UW` / `UV` / `VW` (one type);
+  `CLOSED`, `KEEP_U/V/W` (a grid may not split a class of the named factor);
+  `CORE` (each grid cut to its least-entangled 2×2);
+- for the terms left over: the six type orderings, each as the class-at-a-time
+  greedy and as a fewest-options-first greedy (Karp–Sipser lifted to classes —
+  a term whose only partner would be swallowed by a larger class claims it first).
+
+Each mechanism is there because a published recipe needs it
+(`TestSerendipitousGridBud.the_structural_family_prices_perminovs_recipes`):
+`⟨16,15,27⟩` 3748 → 3744 and `⟨6,15,27⟩` 1481 → 1475 (fewest-options-first),
+`⟨9,28,30⟩` 4252 → 4244 (`KEEP_U`), `⟨4,25,26⟩` 1659 → 1657 (`CORE`).
+
+The family depends on the base alone, not on any rank. That is deliberate: the
+lineage stores only `SerendipitousProduct(base, n₂, m₂, p₂)`, so a replay has to
+re-derive the decomposition. Search prices the family with `findRank`; replay
+prices the same family with what it can build and builds the cheapest — so a
+better inner scheme can lower a replayed rank, never raise it. A cost-aware
+optimiser would do better on some base, and would need the chosen decomposition
+recorded in the lineage node to stay replayable; that is the open follow-up.
+
+Tier: **bound** (cheapest of a structural family of greedy decompositions), not
+optimal over bud partitions, and the fused ranks are themselves catalog bounds.

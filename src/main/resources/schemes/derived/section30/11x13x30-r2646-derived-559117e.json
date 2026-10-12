@@ -1,0 +1,26 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(6x11x13-r572-witteveen_2026-737d7cb, ⟨11,13,6⟩), 11x13x24)",
+  "lineage_compact": "6x11x13-r572-witteveen_2026-737d7cb→⟨11,13,6⟩ +p 11x13x24",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 11,
+      "m": 13,
+      "p": 6,
+      "axisMap": "mpn",
+      "child": {"op": "Atom", "ref": "6x11x13-r572-witteveen_2026-737d7cb"}
+    },
+    "right": {"op": "Atom", "ref": "11x13x24@d9ae5c1694c83ea45c7331a40d8013b9ca4192758cadbcdf8993dfffa63bd109"}
+  },
+  "n": [11, 13, 30],
+  "m": 2646,
+  "hash": "559117edac3b7c1d745702737281a74f577c928e957624edabd6192a38288192",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

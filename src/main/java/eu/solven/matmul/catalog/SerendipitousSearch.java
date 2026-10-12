@@ -72,13 +72,17 @@ public final class SerendipitousSearch {
 			// larger, cheaper bud of a later type can be masked. Try every type
 			// ordering and keep the cheapest — this is what surfaces e.g. the size-3
 			// V-bud of ⟨4,3,3⟩ that yields ⟨8,9,9⟩=430 (U-first would only see 434).
+			// The same holds one level up: a COMBINED bud (a ⟨1,2,2⟩ grid of four terms)
+			// fuses into one doubly-enlarged block that no single-type grouping reaches —
+			// ⟨9,9,18⟩=913 = 15·⟨6,3,3⟩ + 2·⟨12,3,3⟩ + ⟨6,6,6⟩. candidateDecompositions
+			// is the whole family (grid strategies × orderings); first-cheapest wins, as
+			// in productViaBudsBest, so a replay rebuilds the decomposition chosen here.
 			SerendipitousBudProduct.BudDecomposition bestDec = null;
 			long predicted = Long.MAX_VALUE;
-			for (SerendipitousBudProduct.BudType[] order : SerendipitousBudProduct.ALL_ORDERINGS) {
-				SerendipitousBudProduct.BudDecomposition dec = SerendipitousBudProduct.findBuds(base, order);
-				if (dec.buds().isEmpty()) continue;  // no buds → no saving over Kronecker
-				long pr = predictRank(dec, lookup, n2, m2, p2);
-				if (pr >= 0 && pr < predicted) { predicted = pr; bestDec = dec; }
+			for (SerendipitousBudProduct.BudDecomposition dec : SerendipitousBudProduct.candidateDecompositions(base)) {
+				if (!dec.hasBuds()) continue;  // no buds → no saving over Kronecker
+				long pr = SerendipitousBudProduct.costOf(dec, lookup, n2, m2, p2);
+				if (pr < Long.MAX_VALUE / 4 && pr < predicted) { predicted = pr; bestDec = dec; }
 			}
 			if (bestDec == null || predicted >= upperBound || predicted >= naiveKron) continue;
 
@@ -115,25 +119,6 @@ public final class SerendipitousSearch {
 	/** A viable factorization with its predicted rank + chosen decomposition. */
 	private record Candidate(NonCubicBilinearAlgorithm base, int n2, int m2, int p2, long predicted,
 			SerendipitousBudProduct.BudDecomposition dec) {}
-
-	private static long predictRank(SerendipitousBudProduct.BudDecomposition dec,
-			FieldAwareLookup lookup, int n2, int m2, int p2) {
-		long total = 0;
-		long triv = rank(lookup, n2, m2, p2);
-		if (triv < 0) return -1;
-		total += (long) dec.trivial().length * triv;
-		for (SerendipitousBudProduct.Bud bud : dec.buds()) {
-			int k = bud.terms().length;
-			long r = switch (bud.type()) {
-				case U -> rank(lookup, n2, m2, k * p2);
-				case V -> rank(lookup, k * n2, m2, p2);
-				case W -> rank(lookup, n2, k * m2, p2);
-			};
-			if (r < 0) return -1;
-			total += r;
-		}
-		return total;
-	}
 
 	/**
 	 * Rank oracle for PREDICTION — {@code findRank}, which prices lineage-only
