@@ -113,7 +113,9 @@ public class TestSerendipitousStubInner {
 	}
 
 	/** The persisted ⟨21,28,30⟩=9473 stub carries an explicit axisMap pin and
-	 *  replays to exactly the claimed rank (dim-repeat-safe orientation). */
+	 *  replays at MOST the claimed rank (dim-repeat-safe orientation). Its inner
+	 *  shapes resolve to catalog-best, so a better ingredient legitimately lowers
+	 *  the replay (9471 since the 2026-10 imports) — SOTA-or-better, never equality. */
 	@Test
 	public void ambiguous_orientation_stub_replays_exactly() {
 		File stub = new File(
@@ -121,7 +123,8 @@ public class TestSerendipitousStubInner {
 		assertThat(stub).exists();
 		NonCubicBilinearAlgorithm replayed =
 				LineageReplayer.withDefaultPool(lookup).replayFromFile(stub);
-		assertThat(replayed.r).isEqualTo(9473);
+		assertThat(replayed.n * replayed.m * replayed.p).isEqualTo(21 * 28 * 30);
+		assertThat(replayed.r).isLessThanOrEqualTo(9473);
 	}
 
 	/**
