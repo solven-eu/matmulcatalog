@@ -273,6 +273,20 @@ Canonical examples (all from real silent regressions in this repo):
 - The bud-ordering bug hid ⟨8,9,9⟩=430 (U-first greedy masked the size-3 V-bud).
   Guard: `TestSerendipitousBudProduct.bud_ordering_recovers_8x9x9_430` +
   the SOTA-spotting rows in `TestSweepSpotsSota`.
+- `KnownAlgorithmCatalog` asserted a commutative ⟨2,2,2⟩=6 for years, citing the
+  two 1971 papers (Hopcroft–Kerr, Winograd) that *prove 7 minimal* — an
+  impossibility result transcribed as if it were a construction. The refutation
+  was already in `docs/lower-bounds.json`, but that file was display-only.
+  Guards: `TestBoundsVsLowerBounds` (no upper-bound claim, anywhere, may sit
+  below a published floor; tiers must match the evidence both ways) and
+  `TestCommutativeNotWorseThanNc` (`R_c ≤ R`, so a commutative bound worse than
+  a known NC rank is a reporting bug).
+
+**Two registries must never be able to contradict each other in silence.** When
+you add a source of truth (a bounds file, a curated list, a formula helper),
+also add the cross-check that compares it with the existing ones —
+`LowerBoundRegistry` exists precisely because "the claim and its refutation live
+in the same repo, unconnected" is a failure mode we already hit.
 
 Rules:
 1. The guard must be **fast** — probe a handful of specific shapes
@@ -449,7 +463,16 @@ restricted search.
    bound.
 4. Lower bounds are first-class: when we can bracket an optimum
    (form-count / rank LB vs heuristic UB), report **both** so the gap is
-   visible and the claim is certified, not asserted.
+   visible and the claim is certified, not asserted. They live in
+   `docs/lower-bounds.json`, read via `LowerBoundRegistry`, and carry **two**
+   applicability axes — `field` (never transfers across characteristics; widens
+   only downward inside one, since rank can only drop as the field grows) and
+   `model` (`bilinear` = a floor on the NC rank `R`, binds NC claims only;
+   `quadratic` = a floor on the multiplicative complexity, proven with
+   commutativity allowed, so it binds the commutative axis too). A
+   lower-bound-only paper is **never** an entry in `KnownAlgorithmCatalog` —
+   that list holds constructions, each tagged `PROVEN_OPTIMAL` (a floor matches)
+   or `BOUND`.
 
 This is the algorithmic sibling of the **field discipline** and the
 **discoveries-vs-rediscoveries** rule: same spirit — say exactly what

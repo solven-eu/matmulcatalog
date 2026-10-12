@@ -1,20 +1,18 @@
 package eu.solven.matmul.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
-
 import eu.solven.matmul.algebra.Algebra;
 import eu.solven.matmul.algebra.Field;
-import eu.solven.matmul.catalog.KnownAlgorithm;
-import eu.solven.matmul.catalog.KnownAlgorithmCatalog;
 import eu.solven.matmul.search.RecursiveComposition;
 import eu.solven.matmul.search.RecursiveComposition.Factor;
 import eu.solven.matmul.search.RecursiveComposition.Result;
+import org.junit.jupiter.api.Test;
 
 /**
  * Validates the catalog's per-format best-known entries and the recursive
@@ -37,6 +35,19 @@ public class TestRecursiveComposition {
 				Algebra.nonCommutative(Field.R), Factor.cube(2), 5);
 		assertThat(r).isPresent();
 		assertThat(r.get().rank).isEqualTo(16807L);
+	}
+
+	@Test
+	public void composition_refuses_commutative_algebras() {
+		// Block recursion substitutes matrices for scalars, and matrices don't
+		// commute. Nothing enforced that until 2026-08: with the old (wrong)
+		// commutative ⟨2,2,2⟩=6 row, this call returned 6^5 = 7776 as a "bound"
+		// for ⟨32,32,32⟩ — a rank that is neither achievable nor derived by a
+		// legal construction.
+		assertThatThrownBy(() -> RecursiveComposition.evaluatePower(
+				Algebra.commutative(Field.R), Factor.cube(2), 5))
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessageContaining("non-commutative");
 	}
 
 	@Test

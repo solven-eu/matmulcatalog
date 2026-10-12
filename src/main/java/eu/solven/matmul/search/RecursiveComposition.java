@@ -1,12 +1,11 @@
 package eu.solven.matmul.search;
 
-import eu.solven.matmul.catalog.KnownAlgorithmCatalog;
-
-import eu.solven.matmul.catalog.KnownAlgorithm;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import eu.solven.matmul.catalog.KnownAlgorithm;
+import eu.solven.matmul.catalog.KnownAlgorithmCatalog;
 
 /**
  * Compute upper bounds on matmul rank by composing smaller catalogued algorithms.
@@ -41,6 +40,19 @@ public final class RecursiveComposition {
 	 *                product but is recorded in the breakdown).
 	 */
 	public static Optional<Result> evaluate(eu.solven.matmul.algebra.Algebra algebra, List<Factor> factors) {
+		// Block recursion substitutes MATRICES for scalars, and matrices don't
+		// commute — so a commutative-only algorithm cannot be a level of this
+		// product (the theorem in the class javadoc requires each sub-algorithm
+		// to be valid over the matrix-entry algebra). Nothing used to stop it:
+		// with the old commutative ⟨2,2,2⟩=6 row this happily returned 6^k as a
+		// bound for ⟨2^k,2^k,2^k⟩ — wrong twice over. Refuse the whole algebra
+		// rather than hope the current curated rows happen to be ring-valid.
+		if (algebra.commutative()) {
+			throw new IllegalArgumentException(
+					"RecursiveComposition is only valid for non-commutative algebras — "
+					+ "commutative-only schemes (Waksman, Rosowski, Makarov) do not lift to "
+					+ "block recursion. Got: " + algebra);
+		}
 		long product = 1;
 		List<String> breakdown = new ArrayList<>();
 		for (Factor f : factors) {
