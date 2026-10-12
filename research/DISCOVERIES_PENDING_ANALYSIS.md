@@ -2001,3 +2001,29 @@ bud-partition optimiser (needs the decomposition recorded in the lineage
 node); three-axis buds; KGP archive licence; the two divergent sweep
 candidates ⟨23,28,28⟩ (9679 priced, 10179 built) and ⟨23,29,29⟩ (10470 vs
 10720) were never diagnosed.
+
+### Addendum 2026-10-11 — resync before merge (PR #11)
+
+Ten days of upstream movement, all absorbed in one pass (`ImportWitteveenSchemes`,
+`ImportPerminovSchemes`, `ImportContributedSchemes --meta=…cloudroom-math-2026.meta.json`,
+`ImportKhoruzhiiLita`, `ProjectFmmGaps --passes=2`, then the generators):
+
+- **Witteveen release 1.3** (2026-09-30 13:41Z): ten formats now the best known over
+  every ring — ⟨7,7,9⟩=314, ⟨6,11,13⟩=572, ⟨8,10,13⟩=684, ⟨8,10,14⟩=724,
+  ⟨7,11,15⟩=769, ⟨9,11,13⟩=833, ⟨10,13,14⟩=1150, ⟨11,13,15⟩=1362, ⟨11,14,14⟩=1367,
+  ⟨13,13,15⟩=1591. Pulled by the scheduled importer exactly as designed.
+- **Cloudroom Math 2026** (REFERENCES [91], release 2026-10-08, Apache-2.0, 27
+  explicit schemes found by Claude Opus 5.5 agents): 7 below this catalog —
+  ⟨4,6,15⟩=261 ("hidden grids": combined buds after an exact re-basing of the free
+  factors — the next step past `GridBud`), ⟨9,11,11⟩=710 (mod-3 flip walk + core
+  Hensel lift), ⟨4,9,22⟩=548, ⟨6,9,22⟩=737, ⟨4,12,30⟩=954, ⟨4,9,30⟩=742,
+  ⟨8,9,22⟩=994 — and 20 exact ties with what the combined-bud passes had reached
+  here on 2026-10-01/02 (⟨6,14,20⟩=1073, ⟨6,14,24⟩=1232, ⟨8,13,28⟩=1796, …). Their
+  CONTENTS.md cites this catalog ("Lacelle") among the previous-best sources.
+  Perminov started mirroring it on 2026-10-09; the importer's unmapped-subtree
+  warning fired on the first run and the subtree is now mapped.
+- **KGP LITA, 2026-10-07** (Serafin, "Improve even LITA construction"): every even
+  cube one lower, 14³=1593 … 32³=14196, which had put 200 formats (the cubes and
+  their `Proj` families) below FMM's index again. Imported as new stubs on the
+  rank-qualified atom `TA_lita_npz(n=N,r=R)`; both archive generations are kept.
+- Perminov ≤ 16: one new ZT record, ⟨8,10,12⟩=628.
