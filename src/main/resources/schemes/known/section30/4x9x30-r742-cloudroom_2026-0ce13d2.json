@@ -8920,14 +8920,14 @@
   "fields_not": [],
   "commutative": false,
   "source": "Cloudroom Math 2026",
-  "year": 2026,
-  "source_url": "https://github.com/matyasstoch/cloudroom-math",
-  "discovery": "TBD",
-  "discovery_note": "Cloudroom Math Campaign, 'Cloudroom Math: new matrix multiplication algorithms found by AI agents' (release 2026-10-08, github.com/matyasstoch/cloudroom-math, Apache-2.0) — explicit schemes found by an autonomous multi-agent campaign of Claude Opus 5.5 agents orchestrated in Cloudroom. The dataset's CONTENTS.md states a previous best (FMM catalogue / Perminov / this catalog) for each format; the catalog's own verdict at import time (BEATS / ties / ABOVE over Q) is in the import log and `discovery` is left TBD until the per-format claim has been checked against this catalog's state at the release date — several formats (⟨6,14,20⟩=1073, ⟨6,14,24⟩=1232, ⟨8,13,28⟩=1796, ⟨6,10,32⟩=1231) were reached independently here on 2026-10-01/02 by the combined-bud serendipitous pass. Verified here by ImportContributedSchemes (exact BigInteger symbolic proof, random spot-check, mod-2 / mod-3 reductions, canonical-disk round-trip).",
-  "notes": "Re-encoded from the upstream Perminov-style JSON (n, m, u, v, w) into the catalog's canonical format — no coefficient was changed. Apache-2.0: credit the Cloudroom Math Campaign, github.com/matyasstoch/cloudroom-math. Mirrored in part by Perminov under schemes/known/cloudroom-math/.",
   "verified": true,
   "additions": 20733,
   "buds": "181×U⟨1,1,2⟩ + 14×U⟨1,1,3⟩ + 58×U⟨1,1,4⟩ + 4×U⟨1,1,5⟩ + 86×⟨1,1,1⟩",
   "has_buds": true,
-  "projection_margin": 100
+  "projection_margin": 100,
+  "year": 2026,
+  "source_url": "https://github.com/matyasstoch/cloudroom-math",
+  "discovery": true,
+  "discovery_note": "Cloudroom Math Campaign, 'Cloudroom Math: new matrix multiplication algorithms found by AI agents' (release 2026-10-08, github.com/matyasstoch/cloudroom-math, Apache-2.0; GitHub issue solven-eu/matmulcatalog#12) — explicit schemes found by an autonomous multi-agent campaign of Claude Opus 5.5 agents orchestrated in Cloudroom. NEW UPPER BOUND at this format on its release date: below every published rank — FMM-Lille's live page, this catalog's rank and external_best_rank at the 2026-10-05 data commit, Perminov's repository (≤ 16) and his 2026 serendipitous bounds — per the dataset's verification/baselines.md and the issue's table; audited here 2026-10-12. For ⟨4,6,15⟩ the mechanism is a 'hidden grid' (combined bud after an exact re-basing of the free factors inside a bud class), for ⟨9,11,11⟩ a mod-3 flip-graph walk with a core-restricted exact lift, for the 25 formats in the 17–32 band serendipitous products with best rational block ranks (six with a hidden grid). Twenty of the 27 ranks were reached independently in this catalog by the combined-bud serendipitous pass of 2026-10-01/02 (branch of PR #11, merged 2026-10-12): two independent searches, the release is the earlier publication. Verified here by ImportContributedSchemes (exact BigInteger symbolic proof, random spot-check, mod-2 / mod-3 reductions, canonical-disk round-trip).",
+  "notes": "Re-encoded from the upstream Perminov-style JSON (n, m, u, v, w) into the catalog's canonical format — no coefficient was changed. Apache-2.0: credit the Cloudroom Math Campaign, github.com/matyasstoch/cloudroom-math. Mirrored in part by Perminov under schemes/known/cloudroom-math/. Record: references/contributions/issue12-cloudroom-math-2026.md."
 }

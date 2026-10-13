@@ -234,7 +234,7 @@ add the **Local PDF** line linking the file path.
 | [88](#88-adriano-2026-hk-task9) | adriano-2026-hk-task9 | 2026 | algorithm (**ℤ⟨2,p,n⟩ at the HK formula, g ≥ 6**) | Marcos Adriano, *Task #9: the six g ≥ 6 ⟨2,p,n⟩ shapes at the exact Hopcroft-Kerr formula, with integer coefficients*, GitHub issue [solven-eu/matmulcatalog#7](https://github.com/solven-eu/matmulcatalog/issues/7) (2026-09-24), attachment `hk-task9-schemes.zip`. Explicit **integer** schemes `⟨2,12,18⟩=333`, `⟨2,14,21⟩=452`, `⟨2,16,24⟩=588`, `⟨2,18,27⟩=743`, `⟨2,20,30⟩=915`, `⟨2,24,30⟩=1095` — the shapes our own HK emitter provably cannot reach in-framework (+1..+3) and FMM-Lille lists index-only. Route: HK methods as tori (eigenline pairs), tripartite method graph with integer Lemma-2 edges, non-cyclic unimodular Lemma-1 windows, and for ⟨2,24,30⟩ a `(3,3)` bridge through a virtual row over the **12-product** reusable set. Exact-verified here and loaded as `2x{p}x{n}-r{formula}-adriano_2026-*.json` (`source: "Adriano 2026"`, `discovery: false` — rank attributed to HK71, first explicit scheme credited to the contributor). Record: `references/contributions/issue7-adriano-2026-hk-task9.md`. |
 | [89](#89-adriano-2026-lille-recipes) | adriano-2026-lille-recipes | 2026 | algorithm (**22 FMM-Lille recipe ranks, explicit**) | Marcos Adriano, *22 explicit schemes at FMM-Lille table ranks (the table's own recipes, executed)*, GitHub issue [solven-eu/matmulcatalog#8](https://github.com/solven-eu/matmulcatalog/issues/8) (2026-09-24), attachment `lille-recipes-22-schemes.zip`. Explicit witnesses (9 ℤ, 13 with ±1/2 or ±1/3) for 22 table ranks FMM lists without a public scheme — recombinations over unequal blocks with an outer ⟨2,4,4⟩:26 HK (14 shapes) or Strassen (8). All 22 verified exactly here; **not loaded** (dim > 16 compositions of pieces we hold — 321 MB): instead RE-DERIVED as lineage stubs, 13 of them strictly below the recipe (⟨10,19,31⟩ 3492 vs 3532 …) once ⟨2,4,4⟩=26's Perminov-ZT / AlphaTensor-Z reps were registered as `rootPool()` bases. Record: `references/contributions/issue8-adriano-2026-lille-recipes.md`. |
 | [90](#90-witteveen-2026) | witteveen-2026 | 2026 | algorithm (**26 ZT schemes, 3 any-ring records**) | Merlijn S. Witteveen, *New fast matrix multiplication schemes* (dataset v1.2, 2026-09-30), DOI [10.5281/zenodo.22943995](https://doi.org/10.5281/zenodo.22943995), [github.com/MerlijnW70/fmm-schemes](https://github.com/MerlijnW70/fmm-schemes) — **CC BY 4.0**. 26 ternary-integer schemes (≤ 16): new best in any ring for `⟨7,11,15⟩=772`, `⟨11,13,15⟩=1364`, `⟨11,14,14⟩=1373`; first ZT scheme at the best rank for `⟨7,7,9⟩=315`; 22 further ZT records. All loaded (exact-verified, re-encoded canonically) as `*-witteveen_2026-*.json`. Cited by FMM-Lille for ⟨11,13,15⟩ / ⟨11,14,14⟩. |
-| [91](#91-cloudroom-math-2026) | cloudroom-math-2026 | 2026 | algorithm (**27 new upper bounds, AI-agent campaign**) | Cloudroom Math Campaign, *Cloudroom Math: new matrix multiplication algorithms found by AI agents* (release 2026-10-08), [github.com/matyasstoch/cloudroom-math](https://github.com/matyasstoch/cloudroom-math) — **Apache-2.0**. Explicit schemes found by Claude Opus 5.5 agents: `⟨4,6,15⟩=261` ("hidden grids" in serendipitous products), `⟨9,11,11⟩=710` (mod-3 flip-graph walk + core-restricted Hensel lift), 25 composition-type improvements in the 17–32 band. All verified exactly and loaded as `*-cloudroom_2026-*.json`. Cites this catalog ("Lacelle") as a previous-best source. |
+| [91](#91-cloudroom-math-2026) | cloudroom-math-2026 | 2026 | algorithm (**27 new upper bounds, AI-agent campaign**) | Cloudroom Math Campaign, *Cloudroom Math: new matrix multiplication algorithms found by AI agents* (release 2026-10-08), [github.com/matyasstoch/cloudroom-math](https://github.com/matyasstoch/cloudroom-math) — **Apache-2.0**. Contributed as GitHub issue [#12](https://github.com/solven-eu/matmulcatalog/issues/12). Explicit schemes found by Claude Opus 5.5 agents: `⟨4,6,15⟩=261` ("hidden grids" in serendipitous products), `⟨9,11,11⟩=710` (mod-3 flip-graph walk + core-restricted Hensel lift), 25 composition-type improvements in the 17–32 band. All verified exactly and loaded as `*-cloudroom_2026-*.json`. Cites this catalog ("Lacelle") as a previous-best source. |
 
 ---
 
@@ -1229,7 +1229,7 @@ Relevance to this repo:
 @misc{cloudroom2026,
   author       = {{Cloudroom Math Campaign}},
   title        = {Cloudroom Math: new matrix multiplication algorithms found by {AI} agents},
-  howpublished = {\url{https://github.com/matyasstoch/cloudroom-math}},
+  howpublished = {\url{https://github.com/matyasstoch/cloudroom-math}; GitHub issue solven-eu/matmulcatalog\#12},
   year         = {2026},
   note         = {Release 2026-10-08. Licence: Apache-2.0. Explicit schemes found by an autonomous multi-agent campaign of Claude Opus 5.5 agents orchestrated in Cloudroom}
 }
@@ -1259,15 +1259,25 @@ families matter here:
 
 Relevance to this repo: **all 27 loaded** (2026-10-11) as
 `schemes/known/section{maxDim}/…-cloudroom_2026-*.json` through the
-contributed-scheme gate (`ImportContributedSchemes --meta=references/contributions/cloudroom-math-2026.meta.json`),
-`discovery: "TBD"` pending the per-format audit against the release date.
+contributed-scheme gate (`ImportContributedSchemes --meta=references/contributions/cloudroom-math-2026.meta.json`);
+**`discovery: true`** for all 27 after the audit of 2026-10-12 — each rank was
+below every published rank at the release date (the issue's table and the
+dataset's `verification/baselines.md`), 20 of them reached independently here
+by the combined-bud passes of 2026-10-01/02 (PR #11, then unmerged). Record
+with the full table, field verdicts and repro commands:
+[`references/contributions/issue12-cloudroom-math-2026.md`](references/contributions/issue12-cloudroom-math-2026.md)
+(GitHub issue [#12](https://github.com/solven-eu/matmulcatalog/issues/12),
+opened 2026-10-09 by the dataset's author).
 Perminov mirrors two of them (`schemes/known/cloudroom-math/`, mapped in
 `PerminovKnownAttribution`). A scheduled pull from the origin repo, like
-`ImportWitteveenSchemes`, is a follow-up.
+`ImportWitteveenSchemes`, is a follow-up; so is the hidden-grid re-basing in
+the serendipitous engine.
 
 **Cited in**: `REFERENCES.md` (this entry, index row [91]),
 `references/contributions/cloudroom-math-2026.meta.json`,
-`PerminovKnownAttribution`, `docs/catalog.js` (source → [91]).
+`references/contributions/issue12-cloudroom-math-2026.md`,
+`PerminovKnownAttribution`, `docs/catalog.js` (source → [91]), the
+`TestSweepSpotsSota.retains_issue12_cloudroom_records` guard.
 
 ---
 

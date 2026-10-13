@@ -459,6 +459,23 @@ public class TestSweepSpotsSota {
 		}
 	}
 
+	/**
+	 * Disk-presence guard for issue #12 (Cloudroom Math 2026, REFERENCES [91];
+	 * {@code known/…-cloudroom_2026-*}): the two sub-16 records and three of the
+	 * 17–32 band ones that no derivation in the catalog reaches (the others tie our
+	 * combined-bud stubs). Explicit imports; losing a file silently regresses the rank.
+	 * Assert ≤.
+	 */
+	@Test
+	public void retains_issue12_cloudroom_records() {
+		int[][] rows = { { 4, 6, 15, 261 }, { 9, 11, 11, 710 }, { 6, 9, 22, 737 }, { 4, 12, 30, 954 }, { 8, 9, 22, 994 } };
+		for (int[] r : rows) {
+			assertThat(lookup.findRank(r[0], r[1], r[2]))
+					.as("⟨%d,%d,%d⟩ must retain the Cloudroom-2026 scheme at %d", r[0], r[1], r[2], r[3])
+					.isLessThanOrEqualTo(r[3]);
+		}
+	}
+
 	@Test
 	public void retains_issue7_hk_task9_formula_schemes() {
 		int[][] shapes = { { 2, 12, 18 }, { 2, 14, 21 }, { 2, 16, 24 }, { 2, 18, 27 }, { 2, 20, 30 }, { 2, 24, 30 } };

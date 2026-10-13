@@ -2027,3 +2027,36 @@ Ten days of upstream movement, all absorbed in one pass (`ImportWitteveenSchemes
   their `Proj` families) below FMM's index again. Imported as new stubs on the
   rank-qualified atom `TA_lita_npz(n=N,r=R)`; both archive generations are kept.
 - Perminov ≤ 16: one new ZT record, ⟨8,10,12⟩=628.
+
+---
+
+## 2026-10-12 — Issue #12 (Cloudroom Math Campaign): 27 explicit schemes below the catalog — all loaded (PR #11), `discovery: true` after audit
+
+**Source:** GitHub issue #12 (2026-10-09, @matyasstoch) for the dataset
+`matyasstoch/cloudroom-math` (release 2026-10-08, Apache-2.0; REFERENCES [91]) —
+27 schemes found by Claude Opus 5.5 agents orchestrated in Cloudroom, each with a
+manuscript and a baselines table over every source. Record:
+`references/contributions/issue12-cloudroom-math-2026.md`.
+
+**Status.** The 27 files had already been pulled from the origin repo on
+2026-10-11 during the resync of PR #11 (the contributed-scheme gate: all 27 exact,
+7 below our catalog at import — ⟨4,6,15⟩=261, ⟨9,11,11⟩=710, ⟨4,9,22⟩=548,
+⟨6,9,22⟩=737, ⟨4,12,30⟩=954, ⟨4,9,30⟩=742, ⟨8,9,22⟩=994 — and 20 exact ties with
+our combined-bud stubs of 2026-10-01/02). This entry closes the audit: against
+the issue's table (this catalog at its 2026-10-05 data commit, FMM's live page)
+and the dataset's `verification/baselines.md` (Perminov too), every one of the 27
+was below every published rank on its release date → `discovery: true` for all
+27, stamped by the new `RestampContributedProvenance` (content-selected by
+`source`, remove-then-add through the canonical writer; guard
+`TestRestampContributedProvenance`). The 20 ties are two independent searches —
+theirs is the earlier publication, ours stays as independent lineage.
+
+**Mechanism worth copying:** "hidden grids" — a combined bud that appears only
+after an exact change of basis inside a bud class (their ⟨4,6,15⟩: two hidden
+2×3 grids in Perminov's ⟨2,3,15⟩:75, blocks at `R(⟨2,4,3⟩)=20` instead of 24).
+Our `GridBud` needs the grid visible in the given basis. Engine follow-up.
+
+**Not done:** a scheduled pull from `matyasstoch/cloudroom-math` (like
+`ImportWitteveenSchemes`); Witteveen's release-1.3 files could get the same
+`RestampContributedProvenance` audit (their README's "previous best" column
+supports `true` for all ten).
