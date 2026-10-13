@@ -169,3 +169,60 @@ combined buds added on 2026-09-30 do not reach it either.
 The pages and the digest index disagree on eight rows, which is itself worth
 reporting upstream: the digest's `rank` for those formats is below the rank in the
 page title and in the artifact.
+
+## Re-audit 2026-10-13 — the 13 upstream-unverified rows, read from the pages
+
+The 2026-10-13 resync (PR #14) left exactly the 13 audited rows above FMM's index.
+This pass asked, for each one, what FMM's per-format page *constructs today* (recipe
+text and, where it exists, the tensor artifact), and whether our operators can reach
+it. Pages were re-fetched on 2026-10-13; the 2026-09-30 artifact readings are
+unchanged.
+
+| shape | FMM index | ours (before → after) | what the page constructs | reading |
+| --- | ---: | ---: | --- | --- |
+| ⟨16,20,28⟩ | 4936 | 4967 → **4960** | serendipitous `(⟨4,5,7⟩:104 − 17) ⊗ ⟨4,4,4⟩:48 + 8·⟨4,4,8⟩:96 = 4944`; artifact placeholder | the index is the recipe re-priced with today's ⟨4,4,8⟩ = 95 (87·48 + 8·95 = 4936) — no hidden construction; the recipe itself does not balance under bud semantics (see below) |
+| ⟨22,30,30⟩ | 10534 | 10555 | artifact 10705 = 3·⟨10,15,15⟩:1435 + 4·⟨12,15,15⟩:1600 (7-block Strassen recombination) | our 10555 is the *same* recombination with ⟨10,15,15⟩ = 1385 (FMM's own index value); the index sits 21 below anything the page or the artifact describes |
+| ⟨16,20,29⟩ | 5256 | 5272 | `⟨16,20,1⟩:320 + ⟨16,20,28⟩:4944 = 5264` | follows ⟨16,20,28⟩ (index = 320 + 4936); our 5272 is `R[4x4x4; 4,4,4,4 \| 5,5,5,5 \| 8,7,7,7]`, and 320 + 4960 = 5280 does not beat it |
+| ⟨21,28,32⟩ | 10134 | 10143 | artifact 10477 (15-block recombination of ⟨9–12, 9–10, 9–12⟩ leaves) | we beat the published construction by 334; the index is 343 below the page — unexplained |
+| ⟨20,24,25⟩ | 6466 | 6474 | serendipitous `(⟨5,12,5⟩:204 − 42) ⊗ ⟨4,2,5⟩:32 + ⟨16,2,5⟩:126 + 2·⟨4,6,5⟩:90 + 16·⟨4,4,5⟩:61`; artifact placeholder | balanced bud arithmetic (σ = 2 + 2·6 + 16·3 = 62) — needs a ⟨5,12,5⟩:204 representative with one V-quad, two W-triples and sixteen W-pairs; every published representative (FMM's own artifact, Perminov's two) has eighteen pairs and nothing larger → 6474 |
+| ⟨8,27,30⟩ | 3744 | 3750 | serendipitous `(⟨4,9,10⟩:250 − 12) ⊗ ⟨2,3,3⟩:15 + 6·⟨4,3,3⟩:29`; artifact 3736, **invalid** | balanced (six V-pairs, σ = 1 each) — needs a ⟨4,9,10⟩:250 representative with six B-side pairs; FMM's own ⟨4,9,10⟩ artifact and Perminov's file carry six *U*-pairs (⟨2,3,6⟩ = 30, σ = 0) → 3750 |
+| ⟨7,9,25⟩ | 1020 | 1022 | recombination summing to 1022 | page = ours |
+| ⟨7,7,17⟩ | 572 | 573 | `2·⟨3,4,8⟩:73 + ⟨3,4,9⟩:83 + ⟨3,3,9⟩:63 + ⟨3,4,8⟩:73 + 2·⟨4,4,9⟩:104 = 573` | page = ours; every ingredient is at FMM's index value, so the 572 is not ingredient drift |
+| ⟨7,8,17⟩ | 635 | 636 | recombination summing to 637 | we beat the page by 1 |
+| ⟨7,9,19⟩ | 779 | 780 | recombination summing to 780 | page = ours |
+| ⟨9,19,25⟩ | 2541 | 2542 | `⟨9,19,7⟩:780 + ⟨9,19,18⟩:1762 = 2542` | page = ours |
+| ⟨11,11,17⟩ | 1313 | 1314 | recombination summing to 1314 | page = ours |
+| ⟨11,13,13⟩ | 1204 | 1205 | recombination summing to 1205 | page = ours |
+
+**Two kinds of index/page disagreement.** For ⟨16,20,28⟩ and ⟨16,20,29⟩ the digest
+is simply the page's recipe re-priced with today's ingredient ranks (the page text is
+frozen at generation time; `⟨4,4,8⟩` went 96 → 95). Every other disagreement is
+genuine: the digest rank is below anything the page constructs and below the
+artifact, with no ingredient drift to explain it (⟨7,7,17⟩'s ingredients are all at
+index value). Those remain upstream claims.
+
+**What closed, and how.** The serendipitous recipes hinge on the *representative*
+of the base, not on its rank. A metaflip walk over the base at fixed rank
+(`ProbeSerendipWalkGen`: objective = the structural family's product cost against
+the recipe's inner, tie-broken by a per-axis σ-potential) found a ⟨4,5,7⟩:104
+representative with eight U-pairs, two U-triples, four V-pairs, six W-pairs and two
+⟨2,1,2⟩ grids — `bud-bases/section7/4x5x7-r104-flipwalk_serendip-4c05684.json`,
+attributed as a reaction base only. Against ⟨4,4,4⟩ the family prices it at
+`80·48 + 6·95 + 2·95 + 2·180 = 4960` (built, exact), and the same base gives four
+further records: ⟨8,15,21⟩ = 1548 (FMM 1558), ⟨8,25,28⟩ = 3302 (3319),
+⟨12,21,30⟩ = 4146 (4160), ⟨16,21,30⟩ = 5572 (5592). The same walk on ⟨5,5,12⟩:204
+(eight seeds, 200k steps each) never left the eighteen-pair plateau, and on
+⟨4,9,10⟩:250 never produced a B-side pair — those two rows stay open as
+representative-search problems, not as engine gaps.
+
+**⟨16,20,28⟩'s recipe does not balance.** `(104 − 17) ⊗ 48 + 8·⟨4,4,8⟩` realises
+seventeen base products with sixteen product slots (8 doubled blocks). Under bud
+semantics a class of k same-U products is a ⟨1,1,k⟩ sub-tensor of rank k, so eight
+⟨4,4,8⟩ blocks cover sixteen products; a seventeenth can only be absorbed if some
+class's V- or W-forms are linearly dependent — which would rewrite the base at rank
+103, contradicting ⟨4,5,7⟩ = 104 being FMM's own best. Either the construction uses
+a device beyond buds (a product-level fusion of the kind decoded in the ⟨8,27,30⟩
+artifact on 2026-07-09) or the printed accounting is the generator's, not a built
+scheme's — the artifact is a placeholder, so this cannot be settled from public data.
+With seven pairs and one triple priced honestly the recipe would give
+`87·48 + 7·95 + ⟨4,4,12⟩:141 = 4982`, above our 4960.

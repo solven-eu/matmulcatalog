@@ -2080,3 +2080,67 @@ Two silent faults surfaced and were fixed on the way:
 - The scan counted the 13 audited (index-only / invalid / placeholder) FMM rows
   as strict gaps, which would have opened an `upstream-gap` issue every week;
   it now shares `FmmArtifactAudit` with the cross-check.
+
+---
+
+## 2026-10-13 — The 13 worst cases read from FMM's pages: 2 are ingredient drift, 8 are page = ours, 3 are representative-only recipes — one of them walked: ⟨16,20,28⟩ 4967 → 4960 (+4 more records from the same base)
+
+**Question:** of the 13 rows still above FMM's index after the resync, which are
+real, which are closable, which are upstream claims?
+
+**Method:** (1) re-run the engines on the 13 shapes with today's ingredients —
+`SchemeSweep --strategies=concat,kron,recomb` and `MaterialiseSerendipitousWins`:
+0 wins; (2) re-fetch every FMM page and read what it constructs *today*; (3) for
+the three serendipitous recipes, price every representative we hold
+(`ProbeSerendipStructure`), FMM's own base artifacts (`4x5x7`, `5x5x12`, `4x9x10`
+`_tensor.mpl.bz2` → `MapleTensorParser`) and then flip-walk the base
+(`ProbeSerendipWalkGen`, structural-family objective + σ-potential tie-break).
+
+**Findings** (full table in `references/fmm-artifact-audit.md`, re-audit 2026-10-13):
+
+| row | verdict |
+|---|---|
+| ⟨16,20,28⟩ 4936 / ⟨16,20,29⟩ 5256 | **ingredient drift**: the index is the page's recipe re-priced with ⟨4,4,8⟩ = 95 (page text says 96). The recipe `(⟨4,5,7⟩:104 − 17) ⊗ 48 + 8·⟨4,4,8⟩` puts 17 base products into 16 slots — does not balance under bud semantics (would mean ⟨4,5,7⟩ ≤ 103); artifact is a placeholder. **Walked**: ⟨16,20,28⟩ = 4960. |
+| ⟨20,24,25⟩ 6466 | balanced recipe (one V-quad + two W-triples + sixteen W-pairs on ⟨5,12,5⟩:204); every public representative has eighteen pairs → 6474. Walk (three seeds × 8 rng, 200k steps) never left the plateau. **Representative-only.** |
+| ⟨8,27,30⟩ 3744 | balanced recipe (six B-side pairs on ⟨4,9,10⟩:250, σ = 1 each); FMM's own base artifact and Perminov's file have six *A-side* pairs (σ = 0) → 3750; the ⟨8,27,30⟩ artifact (3736) is invalid. Walk found no B-side pair. **Representative-only.** |
+| ⟨22,30,30⟩ 10534, ⟨21,28,32⟩ 10134 | the pages build 10705 / 10477; ours 10555 / 10143 beat both (⟨22,30,30⟩ is the *same* 7-block recombination with FMM's own ⟨10,15,15⟩ = 1385). Index below anything published — **upstream claim**. |
+| ⟨7,7,17⟩ ⟨7,9,19⟩ ⟨7,9,25⟩ ⟨9,19,25⟩ ⟨11,11,17⟩ ⟨11,13,13⟩ (+1/+2), ⟨7,8,17⟩ (+1) | page = ours (⟨7,8,17⟩: page 637 > ours 636); no ingredient drift (⟨7,7,17⟩'s seven leaves are all at index value). **Upstream claims.** |
+
+**The closure that worked — representative search.** The ⟨4,5,7⟩:104 walk
+(seed: Z-best catalog rep, 8 rng × 200k steps, ~15 min) reached a representative
+with 8 U-pairs, 2 U-triples, 4 V-pairs, 6 W-pairs and **two ⟨2,1,2⟩ grids** —
+every one of our eleven held reps tops out at one grid (4967). Persisted as
+`bud-bases/section7/4x5x7-r104-flipwalk_serendip-4c05684.json` (reaction base,
+`discovery:false`). Priced against every inner ≤ 32 it gives five records, all
+built exact and persisted as pinned stubs:
+
+| shape | was | now | FMM index | inner |
+|---|---:|---:|---:|---|
+| ⟨16,20,28⟩ | 4967 | **4960** | 4936 | ⟨4,4,4⟩ (80·48 + 6·95 + 2·95 + 2·180) |
+| ⟨8,15,21⟩ | 1552 | **1548** | 1558 | ⟨2,3,3⟩ |
+| ⟨8,25,28⟩ | 3306 | **3302** | 3319 | ⟨2,5,4⟩ |
+| ⟨12,21,30⟩ | 4153 | **4146** | 4160 | ⟨3,6,3⟩ |
+| ⟨16,21,30⟩ | 5576 | **5572** | 5592 | ⟨4,6,3⟩ |
+
+Tier: bound (anytime walk; the family pricing is exact for the decomposition
+chosen). Guard: `TestSweepSpotsSota.retains_flipwalked_4x5x7_reaction_base_records`
+(records + the family must keep pricing the base ≤ 4960 against ⟨4,4,4⟩).
+
+**Why the engines could not do this before:** every serendipitous engine takes the
+base *as held* and optimises the partition; the rank-204 / 250 / 104 schemes we
+hold are the ones Perminov/FMM published, and FMM's recipes were computed on
+representatives that were never published (placeholder artifacts). The walk moves
+through the flip graph at fixed rank, which is the only operator that changes
+class structure.
+
+**Open / next:**
+- A catalog-wide walk campaign: every bud base × every inner that lands on a
+  catalog shape (24 cores; ~15 min per ⟨4,5,7⟩-sized base, ~50 min for
+  ⟨5,5,12⟩). The one base walked here moved five shapes — the expected yield is
+  large, and the ⟨5,5,12⟩ / ⟨4,9,10⟩ plateaus want longer walks or seeds from
+  other reps (two more ⟨5,5,12⟩ seeds + four ⟨4,5,7⟩ seeds were still running
+  when this was written; results, if any, are materialised by the same two
+  commands).
+- Report upstream (user's call): the index/page disagreements that are not
+  ingredient drift (⟨22,30,30⟩ −21, ⟨21,28,32⟩ −343, the seven ±1/±2 rows), the
+  invalid ⟨8,27,30⟩ artifact, and the ⟨16,20,28⟩ recipe arithmetic (17 → 16).
