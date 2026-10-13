@@ -72,7 +72,14 @@ public final class ScanUpstreamSources {
 
 	private record Missing(CanonicalShape shape, int theirs) {}
 
-	private record SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter) {}
+	/** {@code unverified}: FMM rows whose index rank is not backed by FMM's own artifact
+	 *  (manual audit, {@link eu.solven.matmul.docs.verify.FmmArtifactAudit}) — reported,
+	 *  never counted as a strict gap. Empty for the other sources. */
+	private record SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter, List<Gap> unverified) {
+		SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter) {
+			this(gaps, missing, weBetter, List.of());
+		}
+	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		boolean refresh = false;
@@ -196,22 +203,67 @@ public final class ScanUpstreamSources {
 		List<Gap> gaps = new ArrayList<>();
 		List<Missing> missing = new ArrayList<>();
 		List<Gap> weBetter = new ArrayList<>();
-		for (Map.Entry<String, JsonNode> e : sed.properties()) {
-			CanonicalShape sh = parseShapeKey(e.getKey());
-			if (sh == null) {
-				continue;
-			}
-			int sr = e.getValue().get("rank").asInt();
+		Map<CanonicalShape, Integer> ranks = sedoglavicRanks(sed);
+		if (ranks.isEmpty()) {
+			// A digest the parser does not understand must not read as "no gaps".
+			log.warn("[layout] {} yields no (format, rank) entry — the digest layout changed; this scan is blind "
+					+ "to Sedoglavic until the parser is updated", SEDOGLAVIC_LOCAL);
+			System.out.println("::warning title=Sedoglavic digest layout changed::ScanUpstreamSources parsed 0 entries");
+		}
+		// Sedoglavic's digest IS the FMM-Lille index, so the artifact audit applies here too.
+		eu.solven.matmul.docs.verify.FmmArtifactAudit audit = loadAudit();
+		List<Gap> unverified = new ArrayList<>();
+		for (Map.Entry<CanonicalShape, Integer> e : ranks.entrySet()) {
+			CanonicalShape sh = e.getKey();
+			int sr = e.getValue();
 			Integer our = local.get(sh);
 			if (our == null) {
 				missing.add(new Missing(sh, sr));
 			} else if (sr < our) {
-				gaps.add(new Gap(our - sr, sh, our, sr));
+				Gap gap = new Gap(our - sr, sh, our, sr);
+				if (audit.coveringClass(sh.n(), sh.m(), sh.p(), sr).isPresent()) unverified.add(gap);
+				else gaps.add(gap);
 			} else if (our < sr) {
 				weBetter.add(new Gap(sr - our, sh, our, sr));
 			}
 		}
-		return new SourceScan(gaps, missing, weBetter);
+		return new SourceScan(gaps, missing, weBetter, unverified);
+	}
+
+	private static eu.solven.matmul.docs.verify.FmmArtifactAudit loadAudit() {
+		try {
+			return eu.solven.matmul.docs.verify.FmmArtifactAudit.load();
+		} catch (IOException ex) {
+			throw new UncheckedIOException("reading the FMM artifact audit", ex);
+		}
+	}
+
+	/**
+	 * Sedoglavic's {@code fmm_digest} in either layout: the original map
+	 * {@code {"NxMxP": {"rank": R, …}}} and, since 2026-10-09 (file {@code createdAt}),
+	 * {@code {"entries": [{"format": [n,m,p], "rank": R, …}]}}. The switch went unnoticed
+	 * for a refresh: the map-only parser found no shape key and reported 0 gaps / 0
+	 * better / 0 missing — the same silent shape as the June filename-regex regression.
+	 */
+	static Map<CanonicalShape, Integer> sedoglavicRanks(JsonNode sed) {
+		Map<CanonicalShape, Integer> out = new LinkedHashMap<>();
+		JsonNode entries = sed.get("entries");
+		if (entries != null && entries.isArray()) {
+			for (JsonNode e : entries) {
+				JsonNode fmt = e.get("format");
+				JsonNode rank = e.get("rank");
+				if (fmt == null || !fmt.isArray() || fmt.size() != 3 || rank == null || !rank.isInt()) continue;
+				out.put(Shape.of(fmt.get(0).asInt(), fmt.get(1).asInt(), fmt.get(2).asInt()).canonical(), rank.asInt());
+			}
+			return out;
+		}
+		for (Map.Entry<String, JsonNode> e : sed.properties()) {
+			CanonicalShape sh = parseShapeKey(e.getKey());
+			if (sh == null) continue;
+			JsonNode rank = e.getValue().get("rank");
+			if (rank != null && rank.isInt()) out.put(sh, rank.asInt());
+		}
+		return out;
 	}
 
 	private static SourceScan scanFmmLille(Map<CanonicalShape, Integer> local) {
@@ -221,6 +273,12 @@ public final class ScanUpstreamSources {
 			return new SourceScan(gaps, missing, List.of());
 		}
 		JsonNode root = readJson(FMM_LILLE_LOCAL);
+		// The artifact audit (same reading as FmmCrossCheck): an index rank FMM's own
+		// published artifact does not back is an upstream claim, not a gap to alert on —
+		// before this (2026-10-13) the weekly scan would have opened an `upstream-gap`
+		// issue every Monday for the same thirteen audited rows.
+		eu.solven.matmul.docs.verify.FmmArtifactAudit audit = loadAudit();
+		List<Gap> unverified = new ArrayList<>();
 		for (JsonNode e : root.path("entries")) {
 			JsonNode fmt = e.get("format");
 			CanonicalShape sh = Shape.of(fmt.get(0).asInt(), fmt.get(1).asInt(), fmt.get(2).asInt()).canonical();
@@ -229,10 +287,15 @@ public final class ScanUpstreamSources {
 			if (our == null) {
 				missing.add(new Missing(sh, r));
 			} else if (r < our) {
-				gaps.add(new Gap(our - r, sh, our, r));
+				Gap gap = new Gap(our - r, sh, our, r);
+				if (audit.coveringClass(sh.n(), sh.m(), sh.p(), r).isPresent()) {
+					unverified.add(gap);
+				} else {
+					gaps.add(gap);
+				}
 			}
 		}
-		return new SourceScan(gaps, missing, List.of());
+		return new SourceScan(gaps, missing, List.of(), unverified);
 	}
 
 	private static SourceScan scanPerminov(Map<CanonicalShape, Integer> local) {
@@ -295,12 +358,16 @@ public final class ScanUpstreamSources {
 		out.append("- Strict gaps (Sedoglavic better): **").append(sed.gaps().size()).append("**\n");
 		out.append("- Missing from us (Sedoglavic only): **").append(sed.missing().size()).append("**\n");
 		out.append("- We-better: **").append(sed.weBetter().size()).append("**\n");
+		out.append("- Upstream-unverified (same audit as FMM-Lille): **").append(sed.unverified().size()).append("**\n");
 		appendGapTable(out, "Top 20 strict gaps", "Sedoglavic", sed.gaps());
 
 		out.append("\n## FMM Université de Lille (local snapshot)\n\n");
 		out.append("- Strict gaps: **").append(fmm.gaps().size()).append("**\n");
 		out.append("- Missing from us: **").append(fmm.missing().size()).append("**\n");
+		out.append("- Upstream-unverified (index rank not backed by FMM's artifact, "
+				+ "`references/fmm-artifact-audit.json`): **").append(fmm.unverified().size()).append("**\n");
 		appendGapTable(out, "Top 20 FMM strict gaps", "FMM", fmm.gaps());
+		appendGapTable(out, "Upstream-unverified FMM rows (audited, not gaps)", "FMM", fmm.unverified());
 
 		out.append("\n## Perminov status.json\n\n");
 		out.append("- Strict gaps: **").append(perm.gaps().size()).append("**\n");
