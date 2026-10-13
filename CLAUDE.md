@@ -64,6 +64,17 @@ many FMM-known schemes plus his own derivations, so it usually
 suffices to pull from Perminov alone — but cross-check FMM for
 recent additions and for schemes Perminov doesn't carry.
 
+**Since 2026-10 there are more than two sources.** Third-party scheme
+repositories (Witteveen 2026, Cloudroom Math 2026 — the
+`UpstreamSchemeRepos` registry), the KGP LITA archives
+(`khoruzhii/lita`) and Sedoglavic's digest are each pulled by their own
+channel on the 3-hourly sync; a new source = a registry entry + a
+REFERENCES entry (+ a `PerminovKnownAttribution` case when Perminov
+mirrors it — his importer warns on an unmapped `known/<sub>`). The
+full sequence, the sources table and the "it silently broke before"
+guards are in `research/RESYNC_PLAYBOOK.md`; run it rather than
+re-deriving the steps.
+
 ## Distinguish discoveries from re-discoveries
 
 A scheme imported under a given source (e.g. `alphatensor-Z_*`) is

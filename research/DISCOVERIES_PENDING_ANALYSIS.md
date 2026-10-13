@@ -2060,3 +2060,23 @@ Our `GridBud` needs the grid visible in the given basis. Engine follow-up.
 `ImportWitteveenSchemes`); Witteveen's release-1.3 files could get the same
 `RestampContributedProvenance` audit (their README's "previous best" column
 supports `true` for all ten).
+
+---
+
+## 2026-10-13 — Resync over every source: nothing new upstream; the pass is now one sequence
+
+Ran the full pass (`research/RESYNC_PLAYBOOK.md`) from `master` after PR #11/#13:
+digests refreshed, `ImportPerminovSchemes` 0 imported, `ImportUpstreamSchemeRepos`
+0 (Witteveen 31 files, Cloudroom 27 — all held), `ImportKhoruzhiiLita --download`
+0 (20 archives upstream, all vendored), `FmmCrossCheck` WORSE 0 / UNVERIFIED 13 /
+BETTER 1841, `CompareReferenceCatalogs` tie 4353 / better 1074 / worse 13 (the
+audited rows), Perminov 17–32 band worse 0, `ScanUpstreamSources` strict gaps 0
+on Sedoglavic / FMM / Perminov.
+
+Two silent faults surfaced and were fixed on the way:
+- Sedoglavic's digest changed layout on 2026-10-09 (`{"entries": [{format, rank}]}`);
+  the scan's map-only parser read it as 0 entries and reported 0 gaps / 0 better /
+  0 missing. Both layouts are read now, and 0 entries warns.
+- The scan counted the 13 audited (index-only / invalid / placeholder) FMM rows
+  as strict gaps, which would have opened an `upstream-gap` issue every week;
+  it now shares `FmmArtifactAudit` with the cross-check.

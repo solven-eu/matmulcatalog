@@ -59,7 +59,16 @@ import lombok.extern.slf4j.Slf4j;
  * 100 MB) and the 20 cubes total 491 MB, against 12 MB of archives.</p>
  *
  * <pre>mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.ImportKhoruzhiiLita \
- *     -Dexec.args="path/to/npz-dir [--only=NxNxN] [--max-exact-terms=60000000] [--execute]"</pre>
+ *     -Dexec.args="path/to/npz-dir [--only=NxNxN] [--max-exact-terms=60000000] [--execute]"
+ * # or, the scheduled form: list the repo, fetch every archive we do not hold, gate + register it
+ *     -Dexec.args="--download [--execute]"</pre>
+ *
+ * <p>{@code --download} (2026-10-13): lists {@code schemes/} of the repo through the
+ * GitHub contents API and downloads only the archives whose file name
+ * ({@code {N}x{N}x{N}_r{R}.npz}) is not yet under {@link LitaNpzCubes#DIR} — a new
+ * rank for a cube is a new file upstream (the October even construction replaced
+ * ten of them), so this is the idempotence key. Runs in
+ * {@code sync-reference-catalogs.yml}.</p>
  */
 @Slf4j
 public final class ImportKhoruzhiiLita {
@@ -75,16 +84,24 @@ public final class ImportKhoruzhiiLita {
 		Path dir = null;
 		String only = null;
 		long maxExactTerms = 60_000_000L;
-		boolean execute = false;
+		boolean execute = false, download = false;
 		for (String a : args) {
 			if ("--execute".equals(a)) execute = true;
+			else if ("--download".equals(a)) download = true;
 			else if (a.startsWith("--only=")) only = a.substring("--only=".length());
 			else if (a.startsWith("--max-exact-terms=")) maxExactTerms = Long.parseLong(a.substring("--max-exact-terms=".length()));
 			else if (a.startsWith("--")) throw new IllegalArgumentException("unknown option " + a);
 			else dir = Path.of(a);
 		}
+		if (download) {
+			dir = downloadNewArchives();
+			if (dir == null) {
+				log.info("ImportKhoruzhiiLita --download: every upstream archive is already under {}", LitaNpzCubes.DIR);
+				return;
+			}
+		}
 		if (dir == null || !Files.isDirectory(dir)) {
-			throw new IllegalArgumentException("usage: ImportKhoruzhiiLita <npz-dir> [--only=NxNxN] [--max-exact-terms=N] [--execute]");
+			throw new IllegalArgumentException("usage: ImportKhoruzhiiLita <npz-dir> [--only=NxNxN] [--max-exact-terms=N] [--execute] | --download [--execute]");
 		}
 		List<Path> files;
 		try (Stream<Path> ls = Files.list(dir)) {
@@ -232,4 +249,47 @@ public final class ImportKhoruzhiiLita {
 			throw new IllegalStateException(failures.size() + " file(s) failed the import gate");
 		}
 	}
+
+	private static final String CONTENTS_URL = "https://api.github.com/repos/khoruzhii/lita/contents/schemes";
+
+	/**
+	 * Archives named upstream but absent from {@link LitaNpzCubes#DIR}, downloaded
+	 * into a temp directory; {@code null} when there is nothing new. The listing is
+	 * {@code {name, download_url}} per file (GitHub contents API).
+	 */
+	static Path downloadNewArchives() throws Exception {
+		tools.jackson.databind.JsonNode listing = tools.jackson.databind.json.JsonMapper.builder().build()
+				.readTree(ImportPerminovSchemes.fetch(CONTENTS_URL));
+		List<String> names = new ArrayList<>();
+		Map<String, String> urls = new LinkedHashMap<>();
+		for (tools.jackson.databind.JsonNode e : listing) {
+			names.add(e.path("name").asString());
+			urls.put(e.path("name").asString(), e.path("download_url").asString());
+		}
+		List<String> missing = missingArchives(names, LitaNpzCubes.DIR);
+		log.info("khoruzhii/lita: {} archives upstream, {} not held", urls.size(), missing.size());
+		if (missing.isEmpty()) return null;
+		Path tmp = Files.createTempDirectory("lita-");
+		for (String name : missing) {
+			java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder()
+					.followRedirects(java.net.http.HttpClient.Redirect.NORMAL).build();
+			java.net.http.HttpResponse<Path> resp = client.send(
+					java.net.http.HttpRequest.newBuilder(java.net.URI.create(urls.get(name))).GET().build(),
+					java.net.http.HttpResponse.BodyHandlers.ofFile(tmp.resolve(name)));
+			if (resp.statusCode() / 100 != 2) throw new java.io.IOException("HTTP " + resp.statusCode() + " for " + name);
+			log.info("downloaded {} ({} bytes)", name, Files.size(tmp.resolve(name)));
+		}
+		return tmp;
+	}
+
+	/** Upstream archive names ({@code {N}x{N}x{N}_r{R}.npz}) with no file of that name under {@code dir}. */
+	static List<String> missingArchives(List<String> upstreamNames, Path dir) {
+		java.util.regex.Pattern name = java.util.regex.Pattern.compile("^\\d+x\\d+x\\d+_r\\d+\\.npz$");
+		List<String> out = new ArrayList<>();
+		for (String n : upstreamNames) {
+			if (name.matcher(n).matches() && !Files.isRegularFile(dir.resolve(n))) out.add(n);
+		}
+		return out;
+	}
+
 }
