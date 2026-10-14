@@ -2080,3 +2080,133 @@ Two silent faults surfaced and were fixed on the way:
 - The scan counted the 13 audited (index-only / invalid / placeholder) FMM rows
   as strict gaps, which would have opened an `upstream-gap` issue every week;
   it now shares `FmmArtifactAudit` with the cross-check.
+
+---
+
+## 2026-10-13 — The 13 worst cases read from FMM's pages: 2 are ingredient drift, 8 are page = ours, 3 are representative-only recipes — one of them walked: ⟨16,20,28⟩ 4967 → 4960 (+4 more records from the same base)
+
+**Question:** of the 13 rows still above FMM's index after the resync, which are
+real, which are closable, which are upstream claims?
+
+**Method:** (1) re-run the engines on the 13 shapes with today's ingredients —
+`SchemeSweep --strategies=concat,kron,recomb` and `MaterialiseSerendipitousWins`:
+0 wins; (2) re-fetch every FMM page and read what it constructs *today*; (3) for
+the three serendipitous recipes, price every representative we hold
+(`ProbeSerendipStructure`), FMM's own base artifacts (`4x5x7`, `5x5x12`, `4x9x10`
+`_tensor.mpl.bz2` → `MapleTensorParser`) and then flip-walk the base
+(`ProbeSerendipWalkGen`, structural-family objective + σ-potential tie-break).
+
+**Findings** (full table in `references/fmm-artifact-audit.md`, re-audit 2026-10-13):
+
+| row | verdict |
+|---|---|
+| ⟨16,20,28⟩ 4936 / ⟨16,20,29⟩ 5256 | **ingredient drift**: the index is the page's recipe re-priced with ⟨4,4,8⟩ = 95 (page text says 96). The recipe `(⟨4,5,7⟩:104 − 17) ⊗ 48 + 8·⟨4,4,8⟩` puts 17 base products into 16 slots — does not balance under bud semantics (would mean ⟨4,5,7⟩ ≤ 103); artifact is a placeholder. **Walked**: ⟨16,20,28⟩ = 4960. |
+| ⟨20,24,25⟩ 6466 | balanced recipe (one V-quad + two W-triples + sixteen W-pairs on ⟨5,12,5⟩:204); every public representative has eighteen pairs → 6474. Walk (three seeds × 8 rng, 200k steps) never left the plateau. **Representative-only.** |
+| ⟨8,27,30⟩ 3744 | balanced recipe (six B-side pairs on ⟨4,9,10⟩:250, σ = 1 each); FMM's own base artifact and Perminov's file have six *A-side* pairs (σ = 0) → 3750; the ⟨8,27,30⟩ artifact (3736) is invalid. Walk found no B-side pair. **Representative-only.** |
+| ⟨22,30,30⟩ 10534, ⟨21,28,32⟩ 10134 | the pages build 10705 / 10477; ours 10555 / 10143 beat both (⟨22,30,30⟩ is the *same* 7-block recombination with FMM's own ⟨10,15,15⟩ = 1385). Index below anything published — **upstream claim**. |
+| ⟨7,7,17⟩ ⟨7,9,19⟩ ⟨7,9,25⟩ ⟨9,19,25⟩ ⟨11,11,17⟩ ⟨11,13,13⟩ (+1/+2), ⟨7,8,17⟩ (+1) | page = ours (⟨7,8,17⟩: page 637 > ours 636); no ingredient drift (⟨7,7,17⟩'s seven leaves are all at index value). **Upstream claims.** |
+
+**The closure that worked — representative search.** The ⟨4,5,7⟩:104 walk
+(seed: Z-best catalog rep, 8 rng × 200k steps, ~15 min) reached a representative
+with 8 U-pairs, 2 U-triples, 4 V-pairs, 6 W-pairs and **two ⟨2,1,2⟩ grids** —
+every one of our eleven held reps tops out at one grid (4967). Persisted as
+`bud-bases/section7/4x5x7-r104-flipwalk_serendip-4c05684.json` (reaction base,
+`discovery:false`). Priced against every inner ≤ 32 it gives five records, all
+built exact and persisted as pinned stubs:
+
+| shape | was | now | FMM index | inner |
+|---|---:|---:|---:|---|
+| ⟨16,20,28⟩ | 4967 | **4960** | 4936 | ⟨4,4,4⟩ (80·48 + 6·95 + 2·95 + 2·180) |
+| ⟨8,15,21⟩ | 1552 | **1548** | 1558 | ⟨2,3,3⟩ |
+| ⟨8,25,28⟩ | 3306 | **3302** | 3319 | ⟨2,5,4⟩ |
+| ⟨12,21,30⟩ | 4153 | **4146** | 4160 | ⟨3,6,3⟩ |
+| ⟨16,21,30⟩ | 5576 | **5572** | 5592 | ⟨4,6,3⟩ |
+
+Tier: bound (anytime walk; the family pricing is exact for the decomposition
+chosen). Guard: `TestSweepSpotsSota.retains_flipwalked_4x5x7_reaction_base_records`
+(records + the family must keep pricing the base ≤ 4960 against ⟨4,4,4⟩).
+
+**Why the engines could not do this before:** every serendipitous engine takes the
+base *as held* and optimises the partition; the rank-204 / 250 / 104 schemes we
+hold are the ones Perminov/FMM published, and FMM's recipes were computed on
+representatives that were never published (placeholder artifacts). The walk moves
+through the flip graph at fixed rank, which is the only operator that changes
+class structure.
+
+**Open / next:**
+- A catalog-wide walk campaign: every bud base × every inner that lands on a
+  catalog shape (24 cores; ~15 min per ⟨4,5,7⟩-sized base, ~50 min for
+  ⟨5,5,12⟩). The one base walked here moved five shapes — the expected yield is
+  large, and the ⟨5,5,12⟩ / ⟨4,9,10⟩ plateaus want longer walks or seeds from
+  other reps (two more ⟨5,5,12⟩ seeds + four ⟨4,5,7⟩ seeds were still running
+  when this was written; results, if any, are materialised by the same two
+  commands).
+- Report upstream (user's call): the index/page disagreements that are not
+  ingredient drift (⟨22,30,30⟩ −21, ⟨21,28,32⟩ −343, the seven ±1/±2 rows), the
+  invalid ⟨8,27,30⟩ artifact, and the ⟨16,20,28⟩ recipe arithmetic (17 → 16).
+
+---
+
+## 2026-10-14 — "Are there false schemes?" Full exact pass: every explicit scheme computes matmul; 2 of 8 358 stubs recorded a rank BELOW their replay (false claims) — repaired, and the daily job now checks rank honesty
+
+**Question (user):** if false schemes exist, fix them and find how they got in.
+
+**What was checked, catalog-wide, on 2026-10-14 (branch `worst-cases-2026-10-13`):**
+
+| population | check | result |
+|---|---|---|
+| 4 739 explicit scheme files (matrices on disk) | exact full-tensor residual (`Verifier.exactDiscrepancyNonCubic`, not the spot-check) over char-0; exact modular identity for every F₂/F₃ claim; recorded `n`/`m` vs the matrices | **0 failures** (two schemes with r > 2 500 spot-checked only — the dense modular check is O(r·n²m²p²) there; CI covers them through the char-0 identity, which reduces mod p) |
+| 8 358 lineage-only stubs | replay the lineage today (`LineageReplayer.replayFromFile`), spot-check the replayed product, compare replayed shape/rank with the recorded `n`/`m` | **0 replay failures, 0 non-matmul products, 2 over-claims, 510 loose** |
+| lineage refs (`AuditLineageRefs`) | pinned refs that no longer resolve | 4 dangling pins in 3 explicit files (⟨8,8,8⟩ 329, ⟨10,10,10⟩ 651, ⟨16,16,16⟩ 2209 — matrices on disk, so provenance display only); the tool's "UNRESOLVABLE 17 859" is its own stale resolver (it flags bare `9x11x15` and `naive-1x1x1`, both of which the replayer resolves — every stub replayed) |
+
+(A first driver reported 555 explicit "failures": its F₂/F₃ check was the integer-only
+`residualNonCubicF2/F3`, which rejects every rational scheme that legitimately
+carries an F₂/F₃ tag; with `isExactNonCubicFp` the count is 0. Recorded here so the
+next audit does not repeat it.)
+
+**The two false claims** — both `Project` stubs, both pinned to their parent by hash:
+
+| stub | recorded | replays | parent | why it drifted |
+|---|---:|---:|---|---|
+| `derived/section17/13x13x17-r1876` | 1876 | 1879 | `13x14x17@435178c` = `R[2x3x3…; 5,4,4 \| 7,7 \| 6,6,5]` with **legacy filename-stem refs** (`4x5x7-r104-perminov_ZT-4a1b410`, `5x6x7-r150-kauers_2026-…`, `ext[…]`) | the stems resolve through the replayer's shape fallback to the catalog-best of the day; the parent still replays at 1923 but with different matrices, so the projection dead-code-eliminates 44 products instead of 47 |
+| `derived/section30/20x26x30-r8590` | 8590 | 8594 | `20x27x30@440674e` = `5x5x9@0972b0d ⊗ˢ ⟨4,3,6⟩` | a `SerendipitousProduct` re-derives its decomposition against today's inner ranks; the parent's product structure moved, so the projection removes 4 fewer products |
+
+Neither was the catalog-best for its shape (⟨13,13,17⟩ = 1805, ⟨20,26,30⟩ = 8529), so no
+comparison, bound or report was wrong — but both files stated a rank their own
+lineage cannot reproduce.
+
+**How they lurked in.** A stub's `m` is a snapshot of a replay. The materialiser fails
+loud only *at write time* (`assertRebuildNotWorse`); afterwards the lineage can move —
+bare / legacy refs follow the catalog-best, serendipitous nodes re-derive, and a pinned
+ref to another **stub** pins that stub's lineage, not its matrices — and nothing re-read
+the recorded rank: the daily `VerifyAllSchemes` certifies that a stub's lineage *is a
+valid matmul scheme* (compositional: exact leaves + trusted operators) and never
+compares the replayed rank with the recorded one. `AuditStubReplayRanks` existed
+(READ-ONLY, from the 2026-06-15 ⟨4,16,20⟩ 822→832 finding) but was never wired to CI.
+The 510 "loose" stubs are the same mechanism in the harmless direction (the lineage now
+replays *below* the record).
+
+**Fix.**
+- `VerifySchemes --check=rank` (new; also in `all`): for a stub, replay and require
+  replayed shape == recorded and replayed r ≤ recorded m; for explicit files, `m` must
+  equal the stored product count. The driver's file loop is now parallel (the check
+  replays every stub). Wired into `verify-catalog.yml` on the daily schedule /
+  manual dispatch (not per-PR: ~minutes on 24 cores, longer on the runner).
+- `docs.migrate.RestampStubRanks` (new; dry-run, `--execute`, `--direction=over|all`):
+  rewrites a drifted stub at its replayed rank — same lineage and `fields[]`,
+  provenance keys carried, computed metrics (additions, buds, zt, …) dropped for the
+  enrichment stampers to recompute, file renamed to the new rank/hash, old file
+  deleted. Run with `--direction=over`: the two stubs are now
+  `13x13x17-r1879-derived-ec1513b` and `20x26x30-r8594-derived-c4545a0`.
+- Guards: `TestVerifySchemes.rank_check_flags_a_stub_recorded_below_its_replay`
+  (honest / loose / over-claiming stub on a real `Project` of the pinned ⟨2,2,2⟩),
+  `TestRestampStubRanks` (rewrite keeps lineage + provenance, is honest afterwards).
+
+**Not done (follow-ups):** tighten the 510 loose stubs (`RestampStubRanks
+--direction=all --execute`: churn of 510 files + renames; harmless as is); re-pin the
+4 dangling refs in the 3 explicit files; fix `AuditLineageRefs`' resolver (it
+predates the content-driven lookup).
+
+**Upstream (not ours to fix, reported in the 2026-10-13 audit):** FMM's ⟨8,27,30⟩
+artifact (3 736 triads) does not compute matmul and was rejected by our import gate;
+FMM's ⟨16,20,28⟩ recipe text puts 17 base products into 16 slots.

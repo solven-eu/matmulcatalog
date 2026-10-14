@@ -293,6 +293,14 @@ Canonical examples (all from real silent regressions in this repo):
   `TestCommutativeNotWorseThanNc` (`R_c ≤ R`, so a commutative bound worse than
   a known NC rank is a reporting bug).
 
+- A stub's recorded `m` is a snapshot of a replay; its lineage kept moving
+  (legacy/bare refs follow the catalog-best, serendipitous nodes re-derive, a
+  pinned ref to another *stub* pins a lineage, not matrices), and nothing re-read
+  `m` after the write — two `Project` stubs sat 3–4 below what they replay
+  (2026-10-14). Guards: `VerifySchemes --check=rank` on the daily schedule +
+  `TestVerifySchemes.rank_check_flags_a_stub_recorded_below_its_replay`; repair
+  with `RestampStubRanks`.
+
 **Two registries must never be able to contradict each other in silence.** When
 you add a source of truth (a bounds file, a curated list, a formula helper),
 also add the cross-check that compares it with the existing ones —
