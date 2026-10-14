@@ -2144,3 +2144,69 @@ class structure.
 - Report upstream (user's call): the index/page disagreements that are not
   ingredient drift (⟨22,30,30⟩ −21, ⟨21,28,32⟩ −343, the seven ±1/±2 rows), the
   invalid ⟨8,27,30⟩ artifact, and the ⟨16,20,28⟩ recipe arithmetic (17 → 16).
+
+---
+
+## 2026-10-14 — "Are there false schemes?" Full exact pass: every explicit scheme computes matmul; 2 of 8 358 stubs recorded a rank BELOW their replay (false claims) — repaired, and the daily job now checks rank honesty
+
+**Question (user):** if false schemes exist, fix them and find how they got in.
+
+**What was checked, catalog-wide, on 2026-10-14 (branch `worst-cases-2026-10-13`):**
+
+| population | check | result |
+|---|---|---|
+| 4 739 explicit scheme files (matrices on disk) | exact full-tensor residual (`Verifier.exactDiscrepancyNonCubic`, not the spot-check) over char-0; exact modular identity for every F₂/F₃ claim; recorded `n`/`m` vs the matrices | **0 failures** (two schemes with r > 2 500 spot-checked only — the dense modular check is O(r·n²m²p²) there; CI covers them through the char-0 identity, which reduces mod p) |
+| 8 358 lineage-only stubs | replay the lineage today (`LineageReplayer.replayFromFile`), spot-check the replayed product, compare replayed shape/rank with the recorded `n`/`m` | **0 replay failures, 0 non-matmul products, 2 over-claims, 510 loose** |
+| lineage refs (`AuditLineageRefs`) | pinned refs that no longer resolve | 4 dangling pins in 3 explicit files (⟨8,8,8⟩ 329, ⟨10,10,10⟩ 651, ⟨16,16,16⟩ 2209 — matrices on disk, so provenance display only); the tool's "UNRESOLVABLE 17 859" is its own stale resolver (it flags bare `9x11x15` and `naive-1x1x1`, both of which the replayer resolves — every stub replayed) |
+
+(A first driver reported 555 explicit "failures": its F₂/F₃ check was the integer-only
+`residualNonCubicF2/F3`, which rejects every rational scheme that legitimately
+carries an F₂/F₃ tag; with `isExactNonCubicFp` the count is 0. Recorded here so the
+next audit does not repeat it.)
+
+**The two false claims** — both `Project` stubs, both pinned to their parent by hash:
+
+| stub | recorded | replays | parent | why it drifted |
+|---|---:|---:|---|---|
+| `derived/section17/13x13x17-r1876` | 1876 | 1879 | `13x14x17@435178c` = `R[2x3x3…; 5,4,4 \| 7,7 \| 6,6,5]` with **legacy filename-stem refs** (`4x5x7-r104-perminov_ZT-4a1b410`, `5x6x7-r150-kauers_2026-…`, `ext[…]`) | the stems resolve through the replayer's shape fallback to the catalog-best of the day; the parent still replays at 1923 but with different matrices, so the projection dead-code-eliminates 44 products instead of 47 |
+| `derived/section30/20x26x30-r8590` | 8590 | 8594 | `20x27x30@440674e` = `5x5x9@0972b0d ⊗ˢ ⟨4,3,6⟩` | a `SerendipitousProduct` re-derives its decomposition against today's inner ranks; the parent's product structure moved, so the projection removes 4 fewer products |
+
+Neither was the catalog-best for its shape (⟨13,13,17⟩ = 1805, ⟨20,26,30⟩ = 8529), so no
+comparison, bound or report was wrong — but both files stated a rank their own
+lineage cannot reproduce.
+
+**How they lurked in.** A stub's `m` is a snapshot of a replay. The materialiser fails
+loud only *at write time* (`assertRebuildNotWorse`); afterwards the lineage can move —
+bare / legacy refs follow the catalog-best, serendipitous nodes re-derive, and a pinned
+ref to another **stub** pins that stub's lineage, not its matrices — and nothing re-read
+the recorded rank: the daily `VerifyAllSchemes` certifies that a stub's lineage *is a
+valid matmul scheme* (compositional: exact leaves + trusted operators) and never
+compares the replayed rank with the recorded one. `AuditStubReplayRanks` existed
+(READ-ONLY, from the 2026-06-15 ⟨4,16,20⟩ 822→832 finding) but was never wired to CI.
+The 510 "loose" stubs are the same mechanism in the harmless direction (the lineage now
+replays *below* the record).
+
+**Fix.**
+- `VerifySchemes --check=rank` (new; also in `all`): for a stub, replay and require
+  replayed shape == recorded and replayed r ≤ recorded m; for explicit files, `m` must
+  equal the stored product count. The driver's file loop is now parallel (the check
+  replays every stub). Wired into `verify-catalog.yml` on the daily schedule /
+  manual dispatch (not per-PR: ~minutes on 24 cores, longer on the runner).
+- `docs.migrate.RestampStubRanks` (new; dry-run, `--execute`, `--direction=over|all`):
+  rewrites a drifted stub at its replayed rank — same lineage and `fields[]`,
+  provenance keys carried, computed metrics (additions, buds, zt, …) dropped for the
+  enrichment stampers to recompute, file renamed to the new rank/hash, old file
+  deleted. Run with `--direction=over`: the two stubs are now
+  `13x13x17-r1879-derived-ec1513b` and `20x26x30-r8594-derived-c4545a0`.
+- Guards: `TestVerifySchemes.rank_check_flags_a_stub_recorded_below_its_replay`
+  (honest / loose / over-claiming stub on a real `Project` of the pinned ⟨2,2,2⟩),
+  `TestRestampStubRanks` (rewrite keeps lineage + provenance, is honest afterwards).
+
+**Not done (follow-ups):** tighten the 510 loose stubs (`RestampStubRanks
+--direction=all --execute`: churn of 510 files + renames; harmless as is); re-pin the
+4 dangling refs in the 3 explicit files; fix `AuditLineageRefs`' resolver (it
+predates the content-driven lookup).
+
+**Upstream (not ours to fix, reported in the 2026-10-13 audit):** FMM's ⟨8,27,30⟩
+artifact (3 736 triads) does not compute matmul and was rejected by our import gate;
+FMM's ⟨16,20,28⟩ recipe text puts 17 base products into 16 slots.

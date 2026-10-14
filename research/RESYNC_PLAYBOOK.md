@@ -101,3 +101,4 @@ entry with the numbers.
 | audit entries never expired → rows hidden after the index moved | `index_rank` on every entry, `FmmArtifactAudit` + `TestFmmArtifactAudit` |
 | exact verifier rejected denominators > 1024 → two bases "FAIL" every run | `TestExactVerifierLargeDenominators` |
 | re-stamp "succeeded" without writing (`updateFields` never clobbers) | `TestRestampContributedProvenance` |
+| a stub's recorded rank drifted below what its lineage replays (legacy/bare refs follow the catalog-best, serendipitous nodes re-derive, a pinned stub pins a lineage not matrices) — two false claims found 2026-10-14, nothing re-read `m` after write | `VerifySchemes --check=rank` (daily schedule), `TestVerifySchemes.rank_check_flags_a_stub_recorded_below_its_replay`; repair with `RestampStubRanks` |

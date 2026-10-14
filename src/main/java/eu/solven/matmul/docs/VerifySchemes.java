@@ -16,6 +16,7 @@ import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
+import eu.solven.matmul.search.LineageReplayer;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.docs.verify.VerifyLineageFieldCompat;
 
@@ -55,7 +56,10 @@ import tools.jackson.databind.JsonNode;
  * <pre>
  *   --check=lineage,coefficients       checks to run (default: this pair — the cheap ones)
  *   --check=full                       add the dense identity verification
- *   --check=all                        lineage,coefficients,full
+ *   --check=rank                       recorded m/shape vs the replayed lineage (stubs) or the
+ *                                      stored matrices (explicit): a replay ABOVE the record is a
+ *                                      false rank claim — see rankViolation (parallel; ~minutes)
+ *   --check=all                        lineage,coefficients,full,rank
  *   --field=Z|Q|R|C|F2|F3              restrict to schemes declaring this field
  *   --shape=NxMxP[,NxMxP…]             restrict to these shapes (sorted-agnostic)
  *   --schemes-root=PATH                default src/main/resources/schemes
@@ -70,7 +74,26 @@ import tools.jackson.databind.JsonNode;
 public final class VerifySchemes {
 	private VerifySchemes() {}
 
-	enum Check { LINEAGE, COEFFICIENTS, FULL }
+	enum Check { LINEAGE, COEFFICIENTS, FULL, RANK }
+
+	/**
+	 * One replayer per lookup, shared by every {@code rank} check of a run (thread-safe:
+	 * its replay descent is thread-local).
+	 */
+	private static volatile FieldAwareLookup replayerLookup;
+	private static volatile LineageReplayer replayer;
+
+	static LineageReplayer replayerFor(FieldAwareLookup lookup) {
+		if (replayer == null || replayerLookup != lookup) {
+			synchronized (VerifySchemes.class) {
+				if (replayer == null || replayerLookup != lookup) {
+					replayer = LineageReplayer.withDefaultPool(lookup);
+					replayerLookup = lookup;
+				}
+			}
+		}
+		return replayer;
+	}
 
 	public static void main(String[] args) throws Exception {
 		List<String> argv = Arrays.asList(args);
@@ -89,18 +112,19 @@ public final class VerifySchemes {
 				files.size(), root, checks, fieldFilter.map(Enum::name).orElse("*"),
 				shapeFilter.isEmpty() ? "*" : shapeFilter);
 
-		List<String> failures = new ArrayList<>();
-		AtomicInteger scanned = new AtomicInteger(), skipped = new AtomicInteger();
+		List<String> failures = java.util.Collections.synchronizedList(new ArrayList<>());
+		AtomicInteger scanned = new AtomicInteger(), skipped = new AtomicInteger(), processed = new AtomicInteger();
 		long t0 = System.nanoTime();
-		int processed = 0;
-		for (Path f : files) {
+		// Parallel: every check is per-file (the lookup and the replayer are shared and
+		// thread-safe); the `rank` check replays ~8k stubs, which is hours sequentially.
+		files.parallelStream().forEach(f -> {
 			try {
 				JsonNode root2 = SchemeIO.parseJson(f.toFile());
-				if (!matchesShape(root2, shapeFilter)) { skipped.incrementAndGet(); continue; }
+				if (!matchesShape(root2, shapeFilter)) { skipped.incrementAndGet(); return; }
 				List<String> declared = SchemeIO.fieldTags(root2);
 				if (fieldFilter.isPresent() && !declared.contains(fieldFilter.get().name())) {
 					skipped.incrementAndGet();
-					continue;
+					return;
 				}
 				scanned.incrementAndGet();
 				failures.addAll(checkOne(f, root2, declared, checks, lookup));
@@ -111,11 +135,12 @@ public final class VerifySchemes {
 			} catch (Exception e) {
 				failures.add(f.getFileName() + " [UNREADABLE] " + e);
 			}
-			if (++processed % 2000 == 0) {
+			int done = processed.incrementAndGet();
+			if (done % 2000 == 0) {
 				log.info("[progress] {}/{} processed, {} failure(s), {}ms",
-						processed, files.size(), failures.size(), (System.nanoTime() - t0) / 1_000_000);
+						done, files.size(), failures.size(), (System.nanoTime() - t0) / 1_000_000);
 			}
-		}
+		});
 
 		log.info("=== VerifySchemes done: scanned={} skipped={} failures={} ===",
 				scanned.get(), skipped.get(), failures.size());
@@ -169,7 +194,50 @@ public final class VerifySchemes {
 			String why = fullVerifyViolation(alg, declared);
 			if (why != null) out.add(name + " full: " + why);
 		}
+		// (4) rank honesty — the recorded `m` must be what the file actually holds:
+		// for a stub, its lineage replayed TODAY (bare / legacy refs resolve to the
+		// catalog-best of the day, a serendipitous node re-derives its decomposition,
+		// a pinned ref to another stub pins a lineage, not matrices — so a projection's
+		// dead-code count can move after the stub was written); for explicit matrices,
+		// the number of products. A replay ABOVE the record is a false rank claim
+		// (the 2026-10-14 ⟨13,13,17⟩ 1876→1879 / ⟨20,26,30⟩ 8590→8594 projections);
+		// a replay below it is merely loose and is not a failure
+		// (docs.migrate.RestampStubRanks tightens either).
+		if (checks.contains(Check.RANK)) {
+			String why = rankViolation(f, root, lookup);
+			if (why != null) out.add(name + " rank: " + why);
+		}
 		return out;
+	}
+
+	/** Recorded rank/shape vs replayed (stub) or stored (explicit) content. Returns a reason or null. */
+	static String rankViolation(Path f, JsonNode root, FieldAwareLookup lookup) {
+		int recorded = root.path("m").asInt(-1);
+		JsonNode nn = root.path("n");
+		if (recorded < 0 || !nn.isArray() || nn.size() != 3) return null; // not a scheme record we stamp
+		int[] shape = { nn.get(0).asInt(), nn.get(1).asInt(), nn.get(2).asInt() };
+		NonCubicBilinearAlgorithm actual;
+		try {
+			if (SchemeIO.isStub(root)) {
+				actual = replayerFor(lookup).replayFromFile(f.toFile());
+			} else if (root.has("u") || root.has("u_sparse")) {
+				if (SchemeIO.isComplex(root) || SchemeIO.isNonBilinear(root)) return null;
+				actual = SchemeIO.isReduced(root) ? SchemeIO.readReduced(root) : SchemeIO.read(root);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			return "cannot replay/read: " + e;
+		}
+		if (actual.n != shape[0] || actual.m != shape[1] || actual.p != shape[2]) {
+			return String.format("recorded shape ⟨%d,%d,%d⟩ but content is ⟨%d,%d,%d⟩", shape[0], shape[1],
+					shape[2], actual.n, actual.m, actual.p);
+		}
+		if (actual.r > recorded) {
+			return String.format("recorded m=%d but %s r=%d (false rank claim)", recorded,
+					SchemeIO.isStub(root) ? "lineage replays to" : "matrices hold", actual.r);
+		}
+		return null;
 	}
 
 	/** Dense identity verification over each declared field. Returns a reason or null. */
@@ -208,7 +276,8 @@ public final class VerifySchemes {
 				case "lineage" -> out.add(Check.LINEAGE);
 				case "coefficients", "coeff", "coeffs" -> out.add(Check.COEFFICIENTS);
 				case "full", "identity" -> out.add(Check.FULL);
-				case "all" -> { out.add(Check.LINEAGE); out.add(Check.COEFFICIENTS); out.add(Check.FULL); }
+				case "rank", "honesty" -> out.add(Check.RANK);
+				case "all" -> { out.add(Check.LINEAGE); out.add(Check.COEFFICIENTS); out.add(Check.FULL); out.add(Check.RANK); }
 				case "" -> { }
 				default -> throw new IllegalArgumentException("Unknown --check token: " + tok);
 			}

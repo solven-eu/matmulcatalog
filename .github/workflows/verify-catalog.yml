@@ -67,6 +67,23 @@ jobs:
           mvn -B -ntp -q exec:java \
             -Dexec.mainClass=eu.solven.matmul.docs.VerifySchemes \
             -Dexec.args="--check=lineage,coefficients"
+      # Rank honesty: a stub's recorded `m` must still be what its lineage replays
+      # (bare / legacy refs follow the catalog-best of the day, serendipitous nodes
+      # re-derive, a pinned stub pins a lineage not matrices — so a projection's
+      # rank can drift AFTER the stub was written: 2026-10-14 found two false
+      # claims this way). Replays every stub → scheduled/manual runs only.
+      - name: Verify rank claims (stub replay vs recorded m)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          MAVEN_OPTS: >-
+            -Xmx3g
+            -XX:+HeapDumpOnOutOfMemoryError
+            -XX:HeapDumpPath=target/oom-dumps/
+        run: |
+          mkdir -p target/oom-dumps
+          mvn -B -ntp -q exec:java \
+            -Dexec.mainClass=eu.solven.matmul.docs.VerifySchemes \
+            -Dexec.args="--check=rank"
 
       - name: Verify every scheme on disk
         env:
