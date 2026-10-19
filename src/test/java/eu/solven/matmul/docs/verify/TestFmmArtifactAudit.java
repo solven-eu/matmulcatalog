@@ -40,4 +40,24 @@ public class TestFmmArtifactAudit {
 			assertThat(e.getValue().has("index_rank")).as("index_rank on " + e.getKey()).isTrue();
 		});
 	}
+
+	/**
+	 * The shared reading of the audit ({@link FmmArtifactAudit}) — what both the committed
+	 * cross-check and the weekly scan consult. An entry covers its format only at the index
+	 * value it was audited against; once the index moves it is expired and the row is a
+	 * gap again.
+	 */
+	@Test
+	public void an_entry_covers_its_audited_index_value_only() throws Exception {
+		FmmArtifactAudit audit = FmmArtifactAudit.load();
+		assertThat(audit.size()).isGreaterThan(0);
+		// ⟨7,7,17⟩: FMM index 572, FMM's own artifact 573 (= ours) — audited 2026-09-30.
+		assertThat(audit.coveringClass(7, 7, 17, 572)).contains("index_only");
+		assertThat(audit.coveringClass(17, 7, 7, 572)).as("any orientation").contains("index_only");
+		assertThat(audit.coveringClass(7, 7, 17, 571)).as("the index moved → expired").isEmpty();
+		assertThat(audit.expiredAt(7, 7, 17, 571)).contains(572);
+		assertThat(audit.expiredAt(7, 7, 17, 572)).isEmpty();
+		assertThat(audit.coveringClass(2, 2, 2, 7)).as("not audited").isEmpty();
+		assertThat(FmmArtifactAudit.none().coveringClass(7, 7, 17, 572)).isEmpty();
+	}
 }

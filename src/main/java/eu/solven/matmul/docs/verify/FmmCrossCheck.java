@@ -159,31 +159,17 @@ public final class FmmCrossCheck {
 		// cube ranks, which we hold and verified; ⟨27,28,28⟩ 10442 vs 9847 stayed out of
 		// WORSE, so the projection closure never targeted it and its whole sub-family was
 		// stuck behind it.) An entry without `index_rank` is legacy → still honoured.
-		Map<String, String> audit = new java.util.HashMap<>();
-		Map<String, Integer> auditedIndexRank = new java.util.HashMap<>();
-		java.io.File auditFile = new java.io.File("references/fmm-artifact-audit.json");
-		if (auditFile.isFile()) {
-			tools.jackson.databind.JsonNode auditRoot =
-					new tools.jackson.databind.ObjectMapper().readTree(auditFile);
-			auditRoot.get("shapes").properties().forEach(e -> {
-				audit.put(e.getKey(), e.getValue().get("class").asText());
-				if (e.getValue().has("index_rank")) {
-					auditedIndexRank.put(e.getKey(), e.getValue().get("index_rank").asInt());
-				}
-			});
-		}
+		// The same reading of the audit file serves ScanUpstreamSources (the weekly alert).
+		FmmArtifactAudit audit = FmmArtifactAudit.load();
+		Map<String, String> auditClass = new java.util.HashMap<>();
 		List<Row> unverified = new ArrayList<>();
 		List<String> expiredAudits = new ArrayList<>();
 		worse.removeIf(r -> {
-			String key = r.n + "x" + r.m + "x" + r.p;
-			String cls = audit.get(key);
-			if (cls == null) return false;
-			Integer auditedAt = auditedIndexRank.get(key);
-			if (auditedAt != null && auditedAt != r.fmm) {
-				expiredAudits.add(String.format("⟨%d,%d,%d⟩ (audited at index %d, now %d)",
-						r.n, r.m, r.p, auditedAt, r.fmm));
-				return false; // index moved since the audit → an ordinary, actionable row again
-			}
+			audit.expiredAt(r.n, r.m, r.p, r.fmm).ifPresent(auditedAt -> expiredAudits.add(
+					String.format("⟨%d,%d,%d⟩ (audited at index %d, now %d)", r.n, r.m, r.p, auditedAt, r.fmm)));
+			java.util.Optional<String> cls = audit.coveringClass(r.n, r.m, r.p, r.fmm);
+			if (cls.isEmpty()) return false; // not audited, or index moved since → an ordinary, actionable row
+			auditClass.put(r.n + "x" + r.m + "x" + r.p, cls.get());
 			unverified.add(r);
 			return true;
 		});
@@ -243,7 +229,7 @@ public final class FmmCrossCheck {
 				pw.println("| --- | ---: | ---: | --- |");
 				for (Row r : unverified) {
 					pw.printf("| ⟨%d,%d,%d⟩ | %d | %d | %s |%n",
-							r.n, r.m, r.p, r.ours, r.fmm, audit.get(r.n + "x" + r.m + "x" + r.p));
+							r.n, r.m, r.p, r.ours, r.fmm, auditClass.get(r.n + "x" + r.m + "x" + r.p));
 				}
 				pw.println();
 			}

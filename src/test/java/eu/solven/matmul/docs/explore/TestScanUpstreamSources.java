@@ -69,4 +69,36 @@ public class TestScanUpstreamSources {
 		assertThat(local.size()).as("content-driven load must see the whole catalog").isGreaterThan(4000);
 		assertThat(local).containsEntry(Shape.of(2, 2, 2).canonical(), 7);
 	}
+
+	/**
+	 * Sedoglavic switched his digest from a {@code {"NxMxP": {"rank": R}}} map to
+	 * {@code {"entries": [{"format": [n,m,p], "rank": R}]}} on 2026-10-09. The map-only
+	 * parser then found no shape key and reported 0 gaps / 0 better / 0 missing — silently.
+	 * Both layouts must read the same, and an unreadable digest must yield NO entries (the
+	 * caller then warns loudly) rather than a clean zero.
+	 */
+	@Test
+	public void sedoglavic_digest_is_read_in_both_layouts() throws Exception {
+		var mapper = tools.jackson.databind.json.JsonMapper.builder().build();
+		Map<CanonicalShape, Integer> legacy = ScanUpstreamSources.sedoglavicRanks(mapper.readTree(
+				"{\"description\":\"d\",\"2x2x2\":{\"rank\":7,\"exponent\":2.8},\"3x2x2\":{\"rank\":11}}"));
+		Map<CanonicalShape, Integer> current = ScanUpstreamSources.sedoglavicRanks(mapper.readTree(
+				"{\"description\":\"d\",\"createdAt\":\"2026-10-09\",\"entries\":[{\"format\":[2,2,2],\"rank\":7},"
+						+ "{\"format\":[3,2,2],\"rank\":11,\"exponent\":2.89}]}"));
+		assertThat(legacy).containsEntry(Shape.of(2, 2, 2).canonical(), 7).containsEntry(Shape.of(2, 2, 3).canonical(), 11)
+				.hasSize(2);
+		assertThat(current).isEqualTo(legacy);
+		assertThat(ScanUpstreamSources.sedoglavicRanks(mapper.readTree("{\"description\":\"d\",\"table\":[]}")))
+				.as("an unknown layout yields no entry, never a clean zero-gap scan").isEmpty();
+	}
+
+	/** The committed digest (refreshed 2026-10-13) is the new layout and reads completely. */
+	@Test
+	public void committed_sedoglavic_digest_reads_completely() throws Exception {
+		var mapper = tools.jackson.databind.json.JsonMapper.builder().build();
+		Map<CanonicalShape, Integer> ranks = ScanUpstreamSources.sedoglavicRanks(
+				mapper.readTree(Files.readString(Path.of("references/sedoglavic-fmm-sota.json"), StandardCharsets.UTF_8)));
+		assertThat(ranks.size()).isGreaterThan(5000);
+		assertThat(ranks).containsEntry(Shape.of(2, 2, 2).canonical(), 7);
+	}
 }
