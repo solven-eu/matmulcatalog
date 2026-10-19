@@ -466,7 +466,7 @@ public final class LineageReplayer {
 			// the build path; resolve best-bound only in a cited-bound path) — see the
 			// VerifyScheme DAG design. Left as-is here pending that decision.
 			if (naive || hasUnitAxis(sh)) return new LeafResolution(LeafClass.NAIVE, sh, null, null);
-			return new LeafResolution(lookup.findFile(sh[0], sh[1], sh[2]).isPresent() ? LeafClass.SHAPE_BEST
+			return new LeafResolution(lookup.findNcFile(sh[0], sh[1], sh[2]).isPresent() ? LeafClass.SHAPE_BEST
 					: LeafClass.UNRESOLVABLE, sh, null, null);
 		}
 		// Robust fallback: pull a shape out of a source-prefixed / canonical-key / named
@@ -478,7 +478,7 @@ public final class LineageReplayer {
 		int[] sh = extractShape(ref);
 		if (sh == null) return new LeafResolution(LeafClass.UNRESOLVABLE, null, null, null);
 		if (hasUnitAxis(sh)) return new LeafResolution(LeafClass.NAIVE, sh, null, null);
-		return new LeafResolution(lookup.findFile(sh[0], sh[1], sh[2]).isPresent() ? LeafClass.LEGACY_SHAPE_BEST
+		return new LeafResolution(lookup.findNcFile(sh[0], sh[1], sh[2]).isPresent() ? LeafClass.LEGACY_SHAPE_BEST
 				: LeafClass.UNRESOLVABLE, sh, null, null);
 	}
 
@@ -604,8 +604,12 @@ public final class LineageReplayer {
 
 	private NonCubicBilinearAlgorithm resolveShape(int n, int mm, int p) {
 		Optional<FieldAwareLookup.WithSource> hit = lookup.findWithSource(n, mm, p);
-		Optional<Path> bestPath = lookup.findFile(n, mm, p);
-		// findWithSource returns the best MATERIALISED (non-stub) entry; findFile
+		// NON-COMMUTATIVE entries only: findFile ranks commutative schemes too, and at
+		// ⟨2,2,n⟩ it handed Rosowski's commutative 3n+1 file to resolveStubFile — unreplayable
+		// (non-bilinear), so the fallback below rescued it with a warning; a commutative
+		// bilinear file below the NC best would have been replayed into an NC lineage.
+		Optional<Path> bestPath = lookup.findNcFile(n, mm, p);
+		// findWithSource returns the best MATERIALISED (non-stub) entry; findNcFile
 		// returns the best file of ANY kind (rank-ascending, stubs included). When
 		// the global best is a stub whose rank beats every materialised sibling —
 		// e.g. a dis09 DIS09Lemma4(n) cube, now stored lineage-only — replaying it is
