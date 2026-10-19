@@ -2,6 +2,7 @@ package eu.solven.matmul.docs;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.List;
@@ -9,8 +10,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.catalog.FieldAwareLookup;
+import eu.solven.matmul.catalog.Lineage;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.docs.verify.VerifyLineageFieldCompat;
 
@@ -69,6 +73,54 @@ public class TestVerifySchemes {
 		List<String> failures = VerifySchemes.checkOne(DERIVED_338, root, declared,
 				EnumSet.allOf(VerifySchemes.Check.class), lookup);
 		assertThat(failures).as("all VerifySchemes checks must pass on the fixed ⟨3,3,8⟩").isEmpty();
+	}
+
+	/**
+	 * 2026-10-14: two projection stubs recorded a rank 3–4 BELOW what their lineage
+	 * replays today (the parent's leaves had moved since the stub was written) — false
+	 * rank claims that the daily verification never looked at. The {@code rank} check
+	 * must flag a stub whose recorded {@code m} is below its replay, accept an honest
+	 * one, and accept a merely loose one (recorded above the replay).
+	 */
+	@Test
+	void rank_check_flags_a_stub_recorded_below_its_replay(@TempDir Path dir) throws Exception {
+		// A real Project lineage on the catalog's pinned ⟨2,2,2⟩: keep both A-rows and
+		// inner indices, one B-column → ⟨2,2,1⟩, DCE'ing the products that only touch
+		// the dropped column (5 of Strassen's 7).
+		// A hash-stamped explicit rank-7 ⟨2,2,2⟩ (the lookup's first file may be a legacy
+		// record without a `hash`, e.g. the Waksman commutative one).
+		Path strassen = lookup.findFiles(2, 2, 2).stream().filter(p -> {
+			try {
+				JsonNode r = SchemeIO.parseJson(p.toFile());
+				return r.has("hash") && r.path("m").asInt() == 7 && !SchemeIO.isStub(r) && !SchemeIO.isNonBilinear(r)
+						&& !SchemeIO.isComplex(r);
+			} catch (Exception e) {
+				return false;
+			}
+		}).findFirst().orElseThrow();
+		String hash = SchemeIO.parseJson(strassen.toFile()).get("hash").asString();
+		Lineage.Node lineage = new Lineage.Project(new Lineage.Atom("2x2x2@" + hash), new int[] { 0, 1 },
+				new int[] { 0, 1 }, new int[] { 0 });
+		NonCubicBilinearAlgorithm honest = VerifySchemes.replayerFor(lookup).replay(lineage);
+		assertThat(honest.n).isEqualTo(2);
+		assertThat(honest.p).isEqualTo(1);
+
+		Path stub = dir.resolve("2x2x1-stub.json");
+		SchemeIO.writeStub(honest, stub.toFile(), lineage, List.of("Z", "Q", "R", "C"));
+		assertThat(VerifySchemes.rankViolation(stub, SchemeIO.parseJson(stub.toFile()), lookup))
+				.as("an honest stub passes").isNull();
+
+		Path loose = dir.resolve("2x2x1-loose.json");
+		Files.writeString(loose, Files.readString(stub).replace("\"m\": " + honest.r + ",", "\"m\": " + (honest.r + 1) + ","));
+		assertThat(VerifySchemes.rankViolation(loose, SchemeIO.parseJson(loose.toFile()), lookup))
+				.as("a recorded rank ABOVE the replay is loose, not false").isNull();
+
+		Path over = dir.resolve("2x2x1-over.json");
+		Files.writeString(over, Files.readString(stub).replace("\"m\": " + honest.r + ",", "\"m\": " + (honest.r - 1) + ","));
+		assertThat(VerifySchemes.rankViolation(over, SchemeIO.parseJson(over.toFile()), lookup))
+				.as("a recorded rank BELOW the replay is a false claim").contains("false rank claim");
+		assertThat(VerifySchemes.checkOne(over, SchemeIO.parseJson(over.toFile()), List.of("Q"),
+				EnumSet.of(VerifySchemes.Check.RANK), lookup)).hasSize(1);
 	}
 
 	@Test

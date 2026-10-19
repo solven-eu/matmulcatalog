@@ -22,9 +22,20 @@ import lombok.extern.slf4j.Slf4j;
  * σ-potential tie-break to break the plateau; if a base predicts below the
  * target's catalog SOTA, builds and verifies.
  *
- * <p>Args: {@code tN tM tP  bN bM bP  iN iM iP}. Example (⟨6,9,12⟩ via
+ * <p>Args: {@code tN tM tP  bN bM bP  iN iM iP [seed.json]}. Example (⟨6,9,12⟩ via
  * ⟨2,3,4⟩ ⊗ ⟨3,3,3⟩): {@code 6 9 12  2 3 4  3 3 3}. The ⟨3,3,3⟩-class inner
  * pays σ≈6 per k=2 bud (vs σ=1 for ⟨3,2,3⟩), so a single extra bud is a −6.</p>
+ *
+ * <p>The objective prices the whole structural family
+ * ({@link SerendipitousBudProduct#serendipitousCost} — combined/grid buds included),
+ * so the build step chooses from the same family. When the built product is exact
+ * and strictly below the catalog, the walked base is persisted under
+ * {@code bud-bases/section{max dim}/} as a <em>reaction base</em> (attributed as
+ * such, {@code discovery:false}); {@code MaterialiseSerendipitousWins --shapes=…}
+ * then derives and pins the stub. Representative search is what closes the FMM
+ * "serendipitous" recipes whose base representative is unpublished — the
+ * 2026-10-13 ⟨4,5,7⟩ walk gave ⟨16,20,28⟩ = 4960 and four more records from one base
+ * (see {@code references/fmm-artifact-audit.md}, re-audit 2026-10-13).</p>
  */
 @Slf4j
 public class ProbeSerendipWalkGen {
@@ -99,12 +110,12 @@ public class ProbeSerendipWalkGen {
 			log.info("NO predicted improvement below {} — not achieved with this seed/budget", current);
 			return;
 		}
-		// Build + verify.
+		// Build + verify (the whole structural family, combined buds included — same
+		// choice the materialiser and the replay make).
 		NonCubicBilinearAlgorithm baseAlg = bestBase.toAlgorithm();
 		SerendipitousBudProduct.BudDecomposition bestDec = null;
 		long bestDecCost = Long.MAX_VALUE / 4;
-		for (SerendipitousBudProduct.BudType[] order : SerendipitousBudProduct.ALL_ORDERINGS) {
-			SerendipitousBudProduct.BudDecomposition dec = SerendipitousBudProduct.findBuds(baseAlg, order);
+		for (SerendipitousBudProduct.BudDecomposition dec : SerendipitousBudProduct.candidateDecompositions(baseAlg)) {
 			long c = SerendipitousBudProduct.costOf(dec, qLookup, n2, m2, p2);
 			if (c < bestDecCost) {
 				bestDecCost = c;
@@ -118,6 +129,39 @@ public class ProbeSerendipWalkGen {
 		log.info("BUILT ⟨{},{},{}⟩ rank={} exact={} — {} vs current {}",
 				product.n, product.m, product.p, product.r, exact,
 				product.r < current ? "*** IMPROVEMENT ***" : "no improvement", current);
+		if (exact && product.r < current && Verifier.isExactNonCubic(baseAlg)) {
+			// Persist the walked base as a REACTION base (bud-bases/), hash-stamped and
+			// attributed as such — the materialiser (MaterialiseSerendipitousWins) then
+			// derives and persists the product with a durable lineage pin on it.
+			int maxd = Math.max(baseAlg.n, Math.max(baseAlg.m, baseAlg.p));
+			java.nio.file.Path dir = java.nio.file.Path.of("src/main/resources/schemes/bud-bases/section" + maxd);
+			java.nio.file.Files.createDirectories(dir);
+			java.io.File out = dir.resolve(SchemeIO.canonicalName(baseAlg, "flipwalk_serendip")).toFile();
+			SchemeIO.write(baseAlg, out);
+			java.util.Map<String, Object> meta = new java.util.LinkedHashMap<>();
+			meta.put("source", "MatMulCatalog flip-graph walk (this work)");
+			meta.put("year", java.time.LocalDate.now(java.time.ZoneOffset.UTC).getYear());
+			meta.put("hash", SchemeIO.contentHash(baseAlg));
+			meta.put("discovery", false);
+			meta.put("attribution_for_rank", "reaction base only (bud-rich representative found by ProbeSerendipWalkGen, "
+					+ "a metaflip walk minimising the serendipitous product cost against ⟨" + n2 + "," + m2 + "," + p2
+					+ "⟩, seeded from " + (args.length > 9 ? new java.io.File(args[9]).getName() : "the Z-best " + bN + "x" + bM + "x" + bP)
+					+ ") — the rank at this shape is attributed by the catalog's rank-best scheme, not by this file");
+			meta.put("commutative", false);
+			meta.put("verified", true);
+			meta.put("fields", SchemeIO.isTernary(baseAlg) || allIntegers(baseAlg)
+					? java.util.List.of("F2", "F3", "Z", "Q", "R", "C") : java.util.List.of("Q", "R", "C"));
+			SchemeIO.addFields(out, meta, true);
+			log.info("wrote reaction base {} — next: MaterialiseSerendipitousWins --shapes={}x{}x{}", out.getName(),
+					tN, tM, tP);
+		}
+	}
+
+	private static boolean allIntegers(NonCubicBilinearAlgorithm alg) {
+		for (double[][] f : new double[][][] { alg.denseU(), alg.denseV(), alg.denseW() }) {
+			for (double[] row : f) for (double v : row) if (Math.abs(v - Math.round(v)) > 1e-9) return false;
+		}
+		return true;
 	}
 
 	private static long sig(FieldAwareLookup q, long RI, int k, int n, int m, int p) {
