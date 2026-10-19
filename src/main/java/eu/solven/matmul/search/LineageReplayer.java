@@ -358,100 +358,158 @@ public final class LineageReplayer {
 		return new java.util.ArrayList<>(byShape.values());
 	}
 
-	private NonCubicBilinearAlgorithm resolveLeaf(String ref) {
-		// Hash-ref: "{n}x{m}x{p}@{contentHash}" — resolve the EXACT scheme by
-		// content hash (precise; avoids the shape-ref picking a bud-poor sibling
-		// of the same shape/rank/adds). A hash that no longer resolves THROWS —
-		// never a silent shape-best substitution.
+	/**
+	 * How a leaf ref resolves. This is THE leaf grammar: {@link #resolveLeaf} dispatches
+	 * on it and the catalog audits ({@code AuditLineageRefs}) read it, so the two can
+	 * never disagree about what is resolvable (before 2026-10-18 the audit kept its own
+	 * regexes and reported 17 859 "UNRESOLVABLE" refs — canonical filename stems,
+	 * {@code TA_lita(n=N)}, {@code Strassen<2,2,2>=7 :: CANONICAL} — that all replayed).
+	 */
+	public enum LeafClass {
+		/** {@code shape@hash} matching a materialised file's content hash: exact content. */
+		PINNED,
+		/** {@code shape@hash} matching a stub's stamped hash: that stub's lineage is replayed. */
+		PINNED_STUB,
+		/** {@code shape@hash} matching nothing — the replay THROWS (no phantom replay). */
+		DANGLING_PIN,
+		/** A named pool base ({@code Strassen<2,2,2>=7}, …), built in code. */
+		NAMED,
+		/** A parametric constructor ({@code DIS09Lemma4(n=N)}, {@code TA_lita_npz(n=N,r=R)}, …). */
+		PARAMETRIC,
+		/** An elementary block ({@code naive-NxMxP}, {@code NxMxP-direct}, any width-1 axis), built in code. */
+		NAIVE,
+		/** A bare {@code NxMxP}: the catalog-best at that shape TODAY — moves with the catalog. */
+		SHAPE_BEST,
+		/** Any other ref a shape can be pulled out of (legacy filename stems, {@code <N,M,P>}
+		 *  labels): resolved like {@link #SHAPE_BEST}, i.e. it moves with the catalog. */
+		LEGACY_SHAPE_BEST,
+		/** Nothing resolves (no shape in the ref, or no catalog entry at the shape). */
+		UNRESOLVABLE;
+
+		/** Does the replayer produce a scheme for such a ref? */
+		public boolean resolves() {
+			return this != DANGLING_PIN && this != UNRESOLVABLE;
+		}
+
+		/** Exact content regardless of what the catalog holds at the shape today. */
+		public boolean precise() {
+			return this == PINNED || this == PINNED_STUB || this == NAMED || this == PARAMETRIC || this == NAIVE;
+		}
+	}
+
+	/**
+	 * A classified leaf: its class, the shape it names ({@code null} for NAMED / PARAMETRIC /
+	 * shapeless UNRESOLVABLE), the stub file for {@link LeafClass#PINNED_STUB}, and the
+	 * resolved entry for {@link LeafClass#PINNED}.
+	 */
+	public record LeafResolution(LeafClass cls, int[] shape, Path stubFile, FieldAwareLookup.WithSource pinned) {}
+
+	/**
+	 * Classify a leaf ref WITHOUT replaying anything heavier than a hash lookup. The
+	 * single source of truth for what {@link #resolveLeaf} will do with the ref.
+	 */
+	public LeafResolution classifyLeaf(String ref) {
+		// Hash-ref: "{n}x{m}x{p}@{contentHash}" — the EXACT scheme by content hash
+		// (precise; avoids the shape-ref picking a bud-poor sibling of the same
+		// shape/rank/adds). A hash that no longer resolves is DANGLING → the replay
+		// throws, never a silent shape-best substitution.
 		int at = ref.indexOf('@');
 		if (at > 0) {
 			String shapePart = ref.substring(0, at);
 			String hash = ref.substring(at + 1);
 			Matcher hm = SHAPE_REF.matcher(shapePart);
 			if (hm.matches()) {
-				int hn = Integer.parseInt(hm.group(2));
-				int hmm = Integer.parseInt(hm.group(3));
-				int hp = Integer.parseInt(hm.group(4));
-				Optional<FieldAwareLookup.WithSource> byHash = lookup.findByHash(hn, hmm, hp, hash);
+				int[] sh = { Integer.parseInt(hm.group(2)), Integer.parseInt(hm.group(3)), Integer.parseInt(hm.group(4)) };
+				Optional<FieldAwareLookup.WithSource> byHash = lookup.findByHash(sh[0], sh[1], sh[2], hash);
 				if (byHash.isPresent()) {
-					return byHash.get().alg();
+					return new LeafResolution(LeafClass.PINNED, sh, null, byHash.get());
 				}
 				// findByHash only hashes materialised candidates — a ref pinned to a
 				// STUB's hash never matched it (audit 2026-06-10 blind spot). Check the
-				// stubs' stamped "hash" field and replay the matching stub.
-				for (java.nio.file.Path cand : lookup.findFiles(hn, hmm, hp)) {
+				// stubs' stamped "hash" field.
+				for (Path cand : lookup.findFiles(sh[0], sh[1], sh[2])) {
 					try {
-						tools.jackson.databind.JsonNode candRoot = SchemeIO.parseJson(cand.toFile());
+						JsonNode candRoot = SchemeIO.parseJson(cand.toFile());
 						String stamped = SchemeIO.readHash(candRoot);
 						if (stamped != null && stamped.startsWith(hash)
 								&& SchemeIO.readLineage(candRoot).isPresent()
 								&& !candRoot.has("u") && !candRoot.has("u_sparse")) {
-							return replayFromFile(cand.toFile());
+							return new LeafResolution(LeafClass.PINNED_STUB, sh, cand, null);
 						}
 					} catch (Exception e) {
 						// unreadable candidate — keep scanning
 					}
 				}
-				// Hash gone → THROW. A pin records exact content; substituting the
-				// shape-best sibling replays DIFFERENT content under the same lineage —
-				// the phantom-replay mechanism behind task #91's ⟨17,22,29⟩ 6129→6138.
-				// (Historically this fell back with a WARN; see
-				// references/PURGE_REFCOUNT_POLICY.md.) RepinDanglingLineageRefs is the
-				// repair pass for such pins.
-				throw new IllegalStateException("LineageReplayer: pinned ref '" + ref
-						+ "' no longer resolves at ⟨" + hn + "," + hmm + "," + hp
-						+ "⟩ — refusing shape-best substitution (phantom replay); "
-						+ "run RepinDanglingLineageRefs to repair the pin");
+				return new LeafResolution(LeafClass.DANGLING_PIN, sh, null, null);
 			}
 		}
 
 		// Named base (Strassen<…>=…, Laderman<…>=…, etc.)
-		NonCubicBilinearAlgorithm named = namedBases.get(ref);
-		if (named != null) return named;
+		if (namedBases.containsKey(ref)) return new LeafResolution(LeafClass.NAMED, null, null, null);
 
-		// Parametric constructor ref, e.g. "DIS09Lemma4(n=26)": reconstruct via
-		// the formula-driven constructor it was materialised from, so a stub whose
-		// lineage is just this ref replays faithfully (the dis09 even cubes that
-		// projection wants as parents are stored this way).
-		NonCubicBilinearAlgorithm parametric = resolveParametric(ref);
-		if (parametric != null) return parametric;
+		// Parametric constructor ref, e.g. "DIS09Lemma4(n=26)": rebuilt via the
+		// formula-driven constructor it was materialised from, so a stub whose lineage
+		// is just this ref replays faithfully.
+		if (isParametricRef(ref)) return new LeafResolution(LeafClass.PARAMETRIC, null, null, null);
 
 		// Shape ref: "AxBxC", "AxBxC-direct/-naive", or prefix "naive-/direct-AxBxC".
 		Matcher m = SHAPE_REF.matcher(ref);
-		if (!m.matches()) {
-			// Robust fallback: pull a shape out of a source-prefixed / canonical-key /
-			// named ref (e.g. "alphatensor_Z-2x3x3_m15_a58", "perminov_Z-2x5x15_…",
-			// "Strassen<2,2,2>=7") and resolve it by shape. This loses the exact
-			// scheme (resolves the catalog-best at that shape), which is fine for
-			// projection parents and rank-only leaves. Only throw if no shape is
-			// recoverable at all.
-			int[] sh = extractShape(ref);
-			if (sh != null) {
-				if (sh[0] == 1 || sh[1] == 1 || sh[2] == 1) {
-					return naiveScheme(sh[0], sh[1], sh[2]);
-				}
-				return resolveShape(sh[0], sh[1], sh[2]);
-			}
-			throw new IllegalStateException("LineageReplayer: cannot resolve leaf ref '" + ref + "'");
+		if (m.matches()) {
+			int[] sh = { Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4)) };
+			boolean naive = m.group(1) != null || m.group(5) != null; // "naive"/"direct" marker
+			// A naive/trivial leaf — or any width-1 axis — is the elementary n·m·p-product
+			// scheme, built directly (it has no catalog file).
+			// NOTE (2026-06-15): a "-direct" leaf (best-at-shape, unpinned) is a CITED
+			// BOUND, NOT a buildable explicit scheme — building an explicit scheme over it
+			// is invalid (the exact scheme matters for downstream DCE/projection; "take the
+			// best is bad"). The principled fix is a separate change (fail on "-direct" in
+			// the build path; resolve best-bound only in a cited-bound path) — see the
+			// VerifyScheme DAG design. Left as-is here pending that decision.
+			if (naive || hasUnitAxis(sh)) return new LeafResolution(LeafClass.NAIVE, sh, null, null);
+			return new LeafResolution(lookup.findFile(sh[0], sh[1], sh[2]).isPresent() ? LeafClass.SHAPE_BEST
+					: LeafClass.UNRESOLVABLE, sh, null, null);
 		}
-		String prefixMarker = m.group(1);   // "naive"/"direct" or null
-		int n = Integer.parseInt(m.group(2));
-		int mm = Integer.parseInt(m.group(3));
-		int p = Integer.parseInt(m.group(4));
-		String suffixMarker = m.group(5);   // "direct"/"naive" or null
-		boolean naive = prefixMarker != null || suffixMarker != null;
-		// A naive/trivial leaf — or any width-1 axis — is just the elementary
-		// n·m·p-product scheme; build it directly (it has no catalog file).
-		// NOTE (2026-06-15): a "-direct" leaf (best-at-shape, unpinned) is a CITED
-		// BOUND, NOT a buildable explicit scheme — building an explicit scheme over it
-		// is invalid (the exact scheme matters for downstream DCE/projection; "take the
-		// best is bad"). The principled fix is a separate change (fail on "-direct" in
-		// the build path; resolve best-bound only in a cited-bound path) — see the
-		// VerifyScheme DAG design. Left as-is here pending that decision.
-		if (naive || n == 1 || mm == 1 || p == 1) {
-			return naiveScheme(n, mm, p);
-		}
-		return resolveShape(n, mm, p);
+		// Robust fallback: pull a shape out of a source-prefixed / canonical-key / named
+		// ref (e.g. "alphatensor_Z-2x3x3_m15_a58", "perminov_Z-2x5x15_…",
+		// "Strassen<2,2,2>=7", a pre-2026-10-18 canonical stem "9x11x15-r960-derived-55c1918")
+		// and resolve it by shape. This loses the exact scheme (resolves the catalog-best
+		// at that shape — fine for projection parents and rank-only leaves, and the reason
+		// stub ranks drift). Only unresolvable if no shape is recoverable at all.
+		int[] sh = extractShape(ref);
+		if (sh == null) return new LeafResolution(LeafClass.UNRESOLVABLE, null, null, null);
+		if (hasUnitAxis(sh)) return new LeafResolution(LeafClass.NAIVE, sh, null, null);
+		return new LeafResolution(lookup.findFile(sh[0], sh[1], sh[2]).isPresent() ? LeafClass.LEGACY_SHAPE_BEST
+				: LeafClass.UNRESOLVABLE, sh, null, null);
+	}
+
+	private static boolean hasUnitAxis(int[] sh) {
+		return sh[0] == 1 || sh[1] == 1 || sh[2] == 1;
+	}
+
+	private NonCubicBilinearAlgorithm resolveLeaf(String ref) {
+		LeafResolution leaf = classifyLeaf(ref);
+		int[] sh = leaf.shape();
+		return switch (leaf.cls()) {
+			case PINNED -> leaf.pinned().alg();
+			case PINNED_STUB -> replayFromFile(leaf.stubFile().toFile());
+			// Hash gone → THROW. A pin records exact content; substituting the shape-best
+			// sibling replays DIFFERENT content under the same lineage — the phantom-replay
+			// mechanism behind task #91's ⟨17,22,29⟩ 6129→6138. (Historically this fell
+			// back with a WARN; see references/PURGE_REFCOUNT_POLICY.md.)
+			// RepinDanglingLineageRefs is the repair pass for such pins.
+			case DANGLING_PIN -> throw new IllegalStateException("LineageReplayer: pinned ref '" + ref
+					+ "' no longer resolves at ⟨" + sh[0] + "," + sh[1] + "," + sh[2]
+					+ "⟩ — refusing shape-best substitution (phantom replay); "
+					+ "run RepinDanglingLineageRefs to repair the pin");
+			case NAMED -> namedBases.get(ref);
+			case PARAMETRIC -> resolveParametric(ref);
+			case NAIVE -> naiveScheme(sh[0], sh[1], sh[2]);
+			case SHAPE_BEST, LEGACY_SHAPE_BEST -> resolveShape(sh[0], sh[1], sh[2]);
+			case UNRESOLVABLE -> throw new IllegalStateException(sh == null
+					? "LineageReplayer: cannot resolve leaf ref '" + ref + "'"
+					: "LineageReplayer: no catalog entry for ⟨" + sh[0] + "," + sh[1] + "," + sh[2] + "⟩ (ref '" + ref
+							+ "')");
+		};
 	}
 
 	/**
@@ -559,7 +617,11 @@ public final class LineageReplayer {
 			try {
 				return resolveStubFile(bestPath.get(), n, mm, p);
 			} catch (RuntimeException e) {
-				log.debug("resolveShape ⟨{},{},{}⟩: best stub {} not replayable ({}); "
+				// Visible on purpose (WARN, not DEBUG): this fallback silently replays a WORSE
+				// scheme than the catalog-best — a replay cycle through same-content twins
+				// did exactly that on 2026-10-18 (⟨28,28,28⟩ 9846 → 10550) and only the rank
+				// check noticed.
+				log.warn("resolveShape ⟨{},{},{}⟩: best stub {} not replayable ({}); "
 						+ "falling back to best materialised", n, mm, p,
 						bestPath.get().getFileName(), e.toString());
 				// fall through to the materialised hit below

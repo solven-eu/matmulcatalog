@@ -2080,3 +2080,246 @@ Two silent faults surfaced and were fixed on the way:
 - The scan counted the 13 audited (index-only / invalid / placeholder) FMM rows
   as strict gaps, which would have opened an `upstream-gap` issue every week;
   it now shares `FmmArtifactAudit` with the cross-check.
+
+---
+
+## 2026-10-13 — The 13 worst cases read from FMM's pages: 2 are ingredient drift, 8 are page = ours, 3 are representative-only recipes — one of them walked: ⟨16,20,28⟩ 4967 → 4960 (+4 more records from the same base)
+
+**Question:** of the 13 rows still above FMM's index after the resync, which are
+real, which are closable, which are upstream claims?
+
+**Method:** (1) re-run the engines on the 13 shapes with today's ingredients —
+`SchemeSweep --strategies=concat,kron,recomb` and `MaterialiseSerendipitousWins`:
+0 wins; (2) re-fetch every FMM page and read what it constructs *today*; (3) for
+the three serendipitous recipes, price every representative we hold
+(`ProbeSerendipStructure`), FMM's own base artifacts (`4x5x7`, `5x5x12`, `4x9x10`
+`_tensor.mpl.bz2` → `MapleTensorParser`) and then flip-walk the base
+(`ProbeSerendipWalkGen`, structural-family objective + σ-potential tie-break).
+
+**Findings** (full table in `references/fmm-artifact-audit.md`, re-audit 2026-10-13):
+
+| row | verdict |
+|---|---|
+| ⟨16,20,28⟩ 4936 / ⟨16,20,29⟩ 5256 | **ingredient drift**: the index is the page's recipe re-priced with ⟨4,4,8⟩ = 95 (page text says 96). The recipe `(⟨4,5,7⟩:104 − 17) ⊗ 48 + 8·⟨4,4,8⟩` puts 17 base products into 16 slots — does not balance under bud semantics (would mean ⟨4,5,7⟩ ≤ 103); artifact is a placeholder. **Walked**: ⟨16,20,28⟩ = 4960. |
+| ⟨20,24,25⟩ 6466 | balanced recipe (one V-quad + two W-triples + sixteen W-pairs on ⟨5,12,5⟩:204); every public representative has eighteen pairs → 6474. Walk (three seeds × 8 rng, 200k steps) never left the plateau. **Representative-only.** |
+| ⟨8,27,30⟩ 3744 | balanced recipe (six B-side pairs on ⟨4,9,10⟩:250, σ = 1 each); FMM's own base artifact and Perminov's file have six *A-side* pairs (σ = 0) → 3750; the ⟨8,27,30⟩ artifact (3736) is invalid. Walk found no B-side pair. **Representative-only.** |
+| ⟨22,30,30⟩ 10534, ⟨21,28,32⟩ 10134 | the pages build 10705 / 10477; ours 10555 / 10143 beat both (⟨22,30,30⟩ is the *same* 7-block recombination with FMM's own ⟨10,15,15⟩ = 1385). Index below anything published — **upstream claim**. |
+| ⟨7,7,17⟩ ⟨7,9,19⟩ ⟨7,9,25⟩ ⟨9,19,25⟩ ⟨11,11,17⟩ ⟨11,13,13⟩ (+1/+2), ⟨7,8,17⟩ (+1) | page = ours (⟨7,8,17⟩: page 637 > ours 636); no ingredient drift (⟨7,7,17⟩'s seven leaves are all at index value). **Upstream claims.** |
+
+**The closure that worked — representative search.** The ⟨4,5,7⟩:104 walk
+(seed: Z-best catalog rep, 8 rng × 200k steps, ~15 min) reached a representative
+with 8 U-pairs, 2 U-triples, 4 V-pairs, 6 W-pairs and **two ⟨2,1,2⟩ grids** —
+every one of our eleven held reps tops out at one grid (4967). Persisted as
+`bud-bases/section7/4x5x7-r104-flipwalk_serendip-4c05684.json` (reaction base,
+`discovery:false`). Priced against every inner ≤ 32 it gives five records, all
+built exact and persisted as pinned stubs:
+
+| shape | was | now | FMM index | inner |
+|---|---:|---:|---:|---|
+| ⟨16,20,28⟩ | 4967 | **4960** | 4936 | ⟨4,4,4⟩ (80·48 + 6·95 + 2·95 + 2·180) |
+| ⟨8,15,21⟩ | 1552 | **1548** | 1558 | ⟨2,3,3⟩ |
+| ⟨8,25,28⟩ | 3306 | **3302** | 3319 | ⟨2,5,4⟩ |
+| ⟨12,21,30⟩ | 4153 | **4146** | 4160 | ⟨3,6,3⟩ |
+| ⟨16,21,30⟩ | 5576 | **5572** | 5592 | ⟨4,6,3⟩ |
+
+Tier: bound (anytime walk; the family pricing is exact for the decomposition
+chosen). Guard: `TestSweepSpotsSota.retains_flipwalked_4x5x7_reaction_base_records`
+(records + the family must keep pricing the base ≤ 4960 against ⟨4,4,4⟩).
+
+**Why the engines could not do this before:** every serendipitous engine takes the
+base *as held* and optimises the partition; the rank-204 / 250 / 104 schemes we
+hold are the ones Perminov/FMM published, and FMM's recipes were computed on
+representatives that were never published (placeholder artifacts). The walk moves
+through the flip graph at fixed rank, which is the only operator that changes
+class structure.
+
+**Open / next:**
+- A catalog-wide walk campaign: every bud base × every inner that lands on a
+  catalog shape (24 cores; ~15 min per ⟨4,5,7⟩-sized base, ~50 min for
+  ⟨5,5,12⟩). The one base walked here moved five shapes — the expected yield is
+  large, and the ⟨5,5,12⟩ / ⟨4,9,10⟩ plateaus want longer walks or seeds from
+  other reps (two more ⟨5,5,12⟩ seeds + four ⟨4,5,7⟩ seeds were still running
+  when this was written; results, if any, are materialised by the same two
+  commands).
+- Report upstream (user's call): the index/page disagreements that are not
+  ingredient drift (⟨22,30,30⟩ −21, ⟨21,28,32⟩ −343, the seven ±1/±2 rows), the
+  invalid ⟨8,27,30⟩ artifact, and the ⟨16,20,28⟩ recipe arithmetic (17 → 16).
+
+---
+
+## 2026-10-14 — "Are there false schemes?" Full exact pass: every explicit scheme computes matmul; 2 of 8 358 stubs recorded a rank BELOW their replay (false claims) — repaired, and the daily job now checks rank honesty
+
+**Question (user):** if false schemes exist, fix them and find how they got in.
+
+**What was checked, catalog-wide, on 2026-10-14 (branch `worst-cases-2026-10-13`):**
+
+| population | check | result |
+|---|---|---|
+| 4 739 explicit scheme files (matrices on disk) | exact full-tensor residual (`Verifier.exactDiscrepancyNonCubic`, not the spot-check) over char-0; exact modular identity for every F₂/F₃ claim; recorded `n`/`m` vs the matrices | **0 failures** (final, 2026-10-18: 13 097 files in 89 min; 14 schemes with r > 2 500 spot-checked only — the dense modular check is O(r·n²m²p²) there; CI covers them through the char-0 identity, which reduces mod p) |
+| 8 358 lineage-only stubs | replay the lineage today (`LineageReplayer.replayFromFile`), spot-check the replayed product, compare replayed shape/rank with the recorded `n`/`m` | **0 replay failures, 0 non-matmul products, 2 over-claims, 510 loose** |
+| lineage refs (`AuditLineageRefs`) | pinned refs that no longer resolve | 4 dangling pins in 3 explicit files (⟨8,8,8⟩ 329, ⟨10,10,10⟩ 651, ⟨16,16,16⟩ 2209 — matrices on disk, so provenance display only); the tool's "UNRESOLVABLE 17 859" is its own stale resolver (it flags bare `9x11x15` and `naive-1x1x1`, both of which the replayer resolves — every stub replayed) |
+
+(A first driver reported 555 explicit "failures": its F₂/F₃ check was the integer-only
+`residualNonCubicF2/F3`, which rejects every rational scheme that legitimately
+carries an F₂/F₃ tag; with `isExactNonCubicFp` the count is 0. Recorded here so the
+next audit does not repeat it.)
+
+**The two false claims** — both `Project` stubs, both pinned to their parent by hash:
+
+| stub | recorded | replays | parent | why it drifted |
+|---|---:|---:|---|---|
+| `derived/section17/13x13x17-r1876` | 1876 | 1879 | `13x14x17@435178c` = `R[2x3x3…; 5,4,4 \| 7,7 \| 6,6,5]` with **legacy filename-stem refs** (`4x5x7-r104-perminov_ZT-4a1b410`, `5x6x7-r150-kauers_2026-…`, `ext[…]`) | the stems resolve through the replayer's shape fallback to the catalog-best of the day; the parent still replays at 1923 but with different matrices, so the projection dead-code-eliminates 44 products instead of 47 |
+| `derived/section30/20x26x30-r8590` | 8590 | 8594 | `20x27x30@440674e` = `5x5x9@0972b0d ⊗ˢ ⟨4,3,6⟩` | a `SerendipitousProduct` re-derives its decomposition against today's inner ranks; the parent's product structure moved, so the projection removes 4 fewer products |
+
+Neither was the catalog-best for its shape (⟨13,13,17⟩ = 1805, ⟨20,26,30⟩ = 8529), so no
+comparison, bound or report was wrong — but both files stated a rank their own
+lineage cannot reproduce.
+
+**How they lurked in.** A stub's `m` is a snapshot of a replay. The materialiser fails
+loud only *at write time* (`assertRebuildNotWorse`); afterwards the lineage can move —
+bare / legacy refs follow the catalog-best, serendipitous nodes re-derive, and a pinned
+ref to another **stub** pins that stub's lineage, not its matrices — and nothing re-read
+the recorded rank: the daily `VerifyAllSchemes` certifies that a stub's lineage *is a
+valid matmul scheme* (compositional: exact leaves + trusted operators) and never
+compares the replayed rank with the recorded one. `AuditStubReplayRanks` existed
+(READ-ONLY, from the 2026-06-15 ⟨4,16,20⟩ 822→832 finding) but was never wired to CI.
+The 510 "loose" stubs are the same mechanism in the harmless direction (the lineage now
+replays *below* the record).
+
+**Fix.**
+- `VerifySchemes --check=rank` (new; also in `all`): for a stub, replay and require
+  replayed shape == recorded and replayed r ≤ recorded m; for explicit files, `m` must
+  equal the stored product count. The driver's file loop is now parallel (the check
+  replays every stub). Wired into `verify-catalog.yml` on the daily schedule /
+  manual dispatch (not per-PR: ~minutes on 24 cores, longer on the runner).
+- `docs.migrate.RestampStubRanks` (new; dry-run, `--execute`, `--direction=over|all`):
+  rewrites a drifted stub at its replayed rank — same lineage and `fields[]`,
+  provenance keys carried, computed metrics (additions, buds, zt, …) dropped for the
+  enrichment stampers to recompute, file renamed to the new rank/hash, old file
+  deleted. Run with `--direction=over`: the two stubs are now
+  `13x13x17-r1879-derived-ec1513b` and `20x26x30-r8594-derived-c4545a0`.
+- Guards: `TestVerifySchemes.rank_check_flags_a_stub_recorded_below_its_replay`
+  (honest / loose / over-claiming stub on a real `Project` of the pinned ⟨2,2,2⟩),
+  `TestRestampStubRanks` (rewrite keeps lineage + provenance, is honest afterwards).
+
+**Not done (follow-ups):** tighten the 510 loose stubs (`RestampStubRanks
+--direction=all --execute`: churn of 510 files + renames; harmless as is); re-pin the
+4 dangling refs in the 3 explicit files; fix `AuditLineageRefs`' resolver (it
+predates the content-driven lookup).
+
+**Upstream (not ours to fix, reported in the 2026-10-13 audit):** FMM's ⟨8,27,30⟩
+artifact (3 736 triads) does not compute matmul and was rejected by our import gate;
+FMM's ⟨16,20,28⟩ recipe text puts 17 base products into 16 slots.
+
+---
+
+## 2026-10-18 — Leftovers of the false-schemes audit: 510 loose stubs tightened (114 were hiding a record at 104 shapes), the "dangling" pins were F₂ files under a char-0 lookup, the materialiser's unpinned stems were the drift mechanism and now pin, the lineage-ref audit shares the replayer's grammar
+
+**Exact pass, final.** The catalog-wide exact pass of the 2026-10-14 entry finished:
+13 097 files in 89 min, **0 failures**; 14 schemes with r > 2 500 were spot-checked only
+(that entry now carries the final count).
+
+**Loose stubs were hidden records.** The 2026-10-14 pass left 510 stubs recorded ABOVE
+what their lineage replays today — honest as upper bounds, stale as records. Replaying
+all 8 358 stubs and comparing each replay with the catalog-best at its shape:
+**114 of the 510 replay below the best rank the catalog reported for their shape**
+(104 distinct shapes, all in sections 21–32; gains 1–21):
+
+| shape | catalog-best before | the loose stub replays | gain |
+|---|---:|---:|---:|
+| ⟨23,27,32⟩ | 10575 | 10554 | 21 |
+| ⟨7,17,32⟩ | 2422 | 2410 | 12 |
+| ⟨17,20,32⟩ | 6126 | 6117 | 9 |
+| ⟨7,14,32⟩ | 2017 | 2008 | 9 |
+| ⟨14,25,32⟩, ⟨16,19,28⟩, ⟨16,20,26⟩, ⟨16,21,31⟩, ⟨16,22,31⟩, ⟨16,25,26⟩, ⟨16,26,29⟩, ⟨19,26,28⟩, ⟨7,16,31⟩ | | | 8 |
+| ⟨19,21,23⟩ | 5195 | 5188 | 7 |
+| … 99 more | | | 1–6 |
+
+The catalog already owned these bounds and did not state them — the same mechanism as
+the two false claims, in the direction nobody looks at (bare / legacy-stem leaves follow
+the catalog-best, and every import since 2026-06 moved them). Drift magnitudes: 1–4
+for 290 of the 510, up to 615 for the eight whose serendipitous parent re-derived.
+
+Fix: `RestampStubRanks --direction=all --execute`, now in three phases — write the honest
+stub next to the stale one; re-point every lineage that pinned the stale stamped hash
+(95 files) to the new hash, exact by construction since the stub's lineage is
+unchanged; delete the stale files. Every rewrite passes the matmul spot-check before it is
+written. Of the 510: 339 were rewritten at their replayed rank and **171 turned out to be pure
+duplicates of content the catalog already held** at that rank — a sibling stub, or a
+known import the derivation merely re-wraps (`Project(ConcatCols(naive, X)) = X`: the
+derived ⟨28,28,28⟩ was LITA 9846 itself). The first run overwrote such twins (lineage
+swapped, computed metrics dropped) and, by re-wrapping a known cube as a derived twin
+that pinned back into its own projection, created a replay cycle that the rank check
+caught (18 "false claims" that were the fallback replaying the worse materialised scheme);
+the catalog was reset and the run redone with the tool as it is now: a loose stub whose
+content already exists is removed, its twin untouched
+(`TestRestampStubRanks.a_loose_duplicate_of_an_existing_honest_stub_is_removed_not_overwritten`).
+The catalog has 8 187 stubs afterwards (8 358 − 171 duplicates). After the run: `RestampStubRanks` dry-run **0 drifted**, `VerifySchemes
+--check=rank` **0 failures** (12 926 files).
+
+**The "4 dangling pins" were never dangling.** `AuditLineageRefs` and
+`RepinDanglingLineageRefs` judged every file under a single C lookup, whose fallback
+chain (C ⊃ R ⊃ Q ⊃ Z) cannot see F₂ files. The pins — `4x4x4@258e5b7` (AlphaTensor F₂
+47), `2x2x2@89207d8` (AlphaTensor F₂ 7), `5x5x5@9728dd0` (AlphaEvolve 93) — all
+resolve; the two F₂ Kron products that cite them, ⟨8,8,8⟩=329 and ⟨16,16,16⟩=2209, are
+valid and untouched. Both tools now resolve under the file's own `fields[]` (C for any
+char-0 tag, F₂ / F₃ as their own universes); the repin dry-run reports fixpoint at pass 1, no file needs repair (the two F₂ Kron products included).
+
+**The audit's 17 859 "UNRESOLVABLE" refs all replayed.** Three grammar gaps, fixed by
+deleting the audit's grammar: `AuditLineageRefs.classify` now calls the new
+`LineageReplayer.classifyLeaf`, and `resolveLeaf` dispatches on that same
+classification, so audit and replayer cannot disagree. The gaps: (1) 419 distinct
+canonical filename stems `NxMxP-r…-note-hash7` (shape first — the audit's legacy pattern
+wanted a source prefix first); (2) parametric names with underscores (`TA_lita(n=N)`,
+`TA_lita_npz(n=N,r=R)`); (3) pool labels with an orbit suffix
+(`Strassen<2,2,2>=7 :: CANONICAL`, in 2 347 files). Re-run after the fix:
+
+| class | refs | meaning |
+|---|---:|---|
+| PINNED_OK | 19 629 | `shape@hash` → a materialised file |
+| PINNED_OK_STUB | 1 760 | `shape@hash` → a stub (its lineage is replayed) |
+| PINNED_DANGLING | 0 | — |
+| LEGACY_STEM | 17 146 | canonical / legacy stems and `… :: CANONICAL` labels: resolved by shape (the drift class) |
+| BARE | 17 | bare `NxMxP`: resolved by shape |
+| NAIVE | 7 861 | built in code |
+| PARAMETRIC | 124 | `DIS09Lemma4(n=N)`, `TA_lita*(…)` |
+| UNRESOLVABLE | 17 | 14 `RosowskiTheorem2(l,n,m)` leaves of explicit *constructed* files (a constructor the replayer has no builder for — provenance only, matrices on disk) and 3 older files whose defect predates this work (e.g. `derived/section20/17x19x20-r3780`, the R-only drift example of CLAUDE.md, carries an `@ref?:L0` placeholder from an older tool) |
+
+Sampled compositional verification: 160 / 160 OK. Before the fix the same audit reported UNRESOLVABLE 17 859 and PINNED_DANGLING 4.
+
+**Where the stems come from — fixed at the source.** `Lineage.atomFromFilename` is what
+the materialiser emits as the leaf for a disk hit without its own lineage. For a
+canonical name it produced the whole stem, which the replayer resolves by SHAPE (the
+catalog-best of the day). It now emits the pinned ref `shape@hash7` — the name's hash7 is
+the content-hash prefix by construction (`SchemeIO.canonicalName`) — so a new stub replays
+exactly what it was built from and its recorded rank cannot drift; improvements are found
+by re-running the sweep, not by silent re-targeting. Existing lineages are untouched
+(their stems still resolve by shape, now at honest ranks).
+
+**A parser bug the rewrite exposed.** `SchemeIO.readLineage` parsed a Recombination's
+`leaves` before its `base`, while `Lineage.toJson` renders the base first and writes a
+shared subtree once with `{"op":"","id":"L0"}` back-references; a leaf's
+back-reference to the shared base therefore came out as a literal `Atom("?:L0")`,
+and the rewrite persisted that in 39 files (the catalog already had one such file from
+an older tool). The parser now collects the definitions first and resolves a
+back-reference on demand, whatever the field order (`TestLineageJsonSharedNodes`: the
+nested base is the same instance as the outer base, and write → read → write is stable);
+the 39 files were rebuilt from their original JSON and replay to the same rank and hash.
+
+**Operational.** Phase 1 (the replays) now runs in parallel into a staging directory
+outside the catalog — 3 min instead of an hour — and the phases are ordered so that a
+kill between them leaves the tree consistent (a `nohup` JVM started from the Bash tool
+died with a session restart at 403/510; the detached rerun resolved the half-written
+state by recognising the already-placed files as twins).
+
+**Retired:** `AuditStubReplayRanks` (sampled, swallowed replay failures; a strict subset
+of `VerifySchemes --check=rank` + `RestampStubRanks`).
+
+**Guards:** `TestLineageAtomFromFilename` (canonical name → pin, and the pin replays that
+exact file), `TestAuditLineageRefs` (audit verdict ⇔ replayer behaviour for every ref
+kind; an F₂ pin dangling under Q is fine under F₂),
+`TestRestampStubRanks.pins_to_a_restamped_stubs_old_hash_are_rewritten`. Playbook step 4
+now ends with `RestampStubRanks --direction=all --execute` (bare / stem-leaf stubs replay
+lower after every import).
+
+**Reports after regeneration:** `CompareReferenceCatalogs` tie 4320 / better 1107 / worse 13 (was 4349 / 1078 / 13 — **29 formats moved from tie to better-than-both**), `FmmCrossCheck` WORSE 0, UPSTREAM-UNVERIFIED 13 (the audited rows), BETTER 1867 (was 1841).

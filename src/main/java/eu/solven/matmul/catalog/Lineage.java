@@ -959,14 +959,29 @@ public final class Lineage {
 	 *  name) — so lineage references stay stable when the catalog re-tags
 	 *  a file's source attribution. Falls back to the full stem when the
 	 *  pattern doesn't match (e.g. {@code rosowski_2019_alg1-3x3x3_m21}
-	 *  without a-count, or {@code Strassen<2,2,2>=7} short labels). */
+	 *  without a-count, or {@code Strassen<2,2,2>=7} short labels).
+	 *
+	 *  <p>A file in the 2026-06 canonical layout {@code {shape}-r{rank}-{note}-{hash7}.json}
+	 *  becomes the PINNED ref {@code shape@hash7}: the name's hash7 is the first seven hex
+	 *  digits of the content hash ({@link SchemeIO#canonicalName}), so the ref names that
+	 *  exact scheme and still replays it after a rename. Before 2026-10-18 such a name
+	 *  became the whole stem as an UNPINNED ref, which the replayer resolves by shape — the
+	 *  catalog-best of the day. 419 distinct stems of that kind sat in the catalog's
+	 *  lineages and were the mechanism behind stub rank drift: a stub's recorded rank is a
+	 *  snapshot, and its leaves kept moving with every import.</p> */
 	public static Atom atomFromFilename(String filename) {
 		String ref = filename;
 		if (ref.endsWith(".json")) ref = ref.substring(0, ref.length() - 5);
 		int slash = ref.lastIndexOf('/');
 		if (slash >= 0) ref = ref.substring(slash + 1);
+		java.util.regex.Matcher canonical = CANONICAL_NAME.matcher(ref);
+		if (canonical.matches()) return new Atom(canonical.group(1) + "@" + canonical.group(2));
 		return new Atom(canonicalKey(ref));
 	}
+
+	/** The canonical filename stem {@code {shape}-r{rank}-{note}-{hash7}} (see {@link SchemeIO#canonicalName}). */
+	private static final java.util.regex.Pattern CANONICAL_NAME =
+			java.util.regex.Pattern.compile("^(\\d+x\\d+x\\d+)-r\\d+-.+-([0-9a-f]{7})$");
 
 	private static final java.util.regex.Pattern CANONICAL_KEY =
 			java.util.regex.Pattern.compile(".*_(\\d+x\\d+x\\d+_m\\d+_a\\d+)(?:_[A-Za-z0-9.]+)?$");

@@ -21,7 +21,7 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 
 | shape | FMM | ours | gap |
 | --- | ---: | ---: | ---: |
-| ⟨16,20,28⟩ | 4936 | 4967 | 31 |
+| ⟨16,20,28⟩ | 4936 | 4960 | 24 |
 | ⟨22,30,30⟩ | 10534 | 10555 | 21 |
 | ⟨16,20,29⟩ | 5256 | 5272 | 16 |
 | ⟨21,28,32⟩ | 10134 | 10143 | 9 |

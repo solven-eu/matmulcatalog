@@ -316,3 +316,30 @@ recorded in the lineage node to stay replayable; that is the open follow-up.
 
 Tier: **bound** (cheapest of a structural family of greedy decompositions), not
 optimal over bud partitions, and the fused ranks are themselves catalog bounds.
+
+## 7. Representative search — the base's class structure is the variable (2026-10-13)
+
+Everything above takes the base *as held* and optimises the partition. The
+2026-10-13 worst-case pass showed where that stops: FMM's three "serendipitous"
+rows that are still above us (⟨16,20,28⟩, ⟨20,24,25⟩, ⟨8,27,30⟩) are recipes on
+representatives of ⟨4,5,7⟩:104, ⟨5,12,5⟩:204, ⟨4,9,10⟩:250 that were never
+published — the artifacts are placeholders, and FMM's own base artifacts carry
+the same class structure as Perminov's files (eighteen pairs, six A-side pairs),
+which price to exactly our ranks. The rank is not the problem; the
+representative is.
+
+`ProbeSerendipWalkGen` (docs.explore) walks the flip graph of the base at fixed
+rank with the family's own product cost as the objective (so every grid
+candidate counts) and a per-axis σ-potential as tie-break, and when the built
+product is exact and strictly below the catalog it persists the base under
+`bud-bases/` as a *reaction base* (`discovery:false`, attribution to the walk);
+`MaterialiseSerendipitousWins --shapes=…` then pins the stub on it. One walk on
+⟨4,5,7⟩ (8 rng × 200k steps, ~15 min) gave a representative with two ⟨2,1,2⟩
+grids where every held representative has at most one, and five records from
+that single base: ⟨16,20,28⟩ 4967 → 4960, ⟨8,15,21⟩ 1552 → 1548,
+⟨8,25,28⟩ 3306 → 3302, ⟨12,21,30⟩ 4153 → 4146, ⟨16,21,30⟩ 5576 → 5572. The
+⟨5,5,12⟩ and ⟨4,9,10⟩ walks did not leave their plateaus (details and the
+per-row audit in `references/fmm-artifact-audit.md`, re-audit 2026-10-13).
+
+Tier: **bound** — an anytime walk; what it reports is a representative and the
+family's price for it, nothing about the best representative.

@@ -49,7 +49,14 @@ $M eu.solven.matmul.docs.explore.ProjectFmmGaps -Dexec.args="--passes=2"      # 
 $M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=simple \
      --strategies=concat,kron,recomb --shape-file=target/fmm-worse.txt --threads=4"
 $M eu.solven.matmul.docs.migrate.MaterialiseSerendipitousWins -Dexec.args="--shapes=..."   # serendipitous products
-#    a row that survives: FMM artifact audit (download the artifact, read its rank → fmm-artifact-audit.json)
+#    an FMM "serendipitous" recipe we cannot price: the base REPRESENTATIVE is the variable —
+#    walk it (persists a reaction base when it builds below the catalog), then materialise:
+$M eu.solven.matmul.docs.explore.ProbeSerendipWalkGen -Dexec.args="16 20 28  4 5 7  4 4 4"
+#    a row that survives: FMM artifact audit (download the artifact, read its rank → fmm-artifact-audit.json;
+#    read the page recipe too — the index may be the recipe re-priced with today's ingredients)
+#    stubs whose leaves are bare / legacy-stem refs replay LOWER once ingredients improved — restamp them
+#    (2026-10-18: 510 loose stubs, 114 of them below the catalog-best their shape reported):
+$M eu.solven.matmul.docs.migrate.RestampStubRanks -Dexec.args="--direction=all --execute"
 
 # 5. regenerate the committed artifacts (CI order)
 $M eu.solven.matmul.docs.generate.GenerateCatalogManifest
@@ -97,3 +104,7 @@ entry with the numbers.
 | audit entries never expired → rows hidden after the index moved | `index_rank` on every entry, `FmmArtifactAudit` + `TestFmmArtifactAudit` |
 | exact verifier rejected denominators > 1024 → two bases "FAIL" every run | `TestExactVerifierLargeDenominators` |
 | re-stamp "succeeded" without writing (`updateFields` never clobbers) | `TestRestampContributedProvenance` |
+| a stub's recorded rank drifted below what its lineage replays (legacy/bare refs follow the catalog-best, serendipitous nodes re-derive, a pinned stub pins a lineage not matrices) — two false claims found 2026-10-14, nothing re-read `m` after write | `VerifySchemes --check=rank` (daily schedule), `TestVerifySchemes.rank_check_flags_a_stub_recorded_below_its_replay`; repair with `RestampStubRanks` |
+| the lineage-ref audit kept its own grammar: 17 859 "UNRESOLVABLE" refs that all replayed (canonical stems, `TA_lita(n=N)`, `… :: CANONICAL` labels) and 4 "dangling" pins that were F₂ files under a C lookup | `AuditLineageRefs` delegates to `LineageReplayer.classifyLeaf` under the file's `fields[]`; `TestAuditLineageRefs` |
+| the materialiser emitted canonical filename stems as UNPINNED leaves (419 distinct), so stub ranks moved with every import — 510 loose stubs on 2026-10-18, 114 hiding a record | `Lineage.atomFromFilename` pins `shape@hash7` (`TestLineageAtomFromFilename`); `RestampStubRanks --direction=all --execute` after every resync |
+| the lineage JSON parser read a Recombination's `leaves` before its `base` while the writer renders base first — a shared-base back-reference became a literal `Atom("@ref?:L0")` on every read → write round trip (39 files after the 2026-10-19 restamp, 1 older) | `SchemeIO.readLineage` resolves back-references on demand; `TestLineageJsonSharedNodes` |

@@ -293,6 +293,21 @@ Canonical examples (all from real silent regressions in this repo):
   `TestCommutativeNotWorseThanNc` (`R_c ≤ R`, so a commutative bound worse than
   a known NC rank is a reporting bug).
 
+- A stub's recorded `m` is a snapshot of a replay; its lineage kept moving
+  (legacy/bare refs follow the catalog-best, serendipitous nodes re-derive, a
+  pinned ref to another *stub* pins a lineage, not matrices), and nothing re-read
+  `m` after the write — two `Project` stubs sat 3–4 below what they replay
+  (2026-10-14). Guards: `VerifySchemes --check=rank` on the daily schedule +
+  `TestVerifySchemes.rank_check_flags_a_stub_recorded_below_its_replay`; repair
+  with `RestampStubRanks`. The harmless direction hides records: 510 stubs
+  replayed *below* their recorded rank, 114 of them below the catalog-best their shape
+  reported (2026-10-18) — run `RestampStubRanks --direction=all --execute` after every
+  resync. The producer was `Lineage.atomFromFilename` emitting canonical filename stems
+  as unpinned leaves (resolved as the catalog-best of the day); it now pins `shape@hash7`
+  (`TestLineageAtomFromFilename`). Two tools that answer the same question must share one
+  grammar: `AuditLineageRefs` reported 17 859 "unresolvable" refs that all replayed until
+  it delegated to `LineageReplayer.classifyLeaf` (`TestAuditLineageRefs`).
+
 **Two registries must never be able to contradict each other in silence.** When
 you add a source of truth (a bounds file, a curated list, a formula helper),
 also add the cross-check that compares it with the existing ones —

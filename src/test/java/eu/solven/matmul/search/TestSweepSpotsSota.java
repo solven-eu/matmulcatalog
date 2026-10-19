@@ -476,6 +476,33 @@ public class TestSweepSpotsSota {
 		}
 	}
 
+	/**
+	 * 2026-10-13 worst-case investigation: a flip-walked ⟨4,5,7⟩:104 representative
+	 * (bud-bases/, {@code flipwalk_serendip}) carries two ⟨2,1,2⟩ grids and prices
+	 * five serendipitous products below the catalog (and below FMM's index). The
+	 * records must stay, and the structural family must keep pricing the base at
+	 * ≤ 4960 against ⟨4,4,4⟩ — losing the grid candidates would silently regress to
+	 * the single-type-bud 4976.
+	 */
+	@Test
+	public void retains_flipwalked_4x5x7_reaction_base_records() throws Exception {
+		int[][] rows = { { 16, 20, 28, 4960 }, { 8, 15, 21, 1548 }, { 8, 25, 28, 3302 }, { 12, 21, 30, 4146 },
+				{ 16, 21, 30, 5572 } };
+		for (int[] r : rows) {
+			assertThat(lookup.findRank(r[0], r[1], r[2]))
+					.as("⟨%d,%d,%d⟩ must retain the flip-walked ⟨4,5,7⟩ serendipitous record at %d", r[0], r[1], r[2], r[3])
+					.isLessThanOrEqualTo(r[3]);
+		}
+		Optional<Path> base;
+		try (var files = Files.list(Path.of("src/main/resources/schemes/bud-bases/section7"))) {
+			base = files.filter(p -> p.getFileName().toString().startsWith("4x5x7-r104-flipwalk_serendip-")).findFirst();
+		}
+		assertThat(base).as("the walked reaction base is kept under bud-bases/").isPresent();
+		long priced = eu.solven.matmul.catalog.SerendipitousBudProduct.serendipitousCost(
+				SchemeIO.read(base.get().toFile()), lookup, 4, 4, 4);
+		assertThat(priced).as("structural family (grids included) prices the base against ⟨4,4,4⟩").isLessThanOrEqualTo(4960);
+	}
+
 	@Test
 	public void retains_issue7_hk_task9_formula_schemes() {
 		int[][] shapes = { { 2, 12, 18 }, { 2, 14, 21 }, { 2, 16, 24 }, { 2, 18, 27 }, { 2, 20, 30 }, { 2, 24, 30 } };

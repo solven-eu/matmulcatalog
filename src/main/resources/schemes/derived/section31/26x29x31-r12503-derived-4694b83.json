@@ -1,0 +1,72 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[14, 12], allocB=[14, 15], allocC=[15, 16], leaves=[KronProduct(OrientAs(2x4x5-r32-alphaevolve-6216e15, ⟨2,5,4⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,3,4⟩)), 14x14x15-r1798-perminov_Z-04216c1, 14x15x15-r1890-perminov_Q-201f413, 12x14x16-r1617-perminov_Q-1500a76, KronProduct(2x5x5-r40-alphatensor_Z-67f5fb7, Project(OrientAs(3x3x7, ⟨7,3,3⟩), keepN=[1, 2, 3, 4, 5, 6], keepM=[0, 1, 2], keepP=[0, 1, 2]))])",
+  "lineage_compact": "R[2x2x2; 14,12 | 14,15 | 15,16]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [14, 12],
+    "allocB": [14, 15],
+    "allocC": [15, 16],
+    "leaves": [
+      {
+        "op": "KronProduct",
+        "outer": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 5,
+          "p": 4,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
+        },
+        "inner": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 3,
+          "p": 4,
+          "axisMap": "pnm",
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        }
+      },
+      {"op": "Atom", "ref": "14x14x15-r1798-perminov_Z-04216c1"},
+      {"op": "Atom", "ref": "14x15x15-r1890-perminov_Q-201f413"},
+      {"op": "Atom", "ref": "12x14x16-r1617-perminov_Q-1500a76"},
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
+        "inner": {
+          "op": "Project",
+          "keepN": [1, 2, 3, 4, 5, 6],
+          "keepM": [0, 1, 2],
+          "keepP": [0, 1, 2],
+          "child": {
+            "op": "OrientAs",
+            "n": 7,
+            "m": 3,
+            "p": 3,
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+          }
+        }
+      }
+    ]
+  },
+  "n": [26, 29, 31],
+  "m": 12503,
+  "hash": "4694b8373dead0f9b136494039345abeada92c04c3350bd0868c8a04ca02764e",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub",
+  "verified": true
+}
