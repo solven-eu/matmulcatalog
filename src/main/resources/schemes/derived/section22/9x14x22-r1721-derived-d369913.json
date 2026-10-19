@@ -1,0 +1,49 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,2,1>=2 :: CANONICAL, allocA=[9], allocB=[2, 12], allocC=[22], leaves=[ConcatCols(OrientAs(2x9x9-r126-hk71-1e432f3, ⟨9,2,9⟩), OrientAs(2x9x13-r182-hk71-da2bf47, ⟨9,2,13⟩)), Serendipitous(3x4x11 ⊗ ⟨3,3,2⟩)])",
+  "lineage_compact": "R[AxisSplit<1,2,1>=2 :: CANONICAL; 9 | 2,12 | 22]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,2,1>=2 :: CANONICAL"},
+    "allocA": [9],
+    "allocB": [2, 12],
+    "allocC": [22],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 2,
+          "p": 9,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
+        },
+        "right": {
+          "op": "OrientAs",
+          "n": 9,
+          "m": 2,
+          "p": 13,
+          "axisMap": "mnp",
+          "child": {"op": "Atom", "ref": "2x9x13-r182-hk71-da2bf47"}
+        }
+      },
+      {
+        "op": "SerendipitousProduct",
+        "n2": 3,
+        "m2": 3,
+        "p2": 2,
+        "base": {"op": "Atom", "ref": "3x4x11@999a6c3"}
+      }
+    ]
+  },
+  "n": [9, 14, 22],
+  "m": 1721,
+  "hash": "d3699134e653b7db96e6fe582a8615b93f118b69860fa84a1af842312598bc68",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub",
+  "verified": true
+}

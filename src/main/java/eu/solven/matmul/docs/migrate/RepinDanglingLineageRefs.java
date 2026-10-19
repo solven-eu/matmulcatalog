@@ -5,6 +5,7 @@ import eu.solven.matmul.docs.verify.AuditLineageRefs;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
+import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.verifiers.Verifier;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.Lineage;
@@ -72,8 +74,13 @@ public class RepinDanglingLineageRefs {
 	private static final List<String> STALE_METRIC_FIELDS =
 			List.of("additions", "min_additions", "has_buds", "buds", "bud_score", "projection_margin", "slp");
 
-	private final FieldAwareLookup lookup = new FieldAwareLookup("C");
-	private final LineageReplayer replayer = LineageReplayer.withDefaultPool(lookup);
+	/** One lookup / replayer per field, built on demand. A pin to an F₂-only file (the
+	 *  AlphaTensor ⟨4,4,4⟩=47) is dangling for a char-0 lookup and perfectly fine for an
+	 *  F₂ one, so every file is judged under its own {@code fields[]} — the fixed C lookup
+	 *  used until 2026-10-18 "quarantined" two valid F₂ Kron products (⟨8,8,8⟩=329,
+	 *  ⟨16,16,16⟩=2209) whose pins were never dangling. */
+	private final Map<Field, FieldAwareLookup> lookups = new EnumMap<>(Field.class);
+	private final Map<Field, LineageReplayer> replayers = new EnumMap<>(Field.class);
 	/** candidate scheme file → full content/stamped hash. */
 	private final Map<Path, String> candidateHash = new LinkedHashMap<>();
 	/** dangling ref → candidate hash that worked elsewhere (try-first hint). */
@@ -119,7 +126,7 @@ public class RepinDanglingLineageRefs {
 				JsonNode root = SchemeIO.parseJson(p.toFile());
 				JsonNode lineage = root.get("lineage");
 				if (lineage == null || lineage.isNull()) continue;
-				if (!needsRepair(lineage)) continue;
+				if (!needsRepair(root)) continue;
 				affected.add(p);
 			}
 			if (affected.isEmpty()) {
@@ -191,10 +198,24 @@ public class RepinDanglingLineageRefs {
 		}
 	}
 
+	private FieldAwareLookup lookupFor(Field f) {
+		return lookups.computeIfAbsent(f, k -> new FieldAwareLookup(k));
+	}
+
+	private LineageReplayer replayerFor(Field f) {
+		return replayers.computeIfAbsent(f, k -> LineageReplayer.withDefaultPool(lookupFor(k)));
+	}
+
+	/** The fields a file's leaves are resolved under — C for any char-0 tag, F₂ / F₃ as their own universes. */
+	private static List<Field> fieldsOf(JsonNode root) {
+		return AuditLineageRefs.fieldsToTry(SchemeIO.fieldTags(root));
+	}
+
 	/** A file needs repair iff it has a truly-dangling pin or pins a rewritten hash. */
-	private boolean needsRepair(JsonNode lineage) {
+	private boolean needsRepair(JsonNode root) {
 		List<String> refs = new ArrayList<>();
-		AuditLineageRefs.collectAtomRefs(lineage, refs);
+		AuditLineageRefs.collectAtomRefs(root.get("lineage"), refs);
+		List<Field> fields = fieldsOf(root);
 		for (String ref : refs) {
 			Matcher m = PINNED.matcher(ref);
 			if (!m.matches()) continue;
@@ -202,21 +223,25 @@ public class RepinDanglingLineageRefs {
 			if (rewriteMap.keySet().stream().anyMatch(old -> old.startsWith(hash) || hash.startsWith(old))) {
 				return true;
 			}
-			if (isDangling(m)) return true;
+			if (isDangling(m, fields)) return true;
 		}
 		return false;
 	}
 
-	/** Dangling = neither a materialised candidate's content hash nor a stub's stamped hash matches. */
-	private boolean isDangling(Matcher pinned) {
+	/** Dangling = under none of the file's fields does a materialised candidate's content
+	 *  hash or a stub's stamped hash match. */
+	private boolean isDangling(Matcher pinned, List<Field> fields) {
 		int n = Integer.parseInt(pinned.group(1));
 		int mm = Integer.parseInt(pinned.group(2));
 		int p = Integer.parseInt(pinned.group(3));
 		String hash = pinned.group(4);
-		if (lookup.findByHash(n, mm, p, hash).isPresent()) return false;
-		for (Path c : lookup.findFiles(n, mm, p)) {
-			String h = hashOf(c);
-			if (h != null && h.startsWith(hash)) return false;
+		for (Field f : fields) {
+			FieldAwareLookup lookup = lookupFor(f);
+			if (lookup.findByHash(n, mm, p, hash).isPresent()) return false;
+			for (Path c : lookup.findFiles(n, mm, p)) {
+				String h = hashOf(c, replayerFor(f));
+				if (h != null && h.startsWith(hash)) return false;
+			}
 		}
 		return true;
 	}
@@ -228,6 +253,9 @@ public class RepinDanglingLineageRefs {
 		}
 		ObjectNode root = (ObjectNode) SchemeIO.parseJson(p.toFile());
 		JsonNode lineage = root.get("lineage");
+		List<Field> fields = fieldsOf(root);
+		// Trial replays run under the file's primary field (C for any char-0 tag, else F₂/F₃).
+		LineageReplayer replayer = replayerFor(fields.get(0));
 
 		// Refs to fix: truly-dangling pins + pins to rewritten hashes.
 		List<String> refs = new ArrayList<>();
@@ -243,7 +271,7 @@ public class RepinDanglingLineageRefs {
 					.map(Map.Entry::getValue).findFirst();
 			if (rewritten.isPresent()) {
 				forcedAssignment.put(ref, rewritten.get());
-			} else if (isDangling(m)) {
+			} else if (isDangling(m, fields)) {
 				toFix.add(ref);
 			}
 		}
@@ -269,9 +297,11 @@ public class RepinDanglingLineageRefs {
 			List<String> hashes = new ArrayList<>();
 			String hint = successHint.get(ref);
 			if (hint != null) hashes.add(hint);
-			for (Path c : lookup.findFiles(n, mm, pp)) {
-				String h = hashOf(c);
-				if (h != null && !hashes.contains(h)) hashes.add(h);
+			for (Field f : fields) {
+				for (Path c : lookupFor(f).findFiles(n, mm, pp)) {
+					String h = hashOf(c, replayerFor(f));
+					if (h != null && !hashes.contains(h)) hashes.add(h);
+				}
 			}
 			if (hashes.isEmpty()) return "QUARANTINE";
 			candidates.put(ref, hashes);
@@ -341,7 +371,7 @@ public class RepinDanglingLineageRefs {
 		Files.writeString(p, MatrixJsonFormatter.format(trial));
 	}
 
-	private String hashOf(Path schemeFile) {
+	private String hashOf(Path schemeFile, LineageReplayer replayer) {
 		return candidateHash.computeIfAbsent(schemeFile, f -> {
 			try {
 				JsonNode root = SchemeIO.parseJson(f.toFile());

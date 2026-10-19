@@ -755,48 +755,83 @@ public final class SchemeIO {
 	public static Optional<Lineage.Node> readLineage(JsonNode root) {
 		JsonNode lineage = root.get("lineage");
 		if (lineage == null || lineage.isNull()) return Optional.empty();
-		return Optional.of(parseLineageNode(lineage, new java.util.HashMap<>()));
+		return Optional.of(parseLineageNode(lineage, LineageParse.of(lineage)));
 	}
 
-	private static Lineage.Node parseLineageNode(JsonNode node, Map<String, Lineage.Node> idMap) {
+	/**
+	 * Parse context for one lineage DAG: every id-bearing definition node, and the nodes
+	 * built so far. A {@code {"op":"@ref","id":"L<i>"}} back-reference resolves to the
+	 * already-built node or, when its definition has not been parsed yet, parses that
+	 * definition on demand — so the parse order no longer has to match the writer's render
+	 * order. (Until 2026-10-19 the Recombination case parsed {@code leaves} before
+	 * {@code base} while {@link Lineage#toJson} renders base first, so a leaf's
+	 * back-reference to the shared base came out as a literal {@code Atom("@ref?:L0")}: a
+	 * lossy read → write round trip that a bulk stub rewrite then persisted in 40 files.)
+	 */
+	private record LineageParse(Map<String, JsonNode> defs, Map<String, Lineage.Node> built) {
+		static LineageParse of(JsonNode lineage) {
+			Map<String, JsonNode> defs = new java.util.HashMap<>();
+			collectDefinitions(lineage, defs);
+			return new LineageParse(defs, new java.util.HashMap<>());
+		}
+
+		private static void collectDefinitions(JsonNode n, Map<String, JsonNode> defs) {
+			if (n == null) return;
+			if (n.isObject()) {
+				String id = n.path("id").asText("");
+				if (!id.isEmpty() && !"@ref".equals(n.path("op").asText(""))) defs.put(id, n);
+				n.properties().forEach(e -> collectDefinitions(e.getValue(), defs));
+			} else if (n.isArray()) {
+				n.forEach(c -> collectDefinitions(c, defs));
+			}
+		}
+	}
+
+	private static Lineage.Node parseLineageNode(JsonNode node, LineageParse ctx) {
 		String op = node.path("op").asText("");
+		String nodeId = node.path("id").asText("");
+		if (!nodeId.isEmpty() && !"@ref".equals(op) && ctx.built().containsKey(nodeId)) {
+			return ctx.built().get(nodeId); // already built on demand through a back-reference
+		}
 		Lineage.Node built = switch (op) {
 			case "Leaf", "Atom" -> new Lineage.Atom(node.path("ref").asText("?"));
 			case "@ref" -> {
-				Lineage.Node ref = idMap.get(node.path("id").asText());
-				yield ref != null ? ref : new Lineage.Atom("@ref?:" + node.path("id").asText());
+				String refId = node.path("id").asText();
+				Lineage.Node ref = ctx.built().get(refId);
+				if (ref == null && ctx.defs().containsKey(refId)) ref = parseLineageNode(ctx.defs().get(refId), ctx);
+				yield ref != null ? ref : new Lineage.Atom("@ref?:" + refId);
 			}
 			case "KronProduct" -> new Lineage.KronProduct(
-					parseLineageNode(node.get("outer"), idMap),
-					parseLineageNode(node.get("inner"), idMap));
+					parseLineageNode(node.get("outer"), ctx),
+					parseLineageNode(node.get("inner"), ctx));
 			// "ConcatRight"/"ConcatBelow" are the legacy op names (pre-2026-06
 			// rename); kept as read-compat aliases for on-disk catalog files.
 			case "ConcatCols", "ConcatRight" -> new Lineage.ConcatCols(
-					parseLineageNode(node.get("left"), idMap),
-					parseLineageNode(node.get("right"), idMap));
+					parseLineageNode(node.get("left"), ctx),
+					parseLineageNode(node.get("right"), ctx));
 			case "ConcatRows", "ConcatBelow" -> new Lineage.ConcatRows(
-					parseLineageNode(node.get("top"), idMap),
-					parseLineageNode(node.get("bottom"), idMap));
+					parseLineageNode(node.get("top"), ctx),
+					parseLineageNode(node.get("bottom"), ctx));
 			case "SumInner" -> new Lineage.SumInner(
-					parseLineageNode(node.get("left"), idMap),
-					parseLineageNode(node.get("right"), idMap));
+					parseLineageNode(node.get("left"), ctx),
+					parseLineageNode(node.get("right"), ctx));
 			case "Transpose" -> new Lineage.Transpose(
-					parseLineageNode(node.get("child"), idMap),
+					parseLineageNode(node.get("child"), ctx),
 					node.path("perm").asText(""));
 			case "OrientAs" -> new Lineage.OrientAs(
-					parseLineageNode(node.get("child"), idMap),
+					parseLineageNode(node.get("child"), ctx),
 					node.path("n").asInt(0), node.path("m").asInt(0), node.path("p").asInt(0),
 					node.hasNonNull("axisMap") ? Lineage.axisMapFromStr(node.get("axisMap").asString()) : null);
-			case "DCE" -> new Lineage.Dce(parseLineageNode(node.get("child"), idMap));
+			case "DCE" -> new Lineage.Dce(parseLineageNode(node.get("child"), ctx));
 			case "PeeledViaTa" -> new Lineage.PeeledViaTa(
 					node.path("n").asInt(0), node.path("s").asInt(0),
-					parseLineageNode(node.get("cube"), idMap),
-					parseLineageNode(node.get("corner"), idMap));
+					parseLineageNode(node.get("cube"), ctx),
+					parseLineageNode(node.get("corner"), ctx));
 			case "KronChain" -> {
 				List<Lineage.Node> factors = new java.util.ArrayList<>();
 				JsonNode f = node.get("factors");
 				if (f != null && f.isArray()) {
-					for (JsonNode child : f) factors.add(parseLineageNode(child, idMap));
+					for (JsonNode child : f) factors.add(parseLineageNode(child, ctx));
 				}
 				yield new Lineage.KronChain(factors);
 			}
@@ -808,10 +843,10 @@ public final class SchemeIO {
 				List<Lineage.Node> leaves = new java.util.ArrayList<>();
 				JsonNode lvs = node.get("leaves");
 				if (lvs != null && lvs.isArray()) {
-					for (JsonNode child : lvs) leaves.add(parseLineageNode(child, idMap));
+					for (JsonNode child : lvs) leaves.add(parseLineageNode(child, ctx));
 				}
 				yield new Lineage.RecombinationN(
-						parseLineageNode(node.get("base"), idMap), aA, aB, aC, leaves);
+						parseLineageNode(node.get("base"), ctx), aA, aB, aC, leaves);
 			}
 			case "RecombinationTa", "RecombinationTaN" -> {
 				int[] aA = parseIntArray(node.get("allocA"));
@@ -820,10 +855,10 @@ public final class SchemeIO {
 				List<Lineage.Node> leaves = new java.util.ArrayList<>();
 				JsonNode lvs = node.get("leaves");
 				if (lvs != null && lvs.isArray()) {
-					for (JsonNode child : lvs) leaves.add(parseLineageNode(child, idMap));
+					for (JsonNode child : lvs) leaves.add(parseLineageNode(child, ctx));
 				}
 				yield new Lineage.RecombinationTaN(
-						parseLineageNode(node.get("base"), idMap), aA, aB, aC, leaves);
+						parseLineageNode(node.get("base"), ctx), aA, aB, aC, leaves);
 			}
 			case "RecombinationWithPair", "RecombinationWithPairN" -> {
 				int[] aA = parseIntArray(node.get("allocA"));
@@ -834,21 +869,21 @@ public final class SchemeIO {
 				List<Lineage.Node> leaves = new java.util.ArrayList<>();
 				JsonNode lvs = node.get("leaves");
 				if (lvs != null && lvs.isArray()) {
-					for (JsonNode child : lvs) leaves.add(parseLineageNode(child, idMap));
+					for (JsonNode child : lvs) leaves.add(parseLineageNode(child, ctx));
 				}
 				yield new Lineage.RecombinationWithPairN(
-						parseLineageNode(node.get("base"), idMap), aA, aB, aC, pairs, solo, leaves);
+						parseLineageNode(node.get("base"), ctx), aA, aB, aC, pairs, solo, leaves);
 			}
 			case "AugmentSquareDiscard" -> new Lineage.AugmentSquareDiscard(
 					node.path("p").asInt(0), node.path("n").asInt(0),
-					parseLineageNode(node.get("square"), idMap));
+					parseLineageNode(node.get("square"), ctx));
 			case "AxisFlip" -> {
 				// Accept two shapes: {child: Node, mask: int} (current) and
 				// the older {ref: String, mask: int} where the child was
 				// inlined as a leaf reference.
 				Lineage.Node child;
 				if (node.has("child") && !node.get("child").isNull()) {
-					child = parseLineageNode(node.get("child"), idMap);
+					child = parseLineageNode(node.get("child"), ctx);
 				} else if (node.has("ref")) {
 					child = new Lineage.Atom(node.path("ref").asText("?"));
 				} else {
@@ -857,7 +892,7 @@ public final class SchemeIO {
 				yield new Lineage.AxisFlip(child, node.path("mask").asInt(0));
 			}
 			case "AxisPermute" -> new Lineage.AxisPermute(
-					parseLineageNode(node.get("child"), idMap),
+					parseLineageNode(node.get("child"), ctx),
 					parseIntArray(node.get("permA")),
 					parseIntArray(node.get("permB")),
 					parseIntArray(node.get("permC")));
@@ -865,7 +900,7 @@ public final class SchemeIO {
 				List<Lineage.Node> children = new java.util.ArrayList<>();
 				JsonNode ch = node.get("children");
 				if (ch != null && ch.isArray()) {
-					for (JsonNode c : ch) children.add(parseLineageNode(c, idMap));
+					for (JsonNode c : ch) children.add(parseLineageNode(c, ctx));
 				}
 				List<List<Integer>> taLegs = new java.util.ArrayList<>();
 				JsonNode tl = node.get("taLegs");
@@ -879,10 +914,10 @@ public final class SchemeIO {
 				yield new Lineage.DisjointSum(children, taLegs);
 			}
 			case "SerendipitousProduct" -> new Lineage.SerendipitousProduct(
-					parseLineageNode(node.get("base"), idMap),
+					parseLineageNode(node.get("base"), ctx),
 					node.path("n2").asInt(0), node.path("m2").asInt(0), node.path("p2").asInt(0));
 			case "Project" -> new Lineage.Project(
-					parseLineageNode(node.get("child"), idMap),
+					parseLineageNode(node.get("child"), ctx),
 					parseIntArray(node.get("keepN")),
 					parseIntArray(node.get("keepM")),
 					parseIntArray(node.get("keepP")));
@@ -890,7 +925,7 @@ public final class SchemeIO {
 		};
 		// Register if this node has an id (for later @ref resolution).
 		String id = node.path("id").asText("");
-		if (!id.isEmpty()) idMap.put(id, built);
+		if (!id.isEmpty()) ctx.built().put(id, built);
 		return built;
 	}
 

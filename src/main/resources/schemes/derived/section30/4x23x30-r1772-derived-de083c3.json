@@ -1,0 +1,81 @@
+{
+  "lineage_str": "Recombination(base=AxisSplit<1,2,1>=2 :: CANONICAL, allocA=[4], allocB=[3, 20], allocC=[30], leaves=[ConcatCols(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), ConcatCols(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), ConcatCols(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), ConcatCols(OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩), OrientAs(3x4x6-r54-alphaevolve-c197868, ⟨4,3,6⟩))))), KronProduct(2x4x5-r32-alphaevolve-6216e15, 2x5x6-r47-alphaevolve-7387644)])",
+  "lineage_compact": "R[AxisSplit<1,2,1>=2 :: CANONICAL; 4 | 3,20 | 30]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "AxisSplit<1,2,1>=2 :: CANONICAL"},
+    "allocA": [4],
+    "allocB": [3, 20],
+    "allocC": [30],
+    "leaves": [
+      {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 4,
+          "m": 3,
+          "p": 6,
+          "axisMap": "mnp",
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+        },
+        "right": {
+          "op": "ConcatCols",
+          "left": {
+            "op": "OrientAs",
+            "n": 4,
+            "m": 3,
+            "p": 6,
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+          },
+          "right": {
+            "op": "ConcatCols",
+            "left": {
+              "op": "OrientAs",
+              "n": 4,
+              "m": 3,
+              "p": 6,
+              "axisMap": "mnp",
+              "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+            },
+            "right": {
+              "op": "ConcatCols",
+              "left": {
+                "op": "OrientAs",
+                "n": 4,
+                "m": 3,
+                "p": 6,
+                "axisMap": "mnp",
+                "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              },
+              "right": {
+                "op": "OrientAs",
+                "n": 4,
+                "m": 3,
+                "p": 6,
+                "axisMap": "mnp",
+                "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
+              }
+            }
+          }
+        }
+      },
+      {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
+        "inner": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
+      }
+    ]
+  },
+  "n": [4, 23, 30],
+  "m": 1772,
+  "hash": "de083c3edaa07aecf9912b2c349e52d3eb132b45f92d6170765b35e4da0fe839",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub",
+  "verified": true
+}

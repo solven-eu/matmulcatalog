@@ -3,16 +3,18 @@ package eu.solven.matmul.docs.verify;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import eu.solven.matmul.algebra.Field;
 import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.SchemeIO;
+import eu.solven.matmul.search.LineageReplayer;
+import eu.solven.matmul.search.LineageReplayer.LeafClass;
 import eu.solven.matmul.verifiers.LineageVerifier;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,19 +33,28 @@ import tools.jackson.databind.JsonNode;
  * (re-pin / regenerate / quarantine) can be sized before it is run.</p>
  *
  * <p>Per-ref classification (refs are read straight from the lineage JSON —
- * every {@code {"op":"Atom","ref":…}} node):</p>
+ * every {@code {"op":"Atom","ref":…}} node). <b>The classifier is the replayer's own
+ * leaf grammar</b> ({@link LineageReplayer#classifyLeaf}), evaluated under the
+ * file's own {@code fields[]}: a lookup for one field only sees the files valid over
+ * it, so an F₂ scheme's pin to the AlphaTensor F₂ ⟨4,4,4⟩=47 is dangling for a
+ * char-0 lookup and perfectly fine for an F₂ one. (Until 2026-10-18 the audit kept
+ * its own regexes under one C lookup and reported 17 859 UNRESOLVABLE refs that all
+ * replayed — canonical filename stems, {@code TA_lita(n=N)},
+ * {@code Strassen<2,2,2>=7 :: CANONICAL} — plus four "dangling" F₂ pins.)</p>
  * <ul>
- *   <li><b>PINNED_OK</b> — {@code shape@hash} resolves via the catalog index.</li>
- *   <li><b>PINNED_DANGLING</b> — pinned hash matches nothing (purged/re-hashed):
- *       replay is broken or silently re-targeted. The repair set.</li>
+ *   <li><b>PINNED_OK</b> — {@code shape@hash} resolves to a materialised file.</li>
+ *   <li><b>PINNED_OK_STUB</b> — {@code shape@hash} resolves to a stub's stamped hash.</li>
+ *   <li><b>PINNED_DANGLING</b> — pinned hash matches nothing under any of the file's
+ *       fields: the replay throws. The repair set ({@code RepinDanglingLineageRefs}).</li>
  *   <li><b>BARE</b> — shape-only ref; resolves to catalog-best <i>today</i>, which
- *       may differ from build time.</li>
- *   <li><b>LEGACY_SOURCE_PREFIXED</b> — old {@code source-NxMxP_m…} stem; the
- *       replayer falls back to shape resolution (same risk class as BARE) and the
- *       display string is stale.</li>
+ *       may differ from build time (the stub-rank-drift mechanism).</li>
+ *   <li><b>LEGACY_STEM</b> — any other ref a shape can be pulled out of (old
+ *       {@code source-NxMxP_m…} stems, pre-2026-10-18 canonical stems
+ *       {@code NxMxP-r…-note-hash7}, {@code Name<N,M,P>=R :: …} labels): resolved by
+ *       shape, same risk class as BARE.</li>
  *   <li><b>NAMED / PARAMETRIC / NAIVE</b> — pool names, formulas, naive blocks;
  *       resolved from code, not files.</li>
- *   <li><b>UNRESOLVABLE</b> — nothing at the shape at all.</li>
+ *   <li><b>UNRESOLVABLE</b> — nothing at the shape at all, or no shape in the ref.</li>
  * </ul>
  *
  * <p>Also: counts stale {@code lineage_str} mentions of purged stems, and runs a
@@ -56,16 +67,31 @@ public class AuditLineageRefs {
 	/** Sampled-verify only replays shapes up to this max dim — replaying ⟨30,30,30⟩
 	 *  stubs is exactly the off-heap blowup the long-running discipline warns about. */
 	private static final int VERIFY_MAX_DIM = 12;
-	private static final Pattern PINNED = Pattern.compile("^(\\d+)x(\\d+)x(\\d+)@([0-9a-f]{6,})$");
-	private static final Pattern BARE = Pattern.compile("^(naive-)?(\\d+)x(\\d+)x(\\d+)(-direct)?$");
-	private static final Pattern NAMED = Pattern.compile("^[A-Za-z].*<\\d+,\\d+,\\d+>=\\d+$");
-	private static final Pattern PARAMETRIC = Pattern.compile("^[A-Za-z0-9]+\\(.*\\)$");
-	/** Legacy source-prefixed stem, e.g. {@code fmm_lille-2x3x4_m11_a40} or {@code smirnov13-3x3x6_m40}. */
-	private static final Pattern LEGACY = Pattern.compile("^[a-zA-Z][\\w.]*[-_](\\d+)x(\\d+)x(\\d+).*$");
+
+	/** One replayer per field, built on demand (each lookup indexes the catalog once). */
+	private static final Map<Field, LineageReplayer> REPLAYERS = new EnumMap<>(Field.class);
+
+	static synchronized LineageReplayer replayerFor(Field f) {
+		return REPLAYERS.computeIfAbsent(f, k -> LineageReplayer.withDefaultPool(new FieldAwareLookup(k)));
+	}
+
+	/**
+	 * The lookups a file's leaves must be resolved under: C covers every characteristic-0
+	 * tag (its fallback chain is C ⊃ R ⊃ Q ⊃ Z), F₂ and F₃ are their own universes. A file
+	 * without {@code fields[]} (a data bug) is tried under all three.
+	 */
+	public static List<Field> fieldsToTry(List<String> tags) {
+		List<Field> out = new ArrayList<>();
+		boolean char0 = tags.stream().anyMatch(t -> t.equals("Z") || t.equals("Q") || t.equals("R")
+				|| t.equals("C") || t.equals("ZT"));
+		if (char0 || tags.isEmpty()) out.add(Field.C);
+		if (tags.contains("F2") || tags.contains("Z2") || tags.isEmpty()) out.add(Field.F2);
+		if (tags.contains("F3") || tags.contains("Z3") || tags.isEmpty()) out.add(Field.F3);
+		return out;
+	}
 
 	public static void main(String[] args) throws Exception {
 		long start = System.nanoTime();
-		FieldAwareLookup lookup = new FieldAwareLookup("C"); // broadest: indexes everything
 
 		List<Path> all;
 		try (Stream<Path> walk = Files.walk(ROOT)) {
@@ -124,11 +150,14 @@ public class AuditLineageRefs {
 			}
 			if (maxDim <= VERIFY_MAX_DIM) lineageFiles.add(p);
 
+			List<LineageReplayer> replayers = new ArrayList<>();
+			for (Field f : fieldsToTry(SchemeIO.fieldTags(root))) replayers.add(replayerFor(f));
+
 			List<String> refs = new ArrayList<>();
 			collectAtomRefs(lineage, refs);
 			boolean dangling = false;
 			for (String ref : refs) {
-				String cls = classify(ref, lookup);
+				String cls = classify(ref, replayers);
 				refClass.computeIfAbsent(cls, k -> new AtomicLong()).incrementAndGet();
 				List<String> s = samples.computeIfAbsent(cls, k -> new ArrayList<>());
 				if (s.size() < 8) s.add(ref + "   [in " + p.getFileName() + "]");
@@ -158,7 +187,7 @@ public class AuditLineageRefs {
 		int sampleEvery = Math.max(1, lineageFiles.size() / 150);
 		log.info("Sampled compositional verification (every {}th of {} lineage-bearing files with maxDim ≤ {}):",
 				sampleEvery, lineageFiles.size(), VERIFY_MAX_DIM);
-		LineageVerifier verifier = new LineageVerifier(lookup);
+		LineageVerifier verifier = new LineageVerifier(replayerFor(Field.C));
 		long vOk = 0, vFail = 0;
 		List<String> vFails = new ArrayList<>();
 		for (int i = 0; i < lineageFiles.size(); i += sampleEvery) {
@@ -203,50 +232,35 @@ public class AuditLineageRefs {
 		}
 	}
 
-	/** stub file → stamped hash (classification cache). */
-	private static final Map<java.nio.file.Path, String> STAMPED = new java.util.concurrent.ConcurrentHashMap<>();
+	/**
+	 * Classify a ref under one or more replayers (one per field the file is valid over):
+	 * the first replayer that resolves it decides; otherwise the "least broken" verdict
+	 * (a dangling pin over a shapeless unresolvable).
+	 */
+	static String classify(String ref, List<LineageReplayer> replayers) {
+		LeafClass best = null;
+		for (LineageReplayer r : replayers) {
+			LeafClass c = r.classifyLeaf(ref).cls();
+			if (c.resolves()) return label(c);
+			if (best == null || (c == LeafClass.DANGLING_PIN && best == LeafClass.UNRESOLVABLE)) best = c;
+		}
+		return label(best == null ? LeafClass.UNRESOLVABLE : best);
+	}
 
-	static String classify(String ref, FieldAwareLookup lookup) {
-		Matcher m = PINNED.matcher(ref);
-		if (m.matches()) {
-			int n = Integer.parseInt(m.group(1));
-			int mm = Integer.parseInt(m.group(2));
-			int p = Integer.parseInt(m.group(3));
-			if (lookup.findByHash(n, mm, p, m.group(4)).isPresent()) return "PINNED_OK";
-			// findByHash only hashes materialised candidates; a pin to a STUB's hash
-			// resolves via its stamped "hash" field (LineageReplayer does the same) —
-			// without this check the auditor misclassifies valid stub pins as dangling.
-			String hash = m.group(4);
-			for (java.nio.file.Path c : lookup.findFiles(n, mm, p)) {
-				String stamped = STAMPED.computeIfAbsent(c, f -> {
-					try {
-						String h = SchemeIO.readHash(SchemeIO.parseJson(f.toFile()));
-						return h == null ? "" : h;
-					} catch (Exception e) {
-						return "";
-					}
-				});
-				if (!stamped.isEmpty() && stamped.startsWith(hash)) return "PINNED_OK_STUB";
-			}
-			return "PINNED_DANGLING";
-		}
-		Matcher b = BARE.matcher(ref);
-		if (b.matches()) {
-			if (b.group(1) != null) return "NAIVE"; // naive-NxMxP — constructed, always resolvable
-			int n = Integer.parseInt(b.group(2));
-			int mm = Integer.parseInt(b.group(3));
-			int p = Integer.parseInt(b.group(4));
-			return lookup.findFiles(n, mm, p).isEmpty() ? "UNRESOLVABLE" : "BARE";
-		}
-		if (NAMED.matcher(ref).matches()) return "NAMED";
-		if (PARAMETRIC.matcher(ref).matches()) return "PARAMETRIC";
-		Matcher l = LEGACY.matcher(ref);
-		if (l.matches()) {
-			int n = Integer.parseInt(l.group(1));
-			int mm = Integer.parseInt(l.group(2));
-			int p = Integer.parseInt(l.group(3));
-			return lookup.findFiles(n, mm, p).isEmpty() ? "UNRESOLVABLE" : "LEGACY_SOURCE_PREFIXED";
-		}
-		return "UNRESOLVABLE";
+	/** Single-replayer convenience (tests, ad-hoc probes). */
+	static String classify(String ref, LineageReplayer replayer) {
+		return classify(ref, List.of(replayer));
+	}
+
+	/** The audit's label for a replayer leaf class (kept stable for the report tables). */
+	static String label(LeafClass c) {
+		return switch (c) {
+			case PINNED -> "PINNED_OK";
+			case PINNED_STUB -> "PINNED_OK_STUB";
+			case DANGLING_PIN -> "PINNED_DANGLING";
+			case SHAPE_BEST -> "BARE";
+			case LEGACY_SHAPE_BEST -> "LEGACY_STEM";
+			case NAMED, PARAMETRIC, NAIVE, UNRESOLVABLE -> c.name();
+		};
 	}
 }
