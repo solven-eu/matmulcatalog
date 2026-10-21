@@ -70,7 +70,7 @@ public final class DetectCyclicStubs {
 			for (int[] sh : referencedShapes(stub)) {
 				if (sh[0] == 1 || sh[1] == 1 || sh[2] == 1) continue; // naive / elementary leaf
 				String depKey = resolveCache.computeIfAbsent(sh[0] + "x" + sh[1] + "x" + sh[2], k -> {
-					Optional<Path> f = lookup.findFile(sh[0], sh[1], sh[2]);
+					Optional<Path> f = lookup.findNcFile(sh[0], sh[1], sh[2]);
 					return f.map(pp -> pp.toAbsolutePath().normalize().toString());
 				}).orElse(null);
 				if (depKey != null && depKey.contains("derived_recursive-")) deps.add(depKey);
