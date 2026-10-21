@@ -100,7 +100,12 @@ import lombok.extern.slf4j.Slf4j;
  *                                         ⟨2,4,4⟩ AND the expensive ⟨2,5,5⟩ (5-way
  *                                         split → minutes/shape). No single value
  *                                         separates them — for a curated cheap pool
- *                                         WITH ⟨2,4,4⟩, use --base=… instead.
+ *                                         WITH ⟨2,4,4⟩, use --base=… instead. The cap
+ *                                         never drops a PROVEN base: every file the
+ *                                         catalog's lineages name as a recombination
+ *                                         base is admitted whatever its dimension
+ *                                         (ProvenOuterBases; label prefix "proven[",
+ *                                         so --baseFilter=proven[ selects them).
  *   --maxImbalance=N                      cap allocation imbalance (default unbounded)
  *   --balancedOnly=true|false            only equal splits (default false)
  *   --maxCombinations=N                   cap #allocations enumerated per base

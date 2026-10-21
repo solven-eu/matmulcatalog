@@ -35,6 +35,13 @@ yet) are tagged **(new)**. Keep this in sync when items close.
   structural `budScore` with realizable serendipity value; gate base generation.
 - **Incremental dirty-tracking for closure re-sweeps (new)** — replay only the
   shapes whose dependencies improved, instead of re-sweeping everything each round.
+- **Base ledger (new, 2026-10-21)** — the pool is now cap + proven-useful list
+  (`ProvenOuterBases`, read from the lineages), but nothing records what was *tried*:
+  generate a base registry from the manifest's `used_as_base` (which files earn their
+  keep — 199 of the 255 imported bud-bases have never won a product) plus a tried-ledger
+  for `--base=` runs and representative walks (base, inner/target, budget, outcome), so
+  campaigns stop repeating work. Walks only where an upstream recipe names the
+  representative (⟨20,24,25⟩, ⟨8,27,30⟩), not catalog-wide.
 
 ## Catalog curation, provenance & attribution
 

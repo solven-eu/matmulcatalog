@@ -215,12 +215,38 @@ public class BlockSplitSearch {
 	 * integer (Z) so they are valid over every field and are always included.
 	 */
 	public static List<NamedBase> buildPool(RecombinationPoolConfig config, String fieldTag) {
+		return buildPool(config, fieldTag, DEFAULT_SCHEMES_ROOT);
+	}
+
+	/** The catalog root the extended pool and the proven-base scan read. */
+	public static final Path DEFAULT_SCHEMES_ROOT = Path.of("src/main/resources/schemes");
+
+	/** Label prefix of a base admitted ABOVE the dimension cap because the catalog already
+	 *  stands on it ({@link eu.solven.matmul.search.ProvenOuterBases}); {@code --baseFilter=proven[}
+	 *  selects exactly those. */
+	public static final String PROVEN_LABEL = "proven[";
+
+	/**
+	 * {@link #buildPool(RecombinationPoolConfig, String)} over an explicit schemes root.
+	 *
+	 * <p><b>Pool = cap + proven-useful list (2026-10-21).</b> Besides the leaves within
+	 * {@code maxBaseDim} / {@code maxCubicBaseDim}, a non-{@code rootsOnly} pool admits
+	 * every leaf file the catalog's own lineages name as a recombination base, whatever
+	 * its dimension ({@link eu.solven.matmul.search.ProvenOuterBases}). 73 committed lineages
+	 * stood on 9 dim-6/7 base files (⟨3,4,6⟩, ⟨2,5,6⟩, ⟨3,4,7⟩, ⟨3,5,6⟩, ⟨2,6,6⟩, …) that the
+	 * capped pool could never offer again, so a closure sweep's "no improvement" over those
+	 * shapes was a statement about the pool, not the catalog. Admission is by content hash
+	 * (the exact files that produced stubs), not by shape, so the pool grows by tens of
+	 * entries rather than every file at those shapes. Guard: {@code TestProvenOuterBases}.</p>
+	 */
+	public static List<NamedBase> buildPool(RecombinationPoolConfig config, String fieldTag, Path schemesRoot) {
 		// Start from rootPool's hand-curated list of historical
 		// templates (Strassen + AT⟨2,2,3⟩ + AT⟨2,3,3⟩ + Laderman) —
 		// these are always Leaf-lineage. Always applied first so the
 		// well-known templates lead the enumeration order.
 		List<NamedBase> raw = rootPool();
 		if (!config.rootsOnly()) {
+			eu.solven.matmul.search.ProvenOuterBases proven = eu.solven.matmul.search.ProvenOuterBases.of(schemesRoot);
 			// Append every Leaf-lineage NC catalog scheme valid over the field, up to
 			// maxBaseDim. extendedPool already inlines rootPool, so we dedup-merge.
 			// Dedup by CONTENT, not just (shape, rank): two DISTINCT schemes at the same
@@ -232,7 +258,7 @@ public class BlockSplitSearch {
 			// the missing base, NOT the optimizer's cost model, which is exact).
 			java.util.Set<String> have = new java.util.HashSet<>();
 			for (NamedBase nb : raw) have.add(poolContentKey(nb.base()));
-			for (NamedBase nb : extendedPool(config.maxBaseDim(), fieldTag)) {
+			for (NamedBase nb : extendedPool(config.maxBaseDim(), fieldTag, schemesRoot, proven)) {
 				if (have.add(poolContentKey(nb.base()))) raw.add(nb);
 			}
 		}
@@ -247,7 +273,9 @@ public class BlockSplitSearch {
 			int dimCap = cubicBase
 					? Math.max(config.maxBaseDim(), config.maxCubicBaseDim())
 					: config.maxBaseDim();
-			if (Math.max(a.n, Math.max(a.m, a.p)) > dimCap) continue;
+			// A proven base (a file the catalog's lineages already stand on) bypasses the
+			// dimension cap — never cubicOnly, which is an explicit narrowing.
+			if (Math.max(a.n, Math.max(a.m, a.p)) > dimCap && !isProven(nb)) continue;
 			if (config.cubicOnly() && !cubicBase) continue;
 			eu.solven.matmul.catalog.Lineage.Node canonicalOrigin = nb.originLineage();
 			// Each variant carries the EXACT per-axis permutation that reconstructs it from
@@ -272,7 +300,25 @@ public class BlockSplitSearch {
 						variant, origin));
 			}
 		}
+		if (!config.rootsOnly()) {
+			java.util.Set<String> provenFiles = new java.util.TreeSet<>();
+			int provenEntries = 0;
+			for (NamedBase nb : out) {
+				if (isProven(nb)) {
+					provenEntries++;
+					String l = nb.label();
+					provenFiles.add(l.substring(PROVEN_LABEL.length(), l.indexOf(']')));
+				}
+			}
+			log.info("[pool] {} entries; {} proven-useful base file(s) admitted above the dim cap ({} entries): {}",
+					out.size(), provenFiles.size(), provenEntries, provenFiles);
+		}
 		return out;
+	}
+
+	/** Is this entry one admitted above the dimension cap as a proven outer base? */
+	public static boolean isProven(NamedBase nb) {
+		return nb.label().startsWith(PROVEN_LABEL);
 	}
 
 	private static int[] identity(int n) {
@@ -291,7 +337,7 @@ public class BlockSplitSearch {
 	 *  the old {@code shape:r} key (which merged recombination-distinct bases — the bug). The
 	 *  per-product tuple is sorted within each axis-support and the products are sorted, so the
 	 *  key is invariant to product reordering. [[project_optimizer_pairing_blind]] */
-	private static String poolContentKey(NonCubicBilinearAlgorithm b) {
+	public static String poolContentKey(NonCubicBilinearAlgorithm b) {
 		AnalyticalMaskSearch.SchemeSupports sup = AnalyticalMaskSearch.SchemeSupports.extract(b);
 		java.util.List<String> products = new java.util.ArrayList<>(b.r);
 		for (int k = 0; k < b.r; k++) {
@@ -446,14 +492,30 @@ public class BlockSplitSearch {
 	/** Field-aware {@link #extendedPool}: keep only leaf bases VALID over {@code fieldTag}
 	 *  ({@code fieldTag ∈ fields[]}); {@code null} = legacy char-0 (Z/Q/R) filter. */
 	public static List<NamedBase> extendedPool(int maxBaseDim, String fieldTag) {
+		return extendedPool(maxBaseDim, fieldTag, DEFAULT_SCHEMES_ROOT, null);
+	}
+
+	/**
+	 * {@link #extendedPool(int, String)} over {@code schemesDir}, admitting above
+	 * {@code maxBaseDim} the files {@code proven} names (labelled {@link #PROVEN_LABEL});
+	 * {@code proven == null} keeps the pure cap.
+	 */
+	public static List<NamedBase> extendedPool(int maxBaseDim, String fieldTag, Path schemesDir,
+			eu.solven.matmul.search.ProvenOuterBases proven) {
 		List<NamedBase> pool = new ArrayList<>();
-		java.util.Set<String> seenShape = new java.util.HashSet<>();
+		// Content-key dedup (poolContentKey): position of the entry holding each key, and the
+		// keys whose entry is a PROVEN file. When a support-equivalent twin of a proven file
+		// was walked first (derived/ sorts before known/), the proven file replaces it: the
+		// two tile every target identically, but the lineages pin the proven one, so the pool
+		// should offer the file the catalog actually stands on.
+		java.util.Map<String, Integer> indexByKey = new java.util.HashMap<>();
+		java.util.Set<String> provenKeys = new java.util.HashSet<>();
 		// Add the rootPool first so the well-known templates appear at
 		// the front of enumeration.
 		for (NamedBase nb : rootPool()) {
 			NonCubicBilinearAlgorithm a = nb.base();
 			if (Math.max(a.n, Math.max(a.m, a.p)) > maxBaseDim) continue;
-			seenShape.add(poolContentKey(a));
+			indexByKey.putIfAbsent(poolContentKey(a), pool.size());
 			pool.add(nb);
 		}
 		// Walk the WHOLE schemes tree, not just top-level sectionN: the 2026-06-09
@@ -461,7 +523,6 @@ public class BlockSplitSearch {
 		// so the old listFiles("section*") on the root silently loaded NOTHING (the
 		// extended pool collapsed to just the seed templates). Recurse so the pool
 		// sees every catalog leaf again, regardless of which subtree it lives in.
-		java.nio.file.Path schemesDir = java.nio.file.Path.of("src/main/resources/schemes");
 		List<java.io.File> jsonFiles = new java.util.ArrayList<>();
 		try (var walk = java.nio.file.Files.walk(schemesDir)) {
 			walk.filter(p -> p.getFileName().toString().endsWith(".json"))
@@ -475,7 +536,14 @@ public class BlockSplitSearch {
 				log.debug("Loading {}", f);
 				if (!isFieldValidLeafNC(f, maxBaseDim, fieldTag)) continue;
 				NonCubicBilinearAlgorithm alg = SchemeIO.read(f);
-				if (Math.max(alg.n, Math.max(alg.m, alg.p)) > maxBaseDim) continue;
+				String contentHash = SchemeIO.contentHash(alg);
+				// Above the cap only the proven files enter (by content hash — the exact
+				// schemes the catalog's lineages were built on), labelled so buildPool's
+				// cap and --baseFilter can tell them apart.
+				boolean aboveCap = Math.max(alg.n, Math.max(alg.m, alg.p)) > maxBaseDim;
+				boolean provenFile = proven != null && proven.admits(contentHash);
+				if (aboveCap && !provenFile) continue;
+				String labelPrefix = aboveCap ? PROVEN_LABEL : "ext[";
 				// Same orbit-expansion semantics as rootPool: shape orbit only,
 				// one representative per distinct shape. Algorithmic variants
 				// (axis-flip, permutation) are opt-in.
@@ -488,7 +556,7 @@ public class BlockSplitSearch {
 				// (project_recomb_base_orientation_not_pinned).
 				eu.solven.matmul.catalog.Lineage.Node canonicalLeaf =
 						new eu.solven.matmul.catalog.Lineage.Atom(alg.n + "x" + alg.m + "x" + alg.p
-								+ "@" + SchemeIO.contentHash(alg));
+								+ "@" + contentHash);
 				List<SymmetryTransforms.S3Variant> orbit = SymmetryTransforms.s3OrbitWithPerms(alg);
 				java.util.Map<String, SymmetryTransforms.S3Variant> byShape =
 						new java.util.LinkedHashMap<>();
@@ -497,16 +565,25 @@ public class BlockSplitSearch {
 				}
 				for (SymmetryTransforms.S3Variant v : byShape.values()) {
 					NonCubicBilinearAlgorithm a = v.alg();
-					if (Math.max(a.n, Math.max(a.m, a.p)) > maxBaseDim) continue;
 					String key = poolContentKey(a);
-					if (seenShape.add(key)) {
+					Integer at = indexByKey.get(key);
+					boolean replaceTwin = at != null && provenFile && !provenKeys.contains(key)
+							&& pool.get(at).label().startsWith("ext[");
+					if (at == null || replaceTwin) {
 						String suffix = byShape.size() == 1
 								? ""
 								: " / <" + a.n + "," + a.m + "," + a.p + ">=" + a.r;
 						eu.solven.matmul.catalog.Lineage.Node origin = "ABC->ABC".equals(v.perm())
 								? canonicalLeaf
 								: new eu.solven.matmul.catalog.Lineage.Transpose(canonicalLeaf, v.perm());
-						pool.add(new NamedBase("ext[" + f.getName() + "]" + suffix, a, origin));
+						NamedBase nb = new NamedBase(labelPrefix + f.getName() + "]" + suffix, a, origin);
+						if (at == null) {
+							indexByKey.put(key, pool.size());
+							pool.add(nb);
+						} else {
+							pool.set(at, nb);
+						}
+						if (provenFile) provenKeys.add(key);
 					}
 				}
 			} catch (Exception ignored) {

@@ -2323,3 +2323,75 @@ now ends with `RestampStubRanks --direction=all --execute` (bare / stem-leaf stu
 lower after every import).
 
 **Reports after regeneration:** `CompareReferenceCatalogs` tie 4320 / better 1107 / worse 13 (was 4349 / 1078 / 13 — **29 formats moved from tie to better-than-both**), `FmmCrossCheck` WORSE 0, UPSTREAM-UNVERIFIED 13 (the audited rows), BETTER 1867 (was 1841).
+
+---
+
+## 2026-10-21 — Base strategy: the pool is now cap + proven-useful list; the ⟨2,4,4⟩ two-rep re-sweep gives 129 records
+
+**Question (user):** the serendipitous walk is unlikely to find more with the current
+algorithm; is there a clear strategy for which bases the engines use, given that the
+recent results came from bases outside the default set?
+
+**Finding: three engines, three unrelated base rules, none fed by evidence.**
+
+- **Recombination** — `defaultLarge` = 18 hand-curated root entries + every explicit NC
+  leaf ≤ dim 5 (cubic ≤ 8). Nine dim-6/7 files introduced by one-off `--base=` runs
+  (July 2026) or by older, wider sweeps carry 73 committed lineages (⟨3,4,6⟩ 32, ⟨2,5,6⟩
+  17, ⟨3,4,7⟩ 12, ⟨3,5,6⟩ 4, ⟨2,5,7⟩ / ⟨2,6,6⟩ / ⟨2,4,7⟩ 2 each, ⟨5,5,7⟩ / ⟨5,6,7⟩ 1); the
+  default pool could never offer them again, their guards are disk-presence only, and
+  the playbook's closure step ran `--config=simple` (six cubic bases). The July
+  follow-up "a preset admitting a curated dim-6/7 list" was never built.
+- **Serendipitous products** — no selection at all: every bud-bearing file at each
+  divisor shape. Of the 255 imported bud-bases, 55 are used (203 uses) and 199 have
+  never won a product; the wins stand on Perminov's `known/` ZT files (104 files,
+  1 121 uses). Importing more serendipitous bases is not the lever; the representative
+  is (2026-10-13), and only where a published recipe says so.
+- **Representatives** — one-off walks seeded by hand (1 flipwalk base, 3 metaflip
+  bases); no record of what was walked. `--base=` pins: six runs in this log, recorded
+  nowhere else.
+- Issue #8 registered two ⟨2,4,4⟩=26 reps in the root pool; the 360 shapes whose best
+  stub stands on a ⟨2,4,4⟩ outer had only ever been optimised against the hk71 rep
+  (the planned re-run never happened).
+
+**Built (PR #19):**
+
+1. `search.ProvenOuterBases` scans every lineage under the schemes root (prefix parse,
+   9 576 files, ~3 s), collects every recombination node's base — the all-unit
+   "identity" recombinations the materialiser uses to spell a leaf are skipped (they
+   inflated an earlier count to ~500 "stubs on dim-6/7/8 bases") — and resolves it
+   through `LineageReplayer.classifyLeaf`: pins by hash, legacy
+   `ext[stem] / <shape>=rank :: ORBIT` labels by the stem's hash7 and by today's
+   shape-best, bare refs by the best materialised NC file under the file's fields →
+   51 proven base files, 0 unresolved. `BlockSplitSearch.buildPool` admits them above
+   the dimension cap (label `proven[…]`, `--baseFilter=proven[`), prefers a proven file
+   over a support-equivalent twin walked earlier, and logs the admitted set. C pool:
+   4 554 entries, 9 files / 384 entries above the cap.
+   Guard `TestProvenOuterBases`: every outer base of every committed lineage is offered
+   by the default pool — by hash or by a support-equivalent twin, the pool's own
+   identity (AlphaTensor ⟨3,5,5⟩=58 is represented by the derived ⟨5,3,5⟩ twin that also
+   carries a pin); no unresolvable outer base; a dim-7 leaf enters only once a lineage
+   pins it; `cubicOnly` still drops it.
+2. Playbook step 4 runs the rectangular tier and the default pool after `simple`, and
+   re-sweeps the stubs standing on a newly registered root base.
+3. **The ⟨2,4,4⟩ re-sweep:** `SchemeSweep --mode=materialize --field=Q
+   --config=rectangular --baseFilter=2,4,4 --strategies=recomb --maxNodes=60000000
+   --threads=12` over the 360 shapes: **129 records, 3 482 multiplications in total,
+   20 s wall-clock** (incumbent-bound prune); 125 stand on the Perminov-ZT rep, 4 on
+   the AlphaTensor-Z rep. Largest: ⟨7,31,31⟩ 4146 → 4108, ⟨7,29,31⟩ 3899 → 3871,
+   ⟨10,23,32⟩ 4290 → 4264, ⟨10,23,29⟩ 3939 → 3916, ⟨10,21,31⟩ 3861 → 3838, ⟨10,23,28⟩
+   3785 → 3762, ⟨14,20,23⟩ 3785 → 3762. Tier: bound (B&B node-capped).
+   `VerifySchemes --check=rank` over the 129 shapes: 279 files, 0 failures.
+4. **First record from the proven list itself:** `TestSweepSpotsSota`'s ⟨5,32,32⟩ row (includeDerived
+   pool) now finds **3308** — catalog and FMM 3320 — through the proven ⟨2,4,7⟩=45 AlphaEvolve
+   base that the capped pool never offered (`R[2x4x7; …]`, exact-verified, pinned stub). The
+   guard was tightened to check the ⟨2,4,4⟩ route on its own sub-pool, since the full-pool
+   winner's label no longer identifies it. A catalog-wide closure with the default pool is
+   the obvious next campaign (playbook step 4).
+   `FmmCrossCheck`: BETTER 1905 (was 1867), UNVERIFIED 13, WORSE 1 (⟨14,14,25⟩ 2962 vs 2960 — arrived with the 2026-10-20 upstream sync on master, not from this work). `CompareReferenceCatalogs`: tie 4272 / better 1154 / worse 14 (was 4320 / 1107 / 13; the +1 worse is the same row).
+
+**Not done, next:** the ledger — a generated base registry from the manifest's
+`used_as_base` plus a tried-ledger for `--base=` runs and walks (base, inner/target,
+budget, outcome), in `research/PENDING_TASKS.md`. Walks only where an upstream recipe
+names the representative (⟨20,24,25⟩, ⟨8,27,30⟩). The old `17x19x20-r3780` stub still
+carries a `@ref?:L0` placeholder inside an identity recombination; it replays (r = 3780,
+spot-check true) and was left alone.

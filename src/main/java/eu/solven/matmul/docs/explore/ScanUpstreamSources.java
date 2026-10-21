@@ -8,6 +8,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -117,8 +118,17 @@ public final class ScanUpstreamSources {
 	}
 
 	/** Download {@code url} to {@code dst} when forced, missing, or suspiciously
-	 *  small (&lt;1&nbsp;KB) — matching the Python heuristic. */
-	private static void fetch(String url, Path dst, boolean force) throws IOException, InterruptedException {
+	 *  small (&lt;1&nbsp;KB) — matching the Python heuristic.
+	 *
+	 *  <p>The destination is TRUNCATED before the body is written.
+	 *  {@code BodyHandlers.ofFile(dst)} alone opens the file with {@code CREATE, WRITE} only,
+	 *  so an existing file longer than the download kept its old tail after the new
+	 *  content — a JSON that no longer parsed ("Unrecognized token 'mat'": the old
+	 *  {@code "format"} line, split). Seen 2026-10-19 on a Windows checkout, where the CRLF
+	 *  working copy is longer than the LF download; on CI it only waited for the day the
+	 *  upstream digest shrinks, when the weekly scan would have crashed instead of
+	 *  reporting.</p> */
+	static void fetch(String url, Path dst, boolean force) throws IOException, InterruptedException {
 		boolean stale = force
 				|| !Files.exists(dst)
 				|| Files.size(dst) < 1000;
@@ -133,7 +143,8 @@ public final class ScanUpstreamSources {
 				.followRedirects(HttpClient.Redirect.NORMAL)
 				.build();
 		HttpRequest req = HttpRequest.newBuilder(URI.create(url)).GET().build();
-		HttpResponse<Path> resp = client.send(req, HttpResponse.BodyHandlers.ofFile(dst));
+		HttpResponse<Path> resp = client.send(req, HttpResponse.BodyHandlers.ofFile(dst,
+				StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
 		if (resp.statusCode() / 100 != 2) {
 			throw new IOException("HTTP " + resp.statusCode() + " fetching " + url);
 		}

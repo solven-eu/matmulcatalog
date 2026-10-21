@@ -1106,6 +1106,28 @@ public final class FieldAwareLookup implements Recombination.AlgorithmLookup {
 	}
 
 	/**
+	 * Like {@link #findFile} but <strong>non-commutative entries only</strong>: the file a
+	 * NON-COMMUTATIVE build or replay may resolve a bare shape ref to. {@link #findFile}
+	 * ranks every kind of entry, so at ⟨2,2,n⟩ it returns Rosowski's commutative
+	 * {@code 3n+1} scheme below the NC best — today harmless only because those files are
+	 * non-bilinear and unreplayable (the replayer fell back with a warning); a commutative
+	 * <em>bilinear</em> file below the NC best would have been replayed into NC lineages,
+	 * the cross-contamination the rank lookups already refuse (2026-06-02 ⟨17,17,17⟩=2868).
+	 */
+	public Optional<Path> findNcFile(int n, int m, int p) {
+		int[] sorted = { n, m, p };
+		Arrays.sort(sorted);
+		String key = sorted[0] + "x" + sorted[1] + "x" + sorted[2];
+		List<FileEntry> candidates = fileIndex().get(key);
+		if (candidates == null) return Optional.empty();
+		List<eu.solven.matmul.algebra.Field> allowedFields = field.fallbackChain();
+		for (FileEntry e : candidates) {
+			if (allowedFields.contains(e.field) && !e.commutative) return Optional.of(e.path);
+		}
+		return Optional.empty();
+	}
+
+	/**
 	 * All on-disk files for {@code ⟨n,m,p⟩} in the field-fallback chain,
 	 * <strong>rank-ascending</strong> (the {@code fileIndex} bucket is pre-sorted
 	 * by filename-claimed rank). Unlike {@link #findFile}, which returns only the
