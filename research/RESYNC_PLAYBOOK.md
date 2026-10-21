@@ -48,6 +48,21 @@ $M eu.solven.matmul.docs.verify.CompareReferenceCatalogs          # references/r
 $M eu.solven.matmul.docs.explore.ProjectFmmGaps -Dexec.args="--passes=2"      # projection scatter
 $M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=simple \
      --strategies=concat,kron,recomb --shape-file=target/fmm-worse.txt --threads=4"
+#    `simple` is the cubic root pool (six cubic bases, no ⟨2,3,3⟩ / ⟨2,4,4⟩): its fixpoint says nothing
+#    about rectangular bases. Run the rectangular tier, then the default pool (no --config =
+#    defaultLarge: rectangular ≤ 5, cubic ≤ 8, PLUS every file the catalog's lineages already stand on,
+#    whatever its dimension — pool = cap + proven-useful list, 2026-10-21, `TestProvenOuterBases`):
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=rectangular \
+     --baseShape=rectangular --strategies=recomb --shape-file=target/fmm-worse.txt --threads=4"
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q \
+     --strategies=recomb --shape-file=target/fmm-worse.txt --threads=4"
+#    a base newly registered in the root pool re-prices every stub standing on that shape (issue #8 put
+#    two ⟨2,4,4⟩ reps in; the 360 ⟨2,4,4⟩-outer stubs were only ever optimised against one — re-sweeping
+#    them gave 129 records in 20 s, 2026-10-21): list the shapes, then
+#    grep -rlE '"lineage_compact": "R\[(2x4x4|4x2x4|4x4x2);' src/main/resources/schemes | xargs grep -h '"n": \[' \
+#      | sed -E 's/[^0-9,]//g' | sort -u | awk -F, '{print $1"x"$2"x"$3}' > target/rerun-shapes.txt
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=rectangular \
+     --baseFilter=2,4,4 --strategies=recomb --maxNodes=60000000 --shape-file=target/rerun-shapes.txt --threads=12"
 $M eu.solven.matmul.docs.migrate.MaterialiseSerendipitousWins -Dexec.args="--shapes=..."   # serendipitous products
 #    an FMM "serendipitous" recipe we cannot price: the base REPRESENTATIVE is the variable —
 #    walk it (persists a reaction base when it builds below the catalog), then materialise:
@@ -110,3 +125,4 @@ entry with the numbers.
 | the lineage JSON parser read a Recombination's `leaves` before its `base` while the writer renders base first — a shared-base back-reference became a literal `Atom("@ref?:L0")` on every read → write round trip (39 files after the 2026-10-19 restamp, 1 older) | `SchemeIO.readLineage` resolves back-references on demand; `TestLineageJsonSharedNodes` |
 | the weekly scan's `fetch` wrote the download over the existing file without truncating (`BodyHandlers.ofFile(dst)` = CREATE+WRITE): a longer destination kept its old tail and the digest stopped parsing — would have crashed the job the day upstream shrinks the file | `TRUNCATE_EXISTING`; `TestScanUpstreamSources.fetch_truncates_a_longer_existing_file` |
 | the replayer resolved a bare shape ref with `findFile`, which ranks commutative-only entries too (Rosowski ⟨2,2,n⟩ = 3n+1 below the NC best; unreplayable, so a warning-and-fallback hid it) | `FieldAwareLookup.findNcFile` in `resolveShape`, `classifyLeaf`, the cycle checks; `TestReplayLeafFallback.bare_shape_ref_resolves_to_the_non_commutative_best` |
+| the default recombination pool capped non-cubic bases at dim 5 while committed stubs stood on dim-6/7 outer bases that only one-off `--base=` runs had offered (⟨3,4,6⟩, ⟨2,5,6⟩, ⟨3,4,7⟩, ⟨2,6,6⟩, …): the closure could not re-derive what the catalog held, so its "no improvement" fixpoint over those shapes was a statement about the pool; and the playbook's closure step ran `--config=simple`, six cubic bases | pool = cap + proven-useful list: every file the lineages name as a recombination base is admitted whatever its dimension (`ProvenOuterBases`, read from the catalog, not curated); `TestProvenOuterBases` (every outer base of every committed lineage is offered by the default pool); step 4 runs the rectangular tier and the default pool |
