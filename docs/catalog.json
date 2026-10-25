@@ -1,5 +1,5 @@
 {
-  "total": 11136,
+  "total": 11175,
   "schemes": [
     {
       "format": [2, 2, 10],
@@ -286489,6 +286489,45 @@
       "format": [9, 10, 11],
       "max_dim": 11,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 653,
+      "additions": 17630,
+      "has_buds": true,
+      "buds": "21×U⟨1,1,2⟩ + 21×V⟨2,1,1⟩ + 19×W⟨1,2,1⟩ + 531×⟨1,1,1⟩",
+      "projection_margin": 26,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x10x11_m653_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section11/9x10x11-r653-perminov_Z-a5f7e04.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 644,
+        "details_url": "https://fmm.univ-lille.fr/9x10x11.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 644,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 122,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 10, 11],
+      "max_dim": 11,
+      "fields": [
         "Q",
         "R",
         "C"
@@ -287804,6 +287843,45 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 1001,
+      "additions": 30511,
+      "has_buds": true,
+      "buds": "17×U⟨1,1,2⟩ + 16×V⟨2,1,1⟩ + 55×W⟨1,2,1⟩ + 825×⟨1,1,1⟩",
+      "projection_margin": 31,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/11x12x12_m1001_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section12/11x12x12-r1001-perminov_Z-5a5e1fe.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 968,
+        "details_url": "https://fmm.univ-lille.fr/11x12x12.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 968,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 176,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [11, 12, 12],
+      "max_dim": 12,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 1002,
       "additions": 24900,
@@ -288006,6 +288084,45 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 150
+    },
+    {
+      "format": [11, 12, 12],
+      "max_dim": 12,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 999,
+      "additions": 35290,
+      "has_buds": true,
+      "buds": "11×U⟨1,1,2⟩ + 1×U⟨1,1,3⟩ + 3×V⟨2,1,1⟩ + 15×W⟨1,2,1⟩ + 938×⟨1,1,1⟩",
+      "projection_margin": 47,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/11x12x12_m999_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section12/11x12x12-r999-perminov_Z-4fde10e.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 968,
+        "details_url": "https://fmm.univ-lille.fr/11x12x12.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 968,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 61,
+      "pareto_rank_buds": true
     },
     {
       "format": [12, 12, 12],
@@ -293309,6 +293426,45 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 684,
+      "additions": 19419,
+      "has_buds": true,
+      "buds": "23×U⟨1,1,2⟩ + 7×V⟨2,1,1⟩ + 624×⟨1,1,1⟩",
+      "projection_margin": 30,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/8x11x12_m684_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section12/8x11x12-r684-perminov_Z-b957486.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 676,
+        "details_url": "https://fmm.univ-lille.fr/8x11x12.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 676,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 60,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [8, 11, 12],
+      "max_dim": 12,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 690,
       "additions": 12178,
@@ -294072,6 +294228,45 @@
       "format": [9, 11, 12],
       "max_dim": 12,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 756,
+      "additions": 22565,
+      "has_buds": true,
+      "buds": "29×U⟨1,1,2⟩ + 698×⟨1,1,1⟩",
+      "projection_margin": 16,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x11x12_m756_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section12/9x11x12-r756-perminov_Z-4e18ad2.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 738,
+        "details_url": "https://fmm.univ-lille.fr/9x11x12.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 738,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 58,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 11, 12],
+      "max_dim": 12,
+      "fields": [
         "Q",
         "R",
         "C"
@@ -294137,8 +294332,7 @@
       "external_best_rank": 738,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 56,
-      "pareto_rank_buds": true
+      "bud_score": 56
     },
     {
       "format": [9, 12, 12],
@@ -302541,6 +302735,41 @@
       "format": [11, 12, 14],
       "max_dim": 14,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1165,
+      "additions": 35877,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/11x12x14_m1165_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/11x12x14-r1165-perminov_Z-1e0b4d2.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1153,
+        "details_url": "https://fmm.univ-lille.fr/11x12x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1153,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [11, 12, 14],
+      "max_dim": 14,
+      "fields": [
         "Q",
         "R",
         "C"
@@ -303056,6 +303285,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 1373,
+      "additions": 52910,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x13x14_m1373_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/12x13x14-r1373-perminov_Z-af79afc.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1370,
+        "details_url": "https://fmm.univ-lille.fr/12x13x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1370,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [12, 13, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 1389,
       "additions": 26698,
@@ -303221,6 +303485,41 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 172,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [12, 14, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1470,
+      "additions": 52417,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x14x14_m1470_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/12x14x14-r1470-perminov_Z-12af23d.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1449,
+        "details_url": "https://fmm.univ-lille.fr/12x14x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1449,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
@@ -308923,6 +309222,35 @@
         "C"
       ],
       "zt": false,
+      "rank": 729,
+      "additions": 19770,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/6x13x14_m729_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/6x13x14-r729-perminov_Z-45cb5bd.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 726, "details_url": "https://fmm.univ-lille.fr/6x13x14.html"},
+      "external_best_rank": 726,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [6, 13, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
       "rank": 730,
       "additions": 13147,
       "has_buds": true,
@@ -309805,6 +310133,35 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 777,
+      "additions": 17250,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/7x12x14_m777_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/7x12x14-r777-perminov_Z-4406bf0.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 774, "details_url": "https://fmm.univ-lille.fr/7x12x14.html"},
+      "external_best_rank": 774,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [7, 12, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 780,
       "additions": 17093,
@@ -310612,6 +310969,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 856,
+      "additions": 20651,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/8x12x14_m856_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/8x12x14-r856-perminov_Z-28cf504.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 843,
+        "details_url": "https://fmm.univ-lille.fr/8x12x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 843,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [8, 12, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 861,
       "additions": 20198,
@@ -311037,6 +311429,35 @@
       "format": [9, 10, 14],
       "max_dim": 14,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 814,
+      "additions": 23837,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x10x14_m814_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/9x10x14-r814-perminov_Z-1ac7ff5.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 808, "details_url": "https://fmm.univ-lille.fr/9x10x14.html"},
+      "external_best_rank": 808,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 10, 14],
+      "max_dim": 14,
+      "fields": [
         "Q",
         "R",
         "C"
@@ -311163,6 +311584,41 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 80
+    },
+    {
+      "format": [9, 11, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 889,
+      "additions": 25721,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x11x14_m889_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/9x11x14-r889-perminov_Z-ad67ca0.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 882,
+        "details_url": "https://fmm.univ-lille.fr/9x11x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 882,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [9, 11, 14],
@@ -311306,6 +311762,41 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 350,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 12, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 951,
+      "additions": 20931,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x12x14_m951_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/9x12x14-r951-perminov_Z-1a5933e.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 940,
+        "details_url": "https://fmm.univ-lille.fr/9x12x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 940,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
@@ -311486,6 +311977,41 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 84,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 13, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1039,
+      "additions": 21436,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x13x14_m1039_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/9x13x14-r1039-perminov_Z-3fd5a30.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1024,
+        "details_url": "https://fmm.univ-lille.fr/9x13x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1024,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
@@ -311707,6 +312233,41 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 18,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 14, 14],
+      "max_dim": 14,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1114,
+      "additions": 35109,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x14x14_m1114_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section14/9x14x14-r1114-perminov_Z-9c7a729.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1101,
+        "details_url": "https://fmm.univ-lille.fr/9x14x14.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1101,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
@@ -313372,6 +313933,35 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 1320,
+      "additions": 47389,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x12x15_m1320_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/12x12x15-r1320-perminov_Z-14bbf56.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 1280, "details_url": "https://fmm.univ-lille.fr/12x12x15.html"},
+      "external_best_rank": 1280,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [12, 12, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 1326,
       "additions": 26718,
@@ -313538,6 +314128,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 1443,
+      "additions": 35555,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x13x15_m1443_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/12x13x15-r1443-perminov_Z-41c099f.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1442,
+        "details_url": "https://fmm.univ-lille.fr/12x13x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1442,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [12, 13, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 1464,
       "additions": 37293,
@@ -313640,6 +314265,41 @@
       "bud_score": 66,
       "pareto_rank_buds": true,
       "used_as_base": {"by_recombination": 11, "total": 11}
+    },
+    {
+      "format": [12, 14, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1543,
+      "additions": 36720,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x14x15_m1543_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/12x14x15-r1543-perminov_Z-d0554a6.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1538,
+        "details_url": "https://fmm.univ-lille.fr/12x14x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1538,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [12, 14, 15],
@@ -313756,6 +314416,35 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 330,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [12, 15, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1632,
+      "additions": 53228,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x15x15_m1632_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/12x15x15-r1632-perminov_Z-42ae7d3.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 1600, "details_url": "https://fmm.univ-lille.fr/12x15x15.html"},
+      "external_best_rank": 1600,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
@@ -317472,6 +318161,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 453,
+      "additions": 13753,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/4x11x15_m453_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/4x11x15-r453-perminov_Z-e9e6ec3.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 449,
+        "details_url": "https://fmm.univ-lille.fr/4x11x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 449,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [4, 11, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 457,
       "additions": 7179,
@@ -317576,6 +318300,35 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 164
+    },
+    {
+      "format": [4, 12, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 486,
+      "additions": 12744,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/4x12x15_m486_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/4x12x15-r486-perminov_Z-6755b44.json",
+      "explicitable": true,
+      "fmm_lille": {"best_rank": 480, "details_url": "https://fmm.univ-lille.fr/4x12x15.html"},
+      "external_best_rank": 480,
+      "external_best_source": "fmm-lille",
+      "external_cited": false,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [4, 12, 15],
@@ -317794,6 +318547,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 532,
+      "additions": 18119,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/4x13x15_m532_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/4x13x15-r532-perminov_Z-8e11b77.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 520,
+        "details_url": "https://fmm.univ-lille.fr/4x13x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 520,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [4, 13, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 536,
       "additions": 8344,
@@ -317929,6 +318717,41 @@
       "external_best_source": "fmm-lille",
       "external_cited": true,
       "bud_score": 24,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [4, 14, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 568,
+      "additions": 16744,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/4x14x15_m568_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/4x14x15-r568-perminov_Z-157b27c.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 557,
+        "details_url": "https://fmm.univ-lille.fr/4x14x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 557,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
       "pareto_rank_buds": true
     },
     {
@@ -320856,6 +321679,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 537,
+      "additions": 11741,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/6x9x15_m537_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/6x9x15-r537-perminov_Z-43c8142.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 529,
+        "details_url": "https://fmm.univ-lille.fr/6x9x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 529,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [6, 9, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 538,
       "additions": 7160,
@@ -321987,6 +322845,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 570,
+      "additions": 10937,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/7x8x15_m570_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/7x8x15-r570-perminov_Z-09fca17.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 557,
+        "details_url": "https://fmm.univ-lille.fr/7x8x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 557,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [7, 8, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 571,
       "additions": 8680,
@@ -322008,8 +322901,7 @@
       "external_best_rank": 557,
       "external_best_source": "fmm-lille",
       "external_cited": true,
-      "bud_score": 0,
-      "pareto_rank_buds": true
+      "bud_score": 0
     },
     {
       "format": [7, 8, 15],
@@ -323194,6 +324086,41 @@
       "bud_score": 136,
       "pareto_rank_buds": true,
       "used_as_base": {"by_recombination": 18, "total": 18}
+    },
+    {
+      "format": [8, 15, 15],
+      "max_dim": 15,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1131,
+      "additions": 28430,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/8x15x15_m1131_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section15/8x15x15-r1131-perminov_Z-f76a483.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1130,
+        "details_url": "https://fmm.univ-lille.fr/8x15x15.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1130,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [8, 15, 15],
@@ -325046,6 +325973,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 1320,
+      "additions": 46209,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/10x13x16_m1320_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/10x13x16-r1320-perminov_Z-8ff0d93.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1318,
+        "details_url": "https://fmm.univ-lille.fr/10x13x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1318,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [10, 13, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 1326,
       "additions": 31420,
@@ -325748,6 +326710,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 1293,
+      "additions": 69387,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/11x12x16_m1293_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/11x12x16-r1293-perminov_Z-8c68e99.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1278,
+        "details_url": "https://fmm.univ-lille.fr/11x12x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1278,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [11, 12, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 1306,
       "additions": 30342,
@@ -326146,6 +327143,41 @@
       "format": [11, 14, 16],
       "max_dim": 16,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1540,
+      "additions": 41560,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/11x14x16_m1540_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/11x14x16-r1540-perminov_Z-cec738d.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1520,
+        "details_url": "https://fmm.univ-lille.fr/11x14x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1520,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [11, 14, 16],
+      "max_dim": 16,
+      "fields": [
         "Q",
         "R",
         "C"
@@ -326288,6 +327320,41 @@
       "bud_score": 205,
       "pareto_rank_buds": true,
       "used_as_base": {"by_recombination": 8, "total": 8}
+    },
+    {
+      "format": [11, 15, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1606,
+      "additions": 101330,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/11x15x16_m1606_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/11x15x16-r1606-perminov_Z-f0a6252.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1605,
+        "details_url": "https://fmm.univ-lille.fr/11x15x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1605,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [11, 15, 16],
@@ -326654,6 +327721,41 @@
       "bud_score": 136,
       "pareto_rank_buds": true,
       "used_as_base": {"by_recombination": 9, "total": 9}
+    },
+    {
+      "format": [12, 13, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1516,
+      "additions": 42839,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x13x16_m1516_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/12x13x16-r1516-perminov_Z-1d1e5e2.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1509,
+        "details_url": "https://fmm.univ-lille.fr/12x13x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1509,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [12, 13, 16],
@@ -327249,6 +328351,41 @@
       "bud_score": 300,
       "pareto_rank_buds": true,
       "used_as_base": {"by_concat": 2, "by_recombination": 21, "total": 23}
+    },
+    {
+      "format": [12, 16, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1830,
+      "additions": 56849,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/12x16x16_m1830_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/12x16x16-r1830-perminov_Z-45b4fd0.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1815,
+        "details_url": "https://fmm.univ-lille.fr/12x16x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1815,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [12, 16, 16],
@@ -332482,6 +333619,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 639,
+      "additions": 21503,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/4x15x16_m639_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/4x15x16-r639-perminov_Z-036b632.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 632,
+        "details_url": "https://fmm.univ-lille.fr/4x15x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 632,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [4, 15, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 640,
       "additions": 10347,
@@ -335666,6 +336838,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 568,
+      "additions": 13397,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/6x9x16_m568_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/6x9x16-r568-perminov_Z-3d3ac6b.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 552,
+        "details_url": "https://fmm.univ-lille.fr/6x9x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 552,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [6, 9, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 572,
       "additions": 9230,
@@ -338384,6 +339591,41 @@
         "R",
         "C"
       ],
+      "zt": false,
+      "rank": 1200,
+      "additions": 34385,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/8x15x16_m1200_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/8x15x16-r1200-perminov_Z-b3b3c1c.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1185,
+        "details_url": "https://fmm.univ-lille.fr/8x15x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1185,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [8, 15, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
       "zt": true,
       "rank": 1203,
       "additions": 32990,
@@ -339458,6 +340700,41 @@
       "format": [9, 12, 16],
       "max_dim": 16,
       "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1065,
+      "additions": 32446,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x12x16_m1065_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/9x12x16-r1065-perminov_Z-1387941.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1035,
+        "details_url": "https://fmm.univ-lille.fr/9x12x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1035,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
+    },
+    {
+      "format": [9, 12, 16],
+      "max_dim": 16,
+      "fields": [
         "Q",
         "R",
         "C"
@@ -339977,6 +341254,41 @@
       "bud_score": 60,
       "pareto_rank_buds": true,
       "used_as_base": {"by_recombination": 15, "total": 15}
+    },
+    {
+      "format": [9, 14, 16],
+      "max_dim": 16,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": false,
+      "rank": 1256,
+      "additions": 45001,
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/Z/9x14x16_m1256_Z.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section16/9x14x16-r1256-perminov_Z-dc62623.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 1254,
+        "details_url": "https://fmm.univ-lille.fr/9x14x16.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 1254,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 0,
+      "pareto_rank_buds": true
     },
     {
       "format": [9, 14, 16],
@@ -357304,6 +358616,45 @@
       "bud_score": 32,
       "pareto_rank_buds": true,
       "used_as_base": {"by_recombination": 25, "total": 25}
+    },
+    {
+      "format": [6, 9, 9],
+      "max_dim": 9,
+      "fields": [
+        "F2",
+        "F3",
+        "Z",
+        "Q",
+        "R",
+        "C"
+      ],
+      "zt": true,
+      "rank": 338,
+      "additions": 4968,
+      "has_buds": true,
+      "buds": "24×U⟨1,1,2⟩ + 290×⟨1,1,1⟩",
+      "projection_margin": 26,
+      "buds_certainty": "exact",
+      "source": "Perminov 2023",
+      "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/results/ZT/6x9x9_m338_ZT.json",
+      "year": 2023,
+      "verified": true,
+      "atom": true,
+      "complex": false,
+      "file": "known/section9/6x9x9-r338-perminov_ZT-6cc9766.json",
+      "explicitable": true,
+      "fmm_lille": {
+        "best_rank": 332,
+        "details_url": "https://fmm.univ-lille.fr/6x9x9.html",
+        "references": [
+          "Perminov:2026aa"
+        ]
+      },
+      "external_best_rank": 332,
+      "external_best_source": "fmm-lille",
+      "external_cited": true,
+      "bud_score": 48,
+      "pareto_rank_buds": true
     },
     {
       "format": [6, 9, 9],
