@@ -577,13 +577,29 @@ public class TestSweepSpotsSota {
 				5, 32, 32, pool, sota, false,
 				RecombinationPoolConfig.UNBOUNDED_IMBALANCE, RecombinationPoolConfig.UNBOUNDED_COMBINATIONS, 0, 3446L);
 		assertThat(best).as("⟨5,32,32⟩ must resolve via the includeDerived pool").isPresent();
+		// 3308 since 2026-10-21: the pool admits the bases the catalog's lineages stand on
+		// (cap + proven-useful list) and the proven ⟨2,4,7⟩=45 base beats the ⟨2,4,4⟩ route
+		// (3320 = FMM). SOTA-or-better, never equality.
 		assertThat(best.get().rank())
-				.as("⟨5,32,32⟩ must reach FMM's 3320 or better (regression → 3446 = ⟨2,4,4⟩ base lost)")
-				.isLessThanOrEqualTo(3320L);
+				.as("⟨5,32,32⟩ must reach 3308 or better (3320 = the ⟨2,4,4⟩ route alone; 3446 = ⟨2,4,4⟩ lost)")
+				.isLessThanOrEqualTo(3308L);
 		assertThat(best.get().recombination())
 				.as("the 3320 route is a recombination, not concat/kronecker").isNotNull();
-		assertThat(best.get().label())
-				.as("the winning outer base must be ⟨2,4,4⟩ (extended-pool '2x4x4' or root-pool '2,4,4' spelling)")
-				.containsAnyOf("2x4x4", "2,4,4");
+		// The mechanism itself, on the ⟨2,4,4⟩ entries alone: since 2026-10-21 the pool also
+		// admits the bases the catalog's lineages already stand on (cap + proven-useful list,
+		// ProvenOuterBases), and the proven ⟨2,4,7⟩=45 base displaced ⟨2,4,4⟩ as the full-pool
+		// winner here — so the winner's label no longer identifies the route; the sub-pool does.
+		List<BlockSplitSearch.NamedBase> only244 = pool.stream()
+				.filter(nb -> nb.label().contains("2x4x4") || nb.label().contains("2,4,4"))
+				.toList();
+		assertThat(only244).as("the includeDerived pool offers ⟨2,4,4⟩ (extended '2x4x4' or root '2,4,4' spelling)")
+				.isNotEmpty();
+		Optional<BlockSplitSearch.NonCubicStrategy> via244 = BlockSplitSearch.findBestStrategy(
+				5, 32, 32, only244, sota, false,
+				RecombinationPoolConfig.UNBOUNDED_IMBALANCE, RecombinationPoolConfig.UNBOUNDED_COMBINATIONS, 0, 3446L);
+		assertThat(via244).as("⟨5,32,32⟩ must resolve over the ⟨2,4,4⟩ entries alone").isPresent();
+		assertThat(via244.get().rank())
+				.as("the ⟨2,4,4⟩ route (allocA=[3,2], [8,8,8,8]²) must reach 3320 or better")
+				.isLessThanOrEqualTo(3320L);
 	}
 }

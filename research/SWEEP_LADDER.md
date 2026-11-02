@@ -64,4 +64,10 @@ ProjectFmmGaps --passes=3
 - The lineage write-guard + task-#91 fixes mean every win is bit-exactly replayable
   (no phantoms), so tiers compose safely.
 - Verified: cubic-only ⟨22,27,29⟩=9447 vs `rectangular` =9392 (FMM 9369) via
+- **Base pool = cap + proven-useful list (2026-10-21).** The default pool (no `--config`
+  = `defaultLarge`) also admits every base file the catalog's lineages already stand on,
+  whatever its dimension (`ProvenOuterBases`): a `--base=` win becomes part of the default
+  pool the moment its stub is committed, and `TestProvenOuterBases` fails if a committed
+  lineage stands on a base the pool does not offer. `--baseFilter=proven[` selects exactly
+  the bases admitted above the cap.
   `base=2x3x3` — confirms T2's value over T1.

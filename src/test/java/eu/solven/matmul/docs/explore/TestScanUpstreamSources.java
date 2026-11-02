@@ -2,6 +2,7 @@ package eu.solven.matmul.docs.explore;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,6 +10,8 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import com.sun.net.httpserver.HttpServer;
 
 import eu.solven.matmul.CanonicalShape;
 import eu.solven.matmul.Shape;
@@ -27,6 +30,41 @@ public class TestScanUpstreamSources {
 	private static void write(Path dir, String name, String body) throws Exception {
 		Files.createDirectories(dir);
 		Files.writeString(dir.resolve(name), body, StandardCharsets.UTF_8);
+	}
+
+	/**
+	 * 2026-10-19: {@code fetch} wrote the download over the existing file WITHOUT
+	 * truncating it ({@code BodyHandlers.ofFile(dst)} opens with CREATE+WRITE only), so a
+	 * destination longer than the download kept its old tail — a digest that no longer
+	 * parsed. On CI the file had never shrunk; locally the CRLF working copy is always
+	 * longer than the LF download, and the refreshed digest ended in half of an old
+	 * {@code "format"} line.
+	 */
+	@Test
+	public void fetch_truncates_a_longer_existing_file(@TempDir Path root) throws Exception {
+		String body = "{\"entries\": [1, 2, 3]}\n";
+		HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+		server.createContext("/digest.json", ex -> {
+			byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+			ex.sendResponseHeaders(200, bytes.length);
+			try (var os = ex.getResponseBody()) {
+				os.write(bytes);
+			}
+		});
+		server.start();
+		try {
+			Path dst = root.resolve("digest.json");
+			Files.writeString(dst, "{\"entries\": [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]}\n".repeat(50), StandardCharsets.UTF_8);
+			long before = Files.size(dst);
+			assertThat(before).isGreaterThan(body.length());
+
+			ScanUpstreamSources.fetch("http://127.0.0.1:" + server.getAddress().getPort() + "/digest.json", dst, true);
+
+			assertThat(Files.readString(dst, StandardCharsets.UTF_8)).as("no stale tail after the download")
+					.isEqualTo(body);
+		} finally {
+			server.stop(0);
+		}
 	}
 
 	@Test

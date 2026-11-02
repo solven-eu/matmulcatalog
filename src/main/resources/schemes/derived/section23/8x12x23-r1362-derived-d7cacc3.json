@@ -1,0 +1,39 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[4, 4], allocB=[3, 3, 3, 3], allocC=[6, 5, 6, 6], leaves=[OrientAs(3x4x6, ⟨4,3,6⟩), OrientAs(3x4x5, ⟨4,3,5⟩)])",
+  "lineage_compact": "R[2x4x4; 4,4 | 3,3,3,3 | 6,5,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@a4ed740a036a37c48fd9a3386a354b8827aa1598a3135f17a8332d0d797c1177"},
+    "allocA": [4, 4],
+    "allocB": [3, 3, 3, 3],
+    "allocC": [6, 5, 6, 6],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 3,
+        "p": 6,
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "3x4x6@c197868"}
+      },
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 3,
+        "p": 5,
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "3x4x5@6bc7fbe"}
+      }
+    ]
+  },
+  "n": [8, 12, 23],
+  "m": 1362,
+  "hash": "d7cacc365a1a501d9f403b7e15f40756f8cf3312c27c83d149a34c6628f89f71",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

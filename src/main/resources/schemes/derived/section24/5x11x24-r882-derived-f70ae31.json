@@ -1,0 +1,36 @@
+{
+  "lineage_str": "Recombination(base=2x4x4, allocA=[2, 3], allocB=[3, 3, 3, 2], allocC=[6, 6, 6, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 2x2x6, ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7)])",
+  "lineage_compact": "R[2x4x4; 2,3 | 3,3,3,2 | 6,6,6,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x4x4@a4ed740a036a37c48fd9a3386a354b8827aa1598a3135f17a8332d0d797c1177"},
+    "allocA": [2, 3],
+    "allocB": [3, 3, 3, 2],
+    "allocC": [6, 6, 6, 6],
+    "leaves": [
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      {"op": "Atom", "ref": "2x2x6@950a4ab"},
+      {
+        "op": "ConcatCols",
+        "left": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+        "right": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"}
+      }
+    ]
+  },
+  "n": [5, 11, 24],
+  "m": 882,
+  "hash": "f70ae3119375529d1395ed8ab0e6cc8e68347e6a16d9f0a270e40cd5c6445fef",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

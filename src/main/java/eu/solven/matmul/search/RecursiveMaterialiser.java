@@ -1727,7 +1727,7 @@ public final class RecursiveMaterialiser {
 			int[] ss = { s[0], s[1], s[2] };
 			java.util.Arrays.sort(ss);
 			if (!seen.add(ss[0] + "x" + ss[1] + "x" + ss[2]) || seen.size() > 8192) continue;
-			Optional<java.nio.file.Path> f = diskLookup.findFile(s[0], s[1], s[2]);
+			Optional<java.nio.file.Path> f = diskLookup.findNcFile(s[0], s[1], s[2]);
 			if (f.isEmpty()) continue;
 			for (int[] ref : stubRefShapes(f.get())) {
 				int[] rs = { ref[0], ref[1], ref[2] };

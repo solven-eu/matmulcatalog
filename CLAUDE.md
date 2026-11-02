@@ -307,6 +307,16 @@ Canonical examples (all from real silent regressions in this repo):
   (`TestLineageAtomFromFilename`). Two tools that answer the same question must share one
   grammar: `AuditLineageRefs` reported 17 859 "unresolvable" refs that all replayed until
   it delegated to `LineageReplayer.classifyLeaf` (`TestAuditLineageRefs`).
+- The default recombination pool capped non-cubic bases at dim 5 while committed stubs
+  stood on dim-6/7 outer bases that only one-off `--base=` runs had offered (⟨3,4,6⟩,
+  ⟨2,5,6⟩, ⟨3,4,7⟩, …), so the closure sweep could not re-derive what the catalog held and
+  its "no improvement" fixpoint was a statement about the pool, not the catalog
+  (2026-10-21). The pool is now cap + proven-useful list: every file the catalog's lineages
+  name as a recombination base is admitted whatever its dimension (`ProvenOuterBases`,
+  read from the catalog, never curated by hand). Guard: `TestProvenOuterBases` (every outer
+  base of every committed lineage is offered by the default pool). Corollary: a base newly
+  registered in the root pool re-prices every stub standing on that shape — re-sweep them
+  (the two ⟨2,4,4⟩ reps of issue #8: 360 stubs, 129 records, 2026-10-21).
 
 **Two registries must never be able to contradict each other in silence.** When
 you add a source of truth (a bounds file, a curated list, a formula helper),

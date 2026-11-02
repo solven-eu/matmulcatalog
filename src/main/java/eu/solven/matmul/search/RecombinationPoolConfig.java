@@ -147,6 +147,14 @@ public record RecombinationPoolConfig(
 	 * (⟨7,7,30⟩, ⟨13,13,32⟩, and the Pan-TA ⟨26,29,29⟩/⟨28,31,31⟩). Users narrow it
 	 * ({@code --cubicOnly}, smaller {@code --maxBaseDim}) or widen it for specific bigger bases.
 	 *
+	 * <p><b>Cap + proven-useful list (2026-10-21).</b> The caps bound what the pool scans, not
+	 * what it must contain: {@link eu.solven.matmul.recombination.BlockSplitSearch#buildPool}
+	 * admits, above the caps, every file the catalog's own lineages name as a recombination
+	 * base ({@link ProvenOuterBases}), so a closure sweep can always re-derive what the catalog
+	 * holds. Before that, ~10 dim-6/7 bases introduced by one-off {@code --base=} runs could never
+	 * be offered again and the sweep's "no improvement" over their shapes was a statement about
+	 * the pool. Guard: {@code TestProvenOuterBases}.</p>
+	 *
 	 * <p>Orbit is {@code AXIS_FLIP} (the serious-sweep default): the flip orbit explores
 	 * each base's axis ORIENTATIONS, which is exactly what the per-base frontier-multiset
 	 * mechanism (Phase 2) will make efficient — iterating the frontier instead of re-deriving

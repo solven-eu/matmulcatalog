@@ -45,6 +45,27 @@ public class TestReplayLeafFallback {
 		assertThat(new int[] { a.n, a.m, a.p }).containsExactly(2, 5, 15);
 	}
 
+	/**
+	 * 2026-10-19: a bare shape ref must resolve to the best NON-COMMUTATIVE scheme. The
+	 * replayer picked its "best file" with {@code findFile}, which ranks commutative-only
+	 * entries too: at ⟨2,2,10⟩ that is Rosowski's commutative 31 (non-bilinear, so it failed
+	 * to replay and the fallback rescued it with a warning); a commutative bilinear file
+	 * below the NC best would have been replayed straight into an NC lineage.
+	 */
+	@Test
+	public void bare_shape_ref_resolves_to_the_non_commutative_best() {
+		int ncBest = lookup.findRank(2, 2, 10);
+		int anyBest = lookup.findRankAllowCommutative(2, 2, 10);
+		assertThat(anyBest).as("the catalog holds a commutative ⟨2,2,10⟩ below the NC best (the trap)")
+				.isLessThan(ncBest);
+		assertThat(lookup.findNcFile(2, 2, 10)).isPresent();
+		assertThat(lookup.findNcFile(2, 2, 10).get().getFileName().toString()).doesNotContain("rosowski");
+
+		NonCubicBilinearAlgorithm a = replay("2x2x10");
+		assertThat(a.r).as("replays the NC best, never the commutative rank").isEqualTo(ncBest);
+		assertThat(replayer.classifyLeaf("2x2x10").cls()).isEqualTo(LineageReplayer.LeafClass.SHAPE_BEST);
+	}
+
 	@Test
 	public void angle_named_ref_resolves() {
 		NonCubicBilinearAlgorithm a = replay("Strassen<2,2,2>=7");

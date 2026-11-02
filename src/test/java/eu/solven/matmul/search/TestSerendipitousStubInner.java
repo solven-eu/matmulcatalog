@@ -112,23 +112,25 @@ public class TestSerendipitousStubInner {
 		assertThat(best).as("the σ-best orientation prices FMM's ⟨21,28,30⟩ recipe").isLessThanOrEqualTo(9473);
 	}
 
-	/** The persisted ⟨21,28,30⟩=9473 stub carries an explicit axisMap pin and
+	/** The persisted ⟨21,28,30⟩=9468 stub (re-stamped by PR #17 from the 9473 file, same
+	 *  lineage) carries an explicit axisMap pin and
 	 *  replays at MOST the claimed rank (dim-repeat-safe orientation). Its inner
 	 *  shapes resolve to catalog-best, so a better ingredient legitimately lowers
 	 *  the replay (9471 since the 2026-10 imports) — SOTA-or-better, never equality. */
 	@Test
 	public void ambiguous_orientation_stub_replays_exactly() {
 		File stub = new File(
-				"src/main/resources/schemes/derived/section30/21x28x30-r9473-derived-f794828.json");
+				"src/main/resources/schemes/derived/section30/21x28x30-r9468-derived-42a9bdc.json");
 		assertThat(stub).exists();
 		NonCubicBilinearAlgorithm replayed =
 				LineageReplayer.withDefaultPool(lookup).replayFromFile(stub);
 		assertThat(replayed.n * replayed.m * replayed.p).isEqualTo(21 * 28 * 30);
-		assertThat(replayed.r).isLessThanOrEqualTo(9473);
+		assertThat(replayed.r).isLessThanOrEqualTo(9468);
 	}
 
 	/**
-	 * The persisted ⟨20,28,28⟩=8434 stub replays through its stub inner
+	 * The persisted ⟨20,28,28⟩=8422 stub (PR #17 re-stamped the 8434 file, same lineage)
+	 * replays through its stub inner
 	 * (LineageReplayer.resolveInner) to AT MOST the claimed rank. Its lineage
 	 * ({@code 5x7x7 ⊗ˢ⟨4,4,4⟩}) resolves bare-shape refs to catalog-best, so a
 	 * better ingredient landing later (the 2026-09 Perminov syncs took it to
@@ -139,11 +141,11 @@ public class TestSerendipitousStubInner {
 	@Test
 	public void serendip_stub_with_stub_inner_replays() {
 		File stub = new File(
-				"src/main/resources/schemes/derived/section28/20x28x28-r8434-derived-5d8d9ca.json");
+				"src/main/resources/schemes/derived/section28/20x28x28-r8422-derived-1582718.json");
 		assertThat(stub).exists();
 		NonCubicBilinearAlgorithm replayed =
 				LineageReplayer.withDefaultPool(lookup).replayFromFile(stub);
-		assertThat(replayed.r).isLessThanOrEqualTo(8434);
+		assertThat(replayed.r).isLessThanOrEqualTo(8422);
 		assertThat(new int[] { replayed.n, replayed.m, replayed.p }).containsExactly(20, 28, 28);
 	}
 }
