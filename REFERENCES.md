@@ -235,6 +235,7 @@ add the **Local PDF** line linking the file path.
 | [89](#89-adriano-2026-lille-recipes) | adriano-2026-lille-recipes | 2026 | algorithm (**22 FMM-Lille recipe ranks, explicit**) | Marcos Adriano, *22 explicit schemes at FMM-Lille table ranks (the table's own recipes, executed)*, GitHub issue [solven-eu/matmulcatalog#8](https://github.com/solven-eu/matmulcatalog/issues/8) (2026-09-24), attachment `lille-recipes-22-schemes.zip`. Explicit witnesses (9 ℤ, 13 with ±1/2 or ±1/3) for 22 table ranks FMM lists without a public scheme — recombinations over unequal blocks with an outer ⟨2,4,4⟩:26 HK (14 shapes) or Strassen (8). All 22 verified exactly here; **not loaded** (dim > 16 compositions of pieces we hold — 321 MB): instead RE-DERIVED as lineage stubs, 13 of them strictly below the recipe (⟨10,19,31⟩ 3492 vs 3532 …) once ⟨2,4,4⟩=26's Perminov-ZT / AlphaTensor-Z reps were registered as `rootPool()` bases. Record: `references/contributions/issue8-adriano-2026-lille-recipes.md`. |
 | [90](#90-witteveen-2026) | witteveen-2026 | 2026 | algorithm (**26 ZT schemes, 3 any-ring records**) | Merlijn S. Witteveen, *New fast matrix multiplication schemes* (dataset v1.2, 2026-09-30), DOI [10.5281/zenodo.22943995](https://doi.org/10.5281/zenodo.22943995), [github.com/MerlijnW70/fmm-schemes](https://github.com/MerlijnW70/fmm-schemes) — **CC BY 4.0**. 26 ternary-integer schemes (≤ 16): new best in any ring for `⟨7,11,15⟩=772`, `⟨11,13,15⟩=1364`, `⟨11,14,14⟩=1373`; first ZT scheme at the best rank for `⟨7,7,9⟩=315`; 22 further ZT records. All loaded (exact-verified, re-encoded canonically) as `*-witteveen_2026-*.json`. Cited by FMM-Lille for ⟨11,13,15⟩ / ⟨11,14,14⟩. |
 | [91](#91-cloudroom-math-2026) | cloudroom-math-2026 | 2026 | algorithm (**27 new upper bounds, AI-agent campaign**) | Cloudroom Math Campaign, *Cloudroom Math: new matrix multiplication algorithms found by AI agents* (release 2026-10-08), [github.com/matyasstoch/cloudroom-math](https://github.com/matyasstoch/cloudroom-math) — **Apache-2.0**. Contributed as GitHub issue [#12](https://github.com/solven-eu/matmulcatalog/issues/12). Explicit schemes found by Claude Opus 5.5 agents: `⟨4,6,15⟩=261` ("hidden grids" in serendipitous products), `⟨9,11,11⟩=710` (mod-3 flip-graph walk + core-restricted Hensel lift), 25 composition-type improvements in the 17–32 band. All verified exactly and loaded as `*-cloudroom_2026-*.json`. Cites this catalog ("Lacelle") as a previous-best source. |
+| [92](#92-mizopl-we-star-2026) | mizopl-we-star-2026 | 2026 | algorithm (**10 ternary-integer (ZT) records ≤ 16, 48 addition-reduced SLPs**) | mizopl (we*star), *Fast matrix multiplication: ZT/Z rank schemes and addition-reduced straight-line programs*, [github.com/mizopl/we-star](https://github.com/mizopl/we-star/tree/main/solutions/fast-matrix-multiplication) — **MIT**. Contributed as GitHub issue [#20](https://github.com/solven-eu/matmulcatalog/issues/20); four of the rank schemes are mirrored by Perminov (`schemes/known/mizopl/`, 2026-10-19). ZT lifts by sub-block seam conjugation + unimodular GL_g(ℤ) basis reduction over serendipitous products; the SLPs by a primal–dual Tellegen (Wᵀ) + CL1 signed-cancellation reducer. Pulled by `UpstreamSchemeRepos.MIZOPL`; every program is replayed against the matrices on import (`SlpJson`). |
 
 ---
 
@@ -1280,6 +1281,47 @@ the serendipitous engine.
 `TestSweepSpotsSota.retains_issue12_cloudroom_records` guard.
 
 ---
+
+## [92] <a name="92-mizopl-we-star-2026"></a>mizopl-we-star-2026
+
+```bibtex
+@misc{mizopl2026,
+  author       = {mizopl},
+  title        = {we*star: fast matrix multiplication --- ternary-integer rank schemes and addition-reduced straight-line programs},
+  howpublished = {Rl{https://github.com/mizopl/we-star/tree/main/solutions/fast-matrix-multiplication}; GitHub issue solven-eu/matmulcatalog#20},
+  year         = {2026},
+  note         = {Licence: MIT. Machine-verified by the author's agentic pipeline (Gemini-CLSS / PROOFER); status.json in Perminov's layout}
+}
+```
+
+Two datasets under `solutions/fast-matrix-multiplication/`, both in Perminov's JSON
+layouts and indexed by a Perminov-format `status.json`:
+
+- **`zt_rank_schemes/`** — eleven explicit schemes: ten ternary-integer (`ZT`, every
+  coefficient in {−1,0,1}) ranks below the best ternary scheme the catalog held for their
+  shape (five of them tying the best integer rank) — ⟨3,5,6⟩=68, ⟨6,12,14⟩=654,
+  ⟨9,10,13⟩=763, ⟨9,10,16⟩=920, ⟨9,12,14⟩=954, ⟨10,15,15⟩=1389, ⟨10,15,16⟩=1484,
+  ⟨11,15,16⟩=1629, ⟨12,15,15⟩=1640, ⟨14,15,15⟩=1894 — plus a ⟨12,13,16⟩ pair (ZT 1546,
+  Z 1541 with coefficients in {−2,…,2}) that Perminov's own ZT 1518 (`results/ZT`,
+  2026-10-28) already surpasses. Obtained by higher-order sub-block seam conjugation and
+  unimodular GL_g(ℤ) basis reduction over serendipitous tensor products. Perminov merged
+  four of them (⟨9,12,14⟩, ⟨10,15,15⟩, ⟨12,15,15⟩, ⟨14,15,15⟩) under
+  `schemes/known/mizopl/` on 2026-10-19 (commit b4f756b); his `status.json` credits nine.
+- **`slp_addition_reduced/`** — 48 addition-reduced straight-line programs over ternary
+  schemes (`{shape}_m{rank}_cr{reduced}_cn{naive}_ZT_reduced.json`, Perminov's `_reduced`
+  layout: `u_fresh`/`v_fresh`/`w_fresh`), produced by a C++17 primal–dual Tellegen (Wᵀ) +
+  CL1 signed-cancellation reducer (`clss_cl1_tellegen_reducer.cpp`). E.g. ⟨3,3,7⟩=49:
+  404 flat → 167 scheduled; ⟨5,7,7⟩=176: 2535 → 680. The ⟨3,5,6⟩=68 scheme exists only
+  in this directory (absent from the `status.json`).
+
+Channel: `UpstreamSchemeRepos.MIZOPL` → `ImportUpstreamSchemeRepos` (3-hourly sync).
+Rank schemes go through the contributed-scheme gate; a program is read with
+`SlpJson.fromFreshVars`, replayed against the gated matrices (refused if it does not
+reconstruct them), and attached to the scheme we hold with identical matrices — or to the
+newly written file — as `min_additions` + `slp` (tier `bound`, `slp.source` =
+"mizopl 2026"). The Z / ZT axes of the weekly upstream scan (`ScanUpstreamSources`) read
+the repository's `status.json` directly. Attribution key: `mizopl 2026`;
+`PerminovKnownAttribution` maps the mirror to it (`SKIP_FRESH_IMPORT`).
 
 ## Historical contributors cited in DIS09 (no separate dedicated entry yet)
 

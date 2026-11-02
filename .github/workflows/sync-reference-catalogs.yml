@@ -134,7 +134,7 @@ jobs:
         run: |
           mvn -B -ntp -q exec:java \
             -Dexec.mainClass=eu.solven.matmul.docs.VerifySchemes \
-            -Dexec.args="--check=lineage,coefficients"
+            -Dexec.args="--check=lineage,coefficients,slp"
 
       - name: Commit digest + imported schemes
         run: |

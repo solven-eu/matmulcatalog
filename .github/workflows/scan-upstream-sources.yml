@@ -40,6 +40,11 @@ jobs:
       - name: Run scan
         id: scan
         run: |
+          # A report left on disk by an earlier run must never be mistaken for this one's:
+          # on 2026-10-26 and 2026-11-02 the scan crashed (digest download kept an old tail)
+          # and the `if: always()` steps below posted the stale committed report, so issue #16
+          # received "4151 strict gaps" from a file written on 2026-09-30.
+          rm -f generated/UPSTREAM_SCAN.md
           mvn -B -ntp -q exec:java \
             -Dexec.mainClass=eu.solven.matmul.docs.explore.ScanUpstreamSources \
             -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md"
@@ -53,7 +58,7 @@ jobs:
           retention-days: 90
 
       - name: Surface report in workflow summary
-        if: always()
+        if: steps.scan.outcome == 'success'
         run: |
           {
             echo "## Upstream scan output"
@@ -67,7 +72,7 @@ jobs:
       # months). Now: sum the per-source strict-gap counts; if > 0, open one labelled
       # issue or comment on the open one — a report nobody reads is not an alert.
       - name: Open / update the tracking issue when strict gaps exist
-        if: always()
+        if: steps.scan.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

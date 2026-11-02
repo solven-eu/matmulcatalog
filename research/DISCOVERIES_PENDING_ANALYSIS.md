@@ -7,6 +7,44 @@ materialised scheme JSON), move it from here to its permanent home.
 
 ---
 
+## 2026-11-02 — issue #20 (mizopl / we*star): ZT records, addition-reduced programs, and additions as a first-class axis
+
+**Source:** `github.com/mizopl/we-star` (`solutions/fast-matrix-multiplication/`, MIT), issue #20,
+REFERENCES [92]; registered as `UpstreamSchemeRepos.MIZOPL` (3-hourly sync) and as a
+Perminov-layout source of the weekly scan.
+
+**Rank schemes (11, all pass the exact gate; ZT = every coefficient in {−1,0,1}):**
+ten new ZT records — ⟨3,5,6⟩ 70→68, ⟨6,12,14⟩ 666→654, ⟨9,10,13⟩ 771→763, ⟨9,10,16⟩ 924→920,
+⟨9,12,14⟩ 960→954, ⟨10,15,15⟩ 1395→1389, ⟨10,15,16⟩ 1488→1484, ⟨11,15,16⟩ 1641→1629,
+⟨12,15,15⟩ 1650→1640, ⟨14,15,15⟩ 1905→1894 (five of them tie the Z best; none moves the Q best) —
+plus the ⟨12,13,16⟩ pair (ZT 1546, Z 1541) already surpassed by Perminov's ZT 1518 (synced
+2026-10-28). Perminov had merged four (`known/mizopl/`, 2026-10-19); his `status.json` credits nine.
+`discovery: TBD` on every file until the per-shape audit (`RestampContributedProvenance`).
+
+**Addition-reduced programs (48, all replay exactly, `SlpJson.fromFreshVars` → `SchemeSlp.reconstructs`):**
+45 attached to the Perminov ZT files with identical matrices (`min_additions` + object-layout `slp`,
+tier `bound`, `slp.source` = `mizopl 2026`), 3 written as new schemes (⟨2,3,3⟩=15, ⟨2,6,6⟩=56, a second
+⟨2,4,7⟩=45). Every attached count is below what the file held (greedy CSE bound or none).
+Examples: ⟨3,3,7⟩=49 404 flat → 167; ⟨5,7,7⟩=176 2535 → 680; ⟨3,3,3⟩=23 122 → 55.
+
+**Backfill through the same codec (`MaterialiseFreshVarSlps`):** 88 legacy Perminov `_reduced` files carry a
+`u_fresh`/`v_fresh`/`w_fresh` program the manifest never surfaced (only the naive `additions`); all 88 replay,
+77 attached (source `Perminov 2023`), 11 kept the lower mizopl program.
+
+**Three silent failures found on the way (each with a guard, see `research/RESYNC_PLAYBOOK.md`):**
+`SchemeIO` read the pair-list `u_sparse` spelling (`[[index, value], …]`) as an EMPTY object — seven valid
+mizopl schemes came back all-zero and "did not pass the gate" (now read, unknown rows refused);
+`ImportContributedSchemes.write` rewrote an identical existing file from its matrices (wiping `min_additions`/`slp`);
+the weekly scan was Q-only, so ZT/Z records at a shape whose Q rank we match never alerted (Z and ZT axes added,
+reading `fields[]` and `SchemeIO.ternaryOf`). Plus the #16 noise: the scan crashed (unmerged truncation fix) and
+`if: always()` re-posted the stale committed report (steps gated, file untracked).
+
+**Status:** imported and verified (`VerifySchemes --check=lineage,coefficients,slp`), manifest regenerated,
+SPA shows the schedules (entry modal) and sorts / represents by effective additions. Open: the
+per-shape discovery audit of the 14 `mizopl_2026` files; a reply on #20 (draft in the PR description).
+
+---
+
 ## 2026-07-16 — fmm-gap ⟨13,19,29⟩ Q:m: engine exhausted at 4249, FMM 4248 is a recursive-growth base gap (NEGATIVE)
 
 **Target:** `Q⟨13,19,29⟩:m` — ours **4249**, FMM **4248**, gap **+1**

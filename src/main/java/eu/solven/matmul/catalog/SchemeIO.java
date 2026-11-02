@@ -467,6 +467,24 @@ public final class SchemeIO {
 		return (v != null && v.isBoolean()) ? v.booleanValue() : null;
 	}
 
+	/**
+	 * Ternary-integer verdict of a scheme JSON: the stored {@code zt} flag when stamped,
+	 * else computed from the coefficients ({@link #isTernary}); {@code null} when the file
+	 * has no coefficients to judge (stub, complex). The one definition shared by the
+	 * importers' idempotence key ({@code KnownSchemeKeys}) and the upstream scan's ZT axis
+	 * ({@code ScanUpstreamSources}), so the two can never disagree on what "ZT" means.
+	 */
+	public static Boolean ternaryOf(JsonNode root) throws IOException {
+		Boolean stored = readZT(root);
+		if (stored != null) {
+			return stored;
+		}
+		if (isStub(root) || root.path("complex").asBoolean(false)) {
+			return null;
+		}
+		return isTernary(read(root));
+	}
+
 	/** Read a complex-valued scheme (`"complex": true` in the JSON). */
 	public static ComplexNonCubicBilinearAlgorithm readComplex(File f) throws IOException {
 		try (Reader r = new BufferedReader(new FileReader(resolveSchemeFile(f)))) {
@@ -1178,6 +1196,35 @@ public final class SchemeIO {
 				+ node.getNodeType());
 	}
 
+	/**
+	 * The entries of one legacy sparse row as {@code {position, coefficient}} pairs. Two
+	 * spellings exist upstream: Perminov's per-row object {@code {"0": 1, "40": -1}} and the
+	 * per-row pair list {@code [[0, 1], [40, -1]]} (mizopl / we*star, 2026). Until 2026-11-02
+	 * the pair list read as an EMPTY object - every matrix came back all-zero and the import
+	 * gate refused seven valid schemes with "did not pass the gate". Anything else is refused
+	 * loudly: a layout we do not understand must never parse as a scheme of zeros.
+	 */
+	private static java.util.List<double[]> sparseRowEntries(JsonNode row, int k) throws IOException {
+		java.util.List<double[]> out = new java.util.ArrayList<>();
+		if (row.isObject()) {
+			for (var e : row.properties()) {
+				out.add(new double[] { Integer.parseInt(e.getKey()), parseCoef(e.getValue()) });
+			}
+			return out;
+		}
+		if (row.isArray()) {
+			for (JsonNode pair : row) {
+				if (!pair.isArray() || pair.size() != 2 || !pair.get(0).isIntegralNumber()) {
+					throw new IOException("sparse row " + k + ": expected [position, coefficient] pairs, got " + pair);
+				}
+				out.add(new double[] { pair.get(0).asInt(), parseCoef(pair.get(1)) });
+			}
+			return out;
+		}
+		throw new IOException("sparse row " + k + ": expected an object {pos: coef} or a list of [pos, coef] pairs, got "
+				+ row.getNodeType());
+	}
+
 	private static double[][] readSparseObjectFactor(JsonNode rows, int rank, int dim)
 			throws IOException {
 		if (rows.size() != rank) {
@@ -1185,11 +1232,8 @@ public final class SchemeIO {
 		}
 		double[][] dst = new double[dim][rank];
 		for (int k = 0; k < rank; k++) {
-			JsonNode obj = rows.get(k);
-			for (var e : obj.properties()) {
-				int pos = Integer.parseInt(e.getKey());
-				double val = parseCoef(e.getValue());
-				dst[pos][k] = val;
+			for (double[] pv : sparseRowEntries(rows.get(k), k)) {
+				dst[(int) pv[0]][k] = pv[1];
 			}
 		}
 		return dst;
@@ -1203,13 +1247,11 @@ public final class SchemeIO {
 		}
 		double[][] dst = new double[dim][rank];
 		for (int k = 0; k < rank; k++) {
-			JsonNode obj = rows.get(k);
-			for (var e : obj.properties()) {
-				int pDron = Integer.parseInt(e.getKey());
+			for (double[] pv : sparseRowEntries(rows.get(k), k)) {
+				int pDron = (int) pv[0];
 				int i = pDron % n1;
 				int j = pDron / n1;
-				int pUs = i * n3 + j;
-				dst[pUs][k] = parseCoef(e.getValue());
+				dst[i * n3 + j][k] = pv[1];
 			}
 		}
 		return dst;

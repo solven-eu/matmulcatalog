@@ -18,6 +18,13 @@ import java.util.regex.Pattern;
  * a {@code PerminovKnownAttribution} case). The sync job then imports every
  * {@code (shape, rank, class)} the catalog lacks, through the contributed-scheme gate,
  * stamped {@code discovery: "TBD"} for the audit ({@code RestampContributedProvenance}).</p>
+ *
+ * <p>A repository may also publish <em>addition-reduced</em> programs (Perminov's
+ * {@code _reduced} layout: {@code u_fresh}/{@code v_fresh}/{@code w_fresh}). Those are
+ * keyed by the pattern group {@link UpstreamSchemeRepo#slpGroup}: a file where that
+ * group matches is pulled even when its {@code (shape, rank, class)} is already held,
+ * because what it carries is the <em>program</em> — attached to the scheme we hold
+ * when the matrices are identical, written as a new scheme otherwise.</p>
  */
 public final class UpstreamSchemeRepos {
 	private UpstreamSchemeRepos() {}
@@ -36,9 +43,17 @@ public final class UpstreamSchemeRepos {
 	 * @param source   {@code source} stamped on the imported files (the catalog's attribution key)
 	 * @param year     {@code year} stamped
 	 * @param citation how to credit the dataset (licence included) — goes into {@code discovery_note}
+	 * @param slpGroup the pattern group that matches only on an addition-reduced (SLP) file,
+	 *                 or 0 when the repository publishes none
 	 */
 	public record UpstreamSchemeRepo(String key, String repo, String branch, Pattern name, String note, String source,
-			int year, String citation) {
+			int year, String citation, int slpGroup) {
+
+		/** A repository without addition-reduced programs. */
+		public UpstreamSchemeRepo(String key, String repo, String branch, Pattern name, String note, String source,
+				int year, String citation) {
+			this(key, repo, branch, name, note, source, year, citation, 0);
+		}
 
 		public String treeUrl() {
 			return "https://api.github.com/repos/" + repo + "/git/trees/" + branch + "?recursive=1";
@@ -52,14 +67,16 @@ public final class UpstreamSchemeRepos {
 			return "https://github.com/" + repo + "/blob/" + branch + "/";
 		}
 
-		/** Shape / rank / class of an upstream path, or empty when it is not a scheme file. */
+		/** Shape / rank / class (and whether it is an SLP file) of an upstream path, or empty when it is not a scheme file. */
 		public Optional<ImportUpstreamSchemeRepos.Candidate> parse(String path) {
 			Matcher m = name.matcher(path);
 			if (!m.matches()) return Optional.empty();
 			String cls = m.groupCount() >= 5 && m.group(5) != null ? KnownSchemeKeys.classOfTag(m.group(5))
 					: KnownSchemeKeys.Q;
+			boolean reduced = slpGroup > 0 && m.groupCount() >= slpGroup && m.group(slpGroup) != null;
 			return Optional.of(new ImportUpstreamSchemeRepos.Candidate(path, Integer.parseInt(m.group(1)),
-					Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4)), cls));
+					Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4)), cls,
+					reduced));
 		}
 	}
 
@@ -77,7 +94,23 @@ public final class UpstreamSchemeRepos {
 			"Cloudroom Math Campaign, Cloudroom Math: new matrix multiplication algorithms found by AI agents, "
 					+ "github.com/matyasstoch/cloudroom-math — licensed Apache-2.0");
 
-	public static final List<UpstreamSchemeRepo> ALL = List.of(WITTEVEEN, CLOUDROOM);
+	/**
+	 * mizopl / we*star — REFERENCES [92], issue #20. Two directories under
+	 * {@code solutions/fast-matrix-multiplication/}: {@code zt_rank_schemes/} (ternary / integer
+	 * rank schemes, Perminov sparse layout, {@code {shape}_m{rank}_{ZT|Z}.json}) and
+	 * {@code slp_addition_reduced/} (addition-reduced programs, Perminov {@code _reduced}
+	 * layout, {@code {shape}_m{rank}_cr{reduced}_cn{naive}_ZT_reduced.json} — group 6).
+	 * Perminov mirrors the rank schemes under {@code known/mizopl/} (not the programs);
+	 * we pull from the origin.
+	 */
+	public static final UpstreamSchemeRepo MIZOPL = new UpstreamSchemeRepo("mizopl", "mizopl/we-star", "main",
+			Pattern.compile("^solutions/fast-matrix-multiplication/(?:zt_rank_schemes|slp_addition_reduced)/"
+					+ "(\\d+)x(\\d+)x(\\d+)_m(\\d+)(?:_cr\\d+_cn\\d+)?_([A-Za-z0-9]+?)(_reduced)?\\.json$"),
+			"mizopl_2026", "mizopl 2026", 2026,
+			"mizopl (we*star), Fast matrix multiplication: ZT/Z rank schemes and addition-reduced SLPs, "
+					+ "github.com/mizopl/we-star (solutions/fast-matrix-multiplication) — licensed MIT", 6);
+
+	public static final List<UpstreamSchemeRepo> ALL = List.of(WITTEVEEN, CLOUDROOM, MIZOPL);
 
 	public static UpstreamSchemeRepo byKey(String key) {
 		return ALL.stream().filter(r -> r.key().equals(key)).findFirst()

@@ -94,4 +94,19 @@ public class TestKnownSchemeKeys {
 		assertThat(keys).as("Strassen ⟨2,2,2⟩=7 is ternary; Laderman-rank ⟨3,3,3⟩=23 is held over Z")
 				.contains("2x2x2-r7-ZT", "3x3x3-r23-Z");
 	}
+
+	/** The addition-reduced channel keys on who already contributed a program (slp.source) per (shape, rank, class). */
+	@Test
+	public void slp_sources_are_indexed_per_key(@TempDir Path known) throws Exception {
+		java.nio.file.Files.createDirectories(known.resolve("section7"));
+		java.nio.file.Files.writeString(known.resolve("section7/x.json"),
+				"{\"n\": [3, 3, 7], \"m\": 49, \"zt\": true, \"u\": [[1]], \"fields\": [\"Z\", \"Q\"], \"slp\": {\"additions\": 167, \"source\": \"mizopl 2026\"}}");
+		java.nio.file.Files.writeString(known.resolve("section7/y.json"),
+				"{\"n\": [3, 3, 3], \"m\": 23, \"zt\": true, \"u\": [[1]], \"fields\": [\"Z\", \"Q\"], \"slp\": {\"additions\": 60, \"optimality_method\": \"greedy\"}}");
+
+		var idx = KnownSchemeKeys.scanSlpSources(known);
+
+		assertThat(idx).containsOnlyKeys(KnownSchemeKeys.key(3, 3, 7, 49, KnownSchemeKeys.ZT));
+		assertThat(idx.get(KnownSchemeKeys.key(3, 3, 7, 49, KnownSchemeKeys.ZT))).containsExactly("mizopl 2026");
+	}
 }

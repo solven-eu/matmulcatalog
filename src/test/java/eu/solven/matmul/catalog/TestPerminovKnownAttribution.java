@@ -44,6 +44,10 @@ class TestPerminovKnownAttribution {
 				.isEqualTo("Kauers-Moosbauer 2023");
 		assertThat(PerminovKnownAttribution.forPath("schemes/known/jakobmoosbauer_symmetric_flips/x.m")
 				.orElseThrow().source()).isEqualTo("Moosbauer-Poole 2025");
+		// Perminov mirrors mizopl/we-star (issue #20); we pull from the origin, never the mirror.
+		var mizopl = PerminovKnownAttribution.forPath("schemes/known/mizopl/9x12x14_m954_ZT.json").orElseThrow();
+		assertThat(mizopl.source()).isEqualTo("mizopl 2026");
+		assertThat(mizopl.disposition()).isEqualTo(Disposition.SKIP_FRESH_IMPORT);
 	}
 
 	@Test

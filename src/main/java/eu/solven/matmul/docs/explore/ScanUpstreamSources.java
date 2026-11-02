@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 
 import eu.solven.matmul.CanonicalShape;
 import eu.solven.matmul.Shape;
+
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
@@ -33,7 +34,15 @@ import tools.jackson.databind.json.JsonMapper;
  * <ul>
  *   <li><b>Sedoglavic fmm_digest</b> — manually-curated SOTA, refreshed from
  *       GitHub into {@code references/sedoglavic-fmm-sota.json} (a versioned cache).</li>
- *   <li><b>Perminov status.json</b> — fetched fresh to a temp file.</li>
+ *   <li><b>Perminov status.json</b> — fetched fresh to a temp file. Compared on three
+ *       axes: the char-0 rank (min over his Q/Z/ZT, against our Q-valid best), the
+ *       integer rank ({@code Z}) and the ternary-integer rank ({@code ZT}, explicit
+ *       schemes only — a stub's ternarity is not known without a replay, exactly as the
+ *       catalog's own {@code zt} flag). Until 2026-11-02 only the first axis existed, so
+ *       a ZT record we lacked at a shape whose Q rank we matched was invisible
+ *       (the ten mizopl ZT records of issue #20).</li>
+ *   <li><b>mizopl / we*star status.json</b> — the same Perminov layout, fetched fresh;
+ *       the origin of the schemes Perminov mirrors under {@code known/mizopl/}.</li>
  *   <li><b>FMM Université de Lille</b> — read from the local versioned snapshot
  *       {@code references/catalogs/fmm-lille-catalog.json} (no URL refresh; updated manually).</li>
  * </ul>
@@ -49,7 +58,6 @@ import tools.jackson.databind.json.JsonMapper;
  */
 @Slf4j
 public final class ScanUpstreamSources {
-
 	private static final String SEDOGLAVIC_URL =
 			"https://raw.githubusercontent.com/sedoglavic/fmm_digest/master/fmm_sota.json";
 	private static final Path SEDOGLAVIC_LOCAL = Path.of("references/sedoglavic-fmm-sota.json");
@@ -57,6 +65,10 @@ public final class ScanUpstreamSources {
 			"https://raw.githubusercontent.com/dronperminov/FastMatrixMultiplication/master/schemes/status.json";
 	private static final Path PERMINOV_LOCAL =
 			Path.of(System.getProperty("java.io.tmpdir"), "perminov_status.json");
+	private static final String MIZOPL_URL =
+			"https://raw.githubusercontent.com/mizopl/we-star/main/solutions/fast-matrix-multiplication/status.json";
+	private static final Path MIZOPL_LOCAL =
+			Path.of(System.getProperty("java.io.tmpdir"), "mizopl_status.json");
 	private static final Path FMM_LILLE_LOCAL = Path.of("references/catalogs/fmm-lille-catalog.json");
 
 	private static final Path SCHEMES_ROOT = Path.of("src/main/resources/schemes");
@@ -75,12 +87,22 @@ public final class ScanUpstreamSources {
 
 	/** {@code unverified}: FMM rows whose index rank is not backed by FMM's own artifact
 	 *  (manual audit, {@link eu.solven.matmul.docs.verify.FmmArtifactAudit}) — reported,
-	 *  never counted as a strict gap. Empty for the other sources. */
-	private record SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter, List<Gap> unverified) {
+	 *  never counted as a strict gap. Empty for the other sources. {@code zGaps} /
+	 *  {@code ztGaps}: the integer and ternary-integer axes (Perminov-layout sources only). */
+	private record SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter, List<Gap> unverified,
+			List<Gap> zGaps, List<Gap> ztGaps) {
 		SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter) {
-			this(gaps, missing, weBetter, List.of());
+			this(gaps, missing, weBetter, List.of(), List.of(), List.of());
+		}
+
+		SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter, List<Gap> unverified) {
+			this(gaps, missing, weBetter, unverified, List.of(), List.of());
 		}
 	}
+
+	/** Our best rank per canonical shape on the three comparison axes (see {@link #loadLocalRanksByClass}). */
+	public record LocalRanks(Map<CanonicalShape, Integer> q, Map<CanonicalShape, Integer> z,
+			Map<CanonicalShape, Integer> zt) {}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		boolean refresh = false;
@@ -100,15 +122,18 @@ public final class ScanUpstreamSources {
 
 		fetch(SEDOGLAVIC_URL, SEDOGLAVIC_LOCAL, refresh);
 		fetch(PERMINOV_URL, PERMINOV_LOCAL, refresh);
+		fetch(MIZOPL_URL, MIZOPL_LOCAL, refresh);
 
-		Map<CanonicalShape, Integer> local = loadLocalRanks();
-		log.info("Loaded {} local-best shapes", local.size());
+		LocalRanks local = loadLocalRanksByClass(SCHEMES_ROOT);
+		log.info("Loaded {} local-best shapes ({} with an integer scheme, {} with a ternary one)", local.q().size(),
+				local.z().size(), local.zt().size());
 
-		SourceScan sed = scanSedoglavic(local);
-		SourceScan perm = scanPerminov(local);
-		SourceScan fmm = scanFmmLille(local);
+		SourceScan sed = scanSedoglavic(local.q());
+		SourceScan perm = scanPerminovLayout(PERMINOV_LOCAL, local);
+		SourceScan mizopl = scanPerminovLayout(MIZOPL_LOCAL, local);
+		SourceScan fmm = scanFmmLille(local.q());
 
-		String md = reportMd(sed, perm, fmm);
+		String md = reportMd(sed, perm, fmm, mizopl);
 		if (out.getParent() != null) {
 			Files.createDirectories(out.getParent());
 		}
@@ -127,7 +152,7 @@ public final class ScanUpstreamSources {
 	 *  {@code "format"} line, split). Seen 2026-10-19 on a Windows checkout, where the CRLF
 	 *  working copy is longer than the LF download; on CI it only waited for the day the
 	 *  upstream digest shrinks, when the weekly scan would have crashed instead of
-	 *  reporting.</p> */
+	 *  reporting (it did, 2026-10-26 and 2026-11-02, before the fix was merged).</p> */
 	static void fetch(String url, Path dst, boolean force) throws IOException, InterruptedException {
 		boolean stale = force
 				|| !Files.exists(dst)
@@ -150,37 +175,42 @@ public final class ScanUpstreamSources {
 		}
 	}
 
-	/** Best (lowest) NON-COMMUTATIVE, Q-valid rank we hold per canonical (sorted)
-	 *  shape, read from scheme CONTENT ({@code n}, {@code m}, {@code fields[]},
-	 *  {@code commutative}) under {@link #SCHEMES_ROOT} — the comparison scope of
-	 *  every upstream digest (FMM / Perminov / Sedoglavic are NC, char-0). */
-	private static Map<CanonicalShape, Integer> loadLocalRanks() throws IOException {
-		return loadLocalRanks(SCHEMES_ROOT);
+	/**
+	 * Content-driven local best per shape (the char-0 / Q axis). Until 2026-09-30 this
+	 * parsed the rank out of the FILENAME with a legacy {@code {source}-{shape}_m{rank}}
+	 * regex; the 2026-06 rename to {@code {n}x{m}x{p}-r{rank}-{note}-{hash7}} left that
+	 * regex matching 7 of ~11k files, so every upstream shape read as MISSING (not a
+	 * gap) and the weekly scan reported "Strict gaps: 0" for three months — including
+	 * the 2026-09 KGP LITA refresh that put ~530 shapes below the catalog. Reading
+	 * {@code n}/{@code m} from the JSON (per CLAUDE.md "content-driven, never the
+	 * filename") cannot drift with naming. Commutative-only schemes and schemes not
+	 * valid over Q (F₂-native, C-only) are excluded so the scan never "closes" a Q gap
+	 * with an incomparable scheme.
+	 */
+	static Map<CanonicalShape, Integer> loadLocalRanks(Path schemesRoot) throws IOException {
+		return loadLocalRanksByClass(schemesRoot).q();
 	}
 
 	/**
-	 * Content-driven local best per shape. Until 2026-09-30 this parsed the rank
-	 * out of the FILENAME with {@link #FILE_SHAPE_RANK} (legacy
-	 * {@code {source}-{shape}_m{rank}} names); the 2026-06 rename to
-	 * {@code {n}x{m}x{p}-r{rank}-{note}-{hash7}} left that regex matching 7 of
-	 * ~11k files, so every upstream shape read as MISSING (not a gap) and the
-	 * weekly scan reported "Strict gaps: 0" for three months — including the
-	 * 2026-09 KGP LITA refresh that put ~530 shapes below the catalog. Reading
-	 * {@code n}/{@code m} from the JSON (per CLAUDE.md "content-driven, never
-	 * the filename") cannot drift with naming. Commutative-only schemes and
-	 * schemes not valid over Q (F₂-native, C-only) are excluded so the scan
-	 * never "closes" a Q gap with an incomparable scheme.
+	 * {@link #loadLocalRanks} on all three axes: {@code q} every Q-valid NC scheme,
+	 * {@code z} those with {@code Z} among their {@code fields[]} (stubs included — field
+	 * membership is stamped on them), {@code zt} the explicit integer schemes whose every
+	 * coefficient is in {-1,0,1} ({@code SchemeIO.ternaryOf}: the stored {@code zt} flag,
+	 * else the coefficients; a stub has neither, so it never counts as ternary — the same
+	 * reading as the catalog manifest and the SPA's ZT selector).
 	 */
-	static Map<CanonicalShape, Integer> loadLocalRanks(Path schemesRoot) throws IOException {
-		Map<CanonicalShape, Integer> out = new LinkedHashMap<>();
+	static LocalRanks loadLocalRanksByClass(Path schemesRoot) throws IOException {
+		Map<CanonicalShape, Integer> q = new LinkedHashMap<>();
+		Map<CanonicalShape, Integer> z = new LinkedHashMap<>();
+		Map<CanonicalShape, Integer> zt = new LinkedHashMap<>();
 		if (!Files.isDirectory(schemesRoot)) {
-			return out;
+			return new LocalRanks(q, z, zt);
 		}
 		List<Path> files;
 		try (Stream<Path> walk = Files.walk(schemesRoot)) {
 			files = walk.filter(p -> p.getFileName().toString().endsWith(".json")).toList();
 		}
-		int skipped = 0;
+		int skipped = 0, ternaryReads = 0;
 		for (Path p : files) {
 			try {
 				JsonNode root = eu.solven.matmul.catalog.SchemeIO.parseJson(p.toFile());
@@ -198,15 +228,30 @@ public final class ScanUpstreamSources {
 					continue; // F₂-native / C-only: not comparable to the NC char-0 digests
 				}
 				CanonicalShape sh = Shape.of(dims.get(0).asInt(), dims.get(1).asInt(), dims.get(2).asInt()).canonical();
-				out.merge(sh, rank.asInt(), Math::min);
+				q.merge(sh, rank.asInt(), Math::min);
+				if (fields.contains("Z")) {
+					z.merge(sh, rank.asInt(), Math::min);
+					Integer ztBest = zt.get(sh);
+					// Only a candidate for the ZT best needs the (possibly matrix-reading) verdict.
+					if (ztBest == null || rank.asInt() < ztBest) {
+						if (eu.solven.matmul.catalog.SchemeIO.readZT(root) == null
+								&& !eu.solven.matmul.catalog.SchemeIO.isStub(root)) {
+							ternaryReads++;
+						}
+						if (Boolean.TRUE.equals(eu.solven.matmul.catalog.SchemeIO.ternaryOf(root))) {
+							zt.merge(sh, rank.asInt(), Math::min);
+						}
+					}
+				}
 			} catch (Exception e) {
 				skipped++;
 				log.debug("loadLocalRanks: skipping {}: {}", p.getFileName(), e.toString());
 			}
 		}
-		log.info("local ranks: {} shapes from {} files ({} skipped: non-scheme JSON / unreadable)",
-				out.size(), files.size(), skipped);
-		return out;
+		log.info("local ranks: {} shapes from {} files ({} skipped: non-scheme JSON / unreadable; {} integer, "
+				+ "{} ternary; {} coefficient reads for an unstamped zt)", q.size(), files.size(), skipped, z.size(),
+				zt.size(), ternaryReads);
+		return new LocalRanks(q, z, zt);
 	}
 
 	private static SourceScan scanSedoglavic(Map<CanonicalShape, Integer> local) {
@@ -309,10 +354,21 @@ public final class ScanUpstreamSources {
 		return new SourceScan(gaps, missing, List.of(), unverified);
 	}
 
-	private static SourceScan scanPerminov(Map<CanonicalShape, Integer> local) {
-		JsonNode status = readJson(PERMINOV_LOCAL);
+	/**
+	 * A Perminov-layout {@code status.json} ({@code {"NxMxP": {"ranks": {"Q": r, "Z": r,
+	 * "ZT": r}, …}}}) on the three axes. Missing status files (an optional source that could
+	 * not be fetched) read as an empty scan, with a warning.
+	 */
+	private static SourceScan scanPerminovLayout(Path statusFile, LocalRanks local) {
 		List<Gap> gaps = new ArrayList<>();
 		List<Missing> missing = new ArrayList<>();
+		List<Gap> zGaps = new ArrayList<>();
+		List<Gap> ztGaps = new ArrayList<>();
+		if (!Files.exists(statusFile)) {
+			log.warn("{} is absent — this source reads as empty", statusFile);
+			return new SourceScan(gaps, missing, List.of(), List.of(), zGaps, ztGaps);
+		}
+		JsonNode status = readJson(statusFile);
 		for (Map.Entry<String, JsonNode> e : status.properties()) {
 			CanonicalShape sh = parseShapeKey(e.getKey());
 			if (sh == null) {
@@ -328,14 +384,27 @@ public final class ScanUpstreamSources {
 			if (best == Integer.MAX_VALUE) {
 				continue;
 			}
-			Integer our = local.get(sh);
+			Integer our = local.q().get(sh);
 			if (our == null) {
 				missing.add(new Missing(sh, best));
 			} else if (best < our) {
 				gaps.add(new Gap(our - best, sh, our, best));
 			}
+			axisGap(ranks.get("Z"), local.z().get(sh), sh, zGaps);
+			axisGap(ranks.get("ZT"), local.zt().get(sh), sh, ztGaps);
 		}
-		return new SourceScan(gaps, missing, List.of());
+		return new SourceScan(gaps, missing, List.of(), List.of(), zGaps, ztGaps);
+	}
+
+	/** A strict gap on one coefficient-class axis; a shape where we hold nothing of that class is a gap too. */
+	private static void axisGap(JsonNode theirs, Integer ours, CanonicalShape sh, List<Gap> into) {
+		if (theirs == null || !theirs.isIntegralNumber()) {
+			return;
+		}
+		int t = theirs.asInt();
+		if (ours == null || t < ours) {
+			into.add(new Gap(ours == null ? Integer.MAX_VALUE : ours - t, sh, ours == null ? -1 : ours, t));
+		}
 	}
 
 	private static CanonicalShape parseShapeKey(String key) {
@@ -360,7 +429,7 @@ public final class ScanUpstreamSources {
 			.comparingInt(Gap::gap).reversed()
 			.thenComparing(g -> g.shape().toString());
 
-	private static String reportMd(SourceScan sed, SourceScan perm, SourceScan fmm) {
+	private static String reportMd(SourceScan sed, SourceScan perm, SourceScan fmm, SourceScan mizopl) {
 		StringBuilder out = new StringBuilder();
 		out.append("# Upstream source scan\n\n");
 		out.append("Generated by `eu.solven.matmul.docs.explore.ScanUpstreamSources`.\n\n");
@@ -380,12 +449,26 @@ public final class ScanUpstreamSources {
 		appendGapTable(out, "Top 20 FMM strict gaps", "FMM", fmm.gaps());
 		appendGapTable(out, "Upstream-unverified FMM rows (audited, not gaps)", "FMM", fmm.unverified());
 
-		out.append("\n## Perminov status.json\n\n");
-		out.append("- Strict gaps: **").append(perm.gaps().size()).append("**\n");
-		out.append("- Missing from us: **").append(perm.missing().size()).append("**\n");
-		appendGapTable(out, "Top 20 Perminov strict gaps", "Perminov", perm.gaps());
+		appendPerminovLayout(out, "Perminov status.json", "Perminov", perm);
+		appendPerminovLayout(out, "mizopl we*star status.json", "mizopl", mizopl);
 
 		return out.toString();
+	}
+
+	/** The three-axis section of a Perminov-layout source. Every "Strict gaps" line is
+	 *  counted by the workflow's issue step, so a Z / ZT record we lack alerts like a Q one. */
+	private static void appendPerminovLayout(StringBuilder out, String title, String col, SourceScan s) {
+		out.append("\n## ").append(title).append("\n\n");
+		out.append("- Strict gaps: **").append(s.gaps().size()).append("**\n");
+		out.append("- Missing from us: **").append(s.missing().size()).append("**\n");
+		out.append("- Strict gaps (Z axis, integer schemes): **").append(s.zGaps().size()).append("**\n");
+		out.append("- Strict gaps (ZT axis, ternary-integer explicit schemes): **").append(s.ztGaps().size())
+				.append("**\n");
+		appendGapTable(out, "Top 20 " + col + " strict gaps", col, s.gaps());
+		appendGapTable(out, "Top 20 " + col + " Z-axis gaps (ours = best integer scheme, −1 = none)", col + " Z",
+				s.zGaps());
+		appendGapTable(out, "Top 20 " + col + " ZT-axis gaps (ours = best explicit ternary scheme, −1 = none)",
+				col + " ZT", s.ztGaps());
 	}
 
 	private static void appendGapTable(StringBuilder out, String title, String theirCol, List<Gap> gaps) {
@@ -399,7 +482,7 @@ public final class ScanUpstreamSources {
 			CanonicalShape s = g.shape();
 			out.append("| ⟨").append(s.n()).append(',').append(s.m()).append(',').append(s.p())
 					.append("⟩ | ").append(g.ours()).append(" | ").append(g.theirs())
-					.append(" | ").append(g.gap()).append(" |\n");
+					.append(" | ").append(g.gap() == Integer.MAX_VALUE ? "∞" : String.valueOf(g.gap())).append(" |\n");
 		});
 	}
 }

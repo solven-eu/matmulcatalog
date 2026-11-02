@@ -154,6 +154,7 @@
            Perminov, to scan our catalog in lockstep with his per-format ordering. -->
       <option value="format_lex">format lex ↑</option>
       <option value="rank">rank ↑</option>
+      <option value="additions">additions ↑ (effective)</option>
       <option value="omega_asc">ω ↑</option>
       <option value="buds_desc">buds ↓</option>
       <option value="year">year ↓</option>
@@ -168,6 +169,14 @@
       <option value="year">year (earliest) ↑</option>
       <option value="buds">buds ↓</option>
       <option value="projection_margin">projection margin ↓</option>
+    </select>
+  </label>
+
+  <label title="Which row represents a (shape, field) cell when history is hidden: the lowest rank (default), or the fewest effective additions (scheduled / min / flat, whichever is lowest) - a higher-rank scheme with a cheaper addition schedule then wins its cell. Addition counts labelled as bounds are heuristic schedules, never proven minima.">
+    Best per cell by:
+    <select id="f-represent">
+      <option value="rank">rank ↑</option>
+      <option value="additions">additions ↑ (effective)</option>
     </select>
   </label>
 </section>

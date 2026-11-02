@@ -489,6 +489,19 @@ public class GenerateCatalogManifest {
 			if (root.has("slp") && root.get("slp").isArray()) {
 				entry.set("slp", root.get("slp"));
 			}
+			// Object-layout programs (SlpJson: the greedy CSE bound, or a contributor's reducer
+			// replayed on import) are forwarded for the small schemes whose text the modal can
+			// show (same cap as `multiplications`); the honesty tier and who produced the
+			// program travel with every scheme that carries one, so a "min" count is never bare.
+			JsonNode slpObj = root.get("slp");
+			if (slpObj != null && slpObj.isObject()) {
+				if (slpObj.has("optimality")) entry.put("additions_optimality", slpObj.get("optimality").asText());
+				if (slpObj.has("source")) entry.put("additions_source", slpObj.get("source").asText());
+				else if (slpObj.has("optimality_method")) entry.put("additions_source", slpObj.get("optimality_method").asText());
+				if (rank <= HUMAN_MAX_RANK && maxDim <= HUMAN_MAX_DIM) entry.set("slp", slpObj);
+			} else if (minAdditions != null && root.has("additions_optimal")) {
+				entry.put("additions_optimality", root.get("additions_optimal").asBoolean(false) ? "proven" : "bound");
+			}
 			// Human-friendly flat multiplications/elements (#188), Perminov-style.
 			// Capped to small schemes (rank ≤ HUMAN_MAX_RANK, maxDim ≤ HUMAN_MAX_DIM)
 			// to keep catalog.json lean — these are the schemes where a textual form
@@ -936,7 +949,11 @@ public class GenerateCatalogManifest {
 	private static int effectiveAdds(ObjectNode e) {
 		int flat = e.has("additions") ? e.get("additions").asInt() : Integer.MAX_VALUE;
 		int sched = e.has("scheduled_additions") ? e.get("scheduled_additions").asInt() : Integer.MAX_VALUE;
-		return Math.min(flat, sched);
+		// min_additions (a replayed program: the greedy CSE bound or a contributor's reducer)
+		// counts too - the SPA's effectiveAdditions() always did, so until 2026-11-02 the
+		// manifest could shave a same-rank scheme the SPA would have ranked first.
+		int min = e.has("min_additions") ? e.get("min_additions").asInt() : Integer.MAX_VALUE;
+		return Math.min(Math.min(flat, sched), min);
 	}
 
 	/** Bud-richness score for shaving's third (maximised) axis: total rank-one

@@ -74,7 +74,7 @@ import tools.jackson.databind.JsonNode;
 public final class VerifySchemes {
 	private VerifySchemes() {}
 
-	enum Check { LINEAGE, COEFFICIENTS, FULL, RANK }
+	enum Check { LINEAGE, COEFFICIENTS, FULL, RANK, SLP }
 
 	/**
 	 * One replayer per lookup, shared by every {@code rank} check of a run (thread-safe:
@@ -97,7 +97,7 @@ public final class VerifySchemes {
 
 	public static void main(String[] args) throws Exception {
 		List<String> argv = Arrays.asList(args);
-		Set<Check> checks = parseChecks(arg(argv, "--check", "lineage,coefficients"));
+		Set<Check> checks = parseChecks(arg(argv, "--check", "lineage,coefficients,slp"));
 		Optional<Field> fieldFilter = parseField(arg(argv, "--field", null));
 		Set<String> shapeFilter = parseShapes(arg(argv, "--shape", null));
 		Path root = Path.of(arg(argv, "--schemes-root", "src/main/resources/schemes"));
@@ -207,7 +207,37 @@ public final class VerifySchemes {
 			String why = rankViolation(f, root, lookup);
 			if (why != null) out.add(name + " rank: " + why);
 		}
+		// (5) slp honesty - a stored object-layout program (SlpJson) must replay to the file's
+		// own matrices and cost what it claims (issue #20): until 2026-11-02 a program was
+		// write-only, so a wrong schedule or count could sit in the catalog unchallenged.
+		if (checks.contains(Check.SLP) && root.has("slp") && root.get("slp").isObject()) {
+			String why = slpViolation(root);
+			if (why != null) out.add(name + " slp: " + why);
+		}
 		return out;
+	}
+
+	/** A stored object-layout program vs the file's matrices and counts. Returns a reason or null. */
+	static String slpViolation(JsonNode root) {
+		Optional<eu.solven.matmul.additions.SlpJson.SchemeSlp> prog = eu.solven.matmul.additions.SlpJson.readScheme(root.get("slp"));
+		if (prog.isEmpty()) return "object-layout slp without a/b/out sides";
+		if (!(root.has("u") || root.has("u_sparse")) || SchemeIO.isComplex(root) || SchemeIO.isNonBilinear(root)) return null;
+		NonCubicBilinearAlgorithm alg;
+		try {
+			alg = SchemeIO.read(root);
+		} catch (Exception e) {
+			return "cannot read matrices: " + e;
+		}
+		if (!prog.get().reconstructs(alg)) return "the stored program does not replay to the file's U/V/W";
+		int claimed = root.path("slp").path("additions").asInt(-1);
+		if (claimed >= 0 && claimed != prog.get().additions()) {
+			return String.format("slp.additions=%d but the program costs %d", claimed, prog.get().additions());
+		}
+		int min = root.path("min_additions").asInt(-1);
+		if (min >= 0 && min < prog.get().additions()) {
+			return String.format("min_additions=%d below the stored program's %d (unbacked claim)", min, prog.get().additions());
+		}
+		return null;
 	}
 
 	/** Recorded rank/shape vs replayed (stub) or stored (explicit) content. Returns a reason or null. */
@@ -277,7 +307,8 @@ public final class VerifySchemes {
 				case "coefficients", "coeff", "coeffs" -> out.add(Check.COEFFICIENTS);
 				case "full", "identity" -> out.add(Check.FULL);
 				case "rank", "honesty" -> out.add(Check.RANK);
-				case "all" -> { out.add(Check.LINEAGE); out.add(Check.COEFFICIENTS); out.add(Check.FULL); out.add(Check.RANK); }
+				case "slp", "additions" -> out.add(Check.SLP);
+				case "all" -> { out.add(Check.LINEAGE); out.add(Check.COEFFICIENTS); out.add(Check.FULL); out.add(Check.RANK); out.add(Check.SLP); }
 				case "" -> { }
 				default -> throw new IllegalArgumentException("Unknown --check token: " + tok);
 			}
