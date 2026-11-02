@@ -140,4 +140,33 @@ public class TestVerifySchemes {
 		assertThat(v.get().declaredNarrowest()).isEqualTo("Z");
 		assertThat(v.get().floor()).isEqualTo("Q");
 	}
+
+	/**
+	 * The {@code slp} check (issue #20): a stored object-layout program must replay to the
+	 * file's own matrices and cost what it claims. Fixture: the greedy 15-addition program
+	 * stamped on AlphaTensor's F₂ ⟨2,2,2⟩=7; one corrupted operand or one inflated count
+	 * must be flagged, the committed file must pass.
+	 */
+	@Test
+	void slp_check_flags_a_program_that_does_not_replay_or_miscounts(@TempDir Path dir) throws Exception {
+		Path committed = Path.of("src/main/resources/schemes/known/section2/2x2x2-r7-alphatensor_F2-89207d8.json");
+		JsonNode clean = SchemeIO.parseJson(committed.toFile());
+		assertThat(VerifySchemes.checkOne(committed, clean, SchemeIO.fieldTags(clean),
+				EnumSet.of(VerifySchemes.Check.SLP), lookup)).isEmpty();
+
+		// (a) corrupt one operand of the first A-side op: the program no longer reconstructs U.
+		ObjectNode broken = (ObjectNode) SchemeIO.parseJson(committed.toFile());
+		ArrayNode op0 = (ArrayNode) broken.get("slp").get("a").get("ops").get(0);
+		op0.set(3, op0.get(2)); // t = x + x instead of x + y
+		Path brokenFile = dir.resolve("broken.json");
+		java.nio.file.Files.writeString(brokenFile, broken.toString());
+		assertThat(VerifySchemes.checkOne(brokenFile, broken, SchemeIO.fieldTags(broken),
+				EnumSet.of(VerifySchemes.Check.SLP), lookup)).hasSize(1).first().asString().contains("does not replay");
+
+		// (b) a count the program does not back.
+		ObjectNode inflated = (ObjectNode) SchemeIO.parseJson(committed.toFile());
+		inflated.put("min_additions", inflated.get("min_additions").asInt() - 1);
+		assertThat(VerifySchemes.checkOne(committed, inflated, SchemeIO.fieldTags(inflated),
+				EnumSet.of(VerifySchemes.Check.SLP), lookup)).hasSize(1).first().asString().contains("unbacked claim");
+	}
 }

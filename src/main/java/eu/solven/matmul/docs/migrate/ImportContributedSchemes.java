@@ -203,15 +203,26 @@ public final class ImportContributedSchemes {
 	 * artifact (re-read, exact re-verify, identical content hash). Fail-loud.
 	 */
 	static File write(Gate g, Options opts) throws IOException {
+		return write(g, opts, SCHEMES_ROOT);
+	}
+
+	/** {@link #write(Gate, Options)} under an explicit catalog root (tests). */
+	static File write(Gate g, Options opts, Path schemesRoot) throws IOException {
 		NonCubicBilinearAlgorithm alg = g.alg();
 		int maxDim = Math.max(alg.n, Math.max(alg.m, alg.p));
-		Path dir = SCHEMES_ROOT.resolve(opts.category()).resolve("section" + maxDim);
+		Path dir = schemesRoot.resolve(opts.category()).resolve("section" + maxDim);
 		Files.createDirectories(dir);
 		File out = dir.resolve(SchemeIO.canonicalName(alg, opts.note())).toFile();
 		if (out.isFile()) {
-			log.warn("{} already exists (identical content hash) — re-stamping metadata only", out.getName());
+			// Identical content already on disk: keep the file's own bytes and every stamped key
+			// (min_additions / slp / scheduled_additions / provenance). Until 2026-11-02 this
+			// branch still rewrote the file from the matrices alone, so a re-import of a scheme
+			// we held - the normal case for an addition-reduced program over known matrices -
+			// silently wiped its addition metadata.
+			log.warn("{} already exists (identical content hash) - re-stamping metadata only", out.getName());
+		} else {
+			SchemeIO.write(alg, out);
 		}
-		SchemeIO.write(alg, out);
 
 		Map<String, Object> meta = new LinkedHashMap<>();
 		meta.put("fields", g.fields());

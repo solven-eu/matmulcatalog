@@ -56,6 +56,8 @@ function referencesMdAnchor(sourceKey) {
   if (sourceKey === "Witteveen 2026")                              return "90-witteveen-2026";
   // Cloudroom Math Campaign 2026 (github.com/matyasstoch/cloudroom-math, Apache-2.0).
   if (sourceKey === "Cloudroom Math 2026")                         return "91-cloudroom-math-2026";
+  // mizopl / we*star 2026 (github.com/mizopl/we-star, MIT): ZT rank schemes + addition-reduced SLPs, issue #20.
+  if (sourceKey === "mizopl 2026")                                 return "92-mizopl-we-star-2026";
   if (sourceKey.startsWith("Schwartz") && sourceKey.includes("2025")) return "19-schwartz-zwecher25";
   if (sourceKey.startsWith("Drevet") && sourceKey.includes("2010")) return "20-drevet-schost-poster";
   if (sourceKey.startsWith("Sedoglavic 2017"))                     return "21-sedoglavic17";
@@ -811,6 +813,7 @@ const CTRL_TO_HASH_KEY = {
   "f-shape": "shape",
   "f-sort": "sort",
   "f-secondary": "secondary",
+  "f-represent": "represent",
   "f-omega-beats-strassen": "betterthan",
   "f-show-history": "history",
 };
@@ -859,6 +862,7 @@ const HASH_KEY_TO_CTRL = {
   shape: "f-shape",
   sort: "f-sort",
   secondary: "f-secondary",
+  represent: "f-represent",
   betterthan: "f-omega-beats-strassen",
   history: "f-show-history",
 };
@@ -983,7 +987,12 @@ function additionsCell(s) {
   const note = (flat != null && flat > eff)
     ? `<small class="field-narrow" title="flat structural additions (additionCount over U/V/W); the headline ${eff} is the CSE-scheduled count after common subexpressions are reused — e.g. Strassen-Winograd is 15 scheduled vs ${flat} flat">${flat} flat</small> `
     : "";
-  return `${note}+${eff}`;
+  // Honesty tier (#20): a "min" count is a heuristic schedule unless proven; say so, and who
+  // produced the program, in the tooltip.
+  const tier = s.additions_optimality
+    ? ` title="${s.additions_optimality === "proven" ? "proven minimal" : "upper bound: a heuristic schedule"}${s.additions_source ? " · " + escapeHtml(s.additions_source) : ""}"`
+    : "";
+  return `${note}<span${tier}>+${eff}</span>`;
 }
 
 // Secondary ranking key (the tiebreak once rank is equal). Returns a score
@@ -1071,6 +1080,7 @@ function render() {
   const shapeQ = document.getElementById("f-shape").value.trim();
   const sort = document.getElementById("f-sort").value;
   const secondary = document.getElementById("f-secondary").value;
+  const represent = document.getElementById("f-represent")?.value || "rank";
   const omegaBeatsStrassen = document.getElementById("f-omega-beats-strassen").checked;
   const showHistory = document.getElementById("f-show-history").checked;
   // Strassen's exponent — log₂(7) ≈ 2.80735... The catalog-progress metric
@@ -1227,6 +1237,12 @@ function render() {
         // flag), so a/b here are both lower bounds or both achievable. For two
         // lower bounds the STRONGER (higher) floor wins — ⟨5,5,5⟩ ≥48 beats ≥47;
         // for achievable ranks the lower rank wins as usual.
+        // "Best per cell by: additions" (#20): the cheapest effective addition count wins the
+        // cell, rank second - a higher-rank scheme with a replayed cheaper schedule shows.
+        if (represent === "additions" && !a.lower && !b.lower) {
+          const aa = effectiveAdditions(a) ?? Infinity, ba = effectiveAdditions(b) ?? Infinity;
+          if (aa !== ba) return aa < ba;
+        }
         if (a.rank !== b.rank) return (a.lower && b.lower) ? a.rank > b.rank : a.rank < b.rank;
         const as = secondaryRankScore(a, secondary);
         const bs = secondaryRankScore(b, secondary);            // secondary: user choice
@@ -1340,6 +1356,14 @@ function render() {
             || (a.commutative === true ? 1 : 0) - (b.commutative === true ? 1 : 0)
             || a.rank - b.rank
             || (secondaryRankScore(a, secondary) - secondaryRankScore(b, secondary));
+      case "additions":
+        // Effective additions ascending (scheduled / min / flat, whichever is lowest); rows
+        // without a count sort last; ties by rank then shape.
+        return ((effectiveAdditions(a) ?? Infinity) - (effectiveAdditions(b) ?? Infinity))
+            || (a.rank - b.rank)
+            || a.__s[2] - b.__s[2]
+            || a.__s[0] - b.__s[0]
+            || a.__s[1] - b.__s[1];
       case "rank":
         return (a.rank - b.rank)
             || (secondaryRankScore(a, secondary) - secondaryRankScore(b, secondary));
@@ -1655,6 +1679,40 @@ function budStructureCell(s) {
   return `${star}<span title="${escapeHtml(s.buds)}">${s.bud_score || 0}</span>${cert}`;
 }
 
+// Addition schedule (#20): the straight-line program behind `min_additions` /
+// `scheduled_additions`, forwarded by the manifest for small schemes. Two layouts:
+// the object form (SlpJson: per-side SSA ops over input slots) and the legacy
+// string array (Perminov 2025's 58-addition ⟨3,3,3⟩). Rendered verbatim - the SPA
+// never recomputes a count (user principle); the tier says how strong the claim is.
+function slpBlockHtml(s) {
+  const slp = s.slp;
+  if (!slp) return "";
+  const tier = (s.additions_optimality === "proven" ? "proven minimal" : "upper bound: a heuristic schedule")
+    + (s.additions_source ? ` · ${s.additions_source}` : "");
+  let body;
+  if (Array.isArray(slp)) {
+    body = `<pre style="white-space:pre-wrap;margin:0">${escapeHtml(slp.join("\n"))}</pre>`;
+  } else {
+    const side = (label, sd, inName) => {
+      if (!sd || !Array.isArray(sd.ops)) return "";
+      const nm = (slot) => slot < sd.inputs ? `${inName}${slot}` : `t${slot}`;
+      const lines = sd.ops.map(op => op[0] === "*"
+        ? `t${op[1]} = ${op[3]}·${nm(op[2])}`
+        : `t${op[1]} = ${nm(op[2])} ${op[0]} ${nm(op[3])}`);
+      const forms = (sd.forms || []).map((slot, i) => `${label}${i} = ${slot < 0 ? "0" : nm(slot)}`);
+      const adds = sd.ops.filter(op => op[0] !== "*").length;
+      return `<div style="margin-top:.3em"><em>${label}-side: ${adds} additions over ${sd.inputs} inputs</em>` +
+        `<pre style="white-space:pre-wrap;margin:.2em 0 0 0">${escapeHtml(lines.concat(forms).join("\n"))}</pre></div>`;
+    };
+    body = `<div>${slp.additions} additions` + (slp.scalar_mults ? ` + ${slp.scalar_mults} scalar multiplications` : "") +
+      (slp.optimality_method ? ` · ${escapeHtml(slp.optimality_method)}` : "") + `</div>` +
+      side("L", slp.a, "a") + side("R", slp.b, "b") + side("c", slp.out, "m");
+  }
+  return `<div style="margin-bottom:.6em;padding:.5em .6em;background:#f4fff4;border-left:3px solid #2a7;border-radius:3px">` +
+    `<div style="font-weight:bold;margin-bottom:.3em">Addition schedule ` +
+    `<span style="font-weight:normal;color:#888;font-size:.85em">— ${escapeHtml(tier)}</span></div>` + body + `</div>`;
+}
+
 // Raw-catalog-entry modal (#186). Shows the precomputed catalog.json entry
 // verbatim (no SPA-side computation — user principle). Opened by clicking a row.
 function openEntryModal(s) {
@@ -1714,6 +1772,7 @@ function openEntryModal(s) {
     `<div style="margin-bottom:.6em">${externalCatalogLinks(s.format, s.rank)}</div>` +
     lineageBlock +
     taFusionBlock +
+    slpBlockHtml(s) +
     `<pre style="white-space:pre-wrap;word-break:break-word;margin:0">${escapeHtml(JSON.stringify(s, null, 2))}</pre>`;
   ov.appendChild(box);
   box.querySelector("#entry-modal-close").addEventListener("click", () => ov.remove());

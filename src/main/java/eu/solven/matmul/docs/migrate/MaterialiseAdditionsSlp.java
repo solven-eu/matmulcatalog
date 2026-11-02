@@ -187,28 +187,7 @@ public final class MaterialiseAdditionsSlp {
 	}
 
 	private static ObjectNode sideJson(JsonMapper mapper, Slp slp) {
-		ObjectNode side = mapper.createObjectNode();
-		side.put("inputs", slp.nInputs());
-		ArrayNode ops = mapper.createArrayNode();
-		for (Slp.Op o : slp.ops()) {
-			ArrayNode op = mapper.createArrayNode();
-			op.add(String.valueOf(o.kind()));
-			op.add(o.target());
-			op.add(o.x());
-			if (o.kind() == '*') {
-				op.add(o.c());
-			} else {
-				op.add(o.y());
-			}
-			ops.add(op);
-		}
-		side.set("ops", ops);
-		ArrayNode forms = mapper.createArrayNode();
-		for (int fr : slp.formResult()) {
-			forms.add(fr);
-		}
-		side.set("forms", forms);
-		return side;
+		return eu.solven.matmul.additions.SlpJson.sideJson(mapper, slp);
 	}
 
 	private static void collect(File dir, List<File> out) {

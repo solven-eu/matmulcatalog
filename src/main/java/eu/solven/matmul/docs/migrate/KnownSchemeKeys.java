@@ -95,6 +95,41 @@ final class KnownSchemeKeys {
 		return keys;
 	}
 
+	/**
+	 * Which {@code (shape, rank, class)} keys already carry a straight-line program from a
+	 * given source ({@code slp.source} of the scheme JSON): the idempotence index of the
+	 * addition-reduced channel, which must pull a program even when the matrices are held.
+	 */
+	static java.util.Map<String, Set<String>> scanSlpSources(Path known) throws IOException {
+		java.util.Map<String, Set<String>> out = new ConcurrentHashMap<>();
+		if (!Files.isDirectory(known)) {
+			return out;
+		}
+		List<Path> files;
+		try (Stream<Path> w = Files.walk(known)) {
+			files = w.filter(f -> f.getFileName().toString().endsWith(".json")).toList();
+		}
+		files.parallelStream().forEach(f -> {
+			try {
+				JsonNode root = SchemeIO.parseJson(f.toFile());
+				JsonNode dims = root.get("n");
+				JsonNode rank = root.get("m");
+				JsonNode slp = root.get("slp");
+				if (dims == null || !dims.isArray() || dims.size() != 3 || rank == null || !rank.isInt() || slp == null
+						|| !slp.isObject() || !slp.has("source")) {
+					return;
+				}
+				List<String> fields = SchemeIO.fieldTags(root);
+				String cls = fields.contains(Z) ? (isTernary(root) ? ZT : Z) : Q;
+				String key = key(dims.get(0).asInt(), dims.get(1).asInt(), dims.get(2).asInt(), rank.asInt(), cls);
+				out.computeIfAbsent(key, k -> ConcurrentHashMap.newKeySet()).add(slp.get("source").asString());
+			} catch (Exception e) {
+				log.debug("KnownSchemeKeys.scanSlpSources: skipping {}: {}", f.getFileName(), e.toString());
+			}
+		});
+		return out;
+	}
+
 	private static void addFile(Set<String> keys, Path f) throws IOException {
 		JsonNode root = SchemeIO.parseJson(f.toFile());
 		JsonNode dims = root.get("n");
@@ -118,13 +153,6 @@ final class KnownSchemeKeys {
 
 	/** Stored {@code zt} flag when stamped, else the coefficients (explicit schemes only). */
 	private static boolean isTernary(JsonNode root) throws IOException {
-		Boolean stored = SchemeIO.readZT(root);
-		if (stored != null) {
-			return stored;
-		}
-		if (SchemeIO.isStub(root) || root.path("complex").asBoolean(false)) {
-			return false;
-		}
-		return SchemeIO.isTernary(SchemeIO.read(root));
+		return Boolean.TRUE.equals(SchemeIO.ternaryOf(root));
 	}
 }

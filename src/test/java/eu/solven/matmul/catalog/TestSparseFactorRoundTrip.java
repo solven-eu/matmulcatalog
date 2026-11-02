@@ -55,4 +55,45 @@ public class TestSparseFactorRoundTrip {
 		assertThat(rereadV).isDeepEqualTo(origV);
 		assertThat(rereadW).isDeepEqualTo(origW);
 	}
+
+	/**
+	 * The legacy sparse layout has a second spelling upstream: per-row pair lists
+	 * {@code [[pos, coef], …]} (mizopl / we*star) next to Perminov's per-row objects
+	 * {@code {"pos": coef}}. Until 2026-11-02 the pair list parsed as an empty object — an
+	 * all-zero scheme that failed the import gate as if the contributor's file were wrong
+	 * (seven valid ZT records). Both spellings must read as the same scheme, and a row of
+	 * any other shape must be refused, never zero-filled.
+	 */
+	@Test
+	public void pair_list_sparse_rows_read_as_the_same_scheme_and_unknown_rows_are_refused() throws Exception {
+		NonCubicBilinearAlgorithm strassen = eu.solven.matmul.catalog.SchemeIO.readBilinear(new java.io.File(
+				"src/main/resources/schemes/known/section2/2x2x2-r7-perminov_cr15_cn24_ZT_reduced-e498eb7.json"));
+		tools.jackson.databind.json.JsonMapper mapper = tools.jackson.databind.json.JsonMapper.builder().build();
+		tools.jackson.databind.node.ObjectNode root = mapper.createObjectNode();
+		root.putArray("n").add(strassen.n).add(strassen.m).add(strassen.p);
+		root.put("m", strassen.r);
+		double[][] U = strassen.denseU(), V = strassen.denseV(), W = strassen.denseW();
+		tools.jackson.databind.node.ArrayNode us = root.putArray("u_sparse"), vs = root.putArray("v_sparse"),
+				ws = root.putArray("w_sparse");
+		for (int k = 0; k < strassen.r; k++) {
+			tools.jackson.databind.node.ArrayNode ru = us.addArray(), rv = vs.addArray(), rw = ws.addArray();
+			for (int v = 0; v < U.length; v++) if (U[v][k] != 0) ru.addArray().add(v).add((int) U[v][k]);
+			for (int v = 0; v < V.length; v++) if (V[v][k] != 0) rv.addArray().add(v).add((int) V[v][k]);
+			// W positions are Perminov's column-major C order (j·n1 + i), as in the object spelling.
+			for (int i = 0; i < strassen.n; i++) for (int j = 0; j < strassen.p; j++) {
+				double c = W[i * strassen.p + j][k];
+				if (c != 0) rw.addArray().add(j * strassen.n + i).add((int) c);
+			}
+		}
+
+		NonCubicBilinearAlgorithm back = eu.solven.matmul.catalog.SchemeIO.read(root);
+		assertThat(eu.solven.matmul.verifiers.Verifier.isExactNonCubic(back)).isTrue();
+		assertThat(eu.solven.matmul.catalog.SchemeIO.contentHash(back))
+				.isEqualTo(eu.solven.matmul.catalog.SchemeIO.contentHash(strassen));
+
+		// A row that is neither an object nor a pair list is an error, not a row of zeros.
+		((tools.jackson.databind.node.ArrayNode) root.get("u_sparse")).set(0, mapper.createArrayNode().add("0:1"));
+		org.assertj.core.api.Assertions.assertThatThrownBy(() -> eu.solven.matmul.catalog.SchemeIO.read(root))
+				.isInstanceOf(IOException.class).hasMessageContaining("pairs");
+	}
 }

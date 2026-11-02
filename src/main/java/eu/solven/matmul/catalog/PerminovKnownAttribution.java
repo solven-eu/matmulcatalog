@@ -127,6 +127,12 @@ public final class PerminovKnownAttribution {
 			// origin repo (ImportContributedSchemes --meta=references/contributions/
 			// cloudroom-math-2026.meta.json); a scheduled pull is a follow-up.
 			return Optional.of(new Attribution("Cloudroom Math 2026", Disposition.SKIP_FRESH_IMPORT));
+		case "mizopl":
+			// mizopl / we*star (github.com/mizopl/we-star, MIT), mirrored by Perminov since
+			// 2026-10-19 (commit b4f756b: the four ZT records he merged). Pulled from the
+			// origin repo (UpstreamSchemeRepos.MIZOPL - rank schemes AND the addition-reduced
+			// SLPs, which the mirror does not carry); issue #20, REFERENCES [92].
+			return Optional.of(new Attribution("mizopl 2026", Disposition.SKIP_FRESH_IMPORT));
 		default:
 			// An unseen known/<sub>: still NOT Perminov's. Fall back to the aggregator
 			// label so it is at least not miscredited to Perminov.
@@ -146,7 +152,7 @@ public final class PerminovKnownAttribution {
 	 */
 	public static final Set<String> MAPPED_SUBTREES = Set.of("meta_flip_graph", "alpha_tensor", "alpha_evolve",
 			"a_60_addition", "jakobmoosbauer_flips", "jakobmoosbauer_symmetric_flips", "fmm_add_reduction",
-			"classic", "tensor", "matmulcatalog", "MerlijnW70_fmm_schemes", "lita", "cloudroom-math");
+			"classic", "tensor", "matmulcatalog", "MerlijnW70_fmm_schemes", "lita", "cloudroom-math", "mizopl");
 
 	public static boolean isMappedSubtree(String sub) {
 		return MAPPED_SUBTREES.contains(sub);

@@ -135,4 +135,26 @@ public class TestImportContributedSchemes {
 			assertThat(root.get("source").asString()).isEqualTo("Adriano 2026");
 		}
 	}
+
+	/**
+	 * Re-importing matrices we already hold (an addition-reduced program over a known
+	 * scheme is the normal case) must not rewrite the file from the matrices alone: until
+	 * 2026-11-02 every stamped key — min_additions, slp, provenance — was silently wiped.
+	 */
+	@Test
+	public void write_over_an_identical_existing_file_keeps_its_addition_metadata(@TempDir Path root) throws Exception {
+		Gate g = ImportContributedSchemes.gate(HK_2X3X4, null);
+		ImportContributedSchemes.Options opts = new ImportContributedSchemes.Options(List.of(), "test", "Test 2026",
+				2026, null, "TBD", null, null, null, "known", "Q", true);
+		File first = ImportContributedSchemes.write(g, opts, root);
+		SchemeIO.addFields(first, java.util.Map.of("min_additions", 5, "additions_optimal", false), true);
+
+		File again = ImportContributedSchemes.write(g, opts, root);
+
+		assertThat(again).isEqualTo(first);
+		var node = SchemeIO.parseJson(again);
+		assertThat(node.path("min_additions").asInt()).isEqualTo(5);
+		assertThat(node.path("additions_optimal").isBoolean()).as("a stamped honesty flag survives a re-import").isTrue();
+		assertThat(node.path("source").asString()).as("the importer's own metadata is still stamped").isEqualTo("Test 2026");
+	}
 }

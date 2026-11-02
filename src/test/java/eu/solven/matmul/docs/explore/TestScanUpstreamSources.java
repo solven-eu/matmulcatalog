@@ -139,4 +139,32 @@ public class TestScanUpstreamSources {
 		assertThat(ranks.size()).isGreaterThan(5000);
 		assertThat(ranks).containsEntry(Shape.of(2, 2, 2).canonical(), 7);
 	}
+
+	/**
+	 * The Z and ZT axes (issue #20): Z from fields[] (stubs included), ZT from the stored flag
+	 * or the coefficients of an explicit scheme — never from a stub, which cannot be judged.
+	 */
+	@Test
+	public void local_z_and_zt_axes_follow_fields_and_coefficients(@TempDir Path root) throws Exception {
+		// Stamped ternary integer scheme: on all three axes.
+		write(root.resolve("known/section2"), "a.json",
+				"{\"n\": [2, 2, 2], \"m\": 7, \"zt\": true, \"u\": [[1]], \"fields\": [\"F2\", \"F3\", \"Z\", \"Q\", \"R\", \"C\"]}");
+		// Unstamped explicit integer scheme with a coefficient 2: Z yes, ZT no (read from the coefficients).
+		write(root.resolve("known/section3"), "b.json",
+				"{\"n\": [1, 1, 1], \"m\": 1, \"u\": [[2]], \"v\": [[1]], \"w\": [[1]], \"fields\": [\"Z\", \"Q\", \"R\", \"C\"]}");
+		// A stub with Z among its fields: Z yes, ZT unknowable → not counted.
+		write(root.resolve("derived/section4"), "c.json",
+				"{\"n\": [2, 2, 4], \"m\": 14, \"scheme_type\": \"stub\", \"fields\": [\"Z\", \"Q\", \"R\", \"C\"]}");
+		// A rational scheme: Q only.
+		write(root.resolve("known/section4"), "d.json",
+				"{\"n\": [4, 4, 4], \"m\": 48, \"u\": [], \"fields\": [\"Q\", \"R\", \"C\"]}");
+
+		ScanUpstreamSources.LocalRanks local = ScanUpstreamSources.loadLocalRanksByClass(root);
+
+		assertThat(local.q()).containsEntry(Shape.of(2, 2, 2).canonical(), 7).containsEntry(Shape.of(4, 4, 4).canonical(), 48);
+		assertThat(local.z()).containsEntry(Shape.of(1, 1, 1).canonical(), 1).containsEntry(Shape.of(2, 2, 4).canonical(), 14)
+				.doesNotContainKey(Shape.of(4, 4, 4).canonical());
+		assertThat(local.zt()).containsEntry(Shape.of(2, 2, 2).canonical(), 7)
+				.doesNotContainKey(Shape.of(1, 1, 1).canonical()).doesNotContainKey(Shape.of(2, 2, 4).canonical());
+	}
 }
