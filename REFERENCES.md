@@ -1188,8 +1188,12 @@ Relevance to this repo:
   `discovery: true` — for the 22 "ZT record" shapes that is a statement about the
   **ZT class only**: on 17 of them it is also the lowest ℤ rank we hold, on
   `⟨2,12,15⟩`, `⟨2,13,15⟩`, `⟨2,13,16⟩`, `⟨2,15,16⟩` (Hopcroft–Kerr formula schemes,
-  [\[88\]](#88-adriano-2026-hk-task9): 278 / 300 / 320 / 368) and `⟨11,15,16⟩`
-  (Perminov, 1629) a non-ternary integer scheme of lower rank exists.
+  [\[2\]](#2-hk71): 278 / 300 / 320 / 368 — our constructive HK71 program plus the
+  FMM-Lille / Perminov files, all on disk since June 2026, i.e. not
+  [\[88\]](#88-adriano-2026-hk-task9), which covers only the six g ≥ 6 shapes; PR #11
+  thread, 2026-10-05 / 10-18) and `⟨11,15,16⟩` (Perminov, 1629; since 2026-11-02 the
+  ternary 1629 of [\[92\]](#92-mizopl-we-star-2026)) a non-ternary integer scheme of
+  lower rank exists.
 - **Scheduled pull**: `docs.migrate.ImportWitteveenSchemes` lists the origin repo
   and imports any `(shape, rank, class)` the catalog lacks; it runs in
   `sync-reference-catalogs.yml` every 3 h. Automated imports are stamped
