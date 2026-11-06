@@ -3,14 +3,14 @@
 Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC ranks) vs our on-disk best (`FieldAwareLookup("R").findRank`). Non-trivial formats only.
 
 - formats compared (we have a scheme): 5426
-- **FMM strictly better than us: 34** (import/derive targets)
-- we tie or beat FMM: 5392
+- **FMM strictly better than us: 38** (import/derive targets)
+- we tie or beat FMM: 5388
 - FMM has it, we have NOTHING: 0
 - SKIPPED synthesized/unverified FMM bounds (empty page / HK-formula): 0
 
-### split of the 34 FMM-better gaps by FMM provenance
+### split of the 38 FMM-better gaps by FMM provenance
 - with a published REFERENCE (real import/cite targets): **0**
-- NO reference = FMM-derived composition (re-derivable by us): **34**
+- NO reference = FMM-derived composition (re-derivable by us): **38**
 
 ## (A) FMM-better WITH a reference — published results to import (sorted by gap)
 
@@ -24,9 +24,12 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨9,17,17⟩ | 1574 | 1600 | 26 |
 | ⟨17,17,26⟩ | 4297 | 4323 | 26 |
 | ⟨16,20,28⟩ | 4936 | 4960 | 24 |
+| ⟨11,18,21⟩ | 2499 | 2520 | 21 |
 | ⟨22,30,30⟩ | 10534 | 10555 | 21 |
 | ⟨16,20,29⟩ | 5256 | 5272 | 16 |
+| ⟨15,17,21⟩ | 3145 | 3160 | 15 |
 | ⟨12,17,18⟩ | 2148 | 2160 | 12 |
+| ⟨12,17,21⟩ | 2508 | 2520 | 12 |
 | ⟨9,17,18⟩ | 1591 | 1600 | 9 |
 | ⟨9,17,19⟩ | 1744 | 1753 | 9 |
 | ⟨9,17,20⟩ | 1829 | 1838 | 9 |
@@ -41,6 +44,7 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨17,18,27⟩ | 4622 | 4631 | 9 |
 | ⟨21,28,32⟩ | 10134 | 10143 | 9 |
 | ⟨20,24,25⟩ | 6466 | 6474 | 8 |
+| ⟨6,15,23⟩ | 1265 | 1272 | 7 |
 | ⟨8,27,30⟩ | 3744 | 3750 | 6 |
 | ⟨13,14,14⟩ | 1579 | 1582 | 3 |
 | ⟨14,14,27⟩ | 3172 | 3175 | 3 |
