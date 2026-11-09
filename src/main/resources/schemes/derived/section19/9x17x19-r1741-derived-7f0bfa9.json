@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatCols(naive-9x17x1, 9x17x18)",
+  "lineage_compact": "naive-9x17x1 +p 9x17x18",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "naive-9x17x1"},
+    "right": {"op": "Atom", "ref": "9x17x18@55da98129abd3855b6c3537590722aeee48c7d0844395116c37881130d358abd"}
+  },
+  "n": [9, 17, 19],
+  "m": 1741,
+  "hash": "7f0bfa9c04726d58cea66e0650dffbf7701dea949d1b2c884e130210f340d7bb",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

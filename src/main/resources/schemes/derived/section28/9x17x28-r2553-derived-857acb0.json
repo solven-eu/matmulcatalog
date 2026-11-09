@@ -1,0 +1,55 @@
+{
+  "lineage_str": "Recombination(base=Transpose(3x5x6, perm=\"ABC->ACB\"), allocA=[3, 3, 3], allocB=[3, 3, 3, 3, 2, 3], allocC=[6, 6, 6, 4, 6], leaves=[Project(3x3x7, keepN=[0, 1, 2], keepM=[0, 1, 2], keepP=[1, 2, 3, 4, 5, 6]), 3x3x4, OrientAs(ConcatCols(2x3x3-r15-alphatensor_Z-497eea7, 2x3x3-r15-alphatensor_Z-497eea7), ⟨3,2,6⟩), OrientAs(2x3x4, ⟨3,2,4⟩)])",
+  "lineage_compact": "R[3x5x6^ABC->ACB; 3,3,3 | 3,3,3,3,2,3 | 6,6,6,4,6]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {
+      "op": "Transpose",
+      "perm": "ABC->ACB",
+      "child": {"op": "Atom", "ref": "3x5x6@14be9c3dfa770a18656d8a9d2a6fd1a44160be1d35357a3a25f63bb657dde36a"}
+    },
+    "allocA": [3, 3, 3],
+    "allocB": [3, 3, 3, 3, 2, 3],
+    "allocC": [6, 6, 6, 4, 6],
+    "leaves": [
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2],
+        "keepM": [0, 1, 2],
+        "keepP": [1, 2, 3, 4, 5, 6],
+        "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
+      },
+      {"op": "Atom", "ref": "3x3x4@a5da05f"},
+      {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 2,
+        "p": 6,
+        "axisMap": "mnp",
+        "child": {
+          "op": "ConcatCols",
+          "left": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"},
+          "right": {"op": "Atom", "ref": "2x3x3-r15-alphatensor_Z-497eea7"}
+        }
+      },
+      {
+        "op": "OrientAs",
+        "n": 3,
+        "m": 2,
+        "p": 4,
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "2x3x4@91c6b69"}
+      }
+    ]
+  },
+  "n": [9, 17, 28],
+  "m": 2553,
+  "hash": "857acb0518b12a3285b618f9e9ea0a15150d6540349fa18a7067cb7ee72e78ec",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

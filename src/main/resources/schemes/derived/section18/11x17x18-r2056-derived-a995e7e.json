@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatRows(2x17x18, 9x17x18)",
+  "lineage_compact": "2x17x18 +n 9x17x18",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "2x17x18@3970923"},
+    "bottom": {"op": "Atom", "ref": "9x17x18@55da98129abd3855b6c3537590722aeee48c7d0844395116c37881130d358abd"}
+  },
+  "n": [11, 17, 18],
+  "m": 2056,
+  "hash": "a995e7ec02599535241f1c1c651cd1b234d2ea839359b7d716db06bbc9dc9227",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

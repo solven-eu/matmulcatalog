@@ -939,6 +939,9 @@ public final class SchemeIO {
 					parseIntArray(node.get("keepN")),
 					parseIntArray(node.get("keepM")),
 					parseIntArray(node.get("keepP")));
+			case "SubstProject" -> new Lineage.SubstProject(
+					parseLineageNode(node.get("child"), ctx),
+					node.path("axis").asInt(), node.path("index").asInt());
 			default -> new Lineage.Atom("unknown-op:" + op);
 		};
 		// Register if this node has an id (for later @ref resolution).

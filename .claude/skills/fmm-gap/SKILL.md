@@ -20,6 +20,23 @@ optimality tiers, math-first, long-run process hygiene).
 - Optional modifiers the user may give: `--worst` (take the biggest gap
   instead of random), a strategy hint (`projection` / `sweep` /
   `serendipitous`), or a budget ("30 minutes", "overnight").
+- **A gap list** — `upstream-gaps.txt` from the weekly scan's run artifact
+  (`gh run download <run_id> -n upstream-scan-<run_id> -D target/upstream-scan`)
+  or written locally by `ScanUpstreamSources --shapes-out`. One shape per
+  line, leading token `NxMxP`, then ours / upstream / gap / kind / sources;
+  feed it whole to `ProjectFmmGaps --shapes-file` and `SchemeSweep
+  --shape-file` (§4). The `kind` column (from FMM's recipe cell, via
+  `upstream-gaps.json`'s `fmm_recipe`) already does §2's first cut:
+  `closure-candidate:{projection,kron,block-sum,serendipitous}` → §4,
+  `base-candidate` → §3. Nothing in CI runs this closure; the list is the
+  hand-off from the detector to you.
+- **A `ProjOfAlongMode(⟨parent⟩, mode)` recipe** is FMM's substitution
+  lemma (`projalongmode.html`: a p / m / n drop kills m / n / p products from
+  any representative), not a coordinate projection — the coordinate scatter
+  (§4a) saw 0 on every axis of the issue-#23 Kronecker stubs. React with
+  `docs.migrate.MaterialiseSubstitutionProjections --shapes-file=… --execute`
+  (every one-larger parent on disk, every axis order; `SubstProject` stubs),
+  then the concat tier for the block-sum rows that stand on the new parents.
 
 ## 1. Refresh the diff and pick the target
 

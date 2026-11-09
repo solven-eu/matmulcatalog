@@ -2433,3 +2433,81 @@ budget, outcome), in `research/PENDING_TASKS.md`. Walks only where an upstream r
 names the representative (⟨20,24,25⟩, ⟨8,27,30⟩). The old `17x19x20-r3780` stub still
 carries a `@ref?:L0` placeholder inside an identity recombination; it replays (r = 3780,
 spot-check true) and was left alone.
+
+## 2026-11-09 — Issue #23 (44 FMM rows): the closure that no CI job runs, and FMM's `ProjOfAlongMode`
+
+**Claim.** The weekly scan's 44 FMM strict gaps (issue #23) were 61 index moves FMM-Lille made
+on 2026-11-04..06, all re-pricings of products we already held; the sync/regenerate/scan
+workflows detect gaps and import explicit upstream files but never run the closure (playbook
+step 4), so nothing was ever going to close them. Closing them by hand exposed that the FMM
+operator behind the wave, `ProjOfAlongMode(⟨parent⟩, mode)`, is NOT the coordinate projection
+the closure runs but **Lemma 1 of fmm.univ-lille.fr/projalongmode.html**: from any ⟨n,m,p+1⟩
+decomposition of rank r, ⟨n,m,p⟩ at r−m (m-drop: r−n, n-drop: r−p), by substituting the
+dropped slice's variables so that m chosen products vanish — from ANY representative. Every
+move checks out (1600−9=1591, 1591−17=1574, 1800−21=1779, 1593−14=1579, 2723−17=2706, …).
+
+**Repro.**
+```bash
+M="mvn -q -ntp exec:java -Dexec.mainClass="
+$M eu.solven.matmul.docs.explore.ScanUpstreamSources -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md --gaps-out generated/upstream-gaps.json --shapes-out generated/upstream-gaps.txt"
+$M eu.solven.matmul.docs.explore.ProjectFmmGaps -Dexec.args="--shapes-file=generated/upstream-gaps.txt --passes=2"
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=simple --strategies=concat,kron,recomb --shape-file=generated/upstream-gaps.txt --threads=12"
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=rectangular --baseShape=rectangular --strategies=recomb --shape-file=generated/upstream-gaps.txt --threads=12"
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --strategies=recomb --shape-file=generated/upstream-gaps.txt --threads=12"
+$M eu.solven.matmul.docs.migrate.MaterialiseSubstitutionProjections -Dexec.args="--shapes-file=generated/upstream-gaps.txt --execute"
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=simple --strategies=concat,kron,recomb --shape-file=generated/upstream-gaps.txt --threads=12"
+$M eu.solven.matmul.docs.migrate.MaterialiseVectorProjections -Dexec.args="--shapes-file=generated/upstream-gaps.txt --execute"
+$M eu.solven.matmul.docs.migrate.RestampStubRanks -Dexec.args="--direction=all --execute"
+```
+
+**Breakdown (field Q, non-commutative; every rank a bound).**
+
+1. *Detection hand-off.* `ScanUpstreamSources --gaps-out/--shapes-out` writes
+   `upstream-gaps.json` (every row merged across sources, classified from FMM's recipe cell:
+   `closure-candidate:{projection,kron,block-sum,serendipitous}` / `base-candidate` /
+   `upstream-unverified` / `missing` / `coefficient-class`) and `upstream-gaps.txt` (leading token
+   `NxMxP`, read unchanged by `SchemeSweep --shape-file` and `ProjectFmmGaps --shapes-file`); the
+   weekly workflow uploads both and the issue says how to run the closure. Two silent scraper
+   drifts fixed on the way: the FMM recipe cell is `data-col="description"` now (every digest
+   `description` had been null) and the naive-rank regex read the fast rank (`naive_rank == rank`
+   on every row); `TestSyncReferenceCatalogs` guards both.
+2. *Playbook step 4 as it stood* (projection scatter, simple / rectangular / default-pool
+   recombination, restamp) closed 11 of the 44 and set records on the way — projection:
+   ⟨13,21,23⟩ 3764→3720 (FMM 3755), ⟨8,15,23⟩ 1714→1700 (1713); default pool: ⟨9,23,29⟩
+   3557→3507 (3551), ⟨15,17,18⟩ 2712→2640 (2705), ⟨12,17,21⟩ 2520→2468 (2508), ⟨9,22,23⟩
+   2715→2676 (2706), ⟨9,17,32⟩ 2942→2895 (2933), ⟨12,17,18⟩ 2160→2112 (2148), ⟨11,18,21⟩
+   2520→2490 (2499), ⟨6,21,23⟩ 1800→1776 (1779), ⟨21,23,28⟩ 7403→7379 (7382). WORSE 44 → 33.
+3. *Why the ⟨9,17,k⟩ family stayed.* Every ⟨3,3,6⟩=40 representative we hold (and FMM's own
+   artifact, and the ⟨9,18,18⟩ Kronecker stub, and FMM's own June artifact of it) has
+   coordinate AND direction projection margin 0 on every axis, so the scatter pruned the parent
+   (correctly) and `VectorProjection` (GL rebase of a common rank-1 direction into a coordinate)
+   could not help either — one win only, ⟨12,23,24⟩ 3790→3776 (FMM 3788) via a rebased
+   ⟨3,3,6⟩ ⊗ ⟨4,8,4⟩ (`margin-bases/section6/`). Negative result recorded in
+   `TestVectorProjection`.
+4. *The lemma.* `catalog.SubstitutionProjection` + lineage node `SubstProject(child, axis,
+   index)` (replays bit-for-bit) + `docs.migrate.MaterialiseSubstitutionProjections` (every
+   one-larger parent on disk, every axis order, greedy best index per step). 12 wins over the
+   33, nine strictly below FMM: ⟨9,17,17⟩ 1600→1570 (FMM 1574: p-then-m, 1600−18−12),
+   ⟨9,17,18⟩ 1600→1588 (1591), ⟨13,14,14⟩ 1582→1578 (1579), ⟨15,16,16⟩ 2223→2219 (2220),
+   ⟨6,18,29⟩ 1880→1859 (1862), ⟨14,14,27⟩ 3175→3171 (3172), ⟨15,17,21⟩ 3160→3136 (3145),
+   ⟨15,21,23⟩ 4160→4133 (4139), ⟨16,16,31⟩ 4459→4455 (4456), ⟨17,18,27⟩ 4631→4601 (4622);
+   ⟨6,15,23⟩ 1265 and ⟨9,21,23⟩ 2499 tie FMM. The result is rational in general (integer parents
+   lose `Z` / `F2`; fields stamped from the coefficients). Then the concat tier over the new
+   parents: ⟨17,17,26⟩ 4293 (4297), ⟨22,23,31⟩ 8301 (8331), ⟨21,23,27⟩ 7171 (7174), ⟨13,17,18⟩
+   2392 (2395), ⟨11,17,18⟩ 2056 (2059), ⟨9,17,19⟩…⟨9,17,27⟩ all 3 below FMM, ⟨6,19,29⟩ 2033
+   (2036), ⟨6,29,30⟩ 3123 (3126), ⟨6,29,32⟩ 3373 (3376), and ⟨9,23,23⟩ 2821, ⟨21,23,30⟩ 7894,
+   ⟨21,23,31⟩ 8102, ⟨23,23,32⟩ 8830 at FMM's figures. Guards: `TestSubstitutionProjection`
+   (lemma exact on ⟨3,3,6⟩ / Strassen; ⟨9,18,18⟩ → ⟨9,17,17⟩ ≤ 1573), 
+   `TestMaterialiseSubstitutionProjections` (⟨13,14,14⟩ ≤ 1579, ⟨9,17,17⟩ ≤ 1574 from the
+   catalog's own parents).
+5. *Status after the pass.* `FmmCrossCheck`: **WORSE 0** (was 44 on 2026-11-07, 33 after step
+   2), UNVERIFIED 13 (the audited rows, unchanged), **BETTER 1934** (was 1895), MISSING 0.
+   `CompareReferenceCatalogs`: 5440 formats — tie 4244, better 1183, worse 13 (the audited
+   rows). Default-pool pass over the new parents added ⟨6,19,29⟩ 2037→1990 (FMM 2036),
+   ⟨6,18,29⟩ 1859→1856, ⟨6,29,32⟩ 3381→3354 (3376); the restamp cascaded eight stubs standing
+   on the new parents (⟨25..28,31,32⟩ −4 each, ⟨14,14,27⟩, ⟨16,16,31⟩). `VerifySchemes
+   --check=lineage,coefficients,slp`: 13 170 files, 0 failures. Not done: wiring `SubstitutionProjection` into
+   `RecursiveMaterialiser.tryProjection` / the scatter (it should replace the coordinate drop
+   there — every `Project` stub in the catalog is a candidate for re-pricing by the lemma, a
+   catalog-wide campaign); a merge-aware second-order pass; the choice of WHICH m products to
+   kill (greedy first-independent today) is a free parameter worth optimising.

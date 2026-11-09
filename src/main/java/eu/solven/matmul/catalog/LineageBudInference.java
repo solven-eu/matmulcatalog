@@ -218,6 +218,7 @@ public final class LineageBudInference {
 			case Lineage.AugmentSquareDiscard ignored -> { return Profile.UNKNOWN; }
 			case Lineage.SerendipitousProduct ignored -> { return Profile.UNKNOWN; }
 			case Lineage.Project ignored -> { return Profile.UNKNOWN; }
+			case Lineage.SubstProject ignored -> { return Profile.UNKNOWN; }
 			case Lineage.DisjointSum ignored -> { return Profile.UNKNOWN; }
 		}
 	}

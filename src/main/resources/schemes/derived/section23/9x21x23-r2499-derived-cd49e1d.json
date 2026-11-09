@@ -1,0 +1,27 @@
+{
+  "lineage_str": "SubstProject(OrientAs(21x24x9, ⟨9,21,24⟩), axis=p, index=0)",
+  "lineage_compact": "21x24x9→⟨9,21,24⟩ ⊖[p0]",
+  "lineage": {
+    "op": "SubstProject",
+    "axis": 2,
+    "index": 0,
+    "child": {
+      "op": "OrientAs",
+      "n": 9,
+      "m": 21,
+      "p": 24,
+      "axisMap": "pnm",
+      "child": {"op": "Atom", "ref": "21x24x9@a96c892283c2b125e693cd06e8a1a2c9dba2188f26c5690f7f3a008646a74244"}
+    }
+  },
+  "n": [9, 21, 23],
+  "m": 2499,
+  "hash": "cd49e1d90d69f6e87b4aa0c6d0afe28346aa7edff7f81c0cc1987b3687f6ecac",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

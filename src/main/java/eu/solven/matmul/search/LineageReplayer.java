@@ -208,6 +208,9 @@ public final class LineageReplayer {
 							sp.n2(), sp.m2(), sp.p2());
 			case Lineage.Project pr -> eu.solven.matmul.catalog.Compose.project(
 					replayInternal(pr.child(), memo), pr.keepN(), pr.keepM(), pr.keepP());
+			// Substitution projection (FMM ProjOfAlongMode): deterministic, so the stub replays bit-for-bit.
+			case Lineage.SubstProject sp -> eu.solven.matmul.catalog.SubstitutionProjection.drop(
+					replayInternal(sp.child(), memo), sp.axis(), sp.index());
 			// Rectangular Pan-TA peel: re-run the deterministic constructor on the
 			// replayed cube + corner (the TA cross-fusion is fixed by (n,s)).
 			case Lineage.PeeledViaTa t -> eu.solven.matmul.papers.pan1978.RectangularTrilinearAggregation

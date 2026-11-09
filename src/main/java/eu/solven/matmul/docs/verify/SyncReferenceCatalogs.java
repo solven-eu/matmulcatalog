@@ -84,12 +84,22 @@ public final class SyncReferenceCatalogs {
 			"<a href=\"(\\d+x\\d+x\\d+\\.html)\">&lang;(\\d+)&times;(\\d+)&times;(\\d+):(\\d+)&rang;</a>"
 					+ "(.*?)(?=<a href=\"\\d+x\\d+x\\d+\\.html\"|</table>|</section>)",
 			Pattern.DOTALL);
-	private static final Pattern NAIVE = Pattern.compile("#view\\d+x\\d+x\\d+\">(\\d+)</a>");
-	// The index row's block-sum recipe, e.g. "4 ⟨5×5×8:144⟩ + 4 ⟨5×6×8:170⟩ + …".
-	// This is the FRESH construction (the per-shape *.html pages lag the index), so it is
-	// the authoritative source for diagnosing an FMM gap (which blocks, which allocation).
-	private static final Pattern DESC_TD =
-			Pattern.compile("<td[^>]*content=\"?description\"?[^>]*>(.*?)</td>", Pattern.DOTALL);
+	// The classical (naive) rank cell links to `#notview{n}x{n}x{n}`; the fast-rank cell to
+	// `#view…`. Until 2026-11-09 this matched `#view`, i.e. the FAST rank — every digest row
+	// carried `naive_rank == rank` (silently; nothing consumed the field).
+	private static final Pattern NAIVE = Pattern.compile("#notview\\d+x\\d+x\\d+\">(\\d+)</a>");
+	// The index row's recipe cell, e.g. "4 ⟨5×5×8:144⟩ + 4 ⟨5×6×8:170⟩ + …",
+	// "ProjOfAlongMode(⟨9×17×18:1591⟩,2)" or a citation ("Strassen 1969 [DOI]").
+	// This is the FRESH construction (the per-shape *.html pages lag the index by months:
+	// on 2026-11-09 the 9x17x17 page and artifact still dated 2026-06-02 and said 1600 while
+	// the index said 1574), so it is the authoritative source for diagnosing an FMM gap
+	// (which blocks, which allocation) — and for telling a closure gap (a recipe over formats
+	// we hold) from a base gap (a cited explicit scheme we lack).
+	// The cell's attribute was `content="description"`; the site now emits
+	// `data-col="description"`. Matching only the old spelling left every digest
+	// `description` null (silently — the field simply never populated) until 2026-11-09.
+	private static final Pattern DESC_TD = Pattern.compile(
+			"<td[^>]*(?:content|data-col)=\"?description\"?[^>]*>(.*?)</td>", Pattern.DOTALL);
 	private static final Pattern BIBLIO_KEY = Pattern.compile("biblio\\.html#([\\w:_-]+)");
 	private static final Pattern BIBLIO_ENTRY = Pattern.compile(
 			"class=\"bibtexnumber\">\\s*\\[<a name=\"([^\"]+)\">\\d+</a>\\].*?"
@@ -285,6 +295,39 @@ public final class SyncReferenceCatalogs {
 		// if it fails, so the committed digest survives a site outage.
 		log.info("fetching FMM catalog {}", FMM_BASE + "/");
 		String catalogHtml = fetch(FMM_BASE + "/");
+		List<ObjectNode> rows = parseFmmCatalog(catalogHtml);
+		if (rows.isEmpty()) {
+			throw new IOException("FMM catalog parse yielded 0 rows — refusing to overwrite "
+					+ FMM_CATALOG_OUT + " (site changed or down)");
+		}
+		long described = rows.stream().filter(r -> r.hasNonNull("description")).count();
+		if (described == 0) {
+			// The rank index still parses when the recipe cell's markup changes, so the
+			// digest keeps refreshing with a silently empty `description` — the shape the
+			// `content=` → `data-col=` switch took. Warn loudly; do not refuse the ranks.
+			log.warn("FMM catalog: {} rows but NO description cell parsed — the index markup changed; "
+					+ "gap classification (closure vs base) is blind until DESC_TD is updated", rows.size());
+			System.out.println("::warning title=FMM description cell not parsed::0 of " + rows.size()
+					+ " index rows carry a recipe — update SyncReferenceCatalogs.DESC_TD");
+		}
+		ObjectNode catalog = MAPPER.createObjectNode();
+		catalog.put("source", FMM_BASE + "/");
+		ArrayNode catArr = catalog.putArray("entries");
+		rows.forEach(catArr::add);
+		writeJson(FMM_CATALOG_OUT, catalog);
+		log.info("wrote {}: {} catalog rows ({} with a recipe/citation description)", FMM_CATALOG_OUT, rows.size(),
+				described);
+
+		syncFmmBiblio();
+	}
+
+	/**
+	 * The index table of {@code https://fmm.univ-lille.fr/} as digest entries: one per
+	 * {@code ⟨n×m×p:rank⟩} row with its naive rank, biblio keys, recipe/citation cell
+	 * ({@code description}) and details URL. Pure function of the HTML, so the parse is
+	 * testable against a fixture ({@code TestSyncReferenceCatalogs}).
+	 */
+	static List<ObjectNode> parseFmmCatalog(String catalogHtml) {
 		List<ObjectNode> rows = new ArrayList<>();
 		Matcher m = CATALOG_ROW.matcher(catalogHtml);
 		while (m.find()) {
@@ -309,7 +352,7 @@ public final class SyncReferenceCatalogs {
 			if (dm.find()) {
 				String desc = TAG.matcher(dm.group(1)).replaceAll("");
 				desc = desc.replace("&lang;", "⟨").replace("&rang;", "⟩")
-						.replace("&times;", "×").replace("&InvisibleTimes;", "")
+						.replace("&times;", "×").replace("&InvisibleTimes;", "").replace("&otimes;", "⊗")
 						.replace("&plus;", "+").replace("&minus;", "−").replace("&nbsp;", " ");
 				desc = WS.matcher(desc).replaceAll(" ").trim();
 				node.put("description", desc.isEmpty() ? null : desc);
@@ -319,17 +362,10 @@ public final class SyncReferenceCatalogs {
 			node.put("details_url", FMM_BASE + "/" + m.group(1));
 			rows.add(node);
 		}
-		if (rows.isEmpty()) {
-			throw new IOException("FMM catalog parse yielded 0 rows — refusing to overwrite "
-					+ FMM_CATALOG_OUT + " (site changed or down)");
-		}
-		ObjectNode catalog = MAPPER.createObjectNode();
-		catalog.put("source", FMM_BASE + "/");
-		ArrayNode catArr = catalog.putArray("entries");
-		rows.forEach(catArr::add);
-		writeJson(FMM_CATALOG_OUT, catalog);
-		log.info("wrote {}: {} catalog rows", FMM_CATALOG_OUT, rows.size());
+		return rows;
+	}
 
+	private static void syncFmmBiblio() throws InterruptedException {
 		// Biblio (parity; consumed by nothing today) — best-effort, never fatal.
 		try {
 			log.info("fetching FMM biblio {}", FMM_BASE + "/biblio.html");

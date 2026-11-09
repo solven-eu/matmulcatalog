@@ -74,7 +74,7 @@ public final class Lineage {
 	public sealed interface Node permits Atom, KronProduct, KronChain, ConcatCols,
 			ConcatRows, SumInner, RecombinationN, RecombinationTaN, RecombinationWithPairN,
 			AugmentSquareDiscard, Dce, Transpose, AxisFlip, AxisPermute, DisjointSum,
-			SerendipitousProduct, Project, OrientAs, PeeledViaTa {}
+			SerendipitousProduct, Project, SubstProject, OrientAs, PeeledViaTa {}
 
 	/**
 	 * Peeled matmul {@code ⟨n, n+s, n+s⟩} assembled via rectangular Pan
@@ -272,6 +272,20 @@ public final class Lineage {
 	public record Project(Node child, int[] keepN, int[] keepM, int[] keepP) implements Node {}
 
 	/**
+	 * Projection by substitution — FMM-Lille's {@code ProjOfAlongMode} (Lemma 1 of
+	 * {@code projalongmode.html}): drop index {@code index} of axis {@code axis}
+	 * ({@code 0 = n, 1 = m, 2 = p}) of the child, substituting the dropped slice's variables by
+	 * linear forms so that {@code p / n / m} products (for an n / m / p drop) vanish — from ANY
+	 * representative, where the coordinate {@link Project} only removes products supported on
+	 * the slice alone. Replay = {@link SubstitutionProjection#drop} (deterministic: the first
+	 * independent products are the ones killed). Introduces rational coefficients in general,
+	 * so the field of the result is inferred from its coefficients, not from the child.
+	 */
+	public record SubstProject(Node child, int axis, int index) implements Node {}
+
+	private static final char[] AXIS_LETTERS = { 'n', 'm', 'p' };
+
+	/**
 	 * τ-theorem-style disjoint-MM-sum decomposition (Pan 1980 / Schönhage
 	 * 1981; DIS09 §3; Schwartz-Zwecher 2025). The target matmul is
 	 * computed as a sum of smaller matmul sub-tensors, optionally with
@@ -447,6 +461,11 @@ public final class Lineage {
 				sb.append(", keepM=").append(java.util.Arrays.toString(pr.keepM));
 				sb.append(", keepP=").append(java.util.Arrays.toString(pr.keepP)).append(")");
 			}
+			case SubstProject sp -> {
+				sb.append("SubstProject(");
+				renderPretty(sp.child, sb);
+				sb.append(", axis=").append(AXIS_LETTERS[sp.axis]).append(", index=").append(sp.index).append(")");
+			}
 		}
 	}
 
@@ -611,6 +630,11 @@ public final class Lineage {
 							.append(joinInts(pr.keepP)).append("]");
 				}
 			}
+			case SubstProject sp -> {
+				renderCompact(sp.child, sb);
+				// ⊖[m17]: substitution-drop of index 17 on the m axis (vs ∖[…] = coordinate drop).
+				sb.append(" ⊖[").append(AXIS_LETTERS[sp.axis]).append(sp.index).append("]");
+			}
 		}
 	}
 
@@ -658,6 +682,13 @@ public final class Lineage {
 			}
 			case Project p -> {
 				return new int[] { p.keepN.length, p.keepM.length, p.keepP.length };
+			}
+			case SubstProject sp -> {
+				int[] c = shapeOfNode(sp.child);
+				if (c == null) return null;
+				int[] s = c.clone();
+				s[sp.axis]--;
+				return s;
 			}
 			case RecombinationN r -> {
 				return new int[] { sumOf(r.allocA()), sumOf(r.allocB()), sumOf(r.allocC()) };
@@ -909,6 +940,14 @@ public final class Lineage {
 				renderJson(pr.child, sb, seen, sameIds, nextId);
 				sb.append("}");
 			}
+			case SubstProject sp -> {
+				sb.append("{\"op\":\"SubstProject\"").append(idBinding)
+						.append(",\"axis\":").append(sp.axis)
+						.append(",\"index\":").append(sp.index)
+						.append(",\"child\":");
+				renderJson(sp.child, sb, seen, sameIds, nextId);
+				sb.append("}");
+			}
 		}
 	}
 
@@ -950,6 +989,7 @@ public final class Lineage {
 			case DisjointSum ds -> { for (Node c : ds.children) walk(c, counts); }
 			case SerendipitousProduct sp -> walk(sp.base, counts);
 			case Project pr -> walk(pr.child, counts);
+			case SubstProject sp -> walk(sp.child, counts);
 		}
 	}
 
@@ -1063,6 +1103,7 @@ public final class Lineage {
 			case DisjointSum ds -> List.copyOf(ds.children());
 			case SerendipitousProduct sp -> List.of(sp.base());
 			case Project pr -> List.of(pr.child());
+			case SubstProject sp -> List.of(sp.child());
 			case PeeledViaTa t -> List.of(t.cube(), t.corner());
 		};
 	}

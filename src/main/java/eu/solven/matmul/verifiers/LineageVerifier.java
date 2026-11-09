@@ -127,6 +127,7 @@ public final class LineageVerifier {
 			case Lineage.AxisPermute ap -> verifyNode(ap.child());
 			case Lineage.Dce d -> verifyNode(d.child());
 			case Lineage.Project pr -> verifyNode(pr.child());
+			case Lineage.SubstProject sp -> verifyNode(sp.child());
 			case Lineage.OrientAs o -> verifyNode(o.child());
 			case Lineage.AugmentSquareDiscard ag -> verifyNode(ag.square());
 			// Recombination tiles the base over a (padded) grid — base correct ⟹ result correct.
