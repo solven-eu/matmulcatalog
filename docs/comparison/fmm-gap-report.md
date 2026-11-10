@@ -3,14 +3,14 @@
 Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC ranks) vs our on-disk best (`FieldAwareLookup("R").findRank`). Non-trivial formats only.
 
 - formats compared (we have a scheme): 5426
-- **FMM strictly better than us: 57** (import/derive targets)
-- we tie or beat FMM: 5369
+- **FMM strictly better than us: 71** (import/derive targets)
+- we tie or beat FMM: 5355
 - FMM has it, we have NOTHING: 0
 - SKIPPED synthesized/unverified FMM bounds (empty page / HK-formula): 0
 
-### split of the 57 FMM-better gaps by FMM provenance
+### split of the 71 FMM-better gaps by FMM provenance
 - with a published REFERENCE (real import/cite targets): **0**
-- NO reference = FMM-derived composition (re-derivable by us): **57**
+- NO reference = FMM-derived composition (re-derivable by us): **71**
 
 ## (A) FMM-better WITH a reference — published results to import (sorted by gap)
 
@@ -25,6 +25,7 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨17,17,26⟩ | 4297 | 4323 | 26 |
 | ⟨16,20,28⟩ | 4936 | 4960 | 24 |
 | ⟨6,21,23⟩ | 1779 | 1800 | 21 |
+| ⟨6,21,29⟩ | 2179 | 2200 | 21 |
 | ⟨9,21,23⟩ | 2499 | 2520 | 21 |
 | ⟨11,18,21⟩ | 2499 | 2520 | 21 |
 | ⟨15,21,23⟩ | 4139 | 4160 | 21 |
@@ -32,11 +33,17 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨21,23,30⟩ | 7894 | 7915 | 21 |
 | ⟨21,23,31⟩ | 8102 | 8123 | 21 |
 | ⟨22,30,30⟩ | 10534 | 10555 | 21 |
+| ⟨23,29,30⟩ | 10721 | 10742 | 21 |
+| ⟨6,18,29⟩ | 1862 | 1880 | 18 |
 | ⟨16,20,29⟩ | 5256 | 5272 | 16 |
 | ⟨15,17,21⟩ | 3145 | 3160 | 15 |
 | ⟨12,17,18⟩ | 2148 | 2160 | 12 |
 | ⟨12,17,21⟩ | 2508 | 2520 | 12 |
+| ⟨6,23,29⟩ | 2450 | 2460 | 10 |
+| ⟨6,24,29⟩ | 2496 | 2506 | 10 |
 | ⟨21,23,27⟩ | 7174 | 7184 | 10 |
+| ⟨24,29,30⟩ | 10824 | 10834 | 10 |
+| ⟨6,26,29⟩ | 2767 | 2776 | 9 |
 | ⟨9,17,18⟩ | 1591 | 1600 | 9 |
 | ⟨9,17,19⟩ | 1744 | 1753 | 9 |
 | ⟨9,17,20⟩ | 1829 | 1838 | 9 |
@@ -58,17 +65,24 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨22,23,31⟩ | 8331 | 8340 | 9 |
 | ⟨23,23,32⟩ | 8830 | 8839 | 9 |
 | ⟨20,24,25⟩ | 6466 | 6474 | 8 |
+| ⟨26,29,32⟩ | 12318 | 12326 | 8 |
 | ⟨6,15,23⟩ | 1265 | 1272 | 7 |
 | ⟨15,17,18⟩ | 2705 | 2712 | 7 |
+| ⟨15,23,24⟩ | 4705 | 4712 | 7 |
 | ⟨8,27,30⟩ | 3744 | 3750 | 6 |
 | ⟨9,23,29⟩ | 3551 | 3557 | 6 |
+| ⟨6,22,29⟩ | 2353 | 2358 | 5 |
+| ⟨6,29,32⟩ | 3376 | 3381 | 5 |
+| ⟨22,28,29⟩ | 9654 | 9659 | 5 |
 | ⟨13,14,14⟩ | 1579 | 1582 | 3 |
 | ⟨14,14,27⟩ | 3172 | 3175 | 3 |
 | ⟨15,16,16⟩ | 2220 | 2223 | 3 |
 | ⟨16,16,31⟩ | 4456 | 4459 | 3 |
+| ⟨6,29,30⟩ | 3126 | 3128 | 2 |
 | ⟨7,9,25⟩ | 1020 | 1022 | 2 |
 | ⟨12,23,24⟩ | 3788 | 3790 | 2 |
 | ⟨14,14,25⟩ | 2960 | 2962 | 2 |
+| ⟨6,19,29⟩ | 2036 | 2037 | 1 |
 | ⟨7,7,17⟩ | 572 | 573 | 1 |
 | ⟨7,8,17⟩ | 635 | 636 | 1 |
 | ⟨7,9,19⟩ | 779 | 780 | 1 |
