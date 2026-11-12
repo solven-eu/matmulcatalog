@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.util.Random;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
@@ -67,8 +68,11 @@ public class TestVectorProjection {
 	 * FMM's own June-2026 ⟨9,18,18⟩ artifact has direction margin 0 on every axis too, so
 	 * {@code ProjOfAlongMode} saves its 9 by something beyond killing common-direction rank-1
 	 * products; see research/DISCOVERIES_PENDING_ANALYSIS.md 2026-11-09.)
+	 * Tagged {@code slow}: one exact check of a rank-1600 9x18x18 (~3 min on CI); run with
+	 * {@code -Pslow-tests}.
 	 */
 	@Test
+	@Tag("slow")
 	public void rebased_kronecker_square_is_still_the_exact_product() throws Exception {
 		NonCubicBilinearAlgorithm r = VectorProjection.rebaseAll(SchemeIO.readBilinear(SMIRNOV_336));
 		NonCubicBilinearAlgorithm k = Compose.kroneckerGeneral(r, r.orientAs(3, 6, 3).orElseThrow());

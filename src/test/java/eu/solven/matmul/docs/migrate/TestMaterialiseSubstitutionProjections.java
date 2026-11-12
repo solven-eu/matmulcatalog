@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.catalog.FieldAwareLookup;
@@ -17,7 +18,12 @@ import eu.solven.matmul.verifiers.Verifier;
  * CLAUDE.md): the FMM {@code ProjOfAlongMode} rows of issue #23 must stay reachable from the
  * parents on disk, whatever the representative those parents are stored as. A regression here
  * means a parent stopped replaying or the drop stopped killing its guaranteed products.
+ *
+ * <p>Tagged {@code catalog-iterating}: it builds the full Q lookup + default pool and verifies
+ * rank-~1580 schemes exactly (~13 min on CI, 2026-11-09 -- it alone blew the 30-min PR budget),
+ * so it runs in the post-merge catalog job, not on every PR.</p>
  */
+@Tag("catalog-iterating")
 public class TestMaterialiseSubstitutionProjections {
 
 	private static final FieldAwareLookup LOOKUP = new FieldAwareLookup("Q");

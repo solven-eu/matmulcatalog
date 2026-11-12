@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
@@ -48,8 +49,11 @@ public class TestSubstitutionProjection {
 	/**
 	 * The issue-#23 family, from the product we already held (coordinate projection: 0 saved on
 	 * every axis). FMM's order m-then-p gives 1591 then 1574; p-then-m gives 1573. SOTA-or-better.
+	 * Tagged {@code slow}: three exact checks of rank-~1590 9x17x18 / 9x17x17 schemes (~5 min on CI);
+	 * run with {@code -Pslow-tests}.
 	 */
 	@Test
+	@Tag("slow")
 	public void kronecker_9x18x18_projects_to_fmm_ranks_or_better() throws Exception {
 		NonCubicBilinearAlgorithm a = SchemeIO.readBilinear(SMIRNOV_336);
 		NonCubicBilinearAlgorithm k = Compose.kroneckerGeneral(a, a.orientAs(3, 6, 3).orElseThrow());
