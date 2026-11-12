@@ -4,6 +4,18 @@ name: Scan upstream sources
 # status.json, …) for ranks that strictly beat what we have on disk.
 # Writes generated/UPSTREAM_SCAN.md and opens a tracking issue if any new gap appears.
 #
+# This job DETECTS only. The closure that would close a gap (RESYNC_PLAYBOOK step 4:
+# projection scatter + recombination sweeps + stub restamp) is CPU-heavy, writes scheme
+# files and needs a human read of what it produced, so it is never run here. The hand-off
+# is the machine-readable gap list written next to the report —
+# generated/upstream-gaps.json (every row, merged across sources, classified from FMM's
+# recipe cell: closure-candidate / base-candidate / upstream-unverified / …) and
+# generated/upstream-gaps.txt (the actionable Q-axis shapes, leading token NxMxP, read
+# unchanged by `SchemeSweep --shape-file` and `ProjectFmmGaps --shapes-file`). Both are
+# uploaded with the run's artifact and the issue says how to run the closure locally.
+# Issue #23 (2026-11-09, 44 FMM rows re-priced by ProjOfAlongMode) is the case that made
+# this explicit: the gaps were detected on time and nothing was ever going to close them.
+#
 # Manual: `gh workflow run scan-upstream-sources.yml`
 on:
   schedule:
@@ -44,17 +56,22 @@ jobs:
           # on 2026-10-26 and 2026-11-02 the scan crashed (digest download kept an old tail)
           # and the `if: always()` steps below posted the stale committed report, so issue #16
           # received "4151 strict gaps" from a file written on 2026-09-30.
-          rm -f generated/UPSTREAM_SCAN.md
+          rm -f generated/UPSTREAM_SCAN.md generated/upstream-gaps.json generated/upstream-gaps.txt
           mvn -B -ntp -q exec:java \
             -Dexec.mainClass=eu.solven.matmul.docs.explore.ScanUpstreamSources \
-            -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md"
+            -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md --gaps-out generated/upstream-gaps.json --shapes-out generated/upstream-gaps.txt"
           echo "report_path=generated/UPSTREAM_SCAN.md" >> "$GITHUB_OUTPUT"
 
-      - name: Upload report artifact
+      # The report plus the closure input (gap list JSON + shape file). Download with
+      # `gh run download <run_id> -n upstream-scan-<run_id> -D target/upstream-scan`.
+      - name: Upload report + gap list artifact
         uses: actions/upload-artifact@v5
         with:
           name: upstream-scan-${{ github.run_id }}
-          path: generated/UPSTREAM_SCAN.md
+          path: |
+            generated/UPSTREAM_SCAN.md
+            generated/upstream-gaps.json
+            generated/upstream-gaps.txt
           retention-days: 90
 
       - name: Surface report in workflow summary
@@ -76,6 +93,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_ID: ${{ github.run_id }}
         run: |
           total=$(grep -oE 'Strict gaps[^:]*: \*\*[0-9]+\*\*' generated/UPSTREAM_SCAN.md \
                   | grep -oE '[0-9]+' | paste -sd+ - | bc || echo 0)
@@ -83,9 +101,31 @@ jobs:
           if [ "${total:-0}" -eq 0 ]; then
             echo "no strict gaps — nothing to file"; exit 0
           fi
-          body=$(printf '%s\n\n%s\n\n%s\n' \
+          # The closure is never run here (see the header); tell the reader exactly how to
+          # run it from this run's gap list, and what kind of work each row calls for.
+          kinds=$(awk '!/^#/ && NF>=5 {c[$5]++} END {for (k in c) printf "%s %d, ", k, c[k]}' generated/upstream-gaps.txt | sed 's/, $//')
+          closure=$(printf '%s\n' \
+            "### Closing these gaps (not done in CI)" \
+            "" \
+            "This job only detects. The machine-readable gap list is in this run's artifact \`upstream-scan-${RUN_ID}\` (\`upstream-gaps.json\`: every row, merged across sources, classified from FMM's recipe cell; \`upstream-gaps.txt\`: the actionable Q-axis shapes — ${kinds:-no actionable row}). A human/agent runs the closure locally (CPU-heavy, writes schemes — \`research/RESYNC_PLAYBOOK.md\` step 4), then opens a PR:" \
+            "" \
+            '```bash' \
+            "gh run download ${RUN_ID} -n upstream-scan-${RUN_ID} -D target/upstream-scan" \
+            "mvn -q -ntp compile" \
+            "G=target/upstream-scan/upstream-gaps.txt" \
+            "mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.explore.ProjectFmmGaps -Dexec.args=\"--shapes-file=\$G --passes=2\"" \
+            "mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.SchemeSweep -Dexec.args=\"--mode=materialize --field=Q --config=simple --strategies=concat,kron,recomb --shape-file=\$G --threads=8\"" \
+            "mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.SchemeSweep -Dexec.args=\"--mode=materialize --field=Q --strategies=recomb --shape-file=\$G --threads=8\"" \
+            "mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.MaterialiseSubstitutionProjections -Dexec.args=\"--shapes-file=\$G --execute\"   # FMM ProjOfAlongMode rows" \
+            "mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.SchemeSweep -Dexec.args=\"--mode=materialize --field=Q --config=simple --strategies=concat,kron,recomb --shape-file=\$G --threads=8\"   # block sums on the new parents" \
+            "mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.RestampStubRanks -Dexec.args=\"--direction=all --execute\"" \
+            '```' \
+            "" \
+            "A \`base-candidate\` row (FMM cites an explicit scheme we lack) is not closed by sweeping — import it as a reaction base (fmm-gap skill §3). An \`upstream-unverified\` row is report-to-FMM material and is left out of the shape file.")
+          body=$(printf '%s\n\n%s\n\n%s\n\n%s\n' \
             "Weekly upstream scan found **${total}** strict gap(s) (an upstream rank strictly below ours). Report: ${RUN_URL}" \
-            '```' "$(head -c 60000 generated/UPSTREAM_SCAN.md)")
+            "$closure" \
+            '```' "$(head -c 55000 generated/UPSTREAM_SCAN.md)")
           existing=$(gh issue list --label upstream-gap --state open --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"

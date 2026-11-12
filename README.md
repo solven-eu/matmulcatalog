@@ -230,6 +230,38 @@ python3 tools/import_alphatensor.py
 mvn -q exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.ImportPerminovSchemes -Dexec.args="--max-dim=16"
 ```
 
+## Contributors
+
+The catalog is maintained by Benoit Chatain Lacelle ([@blacelle](https://github.com/blacelle),
+solven-eu). The people below contributed schemes, fixes or reports through this repository's
+issues and pull requests. Every imported scheme carries its `source`, `attribution_for_rank`
+and `discovery` verdict in its JSON; the per-contribution records live under
+[`references/contributions/`](references/contributions/) and the citations in
+[REFERENCES.md](REFERENCES.md) (entries 88–92).
+
+| Who | Contribution | Where |
+| --- | --- | --- |
+| Marcos Adriano ([@marcosadriano27](https://github.com/marcosadriano27)) | Six ℤ⟨2,p,n⟩ schemes at the exact Hopcroft–Kerr formula (task #9, `g ≥ 6`); 22 explicit schemes at FMM-Lille table ranks (the table's own recipes, executed — re-derived here, 13 of them beaten, and ⟨2,4,4⟩=26 registered as a recombination base) | issues [#7](https://github.com/solven-eu/matmulcatalog/issues/7), [#8](https://github.com/solven-eu/matmulcatalog/issues/8); PRs #9, #10; REFERENCES [88], [89] |
+| [@sigkillme0](https://github.com/sigkillme0) | Corrected the commutative ⟨2,2,2⟩ entry: rank 6 had been recorded citing Hopcroft–Kerr and Winograd 1971, which prove 7 minimal even with commutativity; replaced by the tight rank-7 result with a regression test — the finding behind the lower-bound cross-check (`TestBoundsVsLowerBounds`) | PR [#5](https://github.com/solven-eu/matmulcatalog/pull/5) |
+| Cloudroom Math Campaign ([@matyasstoch](https://github.com/matyasstoch)) | 27 explicit schemes below the catalog's ranks (⟨4,6,15⟩:261, ⟨9,11,11⟩:710, 25 shapes in the 17–32 band); audited `discovery: true`; the Apache-2.0 repository is pulled by the 3-hourly sync | issue [#12](https://github.com/solven-eu/matmulcatalog/issues/12); PR #13; `UpstreamSchemeRepos.CLOUDROOM`; REFERENCES [91] |
+| mizopl / we\*star ([@mizopl](https://github.com/mizopl)) | 11 ternary-integer (ZT) rank schemes below the catalog's ZT ranks and 48 addition-reduced straight-line programs — the contribution that made additions a first-class axis; the MIT repository is pulled by the sync | issue [#20](https://github.com/solven-eu/matmulcatalog/issues/20); PR #21; `UpstreamSchemeRepos.MIZOPL`; REFERENCES [92] |
+| Merlijn S. Witteveen ([@MerlijnW70](https://github.com/MerlijnW70)) | Explicit ZT schemes ≤ 16 (26 schemes, three any-ring records incl. ⟨11,13,15⟩ and ⟨11,14,14⟩), CC BY 4.0, pulled by the sync from the origin repository | `UpstreamSchemeRepos.WITTEVEEN`; REFERENCES [90] |
+
+Upstream catalogs the sync mirrors — Alexandre Sedoglavic's FMM-Lille index and
+`fmm_digest`, Andrey Perminov's `FastMatrixMultiplication`, the KGP LITA cubes
+(`khoruzhii/lita`), AlphaTensor and AlphaEvolve — are sources rather than contributors;
+their attribution rules are in [CLAUDE.md](CLAUDE.md) ("Distinguish discoveries from
+re-discoveries") and the full source table in
+[research/RESYNC_PLAYBOOK.md](research/RESYNC_PLAYBOOK.md). The weekly upstream scan files its
+own reports (issues #16, #23) under the `upstream-gap` label.
+
+**Contributing a scheme.** Open an issue with the factor matrices (any of the formats
+`io.*` reads: our JSON, Perminov's, FMM's Maple, `.npz`) and the field they are exact over.
+They go through `ImportContributedSchemes --meta=references/contributions/<x>.meta.json`
+(exact proof, random spot check, mod-2 / mod-3 reduction, disk round-trip) and are stamped
+`discovery: "TBD"` until a human audits them against the source's own table
+(`RestampContributedProvenance`).
+
 ## Status
 
 - **2,353 verified scheme files** spanning sections 2 → 16.

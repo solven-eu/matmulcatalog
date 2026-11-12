@@ -83,3 +83,6 @@ __pycache__/
 # Written by ScanUpstreamSources on every run (CI uploads it as an artifact); a committed copy
 # was re-posted as a live report when the scan crashed (issue #16, 2026-10-26).
 generated/UPSTREAM_SCAN.md
+# The closure hand-off written next to the report (same lifecycle: per run, uploaded as the artifact).
+generated/upstream-gaps.json
+generated/upstream-gaps.txt

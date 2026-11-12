@@ -39,6 +39,7 @@ public final class BaseUsageStats {
 			case Lineage.RecombinationTaN x -> "recombination";
 			case Lineage.RecombinationWithPairN x -> "recombination";
 			case Lineage.Project x -> "projection";
+			case Lineage.SubstProject x -> "projection";
 			case Lineage.KronProduct x -> "kronecker";
 			case Lineage.KronChain x -> "kronecker";
 			case Lineage.ConcatCols x -> "concat";

@@ -1,0 +1,32 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(9x21x23, ⟨21,23,9⟩), OrientAs(21x22x23, ⟨21,23,22⟩))",
+  "lineage_compact": "9x21x23→⟨21,23,9⟩ +p 21x22x23→⟨21,23,22⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 21,
+      "m": 23,
+      "p": 9,
+      "axisMap": "mpn",
+      "child": {"op": "Atom", "ref": "9x21x23@cd49e1d90d69f6e87b4aa0c6d0afe28346aa7edff7f81c0cc1987b3687f6ecac"}
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 21,
+      "m": 23,
+      "p": 22,
+      "axisMap": "npm",
+      "child": {"op": "Atom", "ref": "21x22x23@219bcdb9500d323e8723505d3ca3888ed9c2bd2402a63dfb74239e89c95948ab"}
+    }
+  },
+  "n": [21, 23, 31],
+  "m": 8102,
+  "hash": "62ec5e7adcf367a378de736327d4413d731bb388146fa270654fcce3d4e0142d",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

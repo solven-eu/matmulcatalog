@@ -471,6 +471,10 @@ public final class FieldAwareLookup implements Recombination.AlgorithmLookup {
 			case Lineage.DisjointSum ds -> { for (Lineage.Node c : ds.children()) collectLeafFields(c, out); }
 			case Lineage.SerendipitousProduct sp -> { collectLeafFields(sp.base(), out); out.add(shapeFields(sp.n2(), sp.m2(), sp.p2())); }
 			case Lineage.Project pr -> collectLeafFields(pr.child(), out);
+			// Substitution projection solves an m×m linear system: rational coefficients in
+			// general, so the lineage can only vouch for characteristic 0. The writer stamps the
+			// precise set from the built coefficients (ImportContributedSchemes.gate).
+			case Lineage.SubstProject sp -> { collectLeafFields(sp.child(), out); out.add(List.of("Q", "R", "C")); }
 			// PeeledViaTa: field-relevant leaves are the cube + corner (TA part is integer ±1).
 			case Lineage.PeeledViaTa t -> { collectLeafFields(t.cube(), out); collectLeafFields(t.corner(), out); }
 		}
@@ -629,6 +633,9 @@ public final class FieldAwareLookup implements Recombination.AlgorithmLookup {
 					classifyLeaf(sp.n2() + "x" + sp.m2() + "x" + sp.p2(), unknown, visited));
 			// Projection: restricting indices + DCE preserves the field of the parent.
 			case Lineage.Project pr -> inferFieldRecursive(pr.child(), unknown, visited);
+			// Substitution projection: the solved substitution is rational in general → at least Q.
+			case Lineage.SubstProject sp -> combine(inferFieldRecursive(sp.child(), unknown, visited),
+					Optional.of(eu.solven.matmul.algebra.Field.fromTag("Q")));
 			// PeeledViaTa: the TA cross-fusion is integer (±1) so doesn't narrow; the
 			// field is the composition of the diag (cube) and corner.
 			case Lineage.PeeledViaTa t -> combine(

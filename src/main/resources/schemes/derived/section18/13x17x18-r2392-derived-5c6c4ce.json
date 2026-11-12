@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatRows(4x17x18, 9x17x18)",
+  "lineage_compact": "4x17x18 +n 9x17x18",
+  "lineage": {
+    "op": "ConcatRows",
+    "top": {"op": "Atom", "ref": "4x17x18@687a25ca509981e4aff35358337e6fe278b573652619d33164b118541699aa7e"},
+    "bottom": {"op": "Atom", "ref": "9x17x18@55da98129abd3855b6c3537590722aeee48c7d0844395116c37881130d358abd"}
+  },
+  "n": [13, 17, 18],
+  "m": 2392,
+  "hash": "5c6c4ce3b8171e3a7d69bb23cbd3a2e55b907bb70c5d35c99fddb9c9407b6894",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

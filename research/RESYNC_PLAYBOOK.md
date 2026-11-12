@@ -4,10 +4,16 @@ The catalog tracks six upstream sources. "Resync" means: refresh what they
 publish, import every scheme we lack through the exact gates, close what is still
 above them with our own operators, regenerate the committed artifacts, and read the
 comparison reports until nothing upstream is below us (or the residue is audited).
-The 3-hourly CI job (`sync-reference-catalogs.yml`) runs steps 1–5 on its own; the
-weekly scan (`scan-upstream-sources.yml`) runs step 8 and opens an `upstream-gap`
-issue when a strict gap exists. A manual resync (PR #11 of 2026-09-30/10-12, this
-one of 2026-10-13) is the same sequence plus the closure step.
+The 3-hourly CI job (`sync-reference-catalogs.yml`) runs steps 1, 2 and the manifest
+half of 5 on its own; the daily `regenerate-catalog.yml` runs 3 and 5; the weekly scan
+(`scan-upstream-sources.yml`) runs step 8, opens an `upstream-gap` issue when a strict
+gap exists and uploads the **closure input** (`upstream-gaps.json` + `upstream-gaps.txt`,
+see step 8) with the run's artifact. **Step 4 — the closure — runs in no CI job**: it is
+CPU-heavy, writes scheme files and needs a human read of what it produced. A gap the scan
+detects therefore stays open until someone runs step 4 from the gap list (issue #23,
+2026-11-09: 44 FMM rows re-priced upstream by `ProjOfAlongMode`, detected on time,
+closed by nothing). A manual resync (PR #11 of 2026-09-30/10-12, this one of 2026-10-13)
+is the same sequence plus the closure step.
 
 ## The sources
 
@@ -46,7 +52,25 @@ $M eu.solven.matmul.docs.verify.CompareReferenceCatalogs          # references/r
 #    (Perminov's 17–32 band: ProbeFindRank over the 971 formats of perminov-serendipitous-17-32.json)
 
 # 4. close the WORSE rows with our operators (loop until no progress)
-$M eu.solven.matmul.docs.explore.ProjectFmmGaps -Dexec.args="--passes=2"      # projection scatter
+#    Input: the shape list the weekly scan uploaded (download it, or write it locally with step 8's
+#    --shapes-out). Leading token NxMxP, then ours / upstream / gap / kind / sources — the kind
+#    (from FMM's recipe cell) says what the row needs: closure-candidate:{projection,kron,block-sum,
+#    serendipitous} → the operators below; base-candidate → import a reaction base (fmm-gap §3),
+#    sweeping cannot reach it; upstream-unverified rows are not in the file.
+gh run download <run_id> -n upstream-scan-<run_id> -D target/upstream-scan
+cp target/upstream-scan/upstream-gaps.txt target/fmm-worse.txt
+$M eu.solven.matmul.docs.explore.ProjectFmmGaps -Dexec.args="--shapes-file=target/fmm-worse.txt --passes=2"   # coordinate projection scatter
+#    an FMM row that reads `ProjOfAlongMode(⟨parent⟩, mode)` is NOT a coordinate projection: it is Lemma 1 of
+#    fmm.univ-lille.fr/projalongmode.html — drop one index of p / m / n by SUBSTITUTING the slice's variables,
+#    which kills m / n / p products from ANY representative (the coordinate scatter above saw 0 on every axis
+#    of the Kronecker stubs behind issue #23: ⟨9,18,18⟩:1600 → ⟨9,17,18⟩:1591 → ⟨9,17,17⟩:1574 upstream).
+#    `catalog.SubstitutionProjection` + the `SubstProject` lineage node implement it; this driver replays it over
+#    every one-larger parent on disk, in every axis order (p-then-m gives ⟨9,17,17⟩=1570, below FMM's 1574):
+$M eu.solven.matmul.docs.migrate.MaterialiseSubstitutionProjections -Dexec.args="--shapes-file=target/fmm-worse.txt --execute"
+#    then the concat/kron tier below, so block-sum rows (⟨9,17,k⟩ = ⟨9,17,18⟩ + ⟨9,17,k−18⟩, ⟨17,17,26⟩ = ⟨9,17,17⟩ +
+#    ⟨17,17,17⟩) follow from the new parents; iterate the pair once more. Coordinate margins still add on top
+#    where a factor REPRESENTATIVE carries a common rank-1 direction — rebased factors as margin bases:
+$M eu.solven.matmul.docs.migrate.MaterialiseVectorProjections -Dexec.args="--shapes-file=target/fmm-worse.txt --execute"
 $M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=simple \
      --strategies=concat,kron,recomb --shape-file=target/fmm-worse.txt --threads=4"
 #    `simple` is the cubic root pool (six cubic bases, no ⟨2,3,3⟩ / ⟨2,4,4⟩): its fixpoint says nothing
@@ -88,8 +112,9 @@ $M eu.solven.matmul.docs.migrate.RestampContributedProvenance -Dexec.args="--met
 # 7. guards, then commit everything the steps wrote (schemes, external/, digests, docs/*.json, reports)
 mvn -q test -Dtest='TestSweepSpotsSota,TestFmmArtifactAudit,TestScanUpstreamSources'
 
-# 8. the alert view (what the weekly job sees)
-$M eu.solven.matmul.docs.explore.ScanUpstreamSources -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md"
+# 8. the alert view (what the weekly job sees) + the closure input it hands over (step 4's shape file)
+$M eu.solven.matmul.docs.explore.ScanUpstreamSources -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md \
+     --gaps-out generated/upstream-gaps.json --shapes-out generated/upstream-gaps.txt"
 ```
 
 "Done" = `FmmCrossCheck` WORSE 0, every UNVERIFIED row audited at its current index

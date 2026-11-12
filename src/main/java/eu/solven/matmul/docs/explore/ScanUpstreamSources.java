@@ -9,11 +9,14 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -24,6 +27,8 @@ import eu.solven.matmul.Shape;
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Scan upstream catalogs for ranks that beat what we have on disk — Java port of
@@ -47,13 +52,22 @@ import tools.jackson.databind.json.JsonMapper;
  *       {@code references/catalogs/fmm-lille-catalog.json} (no URL refresh; updated manually).</li>
  * </ul>
  *
- * <p>Output: a Markdown report listing per-source "we should investigate" rows.
+ * <p>Output: a Markdown report listing per-source "we should investigate" rows, and —
+ * with {@code --gaps-out} / {@code --shapes-out} — the machine-readable hand-off to the
+ * closure: one JSON row per (axis, shape) merging every source that beats us, classified
+ * from FMM's recipe cell ({@link #classifyKind}: closure candidate vs base candidate vs
+ * upstream-unverified), and a plain shape list whose leading token is what
+ * {@code SchemeSweep --shape-file} and {@code ProjectFmmGaps --shapes-file} read. The scan
+ * only <em>detects</em>: nothing in CI runs the closure (RESYNC_PLAYBOOK step 4 — CPU-heavy,
+ * writes schemes), so issue #23's 44 FMM rows sat open until a human ran it; the files make
+ * that hand-off a download plus two commands.
  * Non-destructive — writes no scheme files. Intended for periodic CI execution.</p>
  *
  * <pre>
  *   mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.explore.ScanUpstreamSources
  *   mvn -q -ntp exec:java -Dexec.mainClass=eu.solven.matmul.docs.explore.ScanUpstreamSources \
- *       -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md"
+ *       -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md \
+ *                    --gaps-out generated/upstream-gaps.json --shapes-out generated/upstream-gaps.txt"
  * </pre>
  */
 @Slf4j
@@ -81,15 +95,15 @@ public final class ScanUpstreamSources {
 	private ScanUpstreamSources() {}
 
 	/** A shape where an upstream beats (or only-has) what we hold. */
-	private record Gap(int gap, CanonicalShape shape, int ours, int theirs) {}
+	record Gap(int gap, CanonicalShape shape, int ours, int theirs) {}
 
-	private record Missing(CanonicalShape shape, int theirs) {}
+	record Missing(CanonicalShape shape, int theirs) {}
 
 	/** {@code unverified}: FMM rows whose index rank is not backed by FMM's own artifact
 	 *  (manual audit, {@link eu.solven.matmul.docs.verify.FmmArtifactAudit}) — reported,
 	 *  never counted as a strict gap. Empty for the other sources. {@code zGaps} /
 	 *  {@code ztGaps}: the integer and ternary-integer axes (Perminov-layout sources only). */
-	private record SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter, List<Gap> unverified,
+	record SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter, List<Gap> unverified,
 			List<Gap> zGaps, List<Gap> ztGaps) {
 		SourceScan(List<Gap> gaps, List<Missing> missing, List<Gap> weBetter) {
 			this(gaps, missing, weBetter, List.of(), List.of(), List.of());
@@ -107,6 +121,8 @@ public final class ScanUpstreamSources {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		boolean refresh = false;
 		Path out = DEFAULT_OUT;
+		Path gapsOut = null;
+		Path shapesOut = null;
 		for (int i = 0; i < args.length; i++) {
 			String a = args[i];
 			if (a.equals("--refresh")) {
@@ -115,6 +131,14 @@ public final class ScanUpstreamSources {
 				out = Path.of(args[++i]);
 			} else if (a.startsWith("--out=")) {
 				out = Path.of(a.substring("--out=".length()));
+			} else if (a.equals("--gaps-out")) {
+				gapsOut = Path.of(args[++i]);
+			} else if (a.startsWith("--gaps-out=")) {
+				gapsOut = Path.of(a.substring("--gaps-out=".length()));
+			} else if (a.equals("--shapes-out")) {
+				shapesOut = Path.of(args[++i]);
+			} else if (a.startsWith("--shapes-out=")) {
+				shapesOut = Path.of(a.substring("--shapes-out=".length()));
 			} else {
 				throw new IllegalArgumentException("unknown arg: " + a);
 			}
@@ -133,13 +157,28 @@ public final class ScanUpstreamSources {
 		SourceScan mizopl = scanPerminovLayout(MIZOPL_LOCAL, local);
 		SourceScan fmm = scanFmmLille(local.q());
 
-		String md = reportMd(sed, perm, fmm, mizopl);
+		// The closure hand-off: every row, merged across sources and classified from FMM's recipe.
+		Map<CanonicalShape, FmmMeta> meta = Files.exists(FMM_LILLE_LOCAL) ? fmmMeta(readJson(FMM_LILLE_LOCAL))
+				: Map.of();
+		List<GapRow> rows = mergeGaps(sed, perm, fmm, mizopl, meta);
+		if (gapsOut != null) {
+			writeText(gapsOut, gapFileJson(rows, Instant.now()));
+		}
+		if (shapesOut != null) {
+			writeText(shapesOut, shapeList(rows));
+		}
+
+		String md = reportMd(sed, perm, fmm, mizopl, rows, gapsOut, shapesOut);
+		writeText(out, md);
+		System.out.println(md);
+	}
+
+	private static void writeText(Path out, String text) throws IOException {
 		if (out.getParent() != null) {
 			Files.createDirectories(out.getParent());
 		}
-		Files.writeString(out, md);
+		Files.writeString(out, text);
 		log.info("Wrote {}", out);
-		System.out.println(md);
 	}
 
 	/** Download {@code url} to {@code dst} when forced, missing, or suspiciously
@@ -424,17 +463,278 @@ public final class ScanUpstreamSources {
 		}
 	}
 
+	// ---- the machine-readable gap file (closure input) -------------------------------
+
+	/** FMM's own account of a format — the index row's recipe cell ({@code ProjOfAlongMode(⟨9×17×18:1591⟩,2)},
+	 *  a block sum, a Kronecker product) or a citation when the row is an imported explicit scheme —
+	 *  plus its biblio keys. Read from the committed digest ({@code SyncReferenceCatalogs --fmm}). */
+	record FmmMeta(String description, List<String> references) {}
+
+	static Map<CanonicalShape, FmmMeta> fmmMeta(JsonNode fmmDigest) {
+		Map<CanonicalShape, FmmMeta> out = new LinkedHashMap<>();
+		for (JsonNode e : fmmDigest.path("entries")) {
+			JsonNode fmt = e.get("format");
+			if (fmt == null || !fmt.isArray() || fmt.size() != 3) {
+				continue;
+			}
+			CanonicalShape sh = Shape.of(fmt.get(0).asInt(), fmt.get(1).asInt(), fmt.get(2).asInt()).canonical();
+			JsonNode d = e.get("description");
+			String desc = d == null || d.isNull() ? null : d.asText();
+			List<String> refs = new ArrayList<>();
+			for (JsonNode r : e.path("references")) {
+				refs.add(r.asText());
+			}
+			out.put(sh, new FmmMeta(desc, refs));
+		}
+		return out;
+	}
+
+	static final String KIND_CLOSURE = "closure-candidate";
+	static final String KIND_BASE = "base-candidate";
+	static final String KIND_UNVERIFIED = "upstream-unverified";
+	static final String KIND_MISSING = "missing";
+	static final String KIND_AXIS = "coefficient-class";
+	static final String KIND_UNCLASSIFIED = "unclassified";
+
+	/**
+	 * What kind of work a Q-axis gap row calls for, read off FMM's recipe cell. A recipe over
+	 * other formats ({@code ⟨…⟩} tokens: a projection, a Kronecker product, a block sum, a
+	 * serendipitous product) is a <b>closure candidate</b>: FMM reached the rank with operators
+	 * we also run (RESYNC_PLAYBOOK step 4) from ingredients we hold or derive — the 2026-11
+	 * wave (61 formats re-priced by {@code ProjOfAlongMode}, issue #23) was entirely this kind,
+	 * and ours sat at exactly the unprojected parents. A citation (no format token) is a
+	 * <b>base candidate</b>: FMM holds an explicit scheme we lack, to import as a reaction base
+	 * (fmm-gap skill §3), never swept for. No FMM row (or an empty cell: the digest predates
+	 * the 2026-11-09 scraper fix) → unclassified.
+	 */
+	static String classifyKind(FmmMeta meta) {
+		if (meta == null || meta.description() == null || meta.description().isBlank()) {
+			return KIND_UNCLASSIFIED;
+		}
+		String d = meta.description();
+		if (!d.contains("⟨")) {
+			return KIND_BASE;
+		}
+		String lower = d.toLowerCase(Locale.ROOT);
+		if (lower.contains("projof") || lower.contains("projection")) {
+			return KIND_CLOSURE + ":projection";
+		}
+		if (lower.contains("serendip")) {
+			return KIND_CLOSURE + ":serendipitous";
+		}
+		if (d.contains("⊗") || lower.contains("otimes") || lower.contains("kronecker")) {
+			return KIND_CLOSURE + ":kron";
+		}
+		if (d.contains("+")) {
+			return KIND_CLOSURE + ":block-sum";
+		}
+		return KIND_CLOSURE;
+	}
+
+	/** One row of the gap file: a (axis, shape) where some upstream is strictly below us (or holds
+	 *  what we lack), the best upstream rank, the sources publishing one and the work it calls for. */
+	record GapRow(CanonicalShape shape, String axis, int ours, int upstream, Map<String, Integer> bySource,
+			String kind, FmmMeta fmm) {
+		int gap() {
+			return ours < 0 ? Integer.MAX_VALUE : ours - upstream;
+		}
+
+		String shapeKey() {
+			return shape.n() + "x" + shape.m() + "x" + shape.p();
+		}
+	}
+
+	/** Q axis first, then the biggest gap, then the shape — the closure's "best opportunity first". */
+	private static final Comparator<GapRow> BY_ROW = Comparator
+			.comparingInt((GapRow r) -> r.axis().equals("Q") ? 0 : r.axis().equals("Z") ? 1 : 2)
+			.thenComparing(Comparator.comparingInt(GapRow::gap).reversed())
+			.thenComparing(GapRow::shapeKey);
+
+	/**
+	 * Every row of every source, merged per (axis, shape): strict Q gaps (classified from the FMM
+	 * recipe), the FMM-index rows the artifact audit marks unverified, shapes we lack, and the
+	 * Z / ZT coefficient-class gaps of the Perminov-layout sources. A shape that is strict for one
+	 * source and audited-unverified for another keeps the strict reading (a sync skew between the
+	 * two FMM-index digests, not a verdict).
+	 */
+	static List<GapRow> mergeGaps(SourceScan sed, SourceScan perm, SourceScan fmm, SourceScan mizopl,
+			Map<CanonicalShape, FmmMeta> meta) {
+		Map<String, GapRow> rows = new LinkedHashMap<>();
+		addGaps(rows, "Q", "sedoglavic", sed.gaps(), meta, null);
+		addGaps(rows, "Q", "fmm", fmm.gaps(), meta, null);
+		addGaps(rows, "Q", "perminov", perm.gaps(), meta, null);
+		addGaps(rows, "Q", "mizopl", mizopl.gaps(), meta, null);
+		addGaps(rows, "Q", "sedoglavic", sed.unverified(), meta, KIND_UNVERIFIED);
+		addGaps(rows, "Q", "fmm", fmm.unverified(), meta, KIND_UNVERIFIED);
+		addMissing(rows, "sedoglavic", sed.missing(), meta);
+		addMissing(rows, "fmm", fmm.missing(), meta);
+		addMissing(rows, "perminov", perm.missing(), meta);
+		addMissing(rows, "mizopl", mizopl.missing(), meta);
+		addGaps(rows, "Z", "perminov", perm.zGaps(), meta, KIND_AXIS);
+		addGaps(rows, "Z", "mizopl", mizopl.zGaps(), meta, KIND_AXIS);
+		addGaps(rows, "ZT", "perminov", perm.ztGaps(), meta, KIND_AXIS);
+		addGaps(rows, "ZT", "mizopl", mizopl.ztGaps(), meta, KIND_AXIS);
+		List<GapRow> out = new ArrayList<>(rows.values());
+		out.sort(BY_ROW);
+		return out;
+	}
+
+	private static void addGaps(Map<String, GapRow> rows, String axis, String source, List<Gap> gaps,
+			Map<CanonicalShape, FmmMeta> meta, String fixedKind) {
+		for (Gap g : gaps) {
+			String key = axis + " " + g.shape();
+			GapRow prev = rows.get(key);
+			Map<String, Integer> by = prev == null ? new TreeMap<>() : new TreeMap<>(prev.bySource());
+			by.put(source, g.theirs());
+			int upstream = prev == null ? g.theirs() : Math.min(prev.upstream(), g.theirs());
+			String kind;
+			if (fixedKind == null) {
+				kind = classifyKind(meta.get(g.shape())); // a strict reading wins over an unverified one
+			} else {
+				kind = prev == null ? fixedKind : prev.kind();
+			}
+			rows.put(key, new GapRow(g.shape(), axis, g.ours(), upstream, by, kind, meta.get(g.shape())));
+		}
+	}
+
+	private static void addMissing(Map<String, GapRow> rows, String source, List<Missing> missing,
+			Map<CanonicalShape, FmmMeta> meta) {
+		for (Missing m : missing) {
+			String key = "Q " + m.shape();
+			GapRow prev = rows.get(key);
+			Map<String, Integer> by = prev == null ? new TreeMap<>() : new TreeMap<>(prev.bySource());
+			by.put(source, m.theirs());
+			int upstream = prev == null ? m.theirs() : Math.min(prev.upstream(), m.theirs());
+			rows.put(key, new GapRow(m.shape(), "Q", -1, upstream, by, KIND_MISSING, meta.get(m.shape())));
+		}
+	}
+
+	/** The JSON gap file: provenance, a legend of the kinds, per-kind counts and one object per row. */
+	static String gapFileJson(List<GapRow> rows, Instant now) {
+		ObjectNode root = MAPPER.createObjectNode();
+		root.put("generated_by", "eu.solven.matmul.docs.explore.ScanUpstreamSources");
+		root.put("generated_at", now.toString());
+		root.put("axes", "Q = non-commutative characteristic-0 rank (our Q-valid best vs the FMM/Sedoglavic index "
+				+ "and the Perminov-layout min over Q/Z/ZT); Z / ZT = Perminov-layout coefficient-class axes "
+				+ "(best integer / ternary-integer explicit scheme; ours null = we hold none)");
+		ObjectNode kinds = root.putObject("kinds");
+		kinds.put(KIND_CLOSURE + "[:mechanism]", "FMM reached the rank with a recipe over other formats (projection"
+				+ " / kron / block-sum / serendipitous) — run the closure over the .txt (RESYNC_PLAYBOOK step 4)");
+		kinds.put(KIND_BASE, "FMM cites an explicit scheme we lack — import it as a reaction base (fmm-gap skill §3)");
+		kinds.put(KIND_UNVERIFIED, "FMM index rank not backed by FMM's own artifact (references/fmm-artifact-audit.json)"
+				+ " — report upstream, not a target");
+		kinds.put(KIND_MISSING, "an upstream holds a shape we have no Q-valid scheme for");
+		kinds.put(KIND_AXIS, "Z / ZT axis: the Q rank may be matched, the integer / ternary-integer explicit scheme is not");
+		kinds.put(KIND_UNCLASSIFIED, "no FMM recipe for the shape (Perminov-layout source only, or a digest without"
+				+ " descriptions)");
+		Map<String, Integer> counts = new TreeMap<>();
+		for (GapRow r : rows) {
+			counts.merge(r.kind(), 1, Integer::sum);
+		}
+		ObjectNode countsNode = root.putObject("counts");
+		counts.forEach((k, v) -> countsNode.put(k, v.intValue()));
+		ArrayNode arr = root.putArray("gaps");
+		for (GapRow r : rows) {
+			ObjectNode o = arr.addObject();
+			o.put("shape", r.shapeKey());
+			o.putArray("n").add(r.shape().n()).add(r.shape().m()).add(r.shape().p());
+			o.put("axis", r.axis());
+			if (r.ours() < 0) {
+				o.putNull("ours");
+			} else {
+				o.put("ours", r.ours());
+			}
+			o.put("upstream", r.upstream());
+			if (r.gap() == Integer.MAX_VALUE) {
+				o.putNull("gap");
+			} else {
+				o.put("gap", r.gap());
+			}
+			ObjectNode by = o.putObject("by_source");
+			r.bySource().forEach((s, v) -> by.put(s, v.intValue()));
+			o.put("kind", r.kind());
+			if (r.fmm() != null) {
+				if (r.fmm().description() == null) {
+					o.putNull("fmm_recipe");
+				} else {
+					o.put("fmm_recipe", r.fmm().description());
+				}
+				ArrayNode refs = o.putArray("fmm_references");
+				r.fmm().references().forEach(refs::add);
+			}
+		}
+		return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(root) + "\n";
+	}
+
+	/**
+	 * The closure drivers' input: one actionable Q-axis row per line, leading token {@code NxMxP}
+	 * — the only token {@code SchemeSweep --shape-file} reads, and what
+	 * {@code ProjectFmmGaps --shapes-file} reads too — then ours, best upstream, gap, kind and
+	 * sources. Left out: upstream-unverified rows (report-to-FMM material, not targets) and the
+	 * Z / ZT rows (a Q sweep cannot address a coefficient-class gap; they stay in the JSON).
+	 */
+	static String shapeList(List<GapRow> rows) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("# Upstream gaps - closure input, written by ScanUpstreamSources --shapes-out.\n");
+		sb.append("# Columns: NxMxP ours upstream gap kind sources. Only the leading token is read by\n");
+		sb.append("# SchemeSweep --shape-file / ProjectFmmGaps --shapes-file; the rest is for the human.\n");
+		for (GapRow r : rows) {
+			if (!r.axis().equals("Q") || r.kind().equals(KIND_UNVERIFIED)) {
+				continue;
+			}
+			sb.append(r.shapeKey()).append(' ')
+					.append(r.ours() < 0 ? "-" : String.valueOf(r.ours())).append(' ')
+					.append(r.upstream()).append(' ')
+					.append(r.gap() == Integer.MAX_VALUE ? "inf" : String.valueOf(r.gap())).append(' ')
+					.append(r.kind()).append(' ')
+					.append(String.join(",", r.bySource().keySet())).append('\n');
+		}
+		return sb.toString();
+	}
+
 	/** Descending by gap, then by shape — the "biggest opportunities first" order. */
 	private static final Comparator<Gap> BY_GAP_DESC = Comparator
 			.comparingInt(Gap::gap).reversed()
 			.thenComparing(g -> g.shape().toString());
 
-	private static String reportMd(SourceScan sed, SourceScan perm, SourceScan fmm, SourceScan mizopl) {
+	private static String reportMd(SourceScan sed, SourceScan perm, SourceScan fmm, SourceScan mizopl,
+			List<GapRow> rows, Path gapsOut, Path shapesOut) {
 		StringBuilder out = new StringBuilder();
 		out.append("# Upstream source scan\n\n");
 		out.append("Generated by `eu.solven.matmul.docs.explore.ScanUpstreamSources`.\n\n");
 
-		out.append("## Sedoglavic fmm_digest\n\n");
+		// The hand-off summary. (Deliberately no "Strict gaps … **N**" line: the workflow's
+		// issue step sums those across the per-source sections.)
+		out.append("## Closure input\n\n");
+		Map<String, Integer> counts = new TreeMap<>();
+		rows.forEach(r -> counts.merge(r.kind(), 1, Integer::sum));
+		long actionable = rows.stream().filter(r -> r.axis().equals("Q") && !r.kind().equals(KIND_UNVERIFIED))
+				.count();
+		out.append("- Rows: ").append(rows.size()).append(" (").append(actionable)
+				.append(" actionable on the Q axis, listed in the shape file)\n");
+		out.append("- By kind: ");
+		if (counts.isEmpty()) {
+			out.append("none");
+		} else {
+			out.append(String.join(", ", counts.entrySet().stream().map(e -> e.getKey() + " " + e.getValue()).toList()));
+		}
+		out.append('\n');
+		if (gapsOut != null || shapesOut != null) {
+			out.append("- Files: ");
+			if (gapsOut != null) {
+				out.append('`').append(gapsOut.toString().replace('\\', '/')).append('`');
+			}
+			if (gapsOut != null && shapesOut != null) {
+				out.append(", ");
+			}
+			if (shapesOut != null) {
+				out.append('`').append(shapesOut.toString().replace('\\', '/')).append('`');
+			}
+			out.append(" — the `.txt` feeds `SchemeSweep --shape-file` / `ProjectFmmGaps --shapes-file`"
+					+ " (RESYNC_PLAYBOOK step 4, run by a human/agent, never in CI)\n");
+		}
+
+		out.append("\n## Sedoglavic fmm_digest\n\n");
 		out.append("- Strict gaps (Sedoglavic better): **").append(sed.gaps().size()).append("**\n");
 		out.append("- Missing from us (Sedoglavic only): **").append(sed.missing().size()).append("**\n");
 		out.append("- We-better: **").append(sed.weBetter().size()).append("**\n");

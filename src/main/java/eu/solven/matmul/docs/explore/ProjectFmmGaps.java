@@ -128,13 +128,17 @@ public final class ProjectFmmGaps {
 	}
 
 	/** Read a shapes file: one shape per line ("NxMxP" or "n,m,p" or "n m p"),
-	 *  blank lines and {@code #}-comments ignored. */
-	private static List<int[]> readShapeFile(String path) throws java.io.IOException {
+	 *  blank lines and {@code #}-comments ignored. A line whose leading token is a
+	 *  compact shape ("9x17x17 1600 1574 26 closure-candidate …") keeps only that token, so
+	 *  the gap list {@code ScanUpstreamSources --shapes-out} writes — and anything
+	 *  {@code SchemeSweep --shape-file} accepts — is readable here unchanged. */
+	static List<int[]> readShapeFile(String path) throws java.io.IOException {
 		List<int[]> out = new ArrayList<>();
 		for (String line : java.nio.file.Files.readAllLines(Path.of(path))) {
 			String t = line.trim();
 			if (t.isEmpty() || t.startsWith("#")) continue;
-			out.add(parseShape(t));
+			String lead = t.split("\\s+")[0];
+			out.add(parseShape(lead.matches("\\d+[xX*,]\\d+[xX*,]\\d+") ? lead : t));
 		}
 		return out;
 	}

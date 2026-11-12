@@ -6,6 +6,8 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,13 @@ import com.sun.net.httpserver.HttpServer;
 
 import eu.solven.matmul.CanonicalShape;
 import eu.solven.matmul.Shape;
+import eu.solven.matmul.docs.explore.ScanUpstreamSources.FmmMeta;
+import eu.solven.matmul.docs.explore.ScanUpstreamSources.Gap;
+import eu.solven.matmul.docs.explore.ScanUpstreamSources.GapRow;
+import eu.solven.matmul.docs.explore.ScanUpstreamSources.SourceScan;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Guards the 2026-06 → 2026-09 silent blindness of the weekly upstream scan:
@@ -166,5 +175,90 @@ public class TestScanUpstreamSources {
 				.doesNotContainKey(Shape.of(4, 4, 4).canonical());
 		assertThat(local.zt()).containsEntry(Shape.of(2, 2, 2).canonical(), 7)
 				.doesNotContainKey(Shape.of(1, 1, 1).canonical()).doesNotContainKey(Shape.of(2, 2, 4).canonical());
+	}
+
+	/**
+	 * The machine-readable hand-off (2026-11-09, issue #23): the weekly scan writes the gap
+	 * list the local closure consumes, merging the sources per (axis, shape) and classifying
+	 * each row from FMM's recipe cell — a closure candidate (a recipe over formats we hold:
+	 * projection / Kronecker / block sum) vs a base candidate (a cited explicit scheme we
+	 * lack). Nothing in CI runs the closure, so the file is what a human/agent starts from.
+	 */
+	@Test
+	public void gap_file_merges_sources_and_classifies_from_the_fmm_recipe() throws Exception {
+		CanonicalShape s91717 = Shape.of(9, 17, 17).canonical();
+		CanonicalShape s444 = Shape.of(4, 4, 4).canonical();
+		CanonicalShape s7717 = Shape.of(7, 7, 17).canonical();
+		CanonicalShape s555 = Shape.of(5, 5, 5).canonical();
+		CanonicalShape s236 = Shape.of(2, 3, 6).canonical();
+		SourceScan sed = new SourceScan(List.of(new Gap(26, s91717, 1600, 1574)), List.of(), List.of(),
+				List.of(new Gap(1, s7717, 573, 572)));
+		SourceScan fmm = new SourceScan(List.of(new Gap(26, s91717, 1600, 1574), new Gap(1, s444, 49, 48)),
+				List.of(), List.of(), List.of(new Gap(1, s7717, 573, 572)));
+		SourceScan perm = new SourceScan(List.of(new Gap(1, s444, 49, 48)), List.of(), List.of(), List.of(),
+				List.of(), List.of(new Gap(Integer.MAX_VALUE, s555, -1, 93)));
+		SourceScan mizopl = new SourceScan(List.of(), List.of(), List.of());
+		Map<CanonicalShape, FmmMeta> meta = Map.of(
+				s91717, new FmmMeta("ProjOfAlongMode(⟨9×17×18:1591⟩,2)", List.of()),
+				s444, new FmmMeta("Novikov et ali (AlphaEvolve 2025) [pdf]", List.of("alphaevolve")),
+				s7717, new FmmMeta("⟨7×7×8:…⟩ + ⟨7×7×9:…⟩", List.of()),
+				s236, new FmmMeta("⟨1×1×2:2⟩ ⊗ ⟨2×3×3:15⟩", List.of()));
+
+		List<GapRow> rows = ScanUpstreamSources.mergeGaps(sed, perm, fmm, mizopl, meta);
+
+		GapRow proj = rows.stream().filter(r -> r.shape().equals(s91717)).findFirst().orElseThrow();
+		assertThat(proj.bySource()).containsEntry("fmm", 1574).containsEntry("sedoglavic", 1574).hasSize(2);
+		assertThat(proj.kind()).isEqualTo("closure-candidate:projection");
+		assertThat(proj.gap()).isEqualTo(26);
+		GapRow base = rows.stream().filter(r -> r.shape().equals(s444)).findFirst().orElseThrow();
+		assertThat(base.kind()).isEqualTo("base-candidate");
+		assertThat(base.bySource()).containsKeys("fmm", "perminov");
+		assertThat(rows.stream().filter(r -> r.shape().equals(s7717)).findFirst().orElseThrow().kind())
+				.isEqualTo("upstream-unverified");
+		GapRow zt = rows.stream().filter(r -> r.axis().equals("ZT")).findFirst().orElseThrow();
+		assertThat(zt.shape()).isEqualTo(s555);
+		assertThat(zt.ours()).isEqualTo(-1);
+		assertThat(zt.kind()).isEqualTo("coefficient-class");
+		// Q axis first, biggest gap first; one row per (axis, shape)
+		assertThat(rows.get(0).shape()).isEqualTo(s91717);
+		assertThat(rows).hasSize(4);
+		assertThat(ScanUpstreamSources.classifyKind(meta.get(s236))).isEqualTo("closure-candidate:kron");
+		assertThat(ScanUpstreamSources.classifyKind(null)).isEqualTo("unclassified");
+
+		JsonNode json = JsonMapper.builder().build()
+				.readTree(ScanUpstreamSources.gapFileJson(rows, Instant.parse("2026-11-09T05:00:00Z")));
+		assertThat(json.get("generated_at").asText()).isEqualTo("2026-11-09T05:00:00Z");
+		assertThat(json.get("counts").get("closure-candidate:projection").asInt()).isEqualTo(1);
+		assertThat(json.get("counts").get("upstream-unverified").asInt()).isEqualTo(1);
+		JsonNode first = json.get("gaps").get(0);
+		assertThat(first.get("shape").asText()).isEqualTo("9x17x17");
+		assertThat(first.get("ours").asInt()).isEqualTo(1600);
+		assertThat(first.get("upstream").asInt()).isEqualTo(1574);
+		assertThat(first.get("fmm_recipe").asText()).contains("ProjOfAlongMode");
+		assertThat(first.get("by_source").get("sedoglavic").asInt()).isEqualTo(1574);
+
+		String txt = ScanUpstreamSources.shapeList(rows);
+		List<String> shapeLines = txt.lines().filter(l -> !l.startsWith("#")).toList();
+		// unverified and ZT rows left out; leading token = the shape, as both drivers read it
+		assertThat(shapeLines).containsExactly(
+				"9x17x17 1600 1574 26 closure-candidate:projection fmm,sedoglavic",
+				"4x4x4 49 48 1 base-candidate fmm,perminov");
+		assertThat(txt).doesNotContain("7x7x17").doesNotContain("5x5x5");
+	}
+
+	/** The shape list is read unchanged by the projection driver (and SchemeSweep's reader takes
+	 *  the same leading token): a row with trailing columns is one shape, comments are skipped. */
+	@Test
+	public void shape_list_is_read_by_the_projection_driver_unchanged(@TempDir Path root) throws Exception {
+		Path f = root.resolve("upstream-gaps.txt");
+		Files.writeString(f, "# Columns: NxMxP ours upstream gap kind sources\n"
+				+ "9x17x17 1600 1574 26 closure-candidate:projection fmm,sedoglavic\n"
+				+ "13,14,14\n"
+				+ "6 21 23\n", StandardCharsets.UTF_8);
+		List<int[]> shapes = ProjectFmmGaps.readShapeFile(f.toString());
+		assertThat(shapes).hasSize(3);
+		assertThat(shapes.get(0)).startsWith(9, 17, 17);
+		assertThat(shapes.get(1)).startsWith(13, 14, 14);
+		assertThat(shapes.get(2)).startsWith(6, 21, 23);
 	}
 }

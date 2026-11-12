@@ -8,6 +8,28 @@ DIS09 at ⟨30,30,30⟩), so purging must be refcount- and Pareto-aware, never
 rank-only. Status: the statements under "Exchange rate" and
 "Free margin" are theorems; the scan numbers are catalog-dated.)*
 
+## 2026-11-09 — substitution projection dominates the coordinate margin for single drops
+
+FMM-Lille's `ProjOfAlongMode(⟨parent⟩, mode)` rows (the 61 index moves of 2026-11-04..06,
+issue #23) are **Lemma 1 of `fmm.univ-lille.fr/projalongmode.html`**: from any ⟨n,m,p+1⟩
+decomposition of rank r one constructs ⟨n,m,p⟩ at rank r−m (an m-drop saves n, an n-drop
+saves p) by *substituting* the dropped slice's variables with linear forms in the kept
+ones so that m chosen products vanish — the constructive face of the substitution method.
+The coordinate margin μ of this note is the special case λ = 0 (kill only the products
+supported on the slice alone), so for a single drop the substitution saves max(μ, m) and
+in practice far more: every ⟨3,3,6⟩=40 representative we hold, FMM's own artifact, and the
+⟨9,18,18⟩ = ⟨3,3,6⟩ ⊗ ⟨3,6,3⟩ Kronecker stub (and FMM's own June artifact of it) have μ = 0
+on every axis, while the lemma gives 1600 → 1591 → 1574 (FMM's order) or 1600 → 1582 →
+1570 (p then m: ours). Code: `catalog.SubstitutionProjection`, lineage node
+`SubstProject(child, axis, index)` (replays bit-for-bit — the killed products are the first
+independent ones), driver `docs.migrate.MaterialiseSubstitutionProjections`. The rank of a
+drop is still a **bound** (greedy index per step; incidental kills vary with the index),
+and the result is rational in general (an integer parent can lose `Z` / `F2`), so the
+writer stamps fields from the built coefficients. Coordinate / direction margins keep a
+role where a *factor representative* carries a common rank-1 direction on a small axis
+(μ > the lemma's saving: `VectorProjection`, `MaterialiseVectorProjections`, e.g.
+⟨12,23,24⟩ 3790 → 3776 vs FMM 3788 via a rebased ⟨3,3,6⟩ ⊗ ⟨4,8,4⟩).
+
 ## Catalog home: `schemes/margin-bases/`
 
 Projection-rich schemes that are rank-worse/rank-tied for their own shape
