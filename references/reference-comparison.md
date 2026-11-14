@@ -4,18 +4,18 @@ Field-clean (non-commutative, char-0), 3-catalog comparison. Computed by
 `GenerateCatalogManifest` (per-scheme `external_best_*` / `solven_discovery`);
 this report aggregates `docs/catalog.json`. Supersedes `tools/compare_fmm_lille.py`.
 
-**Formats compared:** 5440  —  tie 4218, better 1169, worse 53
+**Formats compared:** 5440  —  tie 4207, better 1169, worse 64
 
 ## Classification × max-dim band
 
 | classification | ≤16 | 17–32 | >32 | total |
 |---|--:|--:|--:|--:|
 | discovery (better than both) | 0 | 1169 | 0 | 1169 |
-| tie: matches-cited | 313 | 68 | 0 | 381 |
-| tie: derived-match (reproduced computed) | 321 | 3230 | 0 | 3551 |
+| tie: matches-cited | 311 | 68 | 0 | 379 |
+| tie: derived-match (reproduced computed) | 321 | 3221 | 0 | 3542 |
 | tie: import-of-computed (derive!) | 40 | 246 | 0 | 286 |
 | worse: import-gap (cited) | 5 | 2 | 0 | 7 |
-| worse: derivation-target (uncited) | 1 | 45 | 0 | 46 |
+| worse: derivation-target (uncited) | 3 | 54 | 0 | 57 |
 
 ## Discoveries (better than BOTH catalogs) — 1169, provisional
 
@@ -335,7 +335,7 @@ Dropped automatically when a future FMM/Perminov sync publishes an equal/better 
 - 15x17x32 ours=4722 ext=4732 (fmm-lille)
 - 15x19x19 ours=3245 ext=3260 (fmm-lille)
 - 15x19x20 ours=3357 ext=3409 (fmm-lille)
-- 15x19x23 ours=3833 ext=3838 (fmm-lille)
+- 15x19x23 ours=3833 ext=3834 (fmm-lille)
 - 15x19x24 ours=3917 ext=3960 (fmm-lille)
 - 15x19x25 ours=4171 ext=4216 (fmm-lille)
 - 15x19x26 ours=4319 ext=4388 (fmm-lille)
@@ -404,7 +404,7 @@ Dropped automatically when a future FMM/Perminov sync publishes an equal/better 
 - 17x19x27 ours=4990 ext=5023 (fmm-lille)
 - 17x20x20 ours=3964 ext=3972 (fmm-lille)
 - 17x20x21 ours=4126 ext=4174 (fmm-lille)
-- 17x20x22 ours=4281 ext=4328 (fmm-lille)
+- 17x20x22 ours=4281 ext=4324 (fmm-lille)
 - 17x20x26 ours=5024 ext=5064 (fmm-lille)
 - 17x20x32 ours=6117 ext=6130 (fmm-lille)
 - 17x21x25 ours=5072 ext=5075 (fmm-lille)
@@ -468,7 +468,7 @@ Dropped automatically when a future FMM/Perminov sync publishes an equal/better 
 - 19x20x26 ours=5435 ext=5442 (fmm-lille)
 - 19x20x28 ours=5855 ext=5864 (fmm-lille)
 - 19x21x21 ours=4650 ext=4723 (fmm-lille)
-- 19x21x23 ours=5188 ext=5199 (fmm-lille)
+- 19x21x23 ours=5188 ext=5195 (fmm-lille)
 - 19x21x24 ours=5336 ext=5374 (fmm-lille)
 - 19x21x25 ours=5672 ext=5675 (fmm-lille)
 - 19x21x26 ours=5884 ext=5886 (fmm-lille)
@@ -602,7 +602,7 @@ Dropped automatically when a future FMM/Perminov sync publishes an equal/better 
 - 22x26x30 ours=9175 ext=9209 (fmm-lille)
 - 22x26x31 ours=9448 ext=9453 (fmm-lille)
 - 22x26x32 ours=9841 ext=9848 (fmm-lille)
-- 22x27x29 ours=9327 ext=9348 (fmm-lille)
+- 22x27x29 ours=9327 ext=9336 (fmm-lille)
 - 22x27x31 ours=9872 ext=9904 (fmm-lille)
 - 22x28x28 ours=9191 ext=9249 (fmm-lille)
 - 22x28x30 ours=9890 ext=9901 (fmm-lille)
@@ -625,7 +625,7 @@ Dropped automatically when a future FMM/Perminov sync publishes an equal/better 
 - 23x26x30 ours=9544 ext=9558 (fmm-lille)
 - 23x26x31 ours=9951 ext=9975 (fmm-lille)
 - 23x26x32 ours=10213 ext=10216 (fmm-lille)
-- 23x27x32 ours=10554 ext=10624 (fmm-lille)
+- 23x27x32 ours=10554 ext=10620 (fmm-lille)
 - 23x29x29 ours=10420 ext=10423 (fmm-lille)
 - 24x24x28 ours=7923 ext=7942 (fmm-lille)
 - 24x24x32 ours=9171 ext=9176 (fmm-lille)
