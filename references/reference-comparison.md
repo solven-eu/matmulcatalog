@@ -4,7 +4,7 @@ Field-clean (non-commutative, char-0), 3-catalog comparison. Computed by
 `GenerateCatalogManifest` (per-scheme `external_best_*` / `solven_discovery`);
 this report aggregates `docs/catalog.json`. Supersedes `tools/compare_fmm_lille.py`.
 
-**Formats compared:** 5440  —  tie 4207, better 1169, worse 64
+**Formats compared:** 5440  —  tie 4206, better 1169, worse 65
 
 ## Classification × max-dim band
 
@@ -12,10 +12,10 @@ this report aggregates `docs/catalog.json`. Supersedes `tools/compare_fmm_lille.
 |---|--:|--:|--:|--:|
 | discovery (better than both) | 0 | 1169 | 0 | 1169 |
 | tie: matches-cited | 311 | 68 | 0 | 379 |
-| tie: derived-match (reproduced computed) | 321 | 3221 | 0 | 3542 |
+| tie: derived-match (reproduced computed) | 321 | 3220 | 0 | 3541 |
 | tie: import-of-computed (derive!) | 40 | 246 | 0 | 286 |
 | worse: import-gap (cited) | 5 | 2 | 0 | 7 |
-| worse: derivation-target (uncited) | 3 | 54 | 0 | 57 |
+| worse: derivation-target (uncited) | 3 | 55 | 0 | 58 |
 
 ## Discoveries (better than BOTH catalogs) — 1169, provisional
 
