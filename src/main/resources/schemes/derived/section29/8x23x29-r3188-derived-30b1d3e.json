@@ -1,0 +1,63 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[4, 4], allocB=[12, 11], allocC=[15, 14], leaves=[OrientAs(KronProduct(Recombination(base=Transpose(2x3x3, perm=\"ABC->CBA\"), allocA=[1, 1, 1], allocB=[1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1]), Recombination(base=Transpose(2x4x5, perm=\"ABC->BCA\"), allocA=[1, 1, 1, 1], allocB=[1, 1, 1, 1, 1], allocC=[1, 1], leaves=[naive-1x1x1])), ⟨4,12,15⟩), 4x12x14, 4x11x15, 4x11x14])",
+  "lineage_compact": "R[2x2x2; 4,4 | 12,11 | 15,14]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@db11bcc4da826cf2e0d8e7e0a7ef11f01fc44307aafed61c661c610ad0bcd897"},
+    "allocA": [4, 4],
+    "allocB": [12, 11],
+    "allocC": [15, 14],
+    "leaves": [
+      {
+        "op": "OrientAs",
+        "n": 4,
+        "m": 12,
+        "p": 15,
+        "axisMap": "pnm",
+        "child": {
+          "op": "KronProduct",
+          "outer": {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->CBA",
+              "child": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"}
+            },
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1],
+            "allocC": [1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          },
+          "inner": {
+            "op": "Recombination",
+            "base": {
+              "op": "Transpose",
+              "perm": "ABC->BCA",
+              "child": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"}
+            },
+            "allocA": [1, 1, 1, 1],
+            "allocB": [1, 1, 1, 1, 1],
+            "allocC": [1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        }
+      },
+      {"op": "Atom", "ref": "4x12x14@62715f7"},
+      {"op": "Atom", "ref": "4x11x15@17ba1de"},
+      {"op": "Atom", "ref": "4x11x14@caa1522"}
+    ]
+  },
+  "n": [8, 23, 29],
+  "m": 3188,
+  "hash": "30b1d3ed80b6f24fafa7584bd2a6750dee885086ab0f38e764b8fdc150be7410",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

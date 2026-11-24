@@ -1,0 +1,25 @@
+{
+  "lineage_str": "SubstProject(SubstProject(20x20x20, axis=m, index=0), axis=n, index=0)",
+  "lineage_compact": "20x20x20 ⊖[m0] ⊖[n0]",
+  "lineage": {
+    "op": "SubstProject",
+    "axis": 0,
+    "index": 0,
+    "child": {
+      "op": "SubstProject",
+      "axis": 1,
+      "index": 0,
+      "child": {"op": "Atom", "ref": "20x20x20@3eecb0df447dc66627fa74d7bd0977070d13a604f157144d261e5de2c027408b"}
+    }
+  },
+  "n": [19, 19, 20],
+  "m": 3952,
+  "hash": "87c310140681b6335eaf1f45192ab7271152968805258ff8979fd4e60d363f6b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

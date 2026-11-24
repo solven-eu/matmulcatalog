@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatCols(13x14x14, 13x14x15)",
+  "lineage_compact": "13x14x14 +p 13x14x15",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "13x14x14@b3b52f2"},
+    "right": {"op": "Atom", "ref": "13x14x15@cfab0b1"}
+  },
+  "n": [13, 14, 29],
+  "m": 3182,
+  "hash": "280c95f88a72730f14c454b66f056584d4c6d0b6fc3f87666f549a58ace8eb10",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

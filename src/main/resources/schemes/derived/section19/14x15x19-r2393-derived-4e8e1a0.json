@@ -1,0 +1,25 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(4x14x15, ⟨14,15,4⟩), 14x15x15)",
+  "lineage_compact": "4x14x15→⟨14,15,4⟩ +p 14x15x15",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 14,
+      "m": 15,
+      "p": 4,
+      "axisMap": "mpn",
+      "child": {"op": "Atom", "ref": "4x14x15@423ba1e"}
+    },
+    "right": {"op": "Atom", "ref": "14x15x15@63aefab"}
+  },
+  "n": [14, 15, 19],
+  "m": 2393,
+  "hash": "4e8e1a0ef659dbc9ebf3dd6ead1be81b21d41ebe1496f121ad250443ffc14909",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}
