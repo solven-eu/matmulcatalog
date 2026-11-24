@@ -140,7 +140,10 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # upstream-repo-ranks.json: what each UpstreamSchemeRepos repository publishes (lowest rank
+          # per format, from its file listing) - the scan's only view above an explicit-import cap.
           git add references/catalogs/perminov-catalog.json references/catalogs/fmm-lille-catalog.json \
+                  references/catalogs/upstream-repo-ranks.json \
                   src/main/resources/schemes src/main/resources/external/khoruzhii-lita docs/catalog.json
           if git diff --cached --quiet; then
             echo "No reference-catalog or scheme changes."

@@ -1,10 +1,15 @@
 package eu.solven.matmul.docs.migrate;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -12,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.GZIPInputStream;
 
 import eu.solven.matmul.NonCubicBilinearAlgorithm;
 import eu.solven.matmul.additions.SlpJson;
@@ -21,6 +27,7 @@ import eu.solven.matmul.catalog.FieldAwareLookup;
 import eu.solven.matmul.catalog.MatrixJsonFormatter;
 import eu.solven.matmul.catalog.SchemeIO;
 import eu.solven.matmul.docs.migrate.UpstreamSchemeRepos.UpstreamSchemeRepo;
+import eu.solven.matmul.io.RankRowSchemeJson;
 import eu.solven.matmul.verifiers.Verifier;
 
 import lombok.extern.slf4j.Slf4j;
@@ -95,6 +102,7 @@ public final class ImportUpstreamSchemeRepos {
 				slpHave.size());
 		FieldAwareLookup lookup = null;
 		int totalWrote = 0, totalFail = 0;
+		Map<UpstreamSchemeRepo, List<String>> digest = new LinkedHashMap<>();
 		for (UpstreamSchemeRepo repo : only == null ? UpstreamSchemeRepos.ALL : List.of(UpstreamSchemeRepos.byKey(only))) {
 			log.info("=== {} ({}) ===", repo.key(), repo.repo());
 			List<String> paths = new ArrayList<>();
@@ -103,7 +111,12 @@ public final class ImportUpstreamSchemeRepos {
 			}
 			List<Candidate> todo = plan(repo, paths, have, slpHave, minDim, maxDim);
 			long upstream = paths.stream().filter(p -> repo.parse(p).isPresent()).count();
-			log.info("{}: {} upstream schemes, {} not held yet", repo.key(), upstream, todo.size());
+			long listedOnly = paths.stream().map(repo::parse).flatMap(java.util.Optional::stream)
+					.filter(c -> Math.max(c.n(), Math.max(c.m(), c.p())) > repo.explicitMaxDim()).count();
+			log.info("{}: {} upstream schemes, {} not held yet{}", repo.key(), upstream, todo.size(), listedOnly == 0 ? ""
+					: ", " + listedOnly + " above the explicit-import cap of " + repo.explicitMaxDim()
+							+ " (listed in " + UpstreamRepoRanks.FILE + ", not imported)");
+			digest.put(repo, paths);
 			if (upstream == 0) {
 				// The layout moved (renamed directory / branch / naming): say so, do not read it as "nothing new".
 				log.warn("[layout] no file under {} matches {} — the upstream layout changed; this importer is blind "
@@ -121,6 +134,11 @@ public final class ImportUpstreamSchemeRepos {
 			totalWrote += counts[0];
 			totalFail += counts[1];
 		}
+		if (!dryRun) {
+			// What every repository publishes, at every dimension - the scan's view of the
+			// schemes above an explicit-import cap, which nothing else in the catalog records.
+			UpstreamRepoRanks.merge(UpstreamRepoRanks.FILE, digest);
+		}
 		log.info("ImportUpstreamSchemeRepos: {} imported, {} failed. Next: GenerateCatalogManifest.", totalWrote, totalFail);
 	}
 
@@ -130,10 +148,18 @@ public final class ImportUpstreamSchemeRepos {
 		int wrote = 0, attached = 0, kept = 0, fail = 0, already = 0;
 		long t0 = System.nanoTime();
 		for (Candidate c : todo) {
+			if (!c.reduced() && KnownSchemeKeys.covers(have, c.n(), c.m(), c.p(), c.rank(), c.cls())) {
+				// Held since the plan was drawn: an earlier file of this run was the same (sorted
+				// shape, rank, class) - Shukla publishes <14,18,19> and <14,19,18>, one scheme twice.
+				already++;
+				continue;
+			}
 			Path tmp = Files.createTempFile(repo.key() + "-", ".json");
 			try {
-				Files.writeString(tmp, ImportPerminovSchemes.fetch(repo.rawBase() + c.path()), StandardCharsets.UTF_8);
-				ImportContributedSchemes.Gate g = ImportContributedSchemes.gate(tmp.toFile(), lookup);
+				Files.write(tmp, download(repo.rawBase() + c.path(), c.path().endsWith(".gz")));
+				ImportContributedSchemes.Gate g = repo.rankRows()
+						? ImportContributedSchemes.gate(RankRowSchemeJson.read(SchemeIO.parseJson(tmp.toFile())), lookup)
+						: ImportContributedSchemes.gate(tmp.toFile(), lookup);
 				NonCubicBilinearAlgorithm alg = g.alg();
 				if (!KnownSchemeKeys.key(alg.n, alg.m, alg.p, alg.r, "").equals(KnownSchemeKeys.key(c.n(), c.m(), c.p(), c.rank(), ""))) {
 					log.warn("[SKIP] {} content ⟨{},{},{}⟩ r{} != filename", c.path(), alg.n, alg.m, alg.p, alg.r);
@@ -239,7 +265,7 @@ public final class ImportUpstreamSchemeRepos {
 			Candidate c = repo.parse(path).orElse(null);
 			if (c == null) continue;
 			int maxd = Math.max(c.n(), Math.max(c.m(), c.p()));
-			if (maxd < minDim || maxd > maxDim) continue;
+			if (maxd < minDim || maxd > maxDim || maxd > repo.explicitMaxDim()) continue;
 			if (c.reduced()) {
 				Set<String> sources = slpHave.get(KnownSchemeKeys.key(c.n(), c.m(), c.p(), c.rank(), c.cls()));
 				if (sources != null && sources.contains(repo.source())) continue;
@@ -324,10 +350,37 @@ public final class ImportUpstreamSchemeRepos {
 				+ " Against this catalog over Q at import time: " + g.vsCatalog() + ". Record status (any ring / Z / ZT"
 				+ " class) not yet audited against the dataset's own table — `discovery` stays TBD until it is"
 				+ " (RestampContributedProvenance).";
-		String notes = "Re-encoded from the upstream Perminov-style JSON (n, m, u, v, w) into the catalog's canonical"
+		String notes = "Re-encoded from the upstream " + (repo.rankRows() ? "rank-row sparse" : "Perminov-style")
+				+ " JSON (n, m, u, v, w) into the catalog's canonical"
 				+ " format — no coefficient was changed. " + repo.citation() + ".";
 		return new ImportContributedSchemes.Options(List.of(), repo.note(), repo.source(), repo.year(),
 				"https://github.com/" + repo.repo(), "TBD", null, discoveryNote, notes, "known", "Q", true);
+	}
+
+	/** The body at {@code url}, gunzipped when the upstream file is a {@code .gz}. */
+	static byte[] download(String url, boolean gzipped) throws IOException, InterruptedException {
+		HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL)
+				.connectTimeout(Duration.ofSeconds(30)).build();
+		HttpRequest req = HttpRequest.newBuilder(URI.create(url)).header("User-Agent", "solven-matmul-catalog/upstream-import")
+				.timeout(Duration.ofSeconds(180)).GET().build();
+		IOException last = null;
+		for (int attempt = 0; attempt <= 2; attempt++) {
+			try {
+				HttpResponse<byte[]> resp = client.send(req, HttpResponse.BodyHandlers.ofByteArray());
+				if (resp.statusCode() / 100 == 2) return gzipped ? gunzip(resp.body()) : resp.body();
+				last = new IOException("HTTP " + resp.statusCode() + " for " + url);
+			} catch (IOException e) {
+				last = e;
+			}
+			if (attempt < 2) Thread.sleep(2000L * (attempt + 1));
+		}
+		throw last;
+	}
+
+	static byte[] gunzip(byte[] gz) throws IOException {
+		try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(gz))) {
+			return in.readAllBytes();
+		}
 	}
 
 	private static int intArg(String[] args, String key, int dflt) {

@@ -236,6 +236,11 @@ add the **Local PDF** line linking the file path.
 | [90](#90-witteveen-2026) | witteveen-2026 | 2026 | algorithm (**26 ZT schemes, 3 any-ring records**) | Merlijn S. Witteveen, *New fast matrix multiplication schemes* (dataset v1.2, 2026-09-30), DOI [10.5281/zenodo.22943995](https://doi.org/10.5281/zenodo.22943995), [github.com/MerlijnW70/fmm-schemes](https://github.com/MerlijnW70/fmm-schemes) — **CC BY 4.0**. 26 ternary-integer schemes (≤ 16): new best in any ring for `⟨7,11,15⟩=772`, `⟨11,13,15⟩=1364`, `⟨11,14,14⟩=1373`; first ZT scheme at the best rank for `⟨7,7,9⟩=315`; 22 further ZT records. All loaded (exact-verified, re-encoded canonically) as `*-witteveen_2026-*.json`. Cited by FMM-Lille for ⟨11,13,15⟩ / ⟨11,14,14⟩. |
 | [91](#91-cloudroom-math-2026) | cloudroom-math-2026 | 2026 | algorithm (**27 new upper bounds, AI-agent campaign**) | Cloudroom Math Campaign, *Cloudroom Math: new matrix multiplication algorithms found by AI agents* (release 2026-10-08), [github.com/matyasstoch/cloudroom-math](https://github.com/matyasstoch/cloudroom-math) — **Apache-2.0**. Contributed as GitHub issue [#12](https://github.com/solven-eu/matmulcatalog/issues/12). Explicit schemes found by Claude Opus 5.5 agents: `⟨4,6,15⟩=261` ("hidden grids" in serendipitous products), `⟨9,11,11⟩=710` (mod-3 flip-graph walk + core-restricted Hensel lift), 25 composition-type improvements in the 17–32 band. All verified exactly and loaded as `*-cloudroom_2026-*.json`. Cites this catalog ("Lacelle") as a previous-best source. |
 | [92](#92-mizopl-we-star-2026) | mizopl-we-star-2026 | 2026 | algorithm (**10 ternary-integer (ZT) records ≤ 16, 48 addition-reduced SLPs**) | mizopl (we*star), *Fast matrix multiplication: ZT/Z rank schemes and addition-reduced straight-line programs*, [github.com/mizopl/we-star](https://github.com/mizopl/we-star/tree/main/solutions/fast-matrix-multiplication) — **MIT**. Contributed as GitHub issue [#20](https://github.com/solven-eu/matmulcatalog/issues/20); four of the rank schemes are mirrored by Perminov (`schemes/known/mizopl/`, 2026-10-19). ZT lifts by sub-block seam conjugation + unimodular GL_g(ℤ) basis reduction over serendipitous products; the SLPs by a primal–dual Tellegen (Wᵀ) + CL1 signed-cancellation reducer. Pulled by `UpstreamSchemeRepos.MIZOPL`; every program is replayed against the matrices on import (`SlpJson`). |
+| [93](#93-sidebottom-2026-mat-mul) | sidebottom-2026-mat-mul | 2026 | algorithm (**17 rank records ≤ 16; 1007 schemes for 17–32 listed, not held**) | Greg Sidebottom, *mat_mul: matrix multiplication schemes — rank and operation-count records, in PLinOpt format, with Lean 4 proofs*, [github.com/gsidebottom/mat_mul](https://github.com/gsidebottom/mat_mul) — **Apache-2.0**. ℚ (some ℤ, ℤ[1/2]) non-commutative schemes; deletions from the LITA squares + 2-reduction, shared-factor products. Pulled by `UpstreamSchemeRepos.SIDEBOTTOM`, explicit import capped at max dimension 16. |
+| [94](#94-he-2026-oblique-projection) | he-2026-oblique-projection | 2026 | algorithm (**10 rank records ≤ 16; 48 schemes for 17–30 listed, not held**) | Haotian He, *Oblique hyperplane projection deletion for fast matrix multiplication*, [github.com/heht24-cyber/fmm-oblique-records](https://github.com/heht24-cyber/fmm-oblique-records) — **MIT**; announced as Perminov's issue #18 (2026-11-24). ℚ non-commutative schemes, e.g. ⟨14,14,15⟩=1709, ⟨15,15,16⟩=2105, ⟨15,16,16⟩=2173. Pulled by `UpstreamSchemeRepos.HE_OBLIQUE`, same cap. |
+| [95](#95-canli-2026-quantavane) | canli-2026-quantavane | 2026 | algorithm (ℚ⟨9,10,11⟩=640, ℚ⟨9,11,11⟩=708) | Arhan Canli, *Quantavane FMM records*, [github.com/arhancanli/quantavane-fmm-records](https://github.com/arhancanli/quantavane-fmm-records). Read from Perminov's JSON mirror (`schemes/known/arhancanli/`) by `UpstreamSchemeRepos.CANLI`. |
+| [96](#96-stapleton-2026-addition-reduced) | stapleton-2026-addition-reduced | 2026 | algorithm (**80 addition-reduced ternary programs** — addition counts, upper bounds) | Joshua Stapleton, addition-reduced ZT schemes published in Perminov's repository (`schemes/known/stapleton/additions_reduced_ZT/`, 2026-11-12). Pulled by `UpstreamSchemeRepos.STAPLETON`; every program replayed on import. |
+| [97](#97-shukla-2026-fmm-decompositions) | shukla-2026-fmm-decompositions | 2026 | algorithm (ℤ⟨14,18,19⟩=2829, ℤ⟨10,19,24⟩=2723, ℤ⟨10,13,36⟩=2786) | Chandan Shukla, *Verified bilinear decompositions for three small matrix formats*, [github.com/chandanshukla1989/fmm_decompositions](https://github.com/chandanshukla1989/fmm_decompositions) — no licence file, data offered for reuse with attribution. Integer schemes built from Perminov components taken from this catalog; FMM-Lille's `Shukla:2026aa`. Pulled by `UpstreamSchemeRepos.SHUKLA`. |
 
 ---
 
@@ -1322,6 +1327,148 @@ newly written file — as `min_additions` + `slp` (tier `bound`, `slp.source` =
 "mizopl 2026"). The Z / ZT axes of the weekly upstream scan (`ScanUpstreamSources`) read
 the repository's `status.json` directly. Attribution key: `mizopl 2026`;
 `PerminovKnownAttribution` maps the mirror to it (`SKIP_FRESH_IMPORT`).
+
+## [93] <a name="93-sidebottom-2026-mat-mul"></a>sidebottom-2026-mat-mul
+
+```bibtex
+@misc{sidebottom2026matmul,
+  author       = {Sidebottom, Greg},
+  title        = {mat\_mul: matrix multiplication schemes --- rank and operation-count records and near records, in {PLinOpt} format, with {Lean} 4 proofs},
+  howpublished = {\url{https://github.com/gsidebottom/mat_mul}},
+  year         = {2026},
+  note         = {Licence: Apache-2.0. Repository state read 2026-11-24 (last push 2026-11-22)}
+}
+```
+
+Explicit non-commutative schemes over ℚ (some over ℤ, some over ℤ[1/2]), each checked
+exactly by the author's `kronexact` (every Brent equation in exact integer arithmetic).
+Three groups, 1030 scheme files on 2026-11-24:
+
+- **`schemes/`** — 22 schemes with every dimension ≤ 16, each with PLinOpt straight-line
+  programs for its three linear maps; three have Lean 4 proofs. Rank records of
+  2026-11-10/20 for ⟨4,11,13⟩, ⟨4,11,14⟩ (integer coefficients), ⟨4,11,16⟩, ⟨4,13,14⟩,
+  ⟨8,11,13⟩, ⟨9,11,11⟩, ⟨9,11,15⟩, ⟨9,11,16⟩, ⟨11,13,16⟩, ⟨13,13,14⟩, ⟨13,13,15⟩,
+  ⟨13,14,14⟩, ⟨13,14,15⟩, ⟨13,15,15⟩, ⟨14,14,15⟩, ⟨14,15,15⟩, ⟨15,16,16⟩ — FMM-Lille and
+  Perminov took up ⟨13,14,14⟩, ⟨13,15,15⟩, ⟨14,14,15⟩, ⟨14,15,15⟩ and ⟨15,16,16⟩ on
+  2026-11-15/16. Also operation-count records at a fixed rank (⟨3,3,3⟩:23 with 55
+  additions; ⟨4,4,4⟩:48 with 201 operations where 2 is invertible; ⟨4,4,4⟩:47 over F₂
+  with 166 XORs) — **the PLinOpt programs are not imported** (no PLinOpt reader here yet).
+- **`large/`** — 98 files: deletions of rows / columns / inner indices from the KGP LITA
+  squares 17³–32³ [82], each deletion followed by LITA's 2-reduction (the squares and the
+  reduction are theirs; the choice of deletions is Sidebottom's). Includes ⟨15,16,16⟩=2193.
+- **`products/`** — 910 files: shared-factor products and deletions from them.
+
+Channel: `UpstreamSchemeRepos.SIDEBOTTOM` → `ImportUpstreamSchemeRepos` (3-hourly sync),
+files read by `io.RankRowSchemeJson` (gzipped; `w` has one row per product — not
+Perminov's layout). **Explicit import is capped at max dimension 16** (the 22 we did not already hold were
+gated exactly on import); the 1007 larger ones are rational schemes of rank 2000–12000
+(390 MB gzipped) and are *listed* in `references/catalogs/upstream-repo-ranks.json`,
+which the upstream scan reads as a source — a rank named by a filename, not verified
+here. Attribution key: `Sidebottom 2026`; Perminov mirrors four schemes under
+`schemes/known/gsidebottom/` (`PerminovKnownAttribution` → `SKIP_FRESH_IMPORT`).
+
+## [94] <a name="94-he-2026-oblique-projection"></a>he-2026-oblique-projection
+
+```bibtex
+@misc{he2026oblique,
+  author       = {He, Haotian},
+  title        = {Oblique hyperplane projection deletion for fast matrix multiplication},
+  howpublished = {\url{https://github.com/heht24-cyber/fmm-oblique-records} (release v1.0); announced as issue 18 of dronperminov/FastMatrixMultiplication, 2026-11-24},
+  year         = {2026},
+  note         = {Licence: MIT. Developed with AI assistance (author's statement); every scheme certified exactly over Q by the repository's CRT verifier}
+}
+```
+
+58 explicit non-commutative schemes over ℚ (14 of them over ℤ[1/2]): 10 with every
+dimension ≤ 16 (`schemes_classic_le16/`) and 48 with max dimension 17–30
+(`schemes_large/`). **Method** — a generalisation of coordinate deletion: for an exact
+scheme and vectors α, β with αᵀβ ≠ 0, replacing one index space by the hyperplane
+α^⊥ along β gives an exact scheme of the format with that dimension reduced by one,
+and kills every product whose transformed factor falls in span(α) or span(β); followed
+by a pivot-exchange 2-reduction. Parents are the KGP LITA squares [82] and schemes of
+Perminov and Sidebottom [93]. (Our `SubstitutionProjection` — FMM's `ProjOfAlongMode` —
+is the coordinate case α = β = e_k.)
+
+The ten ≤ 16 ranks, all below FMM-Lille / Perminov / Sidebottom on 2026-11-24 by the
+author's table: ⟨9,11,11⟩=702, ⟨9,11,15⟩=949, ⟨11,11,16⟩=1224 (ℤ[1/2]); ⟨12,13,13⟩=1270,
+⟨13,14,15⟩=1644, ⟨14,14,15⟩=1709, ⟨14,15,15⟩=1836, ⟨14,16,16⟩=2110, ⟨15,15,16⟩=2105,
+⟨15,16,16⟩=2173.
+
+Channel: `UpstreamSchemeRepos.HE_OBLIQUE` → `ImportUpstreamSchemeRepos`, same reader
+and the same cap as [93]: the ten ≤ 16 schemes are imported (gated exactly), the 48
+larger ones are listed in `references/catalogs/upstream-repo-ranks.json`. Attribution
+key: `He 2026`.
+
+## [95] <a name="95-canli-2026-quantavane"></a>canli-2026-quantavane
+
+```bibtex
+@misc{canli2026quantavane,
+  author       = {Canli, Arhan},
+  title        = {Quantavane {FMM} records: matrix multiplication schemes of rank 640 for 9x10x11 and 708 for 9x11x11 over the rationals},
+  howpublished = {\url{https://github.com/arhancanli/quantavane-fmm-records}},
+  year         = {2026},
+  note         = {Licence: see the repository's LICENSE and LICENSE-CODE [?]. Schemes as Maple tensors (.mpl.bz2), with search code and exact checkers}
+}
+```
+
+ℚ⟨9,10,11⟩=640 and ℚ⟨9,11,11⟩=708 (flip-graph walks mod 3 lifted to ℚ, per the
+repository's walk files), with the
+intermediate schemes of the walks (641, 642, 643; 709). FMM-Lille lists both
+(708 since 2026-11-15); ⟨9,11,11⟩ has since gone to 705 [93] and 702 [94].
+
+Channel: the origin publishes Maple tensors, so `UpstreamSchemeRepos.CANLI` reads
+Perminov's JSON mirror `schemes/known/arhancanli/` (two files). The intermediate
+schemes are not mirrored and not imported. Attribution key: `Canli 2026`.
+
+## [96] <a name="96-stapleton-2026-addition-reduced"></a>stapleton-2026-addition-reduced
+
+```bibtex
+@misc{stapleton2026additions,
+  author       = {Stapleton, Joshua},
+  title        = {Addition-reduced ternary matrix multiplication schemes},
+  howpublished = {Published in dronperminov/FastMatrixMultiplication, schemes/known/stapleton/additions\_reduced\_ZT (commit of 2026-11-12)},
+  year         = {2026},
+  note         = {No origin repository carries these files [?]; the author's related work is github.com/Joshua-Stapleton/fmm-helper-exchange}
+}
+```
+
+80 ternary-integer (`ZT`) schemes for small rectangular formats (⟨2,4,7⟩ … ⟨8,8,8⟩),
+each with an addition-reduced straight-line program in Perminov's `_reduced` layout
+(`{shape}_m{rank}_cr{reduced}_cn{naive}_ZT_reduced.json`). The contribution is the
+**addition count** (an upper bound, tier `bound`), not the rank: the ranks tie or sit
+above the catalog's.
+
+Channel: `UpstreamSchemeRepos.STAPLETON` (the SLP channel of [92]): each program is
+replayed against its matrices on import and stored as `min_additions` + `slp`.
+Attribution key: `Stapleton 2026` (distinct from `Stapleton 2025 (a=60)`, the
+⟨3,3,3⟩ 60-addition scheme).
+
+## [97] <a name="97-shukla-2026-fmm-decompositions"></a>shukla-2026-fmm-decompositions
+
+```bibtex
+@misc{shukla2026decompositions,
+  author       = {Shukla, Chandan},
+  title        = {Verified bilinear decompositions for three small matrix formats},
+  howpublished = {\url{https://github.com/chandanshukla1989/fmm_decompositions}},
+  year         = {2026},
+  note         = {No licence file; the README offers the coefficient data for free reuse with attribution. Cited by FMM-Lille as Shukla:2026aa}
+}
+```
+
+Three explicit **integer** non-commutative schemes (coefficients bounded by 2, so valid
+over every ring): ℤ⟨14,18,19⟩=2829, ℤ⟨10,19,24⟩=2723 and ℤ⟨10,13,36⟩=2786, each
+verified by the author on the full tensor identity. Upper bounds, by the author's own
+statement — products in which the outer terms sharing a common `w`-vector are merged
+into one larger inner product (the serendipitous mechanism): 2829 = 123 + 11·150 + 4·264
+over ⟨4,6,7⟩, ⟨5,6,7⟩, ⟨6,7,9⟩; 2723 = 63 + 144 + 10·170 + 4·204 over ⟨2,5,8⟩,
+⟨5,5,8⟩, ⟨5,6,8⟩, ⟨5,7,8⟩. **The component schemes of the first two are Perminov's,
+taken from this catalog** (pinned commit `71920f6b`), as the README records. FMM-Lille
+lists 2829 and 2723 (61 and 31 below its previous entries).
+
+Channel: `UpstreamSchemeRepos.SHUKLA` → `ImportUpstreamSchemeRepos`
+(`io.RankRowSchemeJson`, keys `dimensions` / `rank`). ⟨10,13,36⟩ is past the importer's
+default `--max-dim=32`; the `14x19x18` file is the ⟨14,18,19⟩ scheme in another
+orientation and is not imported twice. Attribution key: `Shukla 2026`.
 
 ## Historical contributors cited in DIS09 (no separate dedicated entry yet)
 

@@ -48,6 +48,14 @@ class TestPerminovKnownAttribution {
 		var mizopl = PerminovKnownAttribution.forPath("schemes/known/mizopl/9x12x14_m954_ZT.json").orElseThrow();
 		assertThat(mizopl.source()).isEqualTo("mizopl 2026");
 		assertThat(mizopl.disposition()).isEqualTo(Disposition.SKIP_FRESH_IMPORT);
+		// The three mirrors the sync job warned about from 2026-11-12 to 11-24 (nobody imported them).
+		assertThat(PerminovKnownAttribution.forPath("schemes/known/gsidebottom/14x14x15_m1715_Q.json").orElseThrow()
+				.source()).isEqualTo("Sidebottom 2026");
+		assertThat(PerminovKnownAttribution.forPath("schemes/known/arhancanli/9x11x11_m708.json").orElseThrow()
+				.source()).isEqualTo("Canli 2026");
+		assertThat(PerminovKnownAttribution
+				.forPath("schemes/known/stapleton/additions_reduced_ZT/2x4x10_m64_cr207_cn489_ZT_reduced.json")
+				.orElseThrow().source()).isEqualTo("Stapleton 2026");
 	}
 
 	@Test

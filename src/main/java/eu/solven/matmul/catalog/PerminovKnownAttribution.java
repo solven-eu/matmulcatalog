@@ -133,6 +133,21 @@ public final class PerminovKnownAttribution {
 			// origin repo (UpstreamSchemeRepos.MIZOPL - rank schemes AND the addition-reduced
 			// SLPs, which the mirror does not carry); issue #20, REFERENCES [92].
 			return Optional.of(new Attribution("mizopl 2026", Disposition.SKIP_FRESH_IMPORT));
+		case "gsidebottom":
+			// Greg Sidebottom's mat_mul (github.com/gsidebottom/mat_mul, Apache-2.0), four schemes
+			// mirrored by Perminov since 2026-11. Pulled from the origin (UpstreamSchemeRepos.SIDEBOTTOM),
+			// which holds a thousand more; REFERENCES [93].
+			return Optional.of(new Attribution("Sidebottom 2026", Disposition.SKIP_FRESH_IMPORT));
+		case "arhancanli":
+			// Arhan Canli's Quantavane records (github.com/arhancanli/quantavane-fmm-records). The
+			// origin publishes Maple tensors, so the two records ARE pulled from this mirror - by
+			// UpstreamSchemeRepos.CANLI, not by ImportPerminovSchemes; REFERENCES [95].
+			return Optional.of(new Attribution("Canli 2026", Disposition.SKIP_FRESH_IMPORT));
+		case "stapleton":
+			// Joshua Stapleton's 81 addition-reduced ternary programs (Perminov's commit of
+			// 2026-11-12; no origin repository carries them). Pulled from this mirror by
+			// UpstreamSchemeRepos.STAPLETON; REFERENCES [96].
+			return Optional.of(new Attribution("Stapleton 2026", Disposition.SKIP_FRESH_IMPORT));
 		default:
 			// An unseen known/<sub>: still NOT Perminov's. Fall back to the aggregator
 			// label so it is at least not miscredited to Perminov.
@@ -152,7 +167,8 @@ public final class PerminovKnownAttribution {
 	 */
 	public static final Set<String> MAPPED_SUBTREES = Set.of("meta_flip_graph", "alpha_tensor", "alpha_evolve",
 			"a_60_addition", "jakobmoosbauer_flips", "jakobmoosbauer_symmetric_flips", "fmm_add_reduction",
-			"classic", "tensor", "matmulcatalog", "MerlijnW70_fmm_schemes", "lita", "cloudroom-math", "mizopl");
+			"classic", "tensor", "matmulcatalog", "MerlijnW70_fmm_schemes", "lita", "cloudroom-math", "mizopl",
+			"gsidebottom", "arhancanli", "stapleton");
 
 	public static boolean isMappedSubtree(String sub) {
 		return MAPPED_SUBTREES.contains(sub);

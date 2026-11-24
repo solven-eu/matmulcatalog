@@ -25,6 +25,11 @@ is the same sequence plus the closure step.
 | **Witteveen 2026** (`MerlijnW70/fmm-schemes`, CC BY 4.0) | explicit ZT schemes ≤ 16 | `UpstreamSchemeRepos.WITTEVEEN` → `ImportUpstreamSchemeRepos` | `Witteveen 2026`, REFERENCES [90] |
 | **Cloudroom Math 2026** (`matyasstoch/cloudroom-math`, Apache-2.0) | explicit schemes, mostly 17–32 | `UpstreamSchemeRepos.CLOUDROOM` → `ImportUpstreamSchemeRepos` | `Cloudroom Math 2026`, REFERENCES [91], issue #12 |
 | **mizopl / we*star 2026** (`mizopl/we-star`, MIT) | explicit ZT/Z rank schemes ≤ 16 (`zt_rank_schemes/`) and 48 addition-reduced SLPs in Perminov's `_reduced` layout (`slp_addition_reduced/`); a Perminov-format `status.json` | `UpstreamSchemeRepos.MIZOPL` → `ImportUpstreamSchemeRepos` (a program is replayed with `SlpJson` and attached to the scheme we hold with the same matrices as `min_additions` + `slp`, or written as a new scheme); `ScanUpstreamSources` reads the `status.json` on the Q / Z / ZT axes | `mizopl 2026`, REFERENCES [92], issue #20; Perminov mirrors four under `known/mizopl/` (`PerminovKnownAttribution` → SKIP_FRESH_IMPORT) |
+| **Sidebottom 2026** (`gsidebottom/mat_mul`, Apache-2.0) | 1030 explicit schemes as gzipped rank-row JSON: `schemes/` (≤ 16, with PLinOpt programs), `large/` (deletions from the LITA squares + 2-reduction, 17–32), `products/` | `UpstreamSchemeRepos.SIDEBOTTOM` → `ImportUpstreamSchemeRepos` (reader `io.RankRowSchemeJson`); **explicit import capped at max dimension 16**, the rest listed in `references/catalogs/upstream-repo-ranks.json` and read by the scan | `Sidebottom 2026`, REFERENCES [93]; Perminov mirrors four under `known/gsidebottom/` (SKIP_FRESH_IMPORT) |
+| **He 2026** (`heht24-cyber/fmm-oblique-records`, MIT) | 58 explicit schemes (10 ≤ 16, 48 up to 30), gzipped rank-row JSON; Perminov issue #18 | `UpstreamSchemeRepos.HE_OBLIQUE`, same cap and digest | `He 2026`, REFERENCES [94] |
+| **Canli 2026** (`arhancanli/quantavane-fmm-records`) | ⟨9,10,11⟩=640, ⟨9,11,11⟩=708 as Maple tensors (`.mpl.bz2`) | `UpstreamSchemeRepos.CANLI` reads Perminov's JSON mirror `known/arhancanli/` | `Canli 2026`, REFERENCES [95] |
+| **Stapleton 2026** (Perminov's `known/stapleton/additions_reduced_ZT/` only) | 80 addition-reduced ternary programs (`_reduced` layout) | `UpstreamSchemeRepos.STAPLETON` (SLP channel, as mizopl's) | `Stapleton 2026`, REFERENCES [96] |
+| **Shukla 2026** (`chandanshukla1989/fmm_decompositions`, no licence file — reuse with attribution per README) | three integer schemes: ⟨14,18,19⟩=2829, ⟨10,19,24⟩=2723, ⟨10,13,36⟩=2786; FMM's `Shukla:2026aa` | `UpstreamSchemeRepos.SHUKLA` (rank-row JSON under `dimensions` / `rank`) | `Shukla 2026`, REFERENCES [97] |
 | **KGP LITA** (`khoruzhii/lita`, no licence file) | the cubes 13³–32³ as `.npz` archives | `ImportKhoruzhiiLita --download --execute` (archives vendored under `external/khoruzhii-lita/`, stubs on `TA_lita_npz(n=N,r=R)`) | `Khoruzhii 2026`, REFERENCES [82] |
 
 Contributions that arrive as a GitHub issue (issues #7, #8, #12) go through
@@ -129,6 +134,13 @@ entry with the numbers.
   source → reference mapping, and — if Perminov mirrors it — a
   `PerminovKnownAttribution` case. The importer's unmapped-subtree warning is how
   such a mirror announces itself.
+- A repository whose schemes are too many / too large to hold as explicit files (Sidebottom:
+  1007 rational schemes of rank 2000–12000 above dimension 16, 390 MB gzipped): give the
+  registry entry an `explicitMaxDim`. The importer then lists what lies above the cap in
+  `references/catalogs/upstream-repo-ranks.json` (lowest rank per sorted shape, from the
+  file listing) and `ScanUpstreamSources` reports every such row as a `base-candidate` — the
+  schemes stay visible as gaps instead of silently absent. Holding them needs an
+  archive-backed lineage atom (the `TA_lita_npz` pattern), not catalog JSON.
 - Any other format: a parser in `io/` and an importer in `docs.migrate` that ends in
   `ImportContributedSchemes.gate` / `write` (the `.npz` and Maple-tensor importers are
   the templates).
@@ -155,4 +167,5 @@ entry with the numbers.
 | the weekly scan crashed (digest download kept an old tail) while its `if: always()` steps posted the stale committed `generated/UPSTREAM_SCAN.md` from 2026-09-30 — issue #16 received "4151 strict gaps" twice (2026-10-26, 2026-11-02) for a 1-gap reality | the report file is deleted before the run and untracked; the summary and issue steps run only on `steps.scan.outcome == success` |
 | the scan compared the char-0 (Q) rank only, so a ZT or Z record we lacked at a shape whose Q rank we matched was invisible — the ten mizopl ZT records of issue #20 (and Perminov's own Z ranks below ours) never alerted | Z and ZT axes per Perminov-layout source, from `fields[]` and `SchemeIO.ternaryOf` (the catalog's one ZT definition); `TestScanUpstreamSources.local_z_and_zt_axes_follow_fields_and_coefficients` |
 | `ImportContributedSchemes.write` rewrote an identical existing file from its matrices ("re-stamping metadata only") — every stamped key (`min_additions`, `slp`, provenance) wiped on a re-import, the normal path of an addition-reduced program over held matrices | the existing file is kept and only missing keys are added; `TestImportContributedSchemes.write_over_an_identical_existing_file_keeps_its_addition_metadata` |
+| the sync job's `[unmapped-subtree]` warning fired every 3 h from 2026-11-12 (`known/stapleton`; `known/gsidebottom` and `known/arhancanli` from 2026-11-16) and nobody read it: three sources sat un-imported until 2026-11-24, six of the nine `base-candidate` rows of issue #25 among them; and the scan had no view at all of a scheme repository beyond what the importer had already pulled | the three subtrees are mapped and each has a registry entry (`TestImportUpstreamSchemeRepos.perminov_mirrors_of_2026_11_are_mapped_and_pulled_by_a_registry_entry`); the rank digest makes every listed repository a scan source (`TestScanUpstreamSources.repo_digest_rows_are_base_candidates_where_the_repository_is_lowest`) |
 | a stored `slp` was write-only: nothing could read a program back, so a wrong schedule (or count) would have sat in the catalog unchallenged | `SlpJson` reads both layouts and `SchemeSlp.reconstructs` replays them; the importer refuses a program that does not reconstruct its matrices; `TestSlpJson` |
