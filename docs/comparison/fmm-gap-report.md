@@ -3,14 +3,14 @@
 Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC ranks) vs our on-disk best (`FieldAwareLookup("R").findRank`). Non-trivial formats only.
 
 - formats compared (we have a scheme): 5426
-- **FMM strictly better than us: 65** (import/derive targets)
-- we tie or beat FMM: 5361
+- **FMM strictly better than us: 99** (import/derive targets)
+- we tie or beat FMM: 5327
 - FMM has it, we have NOTHING: 0
 - SKIPPED synthesized/unverified FMM bounds (empty page / HK-formula): 0
 
-### split of the 65 FMM-better gaps by FMM provenance
-- with a published REFERENCE (real import/cite targets): **7**
-- NO reference = FMM-derived composition (re-derivable by us): **58**
+### split of the 99 FMM-better gaps by FMM provenance
+- with a published REFERENCE (real import/cite targets): **19**
+- NO reference = FMM-derived composition (re-derivable by us): **80**
 
 ## (A) FMM-better WITH a reference — published results to import (sorted by gap)
 
@@ -18,11 +18,23 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | --- | ---: | ---: | ---: | --- |
 | ⟨14,14,15⟩ | 1715 | 1789 | 74 | Sidebottom:2026aa |
 | ⟨14,18,19⟩ | 2829 | 2890 | 61 | Shukla:2026aa |
+| ⟨13,14,14⟩ | 1538 | 1578 | 40 | Sidebottom:2026aa |
+| ⟨13,14,15⟩ | 1645 | 1681 | 36 | Sidebottom:2026aa |
+| ⟨13,13,14⟩ | 1477 | 1511 | 34 | Sidebottom:2026aa |
 | ⟨10,19,24⟩ | 2723 | 2754 | 31 | Shukla:2026aa |
-| ⟨15,16,16⟩ | 2202 | 2219 | 17 | Sidebottom:2026aa |
-| ⟨13,14,14⟩ | 1565 | 1578 | 13 | Sidebottom:2026aa |
-| ⟨13,15,15⟩ | 1763 | 1776 | 13 | Sidebottom:2026aa |
+| ⟨15,16,16⟩ | 2200 | 2219 | 19 | Sidebottom:2026aa |
+| ⟨13,13,15⟩ | 1577 | 1591 | 14 | Sidebottom:2026aa |
+| ⟨13,15,15⟩ | 1762 | 1776 | 14 | Sidebottom:2026aa |
+| ⟨9,11,16⟩ | 987 | 996 | 9 | Sidebottom:2026aa |
 | ⟨14,15,15⟩ | 1842 | 1848 | 6 | Sidebottom:2026aa |
+| ⟨9,11,11⟩ | 705 | 710 | 5 | Sidebottom:2026aa |
+| ⟨9,10,11⟩ | 640 | 644 | 4 | Canli:2026aa |
+| ⟨4,11,13⟩ | 397 | 400 | 3 | Sidebottom:2026aa |
+| ⟨4,11,14⟩ | 426 | 429 | 3 | Sidebottom:2026aa |
+| ⟨9,11,15⟩ | 953 | 956 | 3 | Sidebottom:2026aa |
+| ⟨4,13,14⟩ | 498 | 500 | 2 | Sidebottom:2026aa |
+| ⟨11,13,16⟩ | 1444 | 1446 | 2 | Sidebottom:2026aa |
+| ⟨8,11,13⟩ | 749 | 750 | 1 | Sidebottom:2026aa |
 
 ## (B) FMM-better with NO reference — FMM-derived, re-derivable by us (sorted by gap)
 
@@ -30,8 +42,10 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | --- | ---: | ---: | ---: |
 | ⟨14,14,29⟩ | 3308 | 3382 | 74 |
 | ⟨14,14,30⟩ | 3430 | 3487 | 57 |
+| ⟨14,14,27⟩ | 3131 | 3171 | 40 |
 | ⟨14,15,29⟩ | 3557 | 3592 | 35 |
 | ⟨9,27,29⟩ | 4053 | 4080 | 27 |
+| ⟨18,23,32⟩ | 7101 | 7128 | 27 |
 | ⟨9,24,29⟩ | 3576 | 3600 | 24 |
 | ⟨14,15,28⟩ | 3430 | 3454 | 24 |
 | ⟨16,20,28⟩ | 4936 | 4960 | 24 |
@@ -40,13 +54,13 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨9,21,29⟩ | 3139 | 3160 | 21 |
 | ⟨22,30,30⟩ | 10534 | 10555 | 21 |
 | ⟨23,29,30⟩ | 10721 | 10742 | 21 |
+| ⟨16,16,31⟩ | 4436 | 4455 | 19 |
 | ⟨14,14,19⟩ | 2247 | 2265 | 18 |
-| ⟨16,16,31⟩ | 4438 | 4455 | 17 |
 | ⟨16,20,29⟩ | 5256 | 5272 | 16 |
 | ⟨14,14,17⟩ | 2016 | 2031 | 15 |
 | ⟨14,14,31⟩ | 3609 | 3624 | 15 |
+| ⟨18,23,31⟩ | 6994 | 7009 | 15 |
 | ⟨14,14,25⟩ | 2947 | 2960 | 13 |
-| ⟨14,14,27⟩ | 3158 | 3171 | 13 |
 | ⟨18,20,23⟩ | 4592 | 4604 | 12 |
 | ⟨23,27,29⟩ | 9592 | 9604 | 12 |
 | ⟨9,26,29⟩ | 3982 | 3993 | 11 |
@@ -54,8 +68,13 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨6,24,29⟩ | 2496 | 2506 | 10 |
 | ⟨24,29,30⟩ | 10824 | 10834 | 10 |
 | ⟨6,26,29⟩ | 2767 | 2776 | 9 |
+| ⟨8,23,28⟩ | 3086 | 3095 | 9 |
 | ⟨9,17,30⟩ | 2711 | 2720 | 9 |
+| ⟨17,23,32⟩ | 6856 | 6865 | 9 |
+| ⟨19,23,31⟩ | 7470 | 7479 | 9 |
+| ⟨19,23,32⟩ | 7633 | 7642 | 9 |
 | ⟨21,28,32⟩ | 10134 | 10143 | 9 |
+| ⟨23,28,32⟩ | 10985 | 10994 | 9 |
 | ⟨9,22,29⟩ | 3400 | 3408 | 8 |
 | ⟨20,24,25⟩ | 6466 | 6474 | 8 |
 | ⟨22,29,31⟩ | 10701 | 10709 | 8 |
@@ -65,27 +84,42 @@ Pure data diff of `references/catalogs/fmm-lille-catalog.json` (FMM published NC
 | ⟨8,27,30⟩ | 3744 | 3750 | 6 |
 | ⟨9,25,29⟩ | 3837 | 3843 | 6 |
 | ⟨14,15,19⟩ | 2399 | 2405 | 6 |
+| ⟨15,16,17⟩ | 2440 | 2446 | 6 |
+| ⟨23,26,32⟩ | 10207 | 10213 | 6 |
 | ⟨6,22,29⟩ | 2353 | 2358 | 5 |
+| ⟨8,23,26⟩ | 2879 | 2884 | 5 |
+| ⟨18,23,23⟩ | 5257 | 5262 | 5 |
 | ⟨22,28,29⟩ | 9654 | 9659 | 5 |
-| ⟨9,10,11⟩ | 640 | 644 | 4 |
-| ⟨15,16,17⟩ | 2442 | 2446 | 4 |
 | ⟨17,20,23⟩ | 4444 | 4448 | 4 |
 | ⟨18,19,23⟩ | 4396 | 4400 | 4 |
 | ⟨18,22,23⟩ | 5052 | 5056 | 4 |
 | ⟨23,27,28⟩ | 9260 | 9264 | 4 |
+| ⟨4,11,29⟩ | 875 | 878 | 3 |
+| ⟨8,23,29⟩ | 3188 | 3191 | 3 |
+| ⟨16,23,26⟩ | 5371 | 5374 | 3 |
+| ⟨17,23,31⟩ | 6714 | 6717 | 3 |
+| ⟨18,23,29⟩ | 6645 | 6648 | 3 |
+| ⟨23,25,32⟩ | 9816 | 9819 | 3 |
+| ⟨4,13,29⟩ | 1018 | 1020 | 2 |
 | ⟨7,9,25⟩ | 1020 | 1022 | 2 |
-| ⟨9,11,11⟩ | 708 | 710 | 2 |
+| ⟨8,23,25⟩ | 2776 | 2778 | 2 |
+| ⟨13,14,29⟩ | 3183 | 3185 | 2 |
 | ⟨14,15,26⟩ | 3253 | 3255 | 2 |
-| ⟨18,23,23⟩ | 5260 | 5262 | 2 |
+| ⟨4,13,26⟩ | 917 | 918 | 1 |
 | ⟨7,7,17⟩ | 572 | 573 | 1 |
 | ⟨7,8,17⟩ | 635 | 636 | 1 |
 | ⟨7,9,19⟩ | 779 | 780 | 1 |
+| ⟨8,22,29⟩ | 3074 | 3075 | 1 |
+| ⟨8,23,27⟩ | 2997 | 2998 | 1 |
 | ⟨9,19,25⟩ | 2541 | 2542 | 1 |
 | ⟨9,23,28⟩ | 3393 | 3394 | 1 |
 | ⟨11,11,17⟩ | 1313 | 1314 | 1 |
 | ⟨11,13,13⟩ | 1204 | 1205 | 1 |
 | ⟨14,14,21⟩ | 2491 | 2492 | 1 |
 | ⟨14,22,25⟩ | 4504 | 4505 | 1 |
+| ⟨15,23,26⟩ | 5166 | 5167 | 1 |
+| ⟨16,23,25⟩ | 5164 | 5165 | 1 |
+| ⟨17,23,25⟩ | 5482 | 5483 | 1 |
 
 ## FMM lists a shape we have no scheme for (first 200 by size)
 
