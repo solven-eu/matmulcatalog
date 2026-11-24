@@ -1359,8 +1359,9 @@ Three groups, 1030 scheme files on 2026-11-24:
 - **`products/`** — 910 files: shared-factor products and deletions from them.
 
 Channel: `UpstreamSchemeRepos.SIDEBOTTOM` → `ImportUpstreamSchemeRepos` (3-hourly sync),
-files read by `io.RankRowSchemeJson` (gzipped; `w` has one row per product — not
-Perminov's layout). **Explicit import is capped at max dimension 16** (the 22 we did not already hold were
+gzipped; `schemes/` is in Perminov's dense layout, `large/` and `products/` in a
+rank-row sparse layout (`w` has one row per product — not Perminov's `_reduced`
+layout) read by `io.RankRowSchemeJson`; the importer dispatches on the file's structure. **Explicit import is capped at max dimension 16** (the 22 we did not already hold were
 gated exactly on import); the 1007 larger ones are rational schemes of rank 2000–12000
 (390 MB gzipped) and are *listed* in `references/catalogs/upstream-repo-ranks.json`,
 which the upstream scan reads as a source — a rank named by a filename, not verified

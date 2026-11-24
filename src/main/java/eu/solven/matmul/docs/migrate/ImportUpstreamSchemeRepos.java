@@ -157,8 +157,12 @@ public final class ImportUpstreamSchemeRepos {
 			Path tmp = Files.createTempFile(repo.key() + "-", ".json");
 			try {
 				Files.write(tmp, download(repo.rawBase() + c.path(), c.path().endsWith(".gz")));
-				ImportContributedSchemes.Gate g = repo.rankRows()
-						? ImportContributedSchemes.gate(RankRowSchemeJson.read(SchemeIO.parseJson(tmp.toFile())), lookup)
+				// A rank-row repository may still publish some files in Perminov's dense layout
+				// (Sidebottom: schemes/ is dense, large/ and products/ are rank rows) - the file's
+				// own structure decides, and the exact gate below refuses a misread either way.
+				JsonNode parsed = repo.rankRows() ? SchemeIO.parseJson(tmp.toFile()) : null;
+				ImportContributedSchemes.Gate g = parsed != null && RankRowSchemeJson.matches(parsed)
+						? ImportContributedSchemes.gate(RankRowSchemeJson.read(parsed), lookup)
 						: ImportContributedSchemes.gate(tmp.toFile(), lookup);
 				NonCubicBilinearAlgorithm alg = g.alg();
 				if (!KnownSchemeKeys.key(alg.n, alg.m, alg.p, alg.r, "").equals(KnownSchemeKeys.key(c.n(), c.m(), c.p(), c.rank(), ""))) {
@@ -350,7 +354,7 @@ public final class ImportUpstreamSchemeRepos {
 				+ " Against this catalog over Q at import time: " + g.vsCatalog() + ". Record status (any ring / Z / ZT"
 				+ " class) not yet audited against the dataset's own table — `discovery` stays TBD until it is"
 				+ " (RestampContributedProvenance).";
-		String notes = "Re-encoded from the upstream " + (repo.rankRows() ? "rank-row sparse" : "Perminov-style")
+		String notes = "Re-encoded from the upstream " + (repo.rankRows() ? "rank-row sparse or Perminov-style" : "Perminov-style")
 				+ " JSON (n, m, u, v, w) into the catalog's canonical"
 				+ " format — no coefficient was changed. " + repo.citation() + ".";
 		return new ImportContributedSchemes.Options(List.of(), repo.note(), repo.source(), repo.year(),

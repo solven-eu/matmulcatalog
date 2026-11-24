@@ -139,5 +139,14 @@ public class TestRankRowSchemeJson {
 		ArrayNode w = root.putArray("w");
 		for (int pos = 0; pos < 8; pos++) w.addArray().addObject().put("index", pos).put("value", 1);
 		assertThat(RankRowSchemeJson.matches(root)).isFalse();
+
+		// Perminov's DENSE layout (rank rows of dim numbers) - what Sidebottom's schemes/ folder
+		// uses beside the rank-row files of large/ and products/: the importer dispatches on this.
+		ArrayNode dense = root.putArray("w");
+		for (int k = 0; k < 24; k++) {
+			ArrayNode row = dense.addArray();
+			for (int pos = 0; pos < 8; pos++) row.add(pos == k % 8 ? 1 : 0);
+		}
+		assertThat(RankRowSchemeJson.matches(root)).isFalse();
 	}
 }

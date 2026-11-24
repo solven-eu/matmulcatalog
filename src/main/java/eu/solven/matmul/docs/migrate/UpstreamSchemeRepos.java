@@ -128,7 +128,7 @@ public final class UpstreamSchemeRepos {
 	 * {@code schemes/} (records up to 16, with PLinOpt programs beside the JSON), {@code large/}
 	 * (deletions from the LITA squares 17³–32³, each followed by LITA's 2-reduction) and
 	 * {@code products/} (shared-factor products and deletions from them); the scheme itself is
-	 * {@code {shape}_m{rank}[_{ZT|Z|Q}].json.gz} in the rank-row layout. Perminov mirrors four
+	 * {@code {shape}_m{rank}[_{ZT|Z|Q}].json.gz} - Perminov dense layout under {@code schemes/}, rank rows under the two others. Perminov mirrors four
 	 * under {@code known/gsidebottom/}; we pull from the origin.
 	 */
 	public static final UpstreamSchemeRepo SIDEBOTTOM = new UpstreamSchemeRepo("sidebottom", "gsidebottom/mat_mul",
