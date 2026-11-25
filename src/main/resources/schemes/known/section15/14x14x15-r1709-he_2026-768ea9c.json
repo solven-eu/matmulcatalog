@@ -20524,16 +20524,16 @@
   "fields_not": [],
   "commutative": false,
   "source": "He 2026",
-  "year": 2026,
-  "source_url": "https://github.com/heht24-cyber/fmm-oblique-records",
-  "discovery": "TBD",
-  "discovery_note": "Haotian He, Oblique hyperplane projection deletion for fast matrix multiplication, github.com/heht24-cyber/fmm-oblique-records (release v1.0) — licensed MIT. Auto-imported 2026-11-24 by ImportUpstreamSchemeRepos (exact BigInteger symbolic proof, random spot-check, mod-2 / mod-3 reductions, canonical-disk round-trip). Against this catalog over Q at import time: BEATS 1789 (−80). Record status (any ring / Z / ZT class) not yet audited against the dataset's own table — `discovery` stays TBD until it is (RestampContributedProvenance).",
-  "notes": "Re-encoded from the upstream rank-row sparse JSON (n, m, u, v, w) into the catalog's canonical format — no coefficient was changed. Haotian He, Oblique hyperplane projection deletion for fast matrix multiplication, github.com/heht24-cyber/fmm-oblique-records (release v1.0) — licensed MIT.",
   "verified": true,
   "additions": 152855,
   "has_buds": true,
   "buds": "153×U⟨1,1,2⟩ + 36×V⟨2,1,1⟩ + 36×W⟨1,2,1⟩ + 1259×⟨1,1,1⟩",
   "projection_margin": 29,
   "original_source_path": "schemes_classic_le16/14x14x15_m1709_Q.json.gz",
-  "source_scheme_url": "https://github.com/heht24-cyber/fmm-oblique-records/blob/main/schemes_classic_le16/14x14x15_m1709_Q.json.gz"
+  "source_scheme_url": "https://github.com/heht24-cyber/fmm-oblique-records/blob/main/schemes_classic_le16/14x14x15_m1709_Q.json.gz",
+  "year": 2026,
+  "source_url": "https://github.com/heht24-cyber/fmm-oblique-records",
+  "discovery": true,
+  "discovery_note": "Haotian He, Oblique hyperplane projection deletion for fast matrix multiplication (release v1.0, announced 2026-11-24 as issue 18 of dronperminov/FastMatrixMultiplication), github.com/heht24-cyber/fmm-oblique-records — licensed MIT. Non-commutative scheme over ℚ (ℤ[1/2] for ⟨9,11,11⟩, ⟨9,11,15⟩, ⟨11,11,16⟩). Audit 2026-11-25: the dataset's own table compares each of the ten ≤ 16 ranks with Sedoglavic's fmm_digest (2026-11-23), Perminov's catalog (2026-11-16), Sidebottom's mat_mul (2026-11-22) and Quantavane (2026-11-14) and reports each strictly below all four — ⟨9,11,11⟩ 702 (was 705), ⟨9,11,15⟩ 949 (953), ⟨11,11,16⟩ 1224 (1230), ⟨12,13,13⟩ 1270 (1274), ⟨13,14,15⟩ 1644 (1645), ⟨14,14,15⟩ 1709 (1715), ⟨14,15,15⟩ 1836 (1842), ⟨14,16,16⟩ 2110 (2128), ⟨15,15,16⟩ 2105 (2132), ⟨15,16,16⟩ 2173 (2193); each was also strictly below this catalog's ℚ rank at import (exact gate: symbolic identity, spot-check, mod-2 / mod-3 reductions, disk round-trip). FMM-Lille cites \"He 2026\" for these formats as of its index of 2026-11-24. An upper bound: nothing here is a claim of minimality.",
+  "notes": "Re-encoded from the upstream gzipped rank-row sparse JSON (n, m, u_sparse, v_sparse, w_sparse) into the catalog's canonical format — no coefficient was changed. MIT: credit Haotian He. The author states the search and certification were developed with AI assistance. Parents: KGP LITA squares (Khoruzhii 2026) and schemes of Perminov and Sidebottom."
 }

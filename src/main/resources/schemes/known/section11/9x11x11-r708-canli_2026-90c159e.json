@@ -8512,16 +8512,16 @@
   "fields_not": [],
   "commutative": false,
   "source": "Canli 2026",
-  "year": 2026,
-  "source_url": "https://github.com/dronperminov/FastMatrixMultiplication",
-  "discovery": "TBD",
-  "discovery_note": "Arhan Canli, Quantavane FMM records, github.com/arhancanli/quantavane-fmm-records — read from Andrew Perminov's mirror (FastMatrixMultiplication schemes/known/arhancanli). Auto-imported 2026-11-24 by ImportUpstreamSchemeRepos (exact BigInteger symbolic proof, random spot-check, mod-2 / mod-3 reductions, canonical-disk round-trip). Against this catalog over Q at import time: BEATS 710 (−2). Record status (any ring / Z / ZT class) not yet audited against the dataset's own table — `discovery` stays TBD until it is (RestampContributedProvenance).",
-  "notes": "Re-encoded from the upstream Perminov-style JSON (n, m, u, v, w) into the catalog's canonical format — no coefficient was changed. Arhan Canli, Quantavane FMM records, github.com/arhancanli/quantavane-fmm-records — read from Andrew Perminov's mirror (FastMatrixMultiplication schemes/known/arhancanli).",
   "verified": true,
   "additions": 38105,
   "has_buds": true,
   "buds": "4×V⟨2,1,1⟩ + 7×W⟨1,2,1⟩ + 686×⟨1,1,1⟩",
   "projection_margin": 17,
   "original_source_path": "schemes/known/arhancanli/9x11x11_m708.json",
-  "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/known/arhancanli/9x11x11_m708.json"
+  "source_scheme_url": "https://github.com/dronperminov/FastMatrixMultiplication/blob/master/schemes/known/arhancanli/9x11x11_m708.json",
+  "year": 2026,
+  "source_url": "https://github.com/arhancanli/quantavane-fmm-records",
+  "discovery": true,
+  "discovery_note": "Arhan Canli, Quantavane FMM records, github.com/arhancanli/quantavane-fmm-records (2026-11) — read from Andrew Perminov's mirror (FastMatrixMultiplication schemes/known/arhancanli, 2026-11-16). Non-commutative scheme over ℚ. Audit 2026-11-25: ⟨9,10,11⟩ 640 (this catalog, Perminov and FMM-Lille held 644) and ⟨9,11,11⟩ 708 (710, Cloudroom Math 2026); FMM-Lille took up 708 on 2026-11-15 (per Sidebottom's README) and lists 640, Perminov's status.json carries both. ⟨9,11,11⟩ has since been lowered to 705 (Sidebottom 2026, 2026-11-20) and 702 (He 2026, 2026-11-24); 640 stands. Upper bounds.",
+  "notes": "Re-encoded from Perminov's JSON mirror of the author's Maple tensors into the catalog's canonical format — no coefficient was changed. Credit Arhan Canli. The origin repository's intermediate schemes (641, 642, 643 for ⟨9,10,11⟩; 709 for ⟨9,11,11⟩) are not mirrored and not imported."
 }
