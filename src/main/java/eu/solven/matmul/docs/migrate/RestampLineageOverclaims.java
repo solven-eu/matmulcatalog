@@ -49,6 +49,9 @@ public final class RestampLineageOverclaims {
 
 	public static void main(String[] args) throws Exception {
 		boolean execute = List.of(args).contains("--execute");
+		// --overclaims-only: repair just what VerifySchemes --check=lineage refuses (a char-0 field
+		// declared below the lineage floor), not the wider "honest stub form" normalisation.
+		boolean overclaimsOnly = List.of(args).contains("--overclaims-only");
 		Path root = Path.of("src/main/resources/schemes");
 		FieldAwareLookup lookup = new FieldAwareLookup("Q");
 
@@ -74,6 +77,7 @@ public final class RestampLineageOverclaims {
 				List<String> declared = SchemeIO.fieldTags(parsed);
 				Field narrowest = narrowestChar0(declared);
 				boolean overClaim = narrowest != null && char0Rank(narrowest) < char0Rank(floor);
+				if (overclaimsOnly && !overClaim) continue;
 
 				boolean hasMatrices = parsed.has("u") || parsed.has("u_sparse");
 				boolean contentEligible = hasMatrices && !SchemeIO.isComplex(parsed)

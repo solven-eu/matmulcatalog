@@ -270,6 +270,10 @@ public final class MaterialiseSubstitutionProjections {
 			return;
 		}
 		if (maxDim > CatalogPolicy.MATERIALISE_MAX_DIM) {
+			// A stub claims what its atoms prove: integer coefficients out of a parent that declares
+			// only Q must not be stamped Z (VerifySchemes --check=lineage refuses it).
+			fields = eu.solven.matmul.docs.verify.VerifyLineageFieldCompat.cappedAtLineageFloor(fields, w.lineage(),
+					lookup);
 			SchemeIO.writeStub(alg, out, w.lineage(), fields);
 		} else {
 			SchemeIO.write(alg, out, w.lineage());

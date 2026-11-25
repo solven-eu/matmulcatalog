@@ -86,6 +86,32 @@ public final class VerifyLineageFieldCompat {
 		return Optional.empty();
 	}
 
+	/**
+	 * {@code fields} without the characteristic-0 tags strictly narrower than the floor the
+	 * lineage's atoms support — what a <em>stub</em> writer must stamp so that {@link #check}
+	 * holds for the file it writes. F₂ / F₃ are left as given (not a lineage fact).
+	 *
+	 * <p>A stub's replay can have integer coefficients while one of its atoms declares only
+	 * {@code Q} (an under-claiming parent, or a Q base whose rational part cancels). Stamping
+	 * {@code Z} from those coefficients then contradicts the lineage — the claim would not be
+	 * what the atoms prove. Two writers did exactly that until 2026-11-25
+	 * ({@code MaterialiseSubstitutionProjections}: fields from the built coefficients;
+	 * {@code RestampStubRanks}: the old stub's fields kept while its bare-shape leaves had moved
+	 * to newly imported Q-only bases) and the PR's catalog verification refused four stubs.</p>
+	 */
+	public static List<String> cappedAtLineageFloor(List<String> fields, Lineage.Node lineage,
+			FieldAwareLookup lookup) {
+		Optional<Field> inferred = lookup.inferFieldFromLineage(lineage).field();
+		if (inferred.isEmpty() || !isChar0(inferred.get())) return fields;
+		int floor = char0Rank(inferred.get());
+		List<String> out = new java.util.ArrayList<>();
+		for (String tag : fields) {
+			Field f = parseChar0(tag);
+			if (f == null || char0Rank(f) >= floor) out.add(tag);
+		}
+		return out;
+	}
+
 	private static boolean isChar0(Field f) {
 		return f == Field.Z || f == Field.Q || f == Field.R || f == Field.C;
 	}
