@@ -1,0 +1,26 @@
+{
+  "lineage_str": "SumInner(OrientAs(2x9x29, ⟨9,2,29⟩), 9x24x29)",
+  "lineage_compact": "2x9x29→⟨9,2,29⟩ +m 9x24x29",
+  "lineage": {
+    "op": "SumInner",
+    "left": {
+      "op": "OrientAs",
+      "n": 9,
+      "m": 2,
+      "p": 29,
+      "axisMap": "mnp",
+      "child": {"op": "Atom", "ref": "2x9x29@4cd5a84"}
+    },
+    "right": {"op": "Atom", "ref": "9x24x29@7f41361b68bf584c4d995ff557f996a3478bbd58177d719ad9f46cd03f4a68ec"}
+  },
+  "n": [9, 26, 29],
+  "m": 3966,
+  "hash": "ed800ccb64049372f67315663aae011a35f90932b0129715ca83ab5530a057ae",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

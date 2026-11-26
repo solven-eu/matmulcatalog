@@ -1,0 +1,19 @@
+{
+  "lineage_str": "SumInner(naive-8x1x30, 8x18x30)",
+  "lineage_compact": "naive-8x1x30 +m 8x18x30",
+  "lineage": {
+    "op": "SumInner",
+    "left": {"op": "Atom", "ref": "naive-8x1x30"},
+    "right": {"op": "Atom", "ref": "8x18x30@e78dfb716c8dccdd8f2919bec7654df9982440b66a55bbbe61d6794e5c1573a5"}
+  },
+  "n": [8, 19, 30],
+  "m": 2766,
+  "hash": "2b6d2d159102acd84b6c4f2149edd75cb2e5317e71f5cc9db0bdadc3db237b0b",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

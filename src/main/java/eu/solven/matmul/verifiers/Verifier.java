@@ -270,15 +270,16 @@ public class Verifier {
 		final int n = alg.n, m = alg.m, p = alg.p, r = alg.r;
 		FactorMatrix uMat = alg.u(), vMat = alg.v(), wMat = alg.w();
 		// Pass 1 (sparse): common denominator D = lcm of every non-zero coefficient's denom.
-		BigInteger D = BigInteger.ONE;
-		for (FactorMatrix f : new FactorMatrix[] { uMat, vMat, wMat }) {
-			for (int k = 0; k < r; k++) {
-				for (double v : col(f, k).vals) {
-					D = SymbolicVerifier.lcm(D, SymbolicVerifier.denominatorOf(v));
-				}
-			}
-		}
+		BigInteger D = commonDenominator(alg);
 		BigInteger D3 = D.multiply(D).multiply(D);
+		// A dense rational scheme of rank ~2000 has ~10⁹ rank-1 monomials: the BigInteger map
+		// below then runs for the better part of an hour (2026-11-24: He's ⟨14,16,16⟩:2110 was
+		// still accumulating after 30 min, which would also time out the 3-hourly sync). The
+		// same identity is decided exactly, in seconds, by residues - see modularDiscrepancy.
+		long cells = (long) n * m * m * p * n * p;
+		if (cells <= MODULAR_MAX_CELLS && monomialCount(uMat, vMat, wMat, r) > MODULAR_MIN_MONOMIALS) {
+			return modularDiscrepancy(alg, D);
+		}
 		// Pass 2 (sparse): accumulate each rank-1 term's outer product as scaled integers.
 		java.util.HashMap<Long, BigInteger> acc = new java.util.HashMap<>();
 		for (int k = 0; k < r; k++) {
@@ -321,6 +322,150 @@ public class Verifier {
 			}
 		}
 		return null;
+	}
+
+	/** Above this many rank-1 monomials {@code Σ_k |supp Uₖ|·|supp Vₖ|·|supp Wₖ|} the exact check
+	 *  runs on residues ({@link #modularDiscrepancy}) instead of a BigInteger map. */
+	static final long MODULAR_MIN_MONOMIALS = 50_000_000L;
+
+	/** Largest {@code (nm)(mp)(np)} the residue path allocates densely (one {@code int} per
+	 *  coefficient of the tensor and per modulus: 512 MB at the limit, n·m·p ≤ 11 585). */
+	static final long MODULAR_MAX_CELLS = 1L << 27;
+
+	/** lcm of the denominators of every non-zero coefficient of the three factors. */
+	static BigInteger commonDenominator(NonCubicBilinearAlgorithm alg) {
+		BigInteger D = BigInteger.ONE;
+		for (FactorMatrix f : new FactorMatrix[] { alg.u(), alg.v(), alg.w() }) {
+			for (int k = 0; k < alg.r; k++) {
+				for (double v : col(f, k).vals) {
+					D = SymbolicVerifier.lcm(D, SymbolicVerifier.denominatorOf(v));
+				}
+			}
+		}
+		return D;
+	}
+
+	private static long monomialCount(FactorMatrix u, FactorMatrix v, FactorMatrix w, int r) {
+		long total = 0;
+		for (int k = 0; k < r; k++) {
+			total += (long) col(u, k).rows.length * col(v, k).rows.length * col(w, k).rows.length;
+		}
+		return total;
+	}
+
+	/**
+	 * The exact check of {@link #exactDiscrepancyNonCubic} carried out on residues: the same
+	 * integers (every coefficient scaled by the common denominator {@code D}), the same
+	 * identity (each matmul-target coefficient equals {@code D³}, every other one is 0),
+	 * decided modulo several word-size moduli over a dense array instead of in a
+	 * {@code HashMap<Long, BigInteger>}.
+	 *
+	 * <p><b>Why this is a proof and not a probabilistic test.</b> Let {@code E} be a tensor
+	 * coefficient of the scaled scheme and {@code T ∈ {0, D³}} its target. Product {@code k}
+	 * contributes at most one monomial to a given {@code (a,b,c)} (a sparse column lists each
+	 * row once), of absolute value at most {@code max|Uₖ|·max|Vₖ|·max|Wₖ|}; so
+	 * {@code |E| ≤ B := Σ_k max|Uₖ|·max|Vₖ|·max|Wₖ|} and {@code |E − T| ≤ B + D³}. The moduli
+	 * (odd numbers downward from 2³¹ − 1) are taken until their least
+	 * common multiple {@code L} exceeds {@code 2(B + D³)}; {@code E ≡ T} modulo each of them
+	 * gives {@code L | E − T}, hence {@code E = T}. No primality is assumed: the argument
+	 * only uses the lcm, which is computed, not estimated.</p>
+	 *
+	 * @return {@code null} when the scheme is exact, else the first failing coefficient
+	 */
+	static String modularDiscrepancy(NonCubicBilinearAlgorithm alg, BigInteger D) {
+		final int n = alg.n, m = alg.m, p = alg.p, r = alg.r;
+		final int dimU = n * m, dimV = m * p, dimW = n * p;
+		final long cells = (long) dimU * dimV * dimW;
+		if (cells > MODULAR_MAX_CELLS) {
+			throw new IllegalArgumentException("modular exact check: " + cells + " tensor coefficients exceed "
+					+ MODULAR_MAX_CELLS);
+		}
+		FactorMatrix uMat = alg.u(), vMat = alg.v(), wMat = alg.w();
+		int[][] uRows = new int[r][], vRows = new int[r][], wRows = new int[r][];
+		BigInteger[][] uN = new BigInteger[r][], vN = new BigInteger[r][], wN = new BigInteger[r][];
+		BigInteger bound = BigInteger.ZERO;
+		for (int k = 0; k < r; k++) {
+			Col cu = col(uMat, k), cv = col(vMat, k), cw = col(wMat, k);
+			uRows[k] = cu.rows;
+			vRows[k] = cv.rows;
+			wRows[k] = cw.rows;
+			uN[k] = scaleInts(cu.vals, D);
+			vN[k] = scaleInts(cv.vals, D);
+			wN[k] = scaleInts(cw.vals, D);
+			bound = bound.add(maxAbs(uN[k]).multiply(maxAbs(vN[k])).multiply(maxAbs(wN[k])));
+		}
+		BigInteger D3 = D.multiply(D).multiply(D);
+		BigInteger need = bound.add(D3).shiftLeft(1);
+		java.util.List<Long> moduli = new java.util.ArrayList<>();
+		BigInteger lcm = BigInteger.ONE;
+		for (long mod = Integer.MAX_VALUE; lcm.compareTo(need) <= 0; mod -= 2) {
+			moduli.add(mod);
+			lcm = SymbolicVerifier.lcm(lcm, BigInteger.valueOf(mod));
+		}
+		// One dense int[] per modulus: in parallel while they fit comfortably, else one at a time.
+		java.util.stream.Stream<Long> stream = cells <= (1L << 24) ? moduli.parallelStream() : moduli.stream();
+		return stream.map(mod -> modularDiscrepancy(n, m, p, r, uRows, vRows, wRows, uN, vN, wN, D3, mod))
+				.filter(java.util.Objects::nonNull).findFirst().orElse(null);
+	}
+
+	private static String modularDiscrepancy(int n, int m, int p, int r, int[][] uRows, int[][] vRows, int[][] wRows,
+			BigInteger[][] uN, BigInteger[][] vN, BigInteger[][] wN, BigInteger D3, long mod) {
+		final int dimV = m * p, dimW = n * p;
+		BigInteger bigMod = BigInteger.valueOf(mod);
+		int[] acc = new int[n * m * dimV * dimW];
+		for (int k = 0; k < r; k++) {
+			long[] um = residues(uN[k], bigMod), vm = residues(vN[k], bigMod), wm = residues(wN[k], bigMod);
+			int[] ur = uRows[k], vr = vRows[k], wr = wRows[k];
+			for (int ai = 0; ai < ur.length; ai++) {
+				if (um[ai] == 0) continue;
+				int baseA = ur[ai] * dimV * dimW;
+				for (int bi = 0; bi < vr.length; bi++) {
+					long uv = um[ai] * vm[bi] % mod; // both < 2³¹
+					if (uv == 0) continue;
+					int baseAb = baseA + vr[bi] * dimW;
+					for (int ci = 0; ci < wr.length; ci++) {
+						int idx = baseAb + wr[ci];
+						acc[idx] = (int) ((acc[idx] + uv * wm[ci]) % mod); // < 2³¹ + 2⁶²
+					}
+				}
+			}
+		}
+		int target = D3.mod(bigMod).intValueExact();
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				for (int l = 0; l < p; l++) {
+					int idx = ((i * m + j) * dimV + (j * p + l)) * dimW + (i * p + l);
+					if (acc[idx] != target) {
+						return String.format("⟨%d,%d,%d⟩ matmul term (i=%d,j=%d,l=%d) ≢ D³ (mod %d): residue %d, want %d",
+								n, m, p, i, j, l, mod, acc[idx], target);
+					}
+					acc[idx] = 0;
+				}
+			}
+		}
+		for (int idx = 0; idx < acc.length; idx++) {
+			if (acc[idx] != 0) {
+				int c = idx % dimW, b = (idx / dimW) % dimV, a = idx / dimW / dimV;
+				return String.format("⟨%d,%d,%d⟩ spurious term (a=%d,b=%d,c=%d) ≢ 0 (mod %d): residue %d", n, m, p, a,
+						b, c, mod, acc[idx]);
+			}
+		}
+		return null;
+	}
+
+	private static BigInteger maxAbs(BigInteger[] xs) {
+		BigInteger best = BigInteger.ZERO;
+		for (BigInteger x : xs) {
+			if (x.abs().compareTo(best) > 0) best = x.abs();
+		}
+		return best;
+	}
+
+	/** Non-negative residues, each below {@code mod} (&lt; 2³¹). */
+	private static long[] residues(BigInteger[] xs, BigInteger mod) {
+		long[] out = new long[xs.length];
+		for (int i = 0; i < xs.length; i++) out[i] = xs[i].mod(mod).longValueExact();
+		return out;
 	}
 
 	private static BigInteger[] scaleInts(double[] vals, BigInteger D) {

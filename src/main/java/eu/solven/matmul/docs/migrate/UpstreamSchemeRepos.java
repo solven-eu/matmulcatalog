@@ -45,9 +45,22 @@ public final class UpstreamSchemeRepos {
 	 * @param citation how to credit the dataset (licence included) — goes into {@code discovery_note}
 	 * @param slpGroup the pattern group that matches only on an addition-reduced (SLP) file,
 	 *                 or 0 when the repository publishes none
+	 * @param rankRows the files are in the rank-row sparse layout ({@code io.RankRowSchemeJson}:
+	 *                 {@code w} has one row per product), not Perminov's
+	 * @param explicitMaxDim largest dimension imported as an explicit catalog file. Above it a
+	 *                 scheme is only <em>listed</em> (the rank digest
+	 *                 {@code references/catalogs/upstream-repo-ranks.json}, read by the upstream
+	 *                 scan): the repositories that set it publish hundreds of rational schemes of
+	 *                 rank 2000–12000 whose canonical JSON runs to tens of MB each
 	 */
 	public record UpstreamSchemeRepo(String key, String repo, String branch, Pattern name, String note, String source,
-			int year, String citation, int slpGroup) {
+			int year, String citation, int slpGroup, boolean rankRows, int explicitMaxDim) {
+
+		/** A Perminov-layout repository, imported explicitly at every dimension. */
+		public UpstreamSchemeRepo(String key, String repo, String branch, Pattern name, String note, String source,
+				int year, String citation, int slpGroup) {
+			this(key, repo, branch, name, note, source, year, citation, slpGroup, false, Integer.MAX_VALUE);
+		}
 
 		/** A repository without addition-reduced programs. */
 		public UpstreamSchemeRepo(String key, String repo, String branch, Pattern name, String note, String source,
@@ -110,7 +123,83 @@ public final class UpstreamSchemeRepos {
 			"mizopl (we*star), Fast matrix multiplication: ZT/Z rank schemes and addition-reduced SLPs, "
 					+ "github.com/mizopl/we-star (solutions/fast-matrix-multiplication) — licensed MIT", 6);
 
-	public static final List<UpstreamSchemeRepo> ALL = List.of(WITTEVEEN, CLOUDROOM, MIZOPL);
+	/**
+	 * Greg Sidebottom's {@code mat_mul} — REFERENCES [93]. One folder per scheme under
+	 * {@code schemes/} (records up to 16, with PLinOpt programs beside the JSON), {@code large/}
+	 * (deletions from the LITA squares 17³–32³, each followed by LITA's 2-reduction) and
+	 * {@code products/} (shared-factor products and deletions from them); the scheme itself is
+	 * {@code {shape}_m{rank}[_{ZT|Z|Q}].json.gz} - Perminov dense layout under {@code schemes/}, rank rows under the two others. Perminov mirrors four
+	 * under {@code known/gsidebottom/}; we pull from the origin.
+	 */
+	public static final UpstreamSchemeRepo SIDEBOTTOM = new UpstreamSchemeRepo("sidebottom", "gsidebottom/mat_mul",
+			"main",
+			Pattern.compile("^(?:schemes|large|products)/[^/]+/(\\d+)x(\\d+)x(\\d+)_m(\\d+)(?:_(ZT|Z|Q))?\\.json\\.gz$"),
+			"sidebottom_2026", "Sidebottom 2026", 2026,
+			"Greg Sidebottom, mat_mul: matrix multiplication schemes — rank and operation-count records, in PLinOpt "
+					+ "format, with Lean 4 proofs, github.com/gsidebottom/mat_mul — licensed Apache-2.0",
+			0, true, 16);
+
+	/**
+	 * Haotian He's oblique-projection records — REFERENCES [94], announced as Perminov's
+	 * issue #18 (2026-11-24). {@code schemes_classic_le16/} (10 schemes) and
+	 * {@code schemes_large/} (48, up to 30), {@code {shape}_m{rank}_{dyadic|Q}.json.gz} in the
+	 * rank-row layout. The filename tag names the denominators (dyadic = ℤ[1/2]), not one of
+	 * our coefficient classes — every file is a Q scheme — so it is not captured.
+	 */
+	public static final UpstreamSchemeRepo HE_OBLIQUE = new UpstreamSchemeRepo("he-oblique",
+			"heht24-cyber/fmm-oblique-records", "main",
+			Pattern.compile("^schemes_(?:classic_le16|large)/(\\d+)x(\\d+)x(\\d+)_m(\\d+)_[A-Za-z0-9]+\\.json\\.gz$"),
+			"he_2026", "He 2026", 2026,
+			"Haotian He, Oblique hyperplane projection deletion for fast matrix multiplication, "
+					+ "github.com/heht24-cyber/fmm-oblique-records (release v1.0) — licensed MIT",
+			0, true, 16);
+
+	/**
+	 * Arhan Canli's Quantavane records ⟨9,10,11⟩=640 and ⟨9,11,11⟩=708 — REFERENCES [95]. The
+	 * origin ({@code arhancanli/quantavane-fmm-records}) publishes Maple tensors
+	 * ({@code .mpl.bz2}); Perminov's mirror {@code known/arhancanli/} holds the two records as
+	 * JSON, which is what this entry pulls. The origin's intermediate schemes (641, 642, 643,
+	 * 709) are not mirrored and not imported.
+	 */
+	public static final UpstreamSchemeRepo CANLI = new UpstreamSchemeRepo("canli",
+			"dronperminov/FastMatrixMultiplication", "master",
+			Pattern.compile("^schemes/known/arhancanli/(\\d+)x(\\d+)x(\\d+)_m(\\d+)\\.json$"), "canli_2026",
+			"Canli 2026", 2026,
+			"Arhan Canli, Quantavane FMM records, github.com/arhancanli/quantavane-fmm-records — read from Andrew "
+					+ "Perminov's mirror (FastMatrixMultiplication schemes/known/arhancanli)");
+
+	/**
+	 * Joshua Stapleton's 81 addition-reduced ternary programs — REFERENCES [96]. Published in
+	 * Perminov's repository only ({@code known/stapleton/additions_reduced_ZT/}, his commit of
+	 * 2026-11-12), in his {@code _reduced} layout — group 6 marks the program.
+	 */
+	public static final UpstreamSchemeRepo STAPLETON = new UpstreamSchemeRepo("stapleton",
+			"dronperminov/FastMatrixMultiplication", "master",
+			Pattern.compile("^schemes/known/stapleton/additions_reduced_ZT/"
+					+ "(\\d+)x(\\d+)x(\\d+)_m(\\d+)(?:_cr\\d+_cn\\d+)?_([A-Za-z0-9]+?)(_reduced)?\\.json$"),
+			"stapleton_2026", "Stapleton 2026", 2026,
+			"Joshua Stapleton, addition-reduced ternary schemes, read from Andrew Perminov's "
+					+ "FastMatrixMultiplication (schemes/known/stapleton/additions_reduced_ZT)", 6);
+
+	/**
+	 * Chandan Shukla's three integer decompositions — REFERENCES [97], the "Shukla 2026" FMM-Lille
+	 * cites for ⟨10,19,24⟩=2723 and ⟨14,18,19⟩=2829 (the third, ⟨10,13,36⟩=2786, is past the
+	 * importer's default {@code --max-dim=32}). {@code tensorDecomposition/{shape}_rank{r}.json},
+	 * rank rows of {@code [index, value]} under {@code dimensions} / {@code rank}; the
+	 * {@code 14x19x18} file is the same scheme in another orientation and reads as already held.
+	 * No licence file; the README offers the coefficient data "for free reuse … with attribution".
+	 */
+	public static final UpstreamSchemeRepo SHUKLA = new UpstreamSchemeRepo("shukla",
+			"chandanshukla1989/fmm_decompositions", "main",
+			Pattern.compile("^tensorDecomposition/(\\d+)x(\\d+)x(\\d+)_rank(\\d+)\\.json$"), "shukla_2026",
+			"Shukla 2026", 2026,
+			"Chandan Shukla, Verified bilinear decompositions for three small matrix formats, "
+					+ "github.com/chandanshukla1989/fmm_decompositions — coefficient data offered for free reuse with "
+					+ "attribution (README)",
+			0, true, Integer.MAX_VALUE);
+
+	public static final List<UpstreamSchemeRepo> ALL = List.of(WITTEVEEN, CLOUDROOM, MIZOPL, SIDEBOTTOM, HE_OBLIQUE,
+			CANLI, STAPLETON, SHUKLA);
 
 	public static UpstreamSchemeRepo byKey(String key) {
 		return ALL.stream().filter(r -> r.key().equals(key)).findFirst()

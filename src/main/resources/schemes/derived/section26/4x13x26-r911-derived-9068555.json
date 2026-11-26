@@ -1,0 +1,50 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(ConcatRows(Recombination(base=Transpose(2x4x5, perm=\"ABC->CAB\"), allocA=[1, 1, 1, 1, 1], allocB=[1, 1], allocC=[1, 1, 1, 1], leaves=[naive-1x1x1]), OrientAs(2x4x8-r51-alphaevolve-0426307, ⟨8,2,4⟩)), ⟨4,13,2⟩), 4x13x24)",
+  "lineage_compact": "R[2x4x5^ABC->CAB; 1,1,1,1,1 | 1,1 | 1,1,1,1] +n 2x4x8-r51-alphaevolve-0426307→⟨8,2,4⟩→⟨4,13,2⟩ +p 4x13x24",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 13,
+      "p": 2,
+      "axisMap": "pnm",
+      "child": {
+        "op": "ConcatRows",
+        "top": {
+          "op": "Recombination",
+          "base": {
+            "op": "Transpose",
+            "perm": "ABC->CAB",
+            "child": {"op": "Atom", "ref": "2x4x5@6216e1524c45656324cbdfd4107eab950cdff4a85a8c97d03d92c1adf609a69f"}
+          },
+          "allocA": [1, 1, 1, 1, 1],
+          "allocB": [1, 1],
+          "allocC": [1, 1, 1, 1],
+          "leaves": [
+            {"op": "Atom", "ref": "naive-1x1x1"}
+          ]
+        },
+        "bottom": {
+          "op": "OrientAs",
+          "n": 8,
+          "m": 2,
+          "p": 4,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "2x4x8-r51-alphaevolve-0426307"}
+        }
+      }
+    },
+    "right": {"op": "Atom", "ref": "4x13x24@3f305b2070cb860ad54541bc0d23563a174525ae7665188f1ee3fe283d9e2572"}
+  },
+  "n": [4, 13, 26],
+  "m": 911,
+  "hash": "90685558682710fcd9f91100f12ab83a4bc5e32a441795e99bc18d5e7a41cd87",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

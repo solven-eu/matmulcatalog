@@ -1,0 +1,30 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(KronProduct(2x2x2, 5x7x7-r176-perminov_ZT-fb1a527), ⟨14,14,10⟩), 14x14x15)",
+  "lineage_compact": "2x2x2 ⊗ 5x7x7-r176-perminov_ZT-fb1a527→⟨14,14,10⟩ +p 14x14x15",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 14,
+      "m": 14,
+      "p": 10,
+      "axisMap": "mpn",
+      "child": {
+        "op": "KronProduct",
+        "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
+        "inner": {"op": "Atom", "ref": "5x7x7-r176-perminov_ZT-fb1a527"}
+      }
+    },
+    "right": {"op": "Atom", "ref": "14x14x15@768ea9c"}
+  },
+  "n": [14, 14, 25],
+  "m": 2941,
+  "hash": "0b37d78cec04dc3c60efec0aa999ed38a496dd22efbb589916869c3bc96d3d6a",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

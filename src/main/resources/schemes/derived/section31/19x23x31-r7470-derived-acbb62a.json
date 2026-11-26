@@ -1,0 +1,67 @@
+{
+  "lineage_str": "Recombination(base=2x2x2, allocA=[9, 10], allocB=[11, 12], allocC=[16, 15], leaves=[Serendipitous(OrientAs(3x4x5, ⟨5,3,4⟩) ⊗ ⟨2,4,4⟩), 9x11x16, Project(9x13x16, keepN=[0, 1, 2, 3, 4, 5, 6, 7, 8], keepM=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], keepP=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 10x11x15, OrientAs(Serendipitous(OrientAs(3x4x5, ⟨4,3,5⟩) ⊗ ⟨3,3,3⟩), ⟨9,12,15⟩)])",
+  "lineage_compact": "R[2x2x2; 9,10 | 11,12 | 16,15]",
+  "lineage": {
+    "op": "Recombination",
+    "base": {"op": "Atom", "ref": "2x2x2@511df05a3ffd9cf84f7ee974aeef13b93dd09878bccf8186f5323563ced1804a"},
+    "allocA": [9, 10],
+    "allocB": [11, 12],
+    "allocC": [16, 15],
+    "leaves": [
+      {
+        "op": "SerendipitousProduct",
+        "n2": 2,
+        "m2": 4,
+        "p2": 4,
+        "base": {
+          "op": "OrientAs",
+          "n": 5,
+          "m": 3,
+          "p": 4,
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+        }
+      },
+      {"op": "Atom", "ref": "9x11x16@e3f2197"},
+      {
+        "op": "Project",
+        "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "keepM": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        "keepP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "child": {"op": "Atom", "ref": "9x13x16@4b0ebf7"}
+      },
+      {"op": "Atom", "ref": "10x11x15@8fb1ff2"},
+      {
+        "op": "OrientAs",
+        "n": 9,
+        "m": 12,
+        "p": 15,
+        "axisMap": "mnp",
+        "child": {
+          "op": "SerendipitousProduct",
+          "n2": 3,
+          "m2": 3,
+          "p2": 3,
+          "base": {
+            "op": "OrientAs",
+            "n": 4,
+            "m": 3,
+            "p": 5,
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "3x4x5@cd8003c"}
+          }
+        }
+      }
+    ]
+  },
+  "n": [19, 23, 31],
+  "m": 7470,
+  "hash": "acbb62a4bfb0cdf77bc9df35a1b3d2441312792e09e4fbb9f2d874f26561c64c",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -1,0 +1,22 @@
+{
+  "lineage_str": "ConcatCols(4x11x16-r480-perminov_ZT-e1414bd, 4x11x16-r480-perminov_ZT-e1414bd)",
+  "lineage_compact": "4x11x16-r480-perminov_ZT-e1414bd +p 4x11x16-r480-perminov_ZT-e1414bd",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "4x11x16-r480-perminov_ZT-e1414bd"},
+    "right": {"op": "Atom", "ref": "4x11x16-r480-perminov_ZT-e1414bd"}
+  },
+  "n": [4, 11, 32],
+  "m": 954,
+  "hash": "2b2bfc0cf0aacc8b5015a5554831b821e1228049d7a17dd9860168f2dc085db5",
+  "fields": [
+    "F2",
+    "F3",
+    "Z",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub",
+  "verified": true
+}

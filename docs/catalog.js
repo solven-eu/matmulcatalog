@@ -58,6 +58,12 @@ function referencesMdAnchor(sourceKey) {
   if (sourceKey === "Cloudroom Math 2026")                         return "91-cloudroom-math-2026";
   // mizopl / we*star 2026 (github.com/mizopl/we-star, MIT): ZT rank schemes + addition-reduced SLPs, issue #20.
   if (sourceKey === "mizopl 2026")                                 return "92-mizopl-we-star-2026";
+  // Sources of 2026-11 (Perminov issue #18 + his known/gsidebottom, known/arhancanli, known/stapleton mirrors).
+  if (sourceKey === "Sidebottom 2026")                             return "93-sidebottom-2026-mat-mul";
+  if (sourceKey === "He 2026")                                     return "94-he-2026-oblique-projection";
+  if (sourceKey === "Canli 2026")                                  return "95-canli-2026-quantavane";
+  if (sourceKey === "Stapleton 2026")                              return "96-stapleton-2026-addition-reduced";
+  if (sourceKey === "Shukla 2026")                                 return "97-shukla-2026-fmm-decompositions";
   if (sourceKey.startsWith("Schwartz") && sourceKey.includes("2025")) return "19-schwartz-zwecher25";
   if (sourceKey.startsWith("Drevet") && sourceKey.includes("2010")) return "20-drevet-schost-poster";
   if (sourceKey.startsWith("Sedoglavic 2017"))                     return "21-sedoglavic17";

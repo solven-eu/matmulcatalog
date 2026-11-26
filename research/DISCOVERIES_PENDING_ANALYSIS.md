@@ -2511,3 +2511,118 @@ $M eu.solven.matmul.docs.migrate.RestampStubRanks -Dexec.args="--direction=all -
    there — every `Project` stub in the catalog is a candidate for re-pricing by the lemma, a
    catalog-wide campaign); a merge-aware second-order pass; the choice of WHICH m products to
    kill (greedy first-independent today) is a free parameter worth optimising.
+
+## 2026-11-24/25 — Issue #25 (112 scanned gaps) and Perminov's issue #18: five new scheme sources, the closure, and what stays open (326 large schemes listed, not held)
+
+**Claim.** The weekly scan's issue #25 (52 FMM/Sedoglavic rows + 6 Perminov rows on 2026-11-23,
+71 FMM rows by 2026-11-24) was two things: nine `base-candidate` rows whose explicit schemes sat
+in repositories we did not read — six of them mirrored by Perminov under `known/gsidebottom/` and
+`known/arhancanli/`, which the sync job had been *warning* about every three hours since
+2026-11-16 (`known/stapleton/` since 2026-11-12) — and 43 rows FMM prices by recipe (block sums, products, projections), most of them over
+those very bases. Perminov's issue #18 (Haotian He, 2026-11-24) added a
+fourth repository and pointed at Sidebottom's as a fifth; FMM's `Shukla:2026aa` citation was a
+sixth. With the five sources wired in and the closure run, **every index source is at zero**:
+FMM-Lille WORSE 0, Sedoglavic strict gaps 0 (we are below its index on 2002 formats, 1918 on
+2026-11-23), Perminov Q and Z axes 0.
+What remains is new and now visible: **326 explicit schemes for formats with a dimension above
+16 that Sidebottom (279) and He (47) publish below our ranks and that we list but do not hold.**
+
+**Repro.**
+```bash
+M="mvn -q -ntp exec:java -Dexec.mainClass="
+$M eu.solven.matmul.docs.migrate.ImportUpstreamSchemeRepos            # all eight registry repos; writes references/catalogs/upstream-repo-ranks.json
+$M eu.solven.matmul.docs.explore.ScanUpstreamSources -Dexec.args="--refresh --out generated/UPSTREAM_SCAN.md --gaps-out generated/upstream-gaps.json --shapes-out generated/upstream-gaps.txt"
+G=generated/upstream-gaps.txt
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=simple --strategies=concat,kron,recomb --shape-file=$G --threads=12"
+$M eu.solven.matmul.docs.migrate.MaterialiseSubstitutionProjections -Dexec.args="--shapes-file=$G --execute"
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=simple --strategies=concat,kron,recomb --shape-file=$G --threads=12"
+$M eu.solven.matmul.docs.SchemeSweep -Dexec.args="--mode=materialize --field=Q --config=rectangular --baseShape=rectangular --strategies=recomb --shape-file=$G --threads=11"
+$M eu.solven.matmul.docs.migrate.RestampStubRanks -Dexec.args="--direction=all --execute"
+for m in he-2026-oblique shukla-2026 canli-2026; do
+  $M eu.solven.matmul.docs.migrate.RestampContributedProvenance -Dexec.args="--meta=references/contributions/$m.meta.json --execute"; done
+```
+
+**Breakdown (field Q, non-commutative; every rank an upper bound — none is a claim of minimality).**
+
+1. *Sources* (REFERENCES [93]–[97], `UpstreamSchemeRepos`). 116 schemes imported through the
+   exact gate, 27 of them below the catalog's rank at import:
+   - **He 2026** (`heht24-cyber/fmm-oblique-records`, MIT; Perminov issue #18): 10 —
+     ⟨9,11,11⟩ 702, ⟨9,11,15⟩ 949, ⟨11,11,16⟩ 1224, ⟨12,13,13⟩ 1270, ⟨13,14,15⟩ 1644,
+     ⟨14,14,15⟩ 1709 (ours was 1789), ⟨14,15,15⟩ 1836, ⟨14,16,16⟩ 2110, ⟨15,15,16⟩ 2105,
+     ⟨15,16,16⟩ 2173 (2219). `discovery: true` (dataset table + FMM's citation + our rank at import).
+   - **Sidebottom 2026** (`gsidebottom/mat_mul`, Apache-2.0): 22 with max dimension ≤ 16 —
+     records ⟨4,11,13⟩ 397, ⟨4,11,14⟩ 426 (integer), ⟨4,11,16⟩ 477, ⟨4,13,14⟩ 498, ⟨8,11,13⟩ 749,
+     ⟨9,11,16⟩ 987, ⟨11,13,16⟩ 1444, ⟨13,13,14⟩ 1477, ⟨13,13,15⟩ 1577, ⟨13,14,14⟩ 1538,
+     ⟨13,15,15⟩ 1762, plus eleven ranks He or Sidebottom himself has since lowered (kept for the
+     chronology). `discovery` stays TBD (per-file verdicts needed). His PLinOpt programs
+     (operation-count records) are **not** imported — no PLinOpt reader here.
+   - **Shukla 2026** (`chandanshukla1989/fmm_decompositions`, FMM's `Shukla:2026aa`): 2 integer
+     schemes, ⟨14,18,19⟩ 2829 (2890) and ⟨10,19,24⟩ 2723 (2754) — built from Perminov
+     components *taken from this catalog*, by merging outer terms that share a `w`-vector.
+     `discovery: true`.
+   - **Canli 2026** (`arhancanli/quantavane-fmm-records`, via Perminov's JSON mirror): 2 —
+     ⟨9,10,11⟩ 640 (644), ⟨9,11,11⟩ 708 (710). `discovery: true`.
+   - **Stapleton 2026** (Perminov's `known/stapleton/additions_reduced_ZT/`): 80 ternary schemes
+     carrying addition-reduced programs (replayed on import; addition counts are bounds). TBD.
+2. *Two layouts the importer could not read.* Sidebottom's `large/` + `products/`, He's and
+   Shukla's files are gzipped **rank-row** sparse JSON (`w` has one row per product — not
+   Perminov's `_reduced` layout, where `w` has one row per output position), with three
+   spellings. `io.RankRowSchemeJson` reads them; the output index convention (`i·p+j` vs
+   `j·n+i`), stated by neither Sidebottom nor He, is decided by the identity and a file that is a
+   scheme under neither is refused. Sidebottom's `schemes/` folder is Perminov's dense layout;
+   the importer dispatches on the file's structure (the first run refused 21 files loudly).
+3. *The exact gate did not terminate in useful time.* `Verifier.exactDiscrepancyNonCubic`
+   accumulated every tensor coefficient in a `HashMap<Long, BigInteger>`. He's ⟨14,16,16⟩:2110
+   (dense rationals, ~10⁹ monomials) was still accumulating after 30 minutes; the 3-hourly sync
+   would have retried it — and timed out — on every run. Above 5·10⁷ monomials the identity is
+   now decided on residues over a dense array (`modularDiscrepancy`): moduli are taken until
+   their lcm exceeds twice the coefficient bound `Σ_k max|Uₖ|·max|Vₖ|·max|Wₖ| + D³`, so
+   agreement modulo each is equality — a proof, no primality assumed. Same scheme: 29 s.
+   `TestVerifierModularExact` (both paths agree on exact / corrupted schemes; a perturbation by
+   the first modulus is still refused).
+4. *A silent pruning bug in the substitution-projection closure.* `bestFor` skipped a parent that
+   could not win with "twice the guaranteed saving", the saving taken as the *smaller* of the
+   two other dimensions. The lemma saves a specific one (p-drop: `m`), so ⟨6,24,30⟩:2520 was
+   never tried for ⟨6,24,29⟩ (2520 − 24 = 2496 = FMM) and the run said "no parent drops below
+   it" — the root of four of the last eleven rows. Fixed (`hopeless`, an over-estimate);
+   re-running the step over the 303 then-open shapes gave **22 records the old rule had
+   skipped** (⟨4,22,31⟩ 1772 → 1754, ⟨20,22,22⟩ 5118 → 5092, ⟨22,24,25⟩ 6991 → 6963,
+   ⟨24,26,26⟩ 8024 → 7994, …). The 2026-11-09 run of issue #23 used the same rule.
+   `TestSubstitutionProjectionPruning`.
+5. *Closure.* Simple-pool sweep over the 364 scanned shapes: 80 records (block sums / products
+   over the new bases — ⟨14,14,17⟩ 2031 → 2010, ⟨14,14,19⟩ 2265 → 2241, ⟨15,16,17⟩ 2446 → 2413,
+   ⟨14,14,27⟩ 3171 → 3131); substitution projections 59; second sweep 14; rectangular tier 7 —
+   ⟨23,27,28⟩ 9252 (FMM 9260), ⟨23,27,29⟩ 9584 (9592), ⟨23,27,31⟩ 10248 (10274), ⟨22,29,31⟩
+   10698 (10701) below FMM, ⟨23,27,30⟩ 9852, ⟨22,28,29⟩ 9654, ⟨23,29,30⟩ 10721 at FMM; then the
+   22 of item 4 and 3 more block sums. FMM/Sedoglavic strict gaps 71 → 11 → 0.
+   `RestampStubRanks --direction=all`: 132 loose stubs tightened (the new bases lowered what
+   their bare-shape leaves replay to).
+6. *The scan had no view of a repository beyond what the importer had pulled.* Sidebottom and
+   He publish 1055 schemes above dimension 16 (rational, rank 2000–12000; ~420 MB gzipped,
+   several GB as canonical JSON) — too many and too large for explicit catalog files, so the
+   two registry entries carry `explicitMaxDim = 16`. So that the cap does not make them
+   invisible, the importer writes `references/catalogs/upstream-repo-ranks.json` (lowest rank
+   per sorted shape that each repository publishes, read from its file listing) and
+   `ScanUpstreamSources` reads it as a source: a repository row that is the lowest rank of its
+   shape is a `base-candidate` whatever FMM's recipe says. Result: `sidebottom` 279 strict rows
+   (and 205 where we are below him), `he-oblique` 47.
+
+**Status.** Index sources closed (FMM WORSE 0, 13 UNVERIFIED rows unchanged and audited;
+Sedoglavic 0; Perminov Q/Z 0). Open:
+- **326 `base-candidate` rows from the two capped repositories** (ranks named by a filename,
+  not verified here). Two ways to hold them, a decision not taken in this pass:
+  (a) *archive-backed stubs* — vendor the upstream `.json.gz` under
+  `src/main/resources/external/` and pin a data-backed lineage atom, the `TA_lita_npz` pattern
+  (He: about 27 MB for 48 schemes; Sidebottom: 390 MB for 1007);
+  (b) *derive them* — both families are **coordinate / oblique deletions from the LITA squares
+  followed by a Khatri–Rao null-space reduction** (drop a product for every linear dependency
+  among the `Uₖ⊗Vₖ`, `Uₖ⊗Wₖ` or `Vₖ⊗Wₖ`; Sidebottom's certificates list the pivots). We hold
+  the squares and the deletion; the reduction is the missing operator. As a lineage node it
+  would reproduce ⟨16,17,17⟩ 2553 (FMM 2706), ⟨17,19,19⟩ 3354 (3633) and the like from
+  `TA_lita_npz` stubs a few hundred bytes long, and would re-price our own projections.
+- The Perminov ZT axis still lists ⟨4,8,12⟩ 272 and ⟨6,8,9⟩ 296: we hold both ranks as
+  serendipitous-product *stubs*, and the axis counts explicit ternary files only (unchanged
+  since 2026-11-16; upstream has no explicit file for either).
+- Sidebottom's PLinOpt programs (⟨3,3,3⟩:23 with 55 additions, ⟨4,4,4⟩:48 with 201
+  operations, ⟨4,4,4⟩:47 over F₂ with 166 XORs) and Canli's intermediate schemes are not imported.
+- `discovery` TBD on the 22 Sidebottom and 80 Stapleton files.

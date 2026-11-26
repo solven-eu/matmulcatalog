@@ -1,0 +1,43 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(ConcatCols(OrientAs(2x3x4-r20-alphatensor_Z-91c6b69, ⟨2,4,3⟩), 2x4x11-r70-perminov_ZT-0ae9c5e), ⟨4,14,2⟩), OrientAs(4x20x14, ⟨4,14,20⟩))",
+  "lineage_compact": "2x3x4-r20-alphatensor_Z-91c6b69→⟨2,4,3⟩ +p 2x4x11-r70-perminov_ZT-0ae9c5e→⟨4,14,2⟩ +p 4x20x14→⟨4,14,20⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 14,
+      "p": 2,
+      "axisMap": "mpn",
+      "child": {
+        "op": "ConcatCols",
+        "left": {
+          "op": "OrientAs",
+          "n": 2,
+          "m": 4,
+          "p": 3,
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "2x3x4-r20-alphatensor_Z-91c6b69"}
+        },
+        "right": {"op": "Atom", "ref": "2x4x11-r70-perminov_ZT-0ae9c5e"}
+      }
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 14,
+      "p": 20,
+      "axisMap": "npm",
+      "child": {"op": "Atom", "ref": "4x20x14@e6ff579f8eaa2fd3a0be424a9e9a0623cd5b2b0e55feb5718b303d72ae1ac312"}
+    }
+  },
+  "n": [4, 14, 22],
+  "m": 826,
+  "hash": "96d93cc69809a2127b6e93e0c088d68b0defea93035f8aa468f0763cdfe996ad",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

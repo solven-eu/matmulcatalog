@@ -1,0 +1,19 @@
+{
+  "lineage_str": "ConcatCols(4x11x13, 4x11x16)",
+  "lineage_compact": "4x11x13 +p 4x11x16",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {"op": "Atom", "ref": "4x11x13@8aea269"},
+    "right": {"op": "Atom", "ref": "4x11x16@a864a67"}
+  },
+  "n": [4, 11, 29],
+  "m": 874,
+  "hash": "0f7a038ba14c04783b588b26aa8a600ac40814a96b28ce4313801824f229d45e",
+  "fields": [
+    "F3",
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

@@ -129,11 +129,7 @@ public final class MaterialiseSubstitutionProjections {
 					if (pr <= 0 || pr >= eu.solven.matmul.recombination.Recombination.SotaResolver.UNKNOWN_RANK) {
 						continue;
 					}
-					// The lemma guarantees roughly these savings whatever the order (incidental kills can add
-					// a few more): skip a parent that is hopeless even with twice the guaranteed saving.
-					long guaranteed = (dn > 0 ? Math.min(P[1], P[2]) : 0) + (dm > 0 ? Math.min(P[0], P[2]) : 0)
-							+ (dp > 0 ? Math.min(P[0], P[1]) : 0);
-					if (upper != Long.MAX_VALUE && pr - 2L * guaranteed >= upper) {
+					if (hopeless(P, dn, dm, dp, pr, upper)) {
 						continue;
 					}
 					Optional<Parent> parent = parentCache.computeIfAbsent(P[0] + "x" + P[1] + "x" + P[2],
@@ -163,6 +159,29 @@ public final class MaterialiseSubstitutionProjections {
 			}
 		}
 		return Optional.ofNullable(best);
+	}
+
+	/**
+	 * Whether parent {@code P} of rank {@code pr} cannot reach below {@code upper} even with twice
+	 * the lemma's saving (incidental kills add a few products on top of it, never that many).
+	 *
+	 * <p>The lemma's saving per dropped axis is a <em>specific</em> dimension, not the smaller of the
+	 * other two: dropping an index of {@code p} kills {@code m} products, of {@code m} kills
+	 * {@code n}, of {@code n} kills {@code p} ({@link SubstitutionProjection}). With several axes
+	 * dropped the dimensions shrink along the way and the order is free, so the bound uses the
+	 * larger of the two other dimensions of the parent for each axis — an over-estimate, which is
+	 * the safe side for a pruning rule. Until 2026-11-25 this used the <em>smaller</em> one: a
+	 * parent whose real saving exceeded twice that minimum was skipped in silence — ⟨6,24,30⟩:2520
+	 * was never tried for ⟨6,24,29⟩ (saving 24, "guaranteed" 6), the root of four rows of the
+	 * 2026-11-24 gap list ({@code TestMaterialiseSubstitutionProjections}).</p>
+	 */
+	static boolean hopeless(int[] P, int dn, int dm, int dp, int pr, long upper) {
+		if (upper == Long.MAX_VALUE) {
+			return false;
+		}
+		long saving = (dn > 0 ? Math.max(P[1], P[2]) : 0) + (dm > 0 ? Math.max(P[0], P[2]) : 0)
+				+ (dp > 0 ? Math.max(P[0], P[1]) : 0);
+		return pr - 2L * saving >= upper;
 	}
 
 	private static List<List<Integer>> permutations(List<Integer> items) {
@@ -251,6 +270,10 @@ public final class MaterialiseSubstitutionProjections {
 			return;
 		}
 		if (maxDim > CatalogPolicy.MATERIALISE_MAX_DIM) {
+			// A stub claims what its atoms prove: integer coefficients out of a parent that declares
+			// only Q must not be stamped Z (VerifySchemes --check=lineage refuses it).
+			fields = eu.solven.matmul.docs.verify.VerifyLineageFieldCompat.cappedAtLineageFloor(fields, w.lineage(),
+					lookup);
 			SchemeIO.writeStub(alg, out, w.lineage(), fields);
 		} else {
 			SchemeIO.write(alg, out, w.lineage());

@@ -1,0 +1,68 @@
+{
+  "lineage_str": "ConcatCols(OrientAs(ConcatRows(OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,4,3⟩), OrientAs(Recombination(base=ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL, allocA=[1, 1, 1], allocB=[1, 1, 1, 1], allocC=[1, 1, 1, 1, 1, 1, 1], leaves=[naive-1x1x1]), ⟨7,4,3⟩)), ⟨4,14,3⟩), OrientAs(4x20x14, ⟨4,14,20⟩))",
+  "lineage_compact": "R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1]→⟨7,4,3⟩ +n R[ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL; 1,1,1 | 1,1,1,1 | 1,1,1,1,1,1,1]→⟨7,4,3⟩→⟨4,14,3⟩ +p 4x20x14→⟨4,14,20⟩",
+  "lineage": {
+    "op": "ConcatCols",
+    "left": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 14,
+      "p": 3,
+      "axisMap": "mnp",
+      "child": {
+        "op": "ConcatRows",
+        "top": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 4,
+          "p": 3,
+          "axisMap": "pmn",
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        },
+        "bottom": {
+          "op": "OrientAs",
+          "n": 7,
+          "m": 4,
+          "p": 3,
+          "axisMap": "pmn",
+          "child": {
+            "op": "Recombination",
+            "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
+            "allocA": [1, 1, 1],
+            "allocB": [1, 1, 1, 1],
+            "allocC": [1, 1, 1, 1, 1, 1, 1],
+            "leaves": [
+              {"op": "Atom", "ref": "naive-1x1x1"}
+            ]
+          }
+        }
+      }
+    },
+    "right": {
+      "op": "OrientAs",
+      "n": 4,
+      "m": 14,
+      "p": 20,
+      "axisMap": "npm",
+      "child": {"op": "Atom", "ref": "4x20x14@e6ff579f8eaa2fd3a0be424a9e9a0623cd5b2b0e55feb5718b303d72ae1ac312"}
+    }
+  },
+  "n": [4, 14, 23],
+  "m": 862,
+  "hash": "dca6e76eaec33d2a724faaedf05787b8245a0de7f0708bb49d20b2d631417cd1",
+  "fields": [
+    "Q",
+    "R",
+    "C"
+  ],
+  "scheme_type": "stub"
+}

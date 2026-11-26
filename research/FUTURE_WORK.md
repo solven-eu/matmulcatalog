@@ -465,6 +465,34 @@ Recursive split of `⟨p, 2, n⟩` when `n > 2p` into chunks. Doable but
 the catalog's `ConcatSplitSearch` already finds these splits and they
 don't beat known catalog ranks, so the engineering payoff is small.
 
+### Khatri–Rao null-space reduction as a lineage operator (2026-11-25)
+
+Sidebottom 2026 [93] and He 2026 [94] publish 1055 schemes for formats with a
+dimension above 16 that we only *list* (`references/catalogs/upstream-repo-ranks.json`;
+326 of them are below our ranks — the `base-candidate` rows of the upstream scan).
+Both families are the same two steps applied to the KGP LITA squares we already hold
+as `TA_lita_npz` stubs:
+
+1. delete an index — coordinate (`Project`, Sidebottom) or oblique (He: restrict one
+   index space to a hyperplane α^⊥ along β, αᵀβ ≠ 0; our `SubstitutionProjection` is
+   the case α = β = e_k);
+2. **reduce**: for every linear dependency among the columns of a Khatri–Rao product
+   (`Uₖ⊗Vₖ`, `Uₖ⊗Wₖ` or `Vₖ⊗Wₖ`), eliminate one product by pushing its third factor onto
+   the others (Sidebottom: "LITA's 2-reduction"; He: "pivot-exchange reduction").
+
+Step 2 is the missing operator. Sketch: null space modulo two 61-bit primes on a
+randomly compressed `(r+c) × r` matrix, rational reconstruction, canonical pivot
+choice so the node replays bit-for-bit, and the exact gate on the result
+(`Verifier.modularDiscrepancy` makes that cheap) — the search may be heuristic, the
+certificate is not. A `KrReduce(parent, mode)` lineage node would then reproduce e.g.
+ℚ⟨16,17,17⟩ = 2553 (FMM 2706) from a stub of a few hundred bytes, and would also
+re-price our own `Project` / `SubstProject` stubs. The alternative that needs no new
+mathematics is archive-backed stubs (vendor the upstream `.json.gz`, the
+`TA_lita_npz` pattern): about 27 MB for He's 48 schemes, 390 MB for Sidebottom's 1007.
+
+Also open from the same pass: a PLinOpt reader (`.slp` / `.sms`) for Sidebottom's
+operation-count records; the ZT axis of the scan counting a stub that replays ternary.
+
 ---
 
 ## Conventions

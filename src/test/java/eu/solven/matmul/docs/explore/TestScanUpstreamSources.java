@@ -261,4 +261,45 @@ public class TestScanUpstreamSources {
 		assertThat(shapes.get(1)).startsWith(13, 14, 14);
 		assertThat(shapes.get(2)).startsWith(6, 21, 23);
 	}
+
+	/**
+	 * A scheme repository listed in the rank digest is an explicit scheme upstream. Where it is
+	 * the lowest rank of a row, the row is a base to import even when FMM has a recipe for the
+	 * format (the recipe prices FMM's higher rank); where FMM is at least as low, FMM's kind stays.
+	 * Before 2026-11-24 nothing read these repositories above their import cap: a thousand
+	 * explicit schemes below our ranks produced no row at all.
+	 */
+	@Test
+	public void repo_digest_rows_are_base_candidates_where_the_repository_is_lowest() {
+		CanonicalShape s151617 = Shape.of(15, 16, 17).canonical();
+		CanonicalShape s91717 = Shape.of(9, 17, 17).canonical();
+		CanonicalShape s202122 = Shape.of(20, 21, 22).canonical();
+		CanonicalShape s222 = Shape.of(2, 2, 2).canonical();
+		SourceScan none = new SourceScan(List.of(), List.of(), List.of());
+		SourceScan fmm = new SourceScan(List.of(new Gap(4, s151617, 2446, 2442), new Gap(26, s91717, 1600, 1574)),
+				List.of(), List.of());
+		Map<CanonicalShape, FmmMeta> meta = Map.of(
+				s151617, new FmmMeta("⟨15×16×16:2202⟩ + ⟨1×15×16:240⟩", List.of()),
+				s91717, new FmmMeta("ProjOfAlongMode(⟨9×17×18:1591⟩,2)", List.of()));
+		var digest = Map.of("sidebottom", new eu.solven.matmul.docs.migrate.UpstreamRepoRanks.RepoRanks("sidebottom",
+				"gsidebottom/mat_mul", "Sidebottom 2026", 16,
+				Map.of(s151617, 2334, s91717, 1580, s202122, 4987, s222, 7), Map.of()));
+		Map<CanonicalShape, Integer> local = Map.of(s151617, 2446, s91717, 1600, s202122, 5035, s222, 7);
+
+		Map<String, SourceScan> repos = ScanUpstreamSources.scanRepoDigests(digest, local);
+		assertThat(repos.get("sidebottom").gaps()).hasSize(3);
+
+		List<GapRow> rows = ScanUpstreamSources.mergeGaps(none, none, fmm, none, repos, meta);
+		GapRow lower = rows.stream().filter(r -> r.shape().equals(s151617)).findFirst().orElseThrow();
+		assertThat(lower.upstream()).isEqualTo(2334);
+		assertThat(lower.kind()).as("the repository is below FMM's recipe: sweeping cannot reach it")
+				.isEqualTo("base-candidate");
+		assertThat(lower.bySource()).containsEntry("fmm", 2442).containsEntry("sidebottom", 2334);
+		GapRow fmmLower = rows.stream().filter(r -> r.shape().equals(s91717)).findFirst().orElseThrow();
+		assertThat(fmmLower.upstream()).isEqualTo(1574);
+		assertThat(fmmLower.kind()).isEqualTo("closure-candidate:projection");
+		GapRow repoOnly = rows.stream().filter(r -> r.shape().equals(s202122)).findFirst().orElseThrow();
+		assertThat(repoOnly.kind()).isEqualTo("base-candidate");
+		assertThat(rows).hasSize(3);
+	}
 }

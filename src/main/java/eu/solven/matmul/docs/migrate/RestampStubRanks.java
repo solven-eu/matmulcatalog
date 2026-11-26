@@ -136,7 +136,7 @@ public final class RestampStubRanks {
 		long t0 = System.currentTimeMillis();
 		todo.parallelStream().forEach(d -> {
 			try {
-				staged.add(stage(d.file(), replayer, staging));
+				staged.add(stage(d.file(), replayer, staging, lookup));
 			} catch (Exception | StackOverflowError e) {
 				failed.add(root.relativize(d.file()) + ": " + e);
 				log.error("  {} not staged: {}", root.relativize(d.file()), e.toString());
@@ -217,7 +217,8 @@ public final class RestampStubRanks {
 	 * into {@code stagingDir} under a name unique to the stub. Safe to run in parallel: the
 	 * catalog is only read.
 	 */
-	static Staged stage(Path stub, LineageReplayer replayer, Path stagingDir) throws IOException {
+	static Staged stage(Path stub, LineageReplayer replayer, Path stagingDir, FieldAwareLookup lookup)
+			throws IOException {
 		JsonNode old = SchemeIO.parseJson(stub.toFile());
 		Lineage.Node lineage = SchemeIO.readLineage(old)
 				.orElseThrow(() -> new IllegalStateException(stub + " has no lineage"));
@@ -227,7 +228,12 @@ public final class RestampStubRanks {
 		if (!Verifier.passesRandomMatmulSpotCheck(rep, 2_000, 42L)) {
 			throw new IllegalStateException(stub + ": the replayed scheme fails the matmul spot-check — not rewriting");
 		}
-		List<String> fields = SchemeIO.fieldTags(old);
+		// The old claim, capped at what the atoms prove TODAY: a bare-shape leaf may have moved to
+		// a Q-only base since the stub was written, and Z would then contradict the lineage.
+		// (A caller without a lookup - the single-stub overload - keeps the old claim.)
+		List<String> fields = lookup == null ? SchemeIO.fieldTags(old)
+				: eu.solven.matmul.docs.verify.VerifyLineageFieldCompat.cappedAtLineageFloor(SchemeIO.fieldTags(old),
+						lineage, lookup);
 		String canonical = SchemeIO.canonicalName(rep, noteOf(stub.getFileName().toString()));
 		Path out = stub.resolveSibling(canonical);
 		Path staged = stagingDir.resolve(stub.getFileName().toString() + ".new.json");
@@ -285,7 +291,7 @@ public final class RestampStubRanks {
 			throws IOException {
 		Path staging = Files.createTempDirectory("restamp-");
 		try {
-			return place(stage(stub, replayer, staging), lookup, deleteOld);
+			return place(stage(stub, replayer, staging, lookup), lookup, deleteOld);
 		} finally {
 			wipe(staging);
 		}

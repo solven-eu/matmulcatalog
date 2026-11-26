@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 
 import eu.solven.matmul.CanonicalShape;
 import eu.solven.matmul.Shape;
+import eu.solven.matmul.docs.migrate.UpstreamRepoRanks;
 
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.JsonNode;
@@ -160,7 +161,8 @@ public final class ScanUpstreamSources {
 		// The closure hand-off: every row, merged across sources and classified from FMM's recipe.
 		Map<CanonicalShape, FmmMeta> meta = Files.exists(FMM_LILLE_LOCAL) ? fmmMeta(readJson(FMM_LILLE_LOCAL))
 				: Map.of();
-		List<GapRow> rows = mergeGaps(sed, perm, fmm, mizopl, meta);
+		Map<String, SourceScan> repos = scanRepoDigests(UpstreamRepoRanks.read(UpstreamRepoRanks.FILE), local.q());
+		List<GapRow> rows = mergeGaps(sed, perm, fmm, mizopl, repos, meta);
 		if (gapsOut != null) {
 			writeText(gapsOut, gapFileJson(rows, Instant.now()));
 		}
@@ -168,7 +170,7 @@ public final class ScanUpstreamSources {
 			writeText(shapesOut, shapeList(rows));
 		}
 
-		String md = reportMd(sed, perm, fmm, mizopl, rows, gapsOut, shapesOut);
+		String md = reportMd(sed, perm, fmm, mizopl, repos, rows, gapsOut, shapesOut);
 		writeText(out, md);
 		System.out.println(md);
 	}
@@ -435,6 +437,33 @@ public final class ScanUpstreamSources {
 		return new SourceScan(gaps, missing, List.of(), List.of(), zGaps, ztGaps);
 	}
 
+	/**
+	 * The scheme repositories' rank digest against our Q-axis best, one scan per registry key.
+	 * A listed rank is the repository's claim as named by its file ({@link UpstreamRepoRanks});
+	 * every such file is an explicit scheme, so a strict row is a base to import, not a sweep.
+	 */
+	static Map<String, SourceScan> scanRepoDigests(Map<String, UpstreamRepoRanks.RepoRanks> digest,
+			Map<CanonicalShape, Integer> local) {
+		Map<String, SourceScan> out = new TreeMap<>();
+		digest.forEach((key, repo) -> {
+			List<Gap> gaps = new ArrayList<>();
+			List<Missing> missing = new ArrayList<>();
+			List<Gap> weBetter = new ArrayList<>();
+			repo.ranks().forEach((sh, theirs) -> {
+				Integer our = local.get(sh);
+				if (our == null) {
+					missing.add(new Missing(sh, theirs));
+				} else if (theirs < our) {
+					gaps.add(new Gap(our - theirs, sh, our, theirs));
+				} else if (our < theirs) {
+					weBetter.add(new Gap(theirs - our, sh, our, theirs));
+				}
+			});
+			out.put(key, new SourceScan(gaps, missing, weBetter));
+		});
+		return out;
+	}
+
 	/** A strict gap on one coefficient-class axis; a shape where we hold nothing of that class is a gap too. */
 	private static void axisGap(JsonNode theirs, Integer ours, CanonicalShape sh, List<Gap> into) {
 		if (theirs == null || !theirs.isIntegralNumber()) {
@@ -559,6 +588,18 @@ public final class ScanUpstreamSources {
 	 */
 	static List<GapRow> mergeGaps(SourceScan sed, SourceScan perm, SourceScan fmm, SourceScan mizopl,
 			Map<CanonicalShape, FmmMeta> meta) {
+		return mergeGaps(sed, perm, fmm, mizopl, Map.of(), meta);
+	}
+
+	/**
+	 * {@link #mergeGaps(SourceScan, SourceScan, SourceScan, SourceScan, Map)} plus the scheme
+	 * repositories' rank digest ({@code repos}, by registry key). A repository row is an
+	 * explicit scheme upstream: where it is the lowest rank of the row, the kind is
+	 * {@code base-candidate} whatever FMM's recipe for the format says — the recipe prices
+	 * FMM's (higher) rank, and no sweep reaches the repository's.
+	 */
+	static List<GapRow> mergeGaps(SourceScan sed, SourceScan perm, SourceScan fmm, SourceScan mizopl,
+			Map<String, SourceScan> repos, Map<CanonicalShape, FmmMeta> meta) {
 		Map<String, GapRow> rows = new LinkedHashMap<>();
 		addGaps(rows, "Q", "sedoglavic", sed.gaps(), meta, null);
 		addGaps(rows, "Q", "fmm", fmm.gaps(), meta, null);
@@ -574,6 +615,19 @@ public final class ScanUpstreamSources {
 		addGaps(rows, "Z", "mizopl", mizopl.zGaps(), meta, KIND_AXIS);
 		addGaps(rows, "ZT", "perminov", perm.ztGaps(), meta, KIND_AXIS);
 		addGaps(rows, "ZT", "mizopl", mizopl.ztGaps(), meta, KIND_AXIS);
+		repos.forEach((key, scan) -> {
+			for (Gap g : scan.gaps()) {
+				String rowKey = "Q " + g.shape();
+				GapRow prev = rows.get(rowKey);
+				Map<String, Integer> by = prev == null ? new TreeMap<>() : new TreeMap<>(prev.bySource());
+				by.put(key, g.theirs());
+				boolean lowest = prev == null || g.theirs() < prev.upstream() || KIND_UNVERIFIED.equals(prev.kind());
+				int upstream = prev == null ? g.theirs() : Math.min(prev.upstream(), g.theirs());
+				rows.put(rowKey, new GapRow(g.shape(), "Q", g.ours(), upstream, by, lowest ? KIND_BASE : prev.kind(),
+						meta.get(g.shape())));
+			}
+			addMissing(rows, key, scan.missing(), meta);
+		});
 		List<GapRow> out = new ArrayList<>(rows.values());
 		out.sort(BY_ROW);
 		return out;
@@ -698,7 +752,7 @@ public final class ScanUpstreamSources {
 			.thenComparing(g -> g.shape().toString());
 
 	private static String reportMd(SourceScan sed, SourceScan perm, SourceScan fmm, SourceScan mizopl,
-			List<GapRow> rows, Path gapsOut, Path shapesOut) {
+			Map<String, SourceScan> repos, List<GapRow> rows, Path gapsOut, Path shapesOut) {
 		StringBuilder out = new StringBuilder();
 		out.append("# Upstream source scan\n\n");
 		out.append("Generated by `eu.solven.matmul.docs.explore.ScanUpstreamSources`.\n\n");
@@ -751,6 +805,16 @@ public final class ScanUpstreamSources {
 
 		appendPerminovLayout(out, "Perminov status.json", "Perminov", perm);
 		appendPerminovLayout(out, "mizopl we*star status.json", "mizopl", mizopl);
+
+		// The scheme repositories, from their file listings (references/catalogs/upstream-repo-ranks.json):
+		// the only view of what a capped repository publishes above its explicit-import dimension.
+		repos.forEach((key, s) -> {
+			out.append("\n## Scheme repository `").append(key).append("` (file listing)\n\n");
+			out.append("- Strict gaps: **").append(s.gaps().size()).append("**\n");
+			out.append("- Missing from us: **").append(s.missing().size()).append("**\n");
+			out.append("- We-better: **").append(s.weBetter().size()).append("**\n");
+			appendGapTable(out, "Top 20 " + key + " strict gaps", key, s.gaps());
+		});
 
 		return out.toString();
 	}
