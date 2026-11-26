@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # the JSON-format gate diffs against the PR base
 
       - name: Set up JDK 25
         uses: actions/setup-java@v5
@@ -41,6 +43,19 @@ jobs:
 
       - name: Compile
         run: mvn -B -ntp -q compile test-compile
+
+      # Scheme JSON is not covered by Spotless (pom.xml): its canonical form, layout and
+      # key order, is MatrixJsonFormatter's. Check only the files this PR touches.
+      - name: Scheme JSON is canonically formatted (changed files)
+        if: github.event_name == 'pull_request'
+        run: |
+          git diff --name-only --diff-filter=AMR "origin/${{ github.base_ref }}...HEAD" \
+            -- 'src/main/resources/schemes/**/*.json' > changed-schemes.txt
+          echo "$(wc -l < changed-schemes.txt) changed scheme file(s)"
+          if [ -s changed-schemes.txt ]; then
+            mvn -B -ntp -q exec:java -Dexec.mainClass=eu.solven.matmul.docs.migrate.ReformatSchemes \
+              -Dexec.args="--check @changed-schemes.txt"
+          fi
 
       - name: Run tests (excluding catalog-iterating + benchmark)
         run: mvn -B -ntp test -Dsurefire.useFile=false
