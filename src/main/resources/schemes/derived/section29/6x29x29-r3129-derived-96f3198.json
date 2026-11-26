@@ -10,8 +10,8 @@
         "n": 6,
         "m": 5,
         "p": 9,
-        "child": {"op": "Atom", "ref": "5x6x9-r193-perminov_ZT-39b9662"},
-        "axisMap": "mnp"
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "5x6x9-r193-perminov_ZT-39b9662"}
       },
       "right": {
         "op": "KronProduct",
@@ -56,6 +56,7 @@
           "n": 3,
           "m": 7,
           "p": 4,
+          "axisMap": "npm",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -65,8 +66,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "npm"
+          }
         }
       }
     }

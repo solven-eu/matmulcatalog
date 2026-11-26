@@ -13,6 +13,7 @@
         "n": 9,
         "m": 10,
         "p": 12,
+        "axisMap": "pnm",
         "child": {
           "op": "Project",
           "keepN": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -26,14 +27,14 @@
             "axisMap": "mpn",
             "child": {"op": "Atom", "ref": "9x10x13@16f3df1"}
           }
-        },
-        "axisMap": "pnm"
+        }
       },
       {
         "op": "OrientAs",
         "n": 9,
         "m": 9,
         "p": 12,
+        "axisMap": "mpn",
         "child": {
           "op": "KronProduct",
           "outer": {"op": "Atom", "ref": "2x3x3@497eea7"},
@@ -51,14 +52,14 @@
               "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
             }
           }
-        },
-        "axisMap": "mpn"
+        }
       },
       {
         "op": "OrientAs",
         "n": 8,
         "m": 10,
         "p": 8,
+        "axisMap": "pnm",
         "child": {
           "op": "KronProduct",
           "outer": {"op": "Atom", "ref": "2x2x2@18678ba"},
@@ -76,14 +77,14 @@
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
           }
-        },
-        "axisMap": "pnm"
+        }
       },
       {
         "op": "OrientAs",
         "n": 9,
         "m": 9,
         "p": 8,
+        "axisMap": "mpn",
         "child": {
           "op": "SerendipitousProduct",
           "n2": 2,
@@ -94,17 +95,17 @@
             "n": 4,
             "m": 3,
             "p": 3,
-            "child": {"op": "Atom", "ref": "3x3x4@fed2992"},
-            "axisMap": "pnm"
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "3x3x4@fed2992"}
           }
-        },
-        "axisMap": "mpn"
+        }
       },
       {
         "op": "OrientAs",
         "n": 8,
         "m": 9,
         "p": 12,
+        "axisMap": "mpn",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "2x3x3@497eea7516980c20e35ba6344c58711a9e9a68af3f51f6e7558b469c5cd104a9"},
@@ -155,8 +156,7 @@
               }
             }
           ]
-        },
-        "axisMap": "mpn"
+        }
       }
     ]
   },

@@ -15,6 +15,7 @@
         "n": 3,
         "m": 8,
         "p": 5,
+        "axisMap": "npm",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
@@ -24,16 +25,15 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "npm"
+        }
       },
       {
         "op": "OrientAs",
         "n": 2,
         "m": 8,
         "p": 5,
-        "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x5x8-r63-perminov_Z-0cda074"}
       },
       {
         "op": "Recombination",
@@ -50,8 +50,8 @@
         "n": 2,
         "m": 8,
         "p": 6,
-        "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x6x8-r75-perminov_Z-b661843"}
       },
       {
         "op": "SumInner",

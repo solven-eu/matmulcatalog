@@ -44,6 +44,7 @@
           "n": 3,
           "m": 7,
           "p": 5,
+          "axisMap": "npm",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -53,14 +54,14 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "npm"
+          }
         },
         "right": {
           "op": "OrientAs",
           "n": 3,
           "m": 7,
           "p": 5,
+          "axisMap": "npm",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -70,8 +71,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "npm"
+          }
         }
       }
     ]

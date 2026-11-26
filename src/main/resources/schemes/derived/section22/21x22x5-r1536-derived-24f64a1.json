@@ -17,6 +17,7 @@
         "n": 7,
         "m": 7,
         "p": 2,
+        "axisMap": "mpn",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[2x7x7-r76-perminov_Z-f028f76.json] / <2,7,7>=76 :: CANONICAL"},
@@ -26,8 +27,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "mpn"
+        }
       },
       {
         "op": "SumInner",
@@ -36,6 +36,7 @@
           "n": 7,
           "m": 4,
           "p": 3,
+          "axisMap": "pmn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -45,14 +46,14 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "pmn"
+          }
         },
         "right": {
           "op": "OrientAs",
           "n": 7,
           "m": 4,
           "p": 3,
+          "axisMap": "pmn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -62,8 +63,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "pmn"
+          }
         }
       },
       {
@@ -71,16 +71,16 @@
         "n": 7,
         "m": 7,
         "p": 3,
-        "child": {"op": "Atom", "ref": "3x7x7-r111-perminov_Z-1e6a476"},
-        "axisMap": "mpn"
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "3x7x7-r111-perminov_Z-1e6a476"}
       },
       {
         "op": "OrientAs",
         "n": 7,
         "m": 8,
         "p": 2,
-        "child": {"op": "Atom", "ref": "2x7x8-r88-hk71-e1caeb7"},
-        "axisMap": "mpn"
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "2x7x8-r88-hk71-e1caeb7"}
       }
     ]
   },

@@ -31,8 +31,8 @@
         "n": 2,
         "m": 6,
         "p": 5,
-        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
       },
       {
         "op": "ConcatCols",
@@ -41,22 +41,22 @@
           "n": 3,
           "m": 6,
           "p": 3,
+          "axisMap": "mpn",
           "child": {
             "op": "Project",
             "keepN": [0, 1, 2],
             "keepM": [0, 1, 2],
             "keepP": [1, 2, 3, 4, 5, 6],
             "child": {"op": "Atom", "ref": "3x3x7@00460b6"}
-          },
-          "axisMap": "mpn"
+          }
         },
         "right": {
           "op": "OrientAs",
           "n": 3,
           "m": 6,
           "p": 4,
-          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-          "axisMap": "npm"
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
         }
       },
       {
@@ -64,14 +64,15 @@
         "n": 3,
         "m": 6,
         "p": 5,
-        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
       },
       {
         "op": "OrientAs",
         "n": 2,
         "m": 7,
         "p": 5,
+        "axisMap": "npm",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[2x5x7-r55-perminov_Z-258f126.json] / <2,5,7>=55 :: CANONICAL"},
@@ -81,8 +82,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "npm"
+        }
       },
       {
         "op": "Recombination",
@@ -99,6 +99,7 @@
         "n": 3,
         "m": 7,
         "p": 5,
+        "axisMap": "npm",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -108,8 +109,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "npm"
+        }
       }
     ]
   },

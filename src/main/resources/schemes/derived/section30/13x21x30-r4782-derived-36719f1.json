@@ -13,8 +13,8 @@
         "n": 2,
         "m": 7,
         "p": 5,
-        "child": {"op": "Atom", "ref": "2x5x7@8c6aace"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x5x7@8c6aace"}
       }
     },
     "bottom": {
@@ -31,6 +31,7 @@
         "n": 3,
         "m": 7,
         "p": 5,
+        "axisMap": "npm",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -40,8 +41,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "npm"
+        }
       }
     }
   },

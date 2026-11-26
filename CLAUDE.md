@@ -237,6 +237,20 @@ scheme property is read from JSON content, never parsed from the filename**.
   and produces noisy diffs. `ReformatSchemes` re-canonicalises the whole tree if drift
   creeps back in.
 
+- **JSON formatting policy: the formatter owns layout AND key order.** Spotless does
+  not cover JSON (none of its JSON steps keeps matrix rows inline), so
+  `MatrixJsonFormatter` is the only canonical form. Key order is part of it: in lineage
+  nodes (objects with `"op"`), `op` comes first and `child` last, whatever order the
+  writer inserted them in (`MatrixJsonFormatter.canonicalOrder`); other keys keep
+  insertion order. A diff that only reorders keys or moves whitespace is a formatter bug,
+  never something to commit: fix the rule in `canonicalOrder` and run
+  `ReformatSchemes --execute` once, in a commit of its own. CI (`test.yml`) runs
+  `ReformatSchemes --check @changed-files` on every PR's changed scheme files. Guard:
+  `TestMatrixJsonFormatterKeyOrder`. (Origin: `AugmentOrientAsAxisMaps` appended
+  `axisMap` after `child`, the lineage serialiser writes it before, so every stub restamp
+  in PR #26 swapped the two lines.) Key order never reaches the content `hash`, which
+  comes from the replayed matrices.
+
 ## `docs` package layout — put new drivers in the right sub-package
 
 `eu.solven.matmul.docs` holds `main()`-only drivers (no library code is

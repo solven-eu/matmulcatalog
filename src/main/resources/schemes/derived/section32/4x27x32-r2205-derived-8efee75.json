@@ -10,8 +10,8 @@
         "n": 4,
         "m": 3,
         "p": 6,
-        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-        "axisMap": "mnp"
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
       },
       "right": {
         "op": "ConcatCols",
@@ -20,8 +20,8 @@
           "n": 4,
           "m": 3,
           "p": 6,
-          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-          "axisMap": "mnp"
+          "axisMap": "mnp",
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
         },
         "right": {
           "op": "ConcatCols",
@@ -30,8 +30,8 @@
             "n": 4,
             "m": 3,
             "p": 6,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-            "axisMap": "mnp"
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
           },
           "right": {
             "op": "ConcatCols",
@@ -40,6 +40,7 @@
               "n": 4,
               "m": 3,
               "p": 7,
+              "axisMap": "mnp",
               "child": {
                 "op": "Recombination",
                 "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -49,14 +50,14 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              },
-              "axisMap": "mnp"
+              }
             },
             "right": {
               "op": "OrientAs",
               "n": 4,
               "m": 3,
               "p": 7,
+              "axisMap": "mnp",
               "child": {
                 "op": "Recombination",
                 "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -66,8 +67,7 @@
                 "leaves": [
                   {"op": "Atom", "ref": "naive-1x1x1"}
                 ]
-              },
-              "axisMap": "mnp"
+              }
             }
           }
         }

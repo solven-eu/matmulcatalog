@@ -10,8 +10,8 @@
         "n": 3,
         "m": 5,
         "p": 3,
-        "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"},
-        "axisMap": "mpn"
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "3x3x5-r36-alphatensor_Z-3895b40"}
       },
       "right": {
         "op": "Project",
@@ -35,6 +35,7 @@
         "n": 8,
         "m": 5,
         "p": 3,
+        "axisMap": "pmn",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
@@ -44,8 +45,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "pmn"
+        }
       },
       "right": {
         "op": "ConcatRows",
@@ -68,8 +68,8 @@
           "n": 5,
           "m": 6,
           "p": 3,
-          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
-          "axisMap": "mpn"
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
         }
       }
     }

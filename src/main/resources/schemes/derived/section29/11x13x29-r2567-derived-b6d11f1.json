@@ -31,8 +31,8 @@
             "n": 6,
             "m": 4,
             "p": 3,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-            "axisMap": "pmn"
+            "axisMap": "pmn",
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
           }
         },
         "right": {
@@ -60,6 +60,7 @@
           "n": 5,
           "m": 7,
           "p": 3,
+          "axisMap": "mpn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -69,8 +70,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "mpn"
+          }
         },
         "right": {
           "op": "Recombination",
@@ -142,8 +142,8 @@
           "n": 5,
           "m": 6,
           "p": 3,
-          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
-          "axisMap": "mpn"
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
         },
         "right": {
           "op": "Recombination",
@@ -174,6 +174,7 @@
           "n": 6,
           "m": 6,
           "p": 2,
+          "axisMap": "mpn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
@@ -183,8 +184,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "mpn"
+          }
         },
         "right": {
           "op": "KronProduct",

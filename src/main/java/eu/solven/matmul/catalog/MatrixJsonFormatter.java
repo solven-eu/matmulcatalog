@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -121,15 +123,42 @@ public final class MatrixJsonFormatter {
 		out.append(" ".repeat(indent)).append(']');
 	}
 
+	/**
+	 * Key order is part of the canonical format, not left to whichever writer built the
+	 * node. Lineage nodes (objects carrying a textual {@code "op"}) put {@code op} first
+	 * and {@code child} last; every other key keeps its insertion order. Without this,
+	 * {@code AugmentOrientAsAxisMaps} (which appended {@code axisMap} after an existing
+	 * {@code child}) and the lineage serialiser ({@code axisMap} before {@code child})
+	 * disagreed on {@code OrientAs}, so every restamp of a stub produced a diff that only
+	 * swapped the two lines (PR #26). Order does not reach the content {@code hash},
+	 * which is computed from the replayed matrices.
+	 */
+	static List<Map.Entry<String, JsonNode>> canonicalOrder(JsonNode obj) {
+		List<Map.Entry<String, JsonNode>> entries = new ArrayList<>(obj.size());
+		obj.properties().forEach(entries::add);
+		JsonNode op = obj.get("op");
+		if (op == null || !op.isTextual()) return entries;
+		List<Map.Entry<String, JsonNode>> ordered = new ArrayList<>(entries.size());
+		Map.Entry<String, JsonNode> child = null;
+		for (Map.Entry<String, JsonNode> e : entries) {
+			if (e.getKey().equals("op")) ordered.add(0, e);
+			else if (e.getKey().equals("child")) child = e;
+			else ordered.add(e);
+		}
+		if (child != null) ordered.add(child);
+		return ordered;
+	}
+
 	private static void writeObject(JsonNode obj, StringBuilder out, int indent) {
 		if (obj.isEmpty()) {
 			out.append("{}");
 			return;
 		}
+		List<Map.Entry<String, JsonNode>> entries = canonicalOrder(obj);
 		if (allPrimitiveValues(obj)) {
 			out.append('{');
 			boolean first = true;
-			for (Map.Entry<String, JsonNode> e : obj.properties()) {
+			for (Map.Entry<String, JsonNode> e : entries) {
 				if (!first) out.append(", ");
 				first = false;
 				out.append('"').append(escape(e.getKey())).append("\": ");
@@ -141,7 +170,7 @@ public final class MatrixJsonFormatter {
 		out.append("{\n");
 		String childIndent = " ".repeat(indent + INDENT_STEP);
 		int i = 0, last = obj.size() - 1;
-		for (Map.Entry<String, JsonNode> e : obj.properties()) {
+		for (Map.Entry<String, JsonNode> e : entries) {
 			out.append(childIndent)
 					.append('"').append(escape(e.getKey())).append("\": ");
 			writeNode(e.getValue(), out, indent + INDENT_STEP);

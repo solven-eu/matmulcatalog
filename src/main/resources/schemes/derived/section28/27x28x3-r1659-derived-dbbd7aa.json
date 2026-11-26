@@ -10,8 +10,8 @@
         "n": 6,
         "m": 4,
         "p": 3,
-        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-        "axisMap": "pmn"
+        "axisMap": "pmn",
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
       },
       "bottom": {
         "op": "ConcatRows",
@@ -20,6 +20,7 @@
           "n": 7,
           "m": 4,
           "p": 3,
+          "axisMap": "pmn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -29,8 +30,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "pmn"
+          }
         },
         "bottom": {
           "op": "ConcatRows",
@@ -39,6 +39,7 @@
             "n": 7,
             "m": 4,
             "p": 3,
+            "axisMap": "pmn",
             "child": {
               "op": "Recombination",
               "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -48,14 +49,14 @@
               "leaves": [
                 {"op": "Atom", "ref": "naive-1x1x1"}
               ]
-            },
-            "axisMap": "pmn"
+            }
           },
           "bottom": {
             "op": "OrientAs",
             "n": 7,
             "m": 4,
             "p": 3,
+            "axisMap": "pmn",
             "child": {
               "op": "Recombination",
               "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -65,8 +66,7 @@
               "leaves": [
                 {"op": "Atom", "ref": "naive-1x1x1"}
               ]
-            },
-            "axisMap": "pmn"
+            }
           }
         }
       }
@@ -155,6 +155,7 @@
             "n": 6,
             "m": 6,
             "p": 2,
+            "axisMap": "mpn",
             "child": {
               "op": "Recombination",
               "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
@@ -164,8 +165,7 @@
               "leaves": [
                 {"op": "Atom", "ref": "naive-1x1x1"}
               ]
-            },
-            "axisMap": "mpn"
+            }
           }
         ]
       }

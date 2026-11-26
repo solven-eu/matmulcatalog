@@ -13,14 +13,15 @@
         "n": 3,
         "m": 6,
         "p": 4,
-        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
       },
       {
         "op": "OrientAs",
         "n": 2,
         "m": 6,
         "p": 4,
+        "axisMap": "npm",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL"},
@@ -30,24 +31,23 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "npm"
+        }
       },
       {
         "op": "OrientAs",
         "n": 2,
         "m": 5,
         "p": 4,
-        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
       },
       {
         "op": "OrientAs",
         "n": 3,
         "m": 5,
         "p": 4,
-        "child": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"},
-        "axisMap": "npm"
+        "axisMap": "npm",
+        "child": {"op": "Atom", "ref": "3x4x5-r47-alphatensor_Z-6bc7fbe"}
       }
     ]
   },

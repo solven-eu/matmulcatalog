@@ -13,8 +13,8 @@
           "n": 9,
           "m": 2,
           "p": 9,
-          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"},
-          "axisMap": "pnm"
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
         },
         "right": {
           "op": "ConcatCols",
@@ -23,16 +23,16 @@
             "n": 9,
             "m": 2,
             "p": 9,
-            "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"},
-            "axisMap": "pnm"
+            "axisMap": "pnm",
+            "child": {"op": "Atom", "ref": "2x9x9-r126-hk71-1e432f3"}
           },
           "right": {
             "op": "OrientAs",
             "n": 9,
             "m": 2,
             "p": 12,
-            "child": {"op": "Atom", "ref": "2x9x12-r168-hk71-1e99416"},
-            "axisMap": "mnp"
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "2x9x12-r168-hk71-1e99416"}
           }
         }
       },
@@ -50,6 +50,7 @@
           "n": 3,
           "m": 7,
           "p": 5,
+          "axisMap": "npm",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -59,8 +60,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "npm"
+          }
         }
       }
     }

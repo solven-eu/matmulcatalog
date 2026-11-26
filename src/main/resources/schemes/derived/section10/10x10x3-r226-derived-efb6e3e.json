@@ -41,6 +41,7 @@
         "n": 7,
         "m": 4,
         "p": 3,
+        "axisMap": "pmn",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -50,8 +51,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "pmn"
+        }
       },
       "right": {
         "op": "ConcatRows",
@@ -74,8 +74,8 @@
           "n": 4,
           "m": 6,
           "p": 3,
-          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-          "axisMap": "mpn"
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
         }
       }
     }

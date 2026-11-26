@@ -8,8 +8,8 @@
       "n": 4,
       "m": 6,
       "p": 3,
-      "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-      "axisMap": "mpn"
+      "axisMap": "mpn",
+      "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
     },
     "right": {
       "op": "SumInner",
@@ -18,6 +18,7 @@
         "n": 4,
         "m": 7,
         "p": 3,
+        "axisMap": "mpn",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -27,14 +28,14 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "mpn"
+        }
       },
       "right": {
         "op": "OrientAs",
         "n": 4,
         "m": 7,
         "p": 3,
+        "axisMap": "mpn",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -44,8 +45,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "mpn"
+        }
       }
     }
   },
