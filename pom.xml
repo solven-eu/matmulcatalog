@@ -101,6 +101,17 @@
 						</exclude>
 					</excludes>
 				</configuration>
+				<executions>
+					<!-- No fat jar: this is a library of ~160 main() drivers run via
+					     exec:java, with no single entry point, so repackage fails with
+					     "Unable to find a single main class". -->
+					<execution>
+						<id>repackage</id>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
