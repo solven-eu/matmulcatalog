@@ -41,8 +41,8 @@
         "n": 4,
         "m": 3,
         "p": 6,
-        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-        "axisMap": "mnp"
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
       },
       {
         "op": "Project",
@@ -56,6 +56,7 @@
         "n": 4,
         "m": 2,
         "p": 6,
+        "axisMap": "mnp",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[2x4x6-r39-hk71-bddc04d.json] / <2,4,6>=39 :: CANONICAL"},
@@ -65,8 +66,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "mnp"
+        }
       }
     ]
   },

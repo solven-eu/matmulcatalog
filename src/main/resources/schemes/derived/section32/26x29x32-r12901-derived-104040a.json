@@ -15,14 +15,15 @@
           "n": 2,
           "m": 5,
           "p": 4,
-          "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"},
-          "axisMap": "npm"
+          "axisMap": "npm",
+          "child": {"op": "Atom", "ref": "2x4x5-r32-alphaevolve-6216e15"}
         },
         "inner": {
           "op": "OrientAs",
           "n": 7,
           "m": 3,
           "p": 4,
+          "axisMap": "pnm",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -32,8 +33,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "pnm"
+          }
         }
       },
       {"op": "Atom", "ref": "12x15x16-r1725-perminov_Z-337086a"},
@@ -78,8 +78,8 @@
             "n": 7,
             "m": 6,
             "p": 8,
-            "child": {"op": "Atom", "ref": "6x7x8-r238-perminov_ZT-186f4c6"},
-            "axisMap": "mnp"
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "6x7x8-r238-perminov_ZT-186f4c6"}
           }
         ]
       },

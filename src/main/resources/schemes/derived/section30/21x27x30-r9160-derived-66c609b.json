@@ -17,6 +17,7 @@
         "n": 7,
         "m": 3,
         "p": 5,
+        "axisMap": "pnm",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -26,8 +27,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "pnm"
+        }
       }
     },
     "right": {
@@ -44,8 +44,8 @@
         "n": 7,
         "m": 6,
         "p": 5,
-        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
-        "axisMap": "pmn"
+        "axisMap": "pmn",
+        "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
       }
     }
   },

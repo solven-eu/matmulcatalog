@@ -8,8 +8,8 @@
       "n": 6,
       "m": 5,
       "p": 3,
-      "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
-      "axisMap": "pmn"
+      "axisMap": "pmn",
+      "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
     },
     "bottom": {
       "op": "ConcatRows",
@@ -18,8 +18,8 @@
         "n": 6,
         "m": 5,
         "p": 3,
-        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
-        "axisMap": "pmn"
+        "axisMap": "pmn",
+        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
       },
       "bottom": {
         "op": "ConcatRows",
@@ -28,6 +28,7 @@
           "n": 7,
           "m": 5,
           "p": 3,
+          "axisMap": "pmn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -37,14 +38,14 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "pmn"
+          }
         },
         "bottom": {
           "op": "OrientAs",
           "n": 8,
           "m": 5,
           "p": 3,
+          "axisMap": "pmn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
@@ -54,8 +55,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "pmn"
+          }
         }
       }
     }

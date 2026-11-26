@@ -15,6 +15,7 @@
           "n": 7,
           "m": 5,
           "p": 3,
+          "axisMap": "pmn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[3x5x7-r79-perminov_Z-5908efd.json] / <3,5,7>=79 :: CANONICAL"},
@@ -24,16 +25,15 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "pmn"
+          }
         },
         "right": {
           "op": "OrientAs",
           "n": 7,
           "m": 5,
           "p": 6,
-          "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"},
-          "axisMap": "pnm"
+          "axisMap": "pnm",
+          "child": {"op": "Atom", "ref": "5x6x7-r150-kauers_2026-b7666c1"}
         }
       },
       {
@@ -41,8 +41,8 @@
         "n": 7,
         "m": 6,
         "p": 9,
-        "child": {"op": "Atom", "ref": "6x7x9-r264-perminov_ZT-d42e06b"},
-        "axisMap": "mnp"
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "6x7x9-r264-perminov_ZT-d42e06b"}
       }
     ]
   },

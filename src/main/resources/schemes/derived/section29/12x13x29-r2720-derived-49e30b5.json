@@ -31,8 +31,8 @@
             "n": 6,
             "m": 4,
             "p": 3,
-            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"},
-            "axisMap": "pmn"
+            "axisMap": "pmn",
+            "child": {"op": "Atom", "ref": "3x4x6-r54-alphaevolve-c197868"}
           }
         },
         {
@@ -40,6 +40,7 @@
           "n": 6,
           "m": 7,
           "p": 2,
+          "axisMap": "mpn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[2x6x7-r66-perminov_ZT-ed57436.json] / <2,6,7>=66 :: CANONICAL"},
@@ -49,8 +50,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "mpn"
+          }
         },
         {
           "op": "ConcatRows",
@@ -88,6 +88,7 @@
           "n": 6,
           "m": 6,
           "p": 2,
+          "axisMap": "mpn",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[2x6x6-r56-perminov_ZT-5791b42.json] / <2,6,6>=56 :: CANONICAL"},
@@ -97,8 +98,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "mpn"
+          }
         }
       ]
     },

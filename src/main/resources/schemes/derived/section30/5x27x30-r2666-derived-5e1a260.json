@@ -10,8 +10,8 @@
         "n": 5,
         "m": 3,
         "p": 6,
-        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"},
-        "axisMap": "mnp"
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "3x5x6-r68-alphaevolve-14be9c3"}
       },
       "right": {
         "op": "SumInner",
@@ -85,6 +85,7 @@
           "n": 2,
           "m": 7,
           "p": 6,
+          "axisMap": "npm",
           "child": {
             "op": "Recombination",
             "base": {"op": "Atom", "ref": "ext[2x6x7-r66-perminov_ZT-ed57436.json] / <2,6,7>=66 :: CANONICAL"},
@@ -94,8 +95,7 @@
             "leaves": [
               {"op": "Atom", "ref": "naive-1x1x1"}
             ]
-          },
-          "axisMap": "npm"
+          }
         },
         {
           "op": "SumInner",

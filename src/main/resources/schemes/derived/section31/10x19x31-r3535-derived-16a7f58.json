@@ -23,8 +23,8 @@
         "n": 5,
         "m": 4,
         "p": 7,
-        "child": {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"},
-        "axisMap": "mnp"
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "4x5x7-r104-perminov_ZT-4a1b410"}
       },
       {"op": "Atom", "ref": "5x5x7-r127-perminov_ZT-9d68374"},
       {
@@ -32,6 +32,7 @@
         "n": 5,
         "m": 4,
         "p": 8,
+        "axisMap": "mnp",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[4x5x8-r118-perminov_ZT-ed19319.json] / <4,5,8>=118 :: CANONICAL"},
@@ -41,8 +42,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "mnp"
+        }
       }
     ]
   },

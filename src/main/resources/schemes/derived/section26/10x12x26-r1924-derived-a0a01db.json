@@ -13,14 +13,15 @@
         "n": 5,
         "m": 4,
         "p": 9,
-        "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"},
-        "axisMap": "mnp"
+        "axisMap": "mnp",
+        "child": {"op": "Atom", "ref": "4x5x9-r132-perminov_ZT-ec019d6"}
       },
       {
         "op": "OrientAs",
         "n": 5,
         "m": 4,
         "p": 8,
+        "axisMap": "mnp",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[4x5x8-r118-perminov_ZT-ed19319.json] / <4,5,8>=118 :: CANONICAL"},
@@ -30,8 +31,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "mnp"
+        }
       }
     ]
   },

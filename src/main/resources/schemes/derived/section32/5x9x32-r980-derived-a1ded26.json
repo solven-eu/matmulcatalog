@@ -10,6 +10,7 @@
         "n": 5,
         "m": 3,
         "p": 8,
+        "axisMap": "mnp",
         "child": {
           "op": "Recombination",
           "base": {"op": "Atom", "ref": "ext[3x5x8-r90-perminov_ZT-8be898b.json] / <3,5,8>=90 :: CANONICAL"},
@@ -19,8 +20,7 @@
           "leaves": [
             {"op": "Atom", "ref": "naive-1x1x1"}
           ]
-        },
-        "axisMap": "mnp"
+        }
       },
       "right": {"op": "Atom", "ref": "5x6x8-r170-perminov_ZT-b476d2a"}
     },

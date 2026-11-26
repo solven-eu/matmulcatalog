@@ -35,6 +35,7 @@
             "n": 4,
             "m": 7,
             "p": 3,
+            "axisMap": "mpn",
             "child": {
               "op": "Recombination",
               "base": {"op": "Atom", "ref": "ext[3x4x7-r63-dumas_pernet_sedoglavic_2025-ac0e1ad.json] / <3,4,7>=63 :: CANONICAL"},
@@ -44,8 +45,7 @@
               "leaves": [
                 {"op": "Atom", "ref": "naive-1x1x1"}
               ]
-            },
-            "axisMap": "mpn"
+            }
           }
         },
         {
@@ -53,8 +53,8 @@
           "n": 4,
           "m": 10,
           "p": 4,
-          "child": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"},
-          "axisMap": "mpn"
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
         }
       ]
     },
@@ -72,8 +72,8 @@
         "n": 4,
         "m": 10,
         "p": 4,
-        "child": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"},
-        "axisMap": "mpn"
+        "axisMap": "mpn",
+        "child": {"op": "Atom", "ref": "4x4x10-r115-perminov_ZT-022a32b"}
       }
     }
   },

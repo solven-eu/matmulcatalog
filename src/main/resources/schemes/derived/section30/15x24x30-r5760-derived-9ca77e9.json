@@ -15,6 +15,7 @@
       "n": 5,
       "m": 8,
       "p": 5,
+      "axisMap": "mpn",
       "child": {
         "op": "Recombination",
         "base": {"op": "Atom", "ref": "ext[5x5x8-r144-perminov_ZT-2554eb2.json] / <5,5,8>=144 :: CANONICAL"},
@@ -24,8 +25,7 @@
         "leaves": [
           {"op": "Atom", "ref": "naive-1x1x1"}
         ]
-      },
-      "axisMap": "mpn"
+      }
     }
   },
   "n": [15, 24, 30],

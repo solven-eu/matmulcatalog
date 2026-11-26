@@ -10,8 +10,8 @@
         "n": 5,
         "m": 2,
         "p": 5,
-        "child": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"},
-        "axisMap": "pnm"
+        "axisMap": "pnm",
+        "child": {"op": "Atom", "ref": "2x5x5-r40-alphatensor_Z-67f5fb7"}
       },
       "right": {
         "op": "SumInner",
@@ -20,16 +20,16 @@
           "n": 5,
           "m": 12,
           "p": 5,
-          "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
-          "axisMap": "mpn"
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
         },
         "right": {
           "op": "OrientAs",
           "n": 5,
           "m": 12,
           "p": 5,
-          "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"},
-          "axisMap": "mpn"
+          "axisMap": "mpn",
+          "child": {"op": "Atom", "ref": "5x5x12-r204-perminov_ZT-61a6cb7"}
         }
       }
     },
@@ -42,8 +42,8 @@
           "n": 5,
           "m": 2,
           "p": 6,
-          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
-          "axisMap": "mnp"
+          "axisMap": "mnp",
+          "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
         },
         "right": {
           "op": "ConcatCols",
@@ -52,8 +52,8 @@
             "n": 5,
             "m": 2,
             "p": 6,
-            "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
-            "axisMap": "mnp"
+            "axisMap": "mnp",
+            "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
           },
           "right": {
             "op": "ConcatCols",
@@ -62,16 +62,16 @@
               "n": 5,
               "m": 2,
               "p": 6,
-              "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
-              "axisMap": "mnp"
+              "axisMap": "mnp",
+              "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
             },
             "right": {
               "op": "OrientAs",
               "n": 5,
               "m": 2,
               "p": 6,
-              "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"},
-              "axisMap": "mnp"
+              "axisMap": "mnp",
+              "child": {"op": "Atom", "ref": "2x5x6-r47-alphaevolve-7387644"}
             }
           }
         }
